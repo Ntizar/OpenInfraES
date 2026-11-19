@@ -21,6 +21,4 @@ jobs:
           python scripts/validar.py
       - name: Sintaxis
         run: |
-          python -m py_compile scripts/descargar.py
-          python -m py_compile scripts/agregar.py
-          python -m py_compile scripts/validar.py
+          python -m compileall -q scripts
