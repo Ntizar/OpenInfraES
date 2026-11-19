@@ -17,7 +17,8 @@ jobs:
         with:
           python-version: "3.12"
       - name: Validar cuadres de datos
-        run: python scripts/cifras.py --check
+        run: |
+          python scripts/cifras.py --check
           python scripts/validar.py
       - name: Sintaxis
         run: |
