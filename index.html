@@ -811,7 +811,7 @@ function fichaGrupo(items, c) {
   h += '<div class="fs">' + c.label + " — toca uno para ver su ficha</div>";
   h += '<ul class="lista-grupo">';
   items.slice(0, tope).forEach((f, i) => {
-    h += '<li><a href="#" data-grupo-i="' + i + '">' + etiquetaCorta(f.properties || {}, c) + "</a></li>";
+    h += '<li><a href="#" data-grupo-i="' + i + '">' + esc(etiquetaCorta(f.properties || {}, c)) + "</a></li>";
   });
   if (items.length > tope) h += '<li class="mas">y ' + (items.length - tope) + " más…</li>";
   h += "</ul></div>";
@@ -907,7 +907,7 @@ function bloqueResumen(id) {
     h += `<div class="sub" style="margin-top:12px">${RESUMEN_CAT[k]}</div>`;
     const max = pares[0][1];
     h += '<div class="dist">' + pares.slice(0, 6).map(([v, n]) =>
-      `<div class="dl"><span class="dn">${v}</span>` +
+      `<div class="dl"><span class="dn">${esc(v)}</span>` +
       `<span class="db"><span style="width:${Math.max(3, 100 * n / max)}%"></span></span>` +
       `<span class="dv">${nf(n)}</span></div>`).join("") + '</div>';
     if (pares.length > 6) h += `<div class="nota">y ${pares.length - 6} más</div>`;
@@ -1379,8 +1379,8 @@ function pintarLeyenda(c) {
                                                      : fmt(desde) + " – " + fmt(hasta));
         }
       }
-      return `<div class="ly"><i style="background:${x.col}"></i>` +
-             `<span>${etiqueta}</span><b>${nf(x.n)}</b></div>`;
+      return `<div class="ly"><i style="background:${esc(x.col)}"></i>` +
+             `<span>${esc(etiqueta)}</span><b>${nf(x.n)}</b></div>`;
     }).join("") +
     `<div class="ly-total">${nf(pares.reduce((a, x) => a + x.n, 0))} datos</div>`;
   el.hidden = false;
@@ -1470,6 +1470,18 @@ const ETIQUETA = {
   densidad:"Densidad (hab/km²)", paro_pct:"Tasa de paro", superficie_km2:"Superficie (km²)",
   poblacion:"Población", nuts:"Código NUTS", tecnologia_ree:"Tecnología (REE)"
 };
+
+/* todo texto que sale de un GeoJSON (OSM, DGT, ...) pasa por aquí antes de entrar en innerHTML:
+   un nombre de OSM lo puede editar cualquiera */
+function esc(v) {
+  return String(v === null || v === undefined ? "" : v)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+/* solo http(s): nada de javascript: ni data: en un href o src que viene del dato */
+function urlSegura(u) {
+  return /^https?:\/\//i.test(String(u || "").trim()) ? esc(String(u).trim()) : "";
+}
 
 function nombreCampo(k) {
   return ETIQUETA[k] || k.replace(/_/g, " ").replace(/\w/g, m => m.toUpperCase());
@@ -1609,7 +1621,7 @@ function abrirPanelDato(p, c, latlng) {
   for (const k of claves) {
     const v = valorLegible(p[k]);
     if (v === null) continue;
-    filas += `<div class="pd-k"><span>${nombreCampo(k)}</span><span>${v}</span></div>`;
+    filas += `<div class="pd-k"><span>${esc(nombreCampo(k))}</span><span>${esc(v)}</span></div>`;
   }
 
   // métricas destacadas: los números que importan, en grande y con su unidad
@@ -1664,14 +1676,15 @@ function abrirPanelDato(p, c, latlng) {
   const btnJson = `<a href="#" id="pd-json">Descargar este dato (JSON) ↓</a>`;
   const btnCsv = `<a href="#" id="pd-csv">Descargar la capa (CSV) ↓</a>`;
 
-  const foto = p.imagen
-    ? `<a class="pd-foto" href="${p.imagen}" target="_blank" rel="noopener">` +
-      `<img src="${p.imagen}" alt="Imagen de la cámara" referrerpolicy="no-referrer" loading="lazy" ` +
+  const imagen = urlSegura(p.imagen);
+  const foto = imagen
+    ? `<a class="pd-foto" href="${imagen}" target="_blank" rel="noopener">` +
+      `<img src="${imagen}" alt="Imagen de la cámara" referrerpolicy="no-referrer" loading="lazy" ` +
       `onerror="this.parentElement.style.display='none'"></a>`
     : "";
 
   cuerpo.innerHTML =
-    `<h3>${titulo}</h3>` +
+    `<h3>${esc(titulo)}</h3>` +
     `<div class="pd-cap"><b>${c.grupo}</b> · ${c.label}</div>` +
     foto +
     (hl ? `<div class="pd-hl">${hl}</div>` : "") +
@@ -1680,7 +1693,7 @@ function abrirPanelDato(p, c, latlng) {
       ? `<div class="pd-sec">A menos de 30 km · capas ya cargadas</div><div class="pd-cerca">` +
         cerca.map(x =>
           `<a href="#" data-ir="${x.capa}" data-i="${x.i}">` +
-          `<span>${x.etiqueta}${x.etiqueta === x.rotulo ? "" : " <em>· " + x.rotulo + "</em>"}</span>` +
+          `<span>${esc(x.etiqueta)}${x.etiqueta === x.rotulo ? "" : " <em>· " + x.rotulo + "</em>"}</span>` +
           `<b>${x.d < 1 ? Math.round(x.d * 1000) + " m" : x.d.toFixed(1) + " km"}</b></a>`).join("") +
         `</div>`
       : "") +
@@ -2154,7 +2167,7 @@ cajaQ.addEventListener("input", () => {
       }
     }
     cajaR.innerHTML = hits.length ? hits.map((h, i) =>
-      `<div data-hit="${i}">${h.nombre}<span>${h.capa}</span></div>`).join("")
+      `<div data-hit="${i}">${esc(h.nombre)}<span>${esc(h.capa)}</span></div>`).join("")
       : '<div style="color:var(--tenue)">Sin resultados en las capas cargadas</div>';
     cajaR.classList.add("on");
     cajaR.querySelectorAll("[data-hit]").forEach(d => {
