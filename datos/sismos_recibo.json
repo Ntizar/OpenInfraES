@@ -1,9 +1,9 @@
 {
- "features": 84,
+ "features": 85,
  "dias": 7,
  "desde": "2026-11-15",
  "mag_max": 4.1,
- "mag_media": 2.05,
+ "mag_media": 2.06,
  "fuente": "EMSC-CSEM",
  "fichero": "sismos.geojson"
 }
