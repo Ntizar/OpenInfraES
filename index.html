@@ -35,13 +35,21 @@
   html[data-tema="claro"][data-base="orto"] .leaflet-tile-pane,
   html[data-tema="claro"][data-base="osm"] .leaflet-tile-pane { filter:none; }
   html[data-tema="oscuro"][data-base="osm"] .leaflet-tile-pane { filter:grayscale(1) invert(1) brightness(.75) contrast(1.2); }
-  .leaflet-tile-pane { transition:filter .4s ease; }
   .leaflet-container { background:var(--fondo); font-family:inherit; }
+
+  .trazos path { vector-effect:non-scaling-stroke; }
+  .puntos-pane { z-index:410; pointer-events:none; transition:opacity 150ms ease-out; }
+  .puntos-pane path {
+    transform-box:fill-box; transform-origin:center;
+    transform:scale(var(--escala-radio, 1));
+  }
+  .puntos-pane.cambiando { opacity:0; transition-duration:190ms; }
+  @media (prefers-reduced-motion:reduce) { .puntos-pane, .puntos-pane.cambiando { transition:none; } }
 
   #hud { position:absolute; z-index:1000; top:16px; left:16px; width:330px;
     max-height:calc(100% - 92px); display:flex; flex-direction:column;
     background:var(--panel); border:1px solid var(--borde); border-radius:3px;
-    backdrop-filter:blur(10px); box-shadow:0 20px 55px rgba(0,0,0,.6); }
+    box-shadow:0 20px 55px rgba(0,0,0,.6); }
   #hud::before { content:""; position:absolute; top:-1px; left:16px; right:16px; height:1px;
     background:linear-gradient(90deg,transparent,var(--borde-fuerte),transparent); }
   #cabeza { padding:15px 16px 12px; border-bottom:1px solid var(--borde); }
@@ -107,7 +115,7 @@
 
   #estado { position:absolute; z-index:1000; bottom:14px; left:16px; right:16px; height:30px;
     display:flex; align-items:center; gap:16px; padding:0 14px; background:var(--panel);
-    border:1px solid var(--borde); border-radius:2px; backdrop-filter:blur(10px);
+    border:1px solid var(--borde); border-radius:2px;
     font-family:var(--mono); font-size:10.5px; letter-spacing:.09em; color:var(--suave);
     text-transform:uppercase; }
   #estado b { color:var(--tinta); font-weight:500; }
@@ -374,7 +382,7 @@
   #panel-dato { position:fixed; top:78px; right:14px; left:auto; bottom:auto;
     width:clamp(330px, 29vw, 430px); max-height:calc(100vh - 132px); overflow-y:auto;
     background:rgba(12,18,30,.96); border:1px solid var(--borde-fuerte); border-radius:8px;
-    backdrop-filter:blur(14px); box-shadow:0 10px 44px rgba(0,0,0,.6); padding:12px 14px 13px;
+    box-shadow:0 10px 44px rgba(0,0,0,.6); padding:12px 14px 13px;
     z-index:1500; font-size:12.8px; color:var(--tinta); transition:right .18s ease; }
   body:has(#info-der.on) #panel-dato { right:318px; width:min(470px, 32vw); }
   /* la escala y la atribución se apartan para no quedar debajo de la ficha */
@@ -434,7 +442,7 @@
     max-height:calc(100vh - 200px); overflow-y:auto;
     background:rgba(8,12,20,.97); border:1px solid rgba(255,255,255,.22); border-radius:6px;
     padding:9px 11px; z-index:880; font-size:11.4px; color:var(--tinta);
-    backdrop-filter:blur(10px); box-shadow:0 6px 22px rgba(0,0,0,.45); }
+    box-shadow:0 6px 22px rgba(0,0,0,.45); }
   body:has(#info-der.on) #leyenda { right:322px; }
   #leyenda-x { position:absolute; top:5px; right:6px; background:transparent; border:0;
     color:var(--suave); font-size:13px; cursor:pointer; padding:1px 4px; line-height:1; }
@@ -454,7 +462,7 @@
   body:has(#info-der.on) #kpis { right:322px; }
   #kpis .kpi { flex:1 1 0; min-width:0; display:flex; align-items:center; gap:9px;
     background:rgba(12,18,30,.92); border:1px solid var(--borde); border-radius:6px;
-    padding:8px 11px; backdrop-filter:blur(12px); box-shadow:0 4px 18px rgba(0,0,0,.35);
+    padding:8px 11px; box-shadow:0 4px 18px rgba(0,0,0,.35);
     pointer-events:auto; }
   #kpis .kpi i { font-size:15px; font-style:normal; opacity:.75; flex:0 0 auto; }
   #kpis .kpi div { min-width:0; }
@@ -540,7 +548,7 @@
   #btn-hud { display:none; position:fixed; z-index:1200; top:10px; left:10px; width:42px; height:42px;
     align-items:center; justify-content:center; background:var(--panel); color:var(--tinta);
     border:1px solid var(--borde-fuerte); border-radius:6px; font-size:18px; cursor:pointer;
-    backdrop-filter:blur(10px); box-shadow:0 6px 22px rgba(0,0,0,.5); }
+    box-shadow:0 6px 22px rgba(0,0,0,.5); }
 
   @media (max-width: 820px) {
     html, body { overflow:hidden; }
@@ -759,12 +767,233 @@ const BASES = {
   "osm":          ["OpenStreetMap", "https://tile.openstreetmap.org/{z}/{x}/{y}.png"]
 };
 
+// Durante la rueda, Canvas dibuja las geometrías visibles. En reposo el SVG
+// de Leaflet se encarga de seleccionar los elementos y abrir sus fichas.
+const SvgConLienzo = L.SVG.extend({
+  _iniciarLienzo() {
+    if (!this._lienzo) {
+      this._lienzo = document.createElement("canvas");
+      this._lienzo.style.pointerEvents = "none";
+      this._ctx = this._lienzo.getContext("2d");
+      this.getPane().appendChild(this._lienzo);
+    }
+    const ctx = this._ctx, canvas = this._lienzo;
+    if (!ctx) return null;
+    const mapa = this._map, size = mapa.getSize(), dpr = window.devicePixelRatio || 1;
+    const ancho = Math.round(size.x * dpr), alto = Math.round(size.y * dpr);
+    if (canvas.width !== ancho || canvas.height !== alto) {
+      canvas.width = ancho;
+      canvas.height = alto;
+      canvas.style.width = size.x + "px";
+      canvas.style.height = size.y + "px";
+    }
+    const min = mapa.containerPointToLayerPoint([0, 0]);
+    L.DomUtil.setPosition(canvas, min);
+    canvas.hidden = false;
+    this._container.style.display = "none";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, size.x, size.y);
+    const k = mapa.getZoomScale(mapa.getZoom(), this._zoom);
+    const delta = this._origen.multiplyBy(k).subtract(mapa.getPixelOrigin()).subtract(min);
+    return { ctx, k, delta, size };
+  },
+  _mostrarSvg() {
+    if (this._lienzo && !this._lienzo.hidden) {
+      this._lienzo.hidden = true;
+      this._container.style.display = "";
+    }
+  },
+  _onAnimZoom(e) {
+    this._mostrarSvg();
+    L.SVG.prototype._onAnimZoom.call(this, e);
+  },
+  _destroyContainer() {
+    this._lienzo?.remove();
+    this._lienzo = this._ctx = null;
+    L.SVG.prototype._destroyContainer.call(this);
+  }
+});
+
+// Aplicar el zoom dentro del SVG: vector-effect conserva el ancho de los
+// trazos al transformar el grupo, pero no al ampliar el SVG como una imagen.
+const SvgTrazos = SvgConLienzo.extend({
+  _initContainer() {
+    L.SVG.prototype._initContainer.call(this);
+    this._rootGroup.classList.add("trazos", "leaflet-zoom-animated");
+  },
+  _update() {
+    if (this._map._animatingZoom && this._bounds) return;
+    L.SVG.prototype._update.call(this);
+    this._origen = this._map.getPixelOrigin();
+    this._rootGroup.removeAttribute("transform");
+  },
+  _onZoom(e) {
+    // Al alejarse, incorporar las carreteras que entran por los bordes antes
+    // de terminar el gesto. El margen evita reproyectar en cada fotograma.
+    if (this._cobertura && !this._cobertura.contains(this._map.getBounds())) this._update();
+    const lienzo = (e.flyTo || e.pinch) && this._iniciarLienzo();
+    if (lienzo) {
+      this._pintarTrazos(lienzo);
+      return;
+    }
+    this._mostrarSvg();
+    L.SVG.prototype._onZoom.call(this);
+  },
+  _pintarTrazos({ ctx, k, delta }) {
+    ctx.translate(delta.x, delta.y);
+    ctx.scale(k, k);
+    if (!this._visibles) {
+      this._visibles = Array.from(this._rootGroup.children, nodo => this._map._targets[L.Util.stamp(nodo)])
+        .filter(layer => layer?.__trazado);
+    }
+    for (const layer of this._visibles) {
+      const o = layer.options;
+      if (o.fill) {
+        ctx.fillStyle = o.fillColor || o.color;
+        ctx.globalAlpha = o.fillOpacity;
+        ctx.fill(layer.__trazado, o.fillRule || "evenodd");
+      }
+      if (o.stroke && o.weight) {
+        ctx.strokeStyle = o.color;
+        ctx.globalAlpha = o.opacity;
+        ctx.lineWidth = o.weight / k;
+        ctx.lineCap = o.lineCap;
+        ctx.lineJoin = o.lineJoin;
+        ctx.stroke(layer.__trazado);
+      }
+    }
+  },
+  _removePath(layer) {
+    this._visibles = null;
+    layer.__trazado = null;
+    L.SVG.prototype._removePath.call(this, layer);
+  },
+  // Leaflet reproyecta todos los vértices en zoomend. Hacerlo al actualizar
+  // la vista permite descartar primero las geometrías por su caja geográfica.
+  _onZoomEnd() { this._mostrarSvg(); },
+  _updatePaths() {
+    const map = this._map;
+    const vista = L.latLngBounds(map.layerPointToLatLng(this._bounds.min), map.layerPointToLatLng(this._bounds.max));
+    this._cobertura = vista;
+    const origen = map.getPixelOrigin();
+    for (const id in this._layers) {
+      const layer = this._layers[id];
+      if (!vista.intersects(layer.getBounds())) {
+        if (layer._parts?.length) {
+          layer._parts = [];
+          this._setPath(layer, "M0 0");
+        }
+        continue;
+      }
+      if (layer.__origenProyectado !== origen) {
+        layer._project();
+        layer.__origenProyectado = origen;
+      }
+      layer._update();
+    }
+  },
+  _setPath(layer, d) {
+    const path = layer._path;
+    if (path.getAttribute("d") === d) return;
+    this._visibles = null;
+    layer.__trazado = d === "M0 0" ? null : new Path2D(d);
+    path.style.display = layer.__trazado ? "" : "none";
+    L.SVG.prototype._setPath.call(this, layer, d);
+  },
+  _updateTransform(centro, z) {
+    const escala = this._map.getZoomScale(z, this._zoom);
+    const delta = this._origen.multiplyBy(escala).subtract(this._map._getNewPixelOrigin(centro, z));
+    this._rootGroup.setAttribute("transform", `translate(${delta.x} ${delta.y}) scale(${escala})`);
+  }
+});
+const trazos = new SvgTrazos({ padding: 0.15, tolerance: 17 });
+
 const mapa = L.map("mapa", {
-  zoomControl: true, preferCanvas: true, minZoom: 5, maxZoom: 18,
-  zoomSnap: 0.25, zoomDelta: 0.75, wheelPxPerZoomLevel: 90, wheelDebounceTime: 20,
-  zoomAnimation: true, fadeAnimation: true, inertia: true, inertiaDeceleration: 2500,
-  renderer: L.canvas({ padding: 0.45, tolerance: 17 })
+  zoomControl: true, minZoom: 5, maxZoom: 18,
+  zoomSnap: 0, zoomDelta: 0.75, scrollWheelZoom: false,
+  zoomAnimation: true, fadeAnimation: false, inertia: true, inertiaDeceleration: 2500,
+  renderer: trazos
 }).setView([40.1, -3.7], 6.6);
+
+// Leaflet 1.9.4 usa _moveStart/_move/_moveEnd para el pellizco nativo.
+// La rueda comparte ese ciclo: un gesto puede cambiar de destino en cada fotograma.
+function activarZoomRueda(map) {
+  const nodo = map.getContainer();
+  let gesto = null, frame = 0;
+
+  function terminar() {
+    if (!gesto) return;
+    cancelAnimationFrame(frame);
+    gesto = null;
+    // Actualizar y liberar las teselas intermedias al cerrar el gesto.
+    map.fire("zoom");
+    map._moveEnd(true);
+  }
+
+  function avanzar(t) {
+    const g = gesto;
+    const actual = map.getZoom();
+    const dt = Math.max(1, t - g.frameAnterior);
+    g.frameAnterior = t;
+    const resto = g.destino - actual;
+    const z = movimientoReducido.matches || Math.abs(resto) < 0.001 ? g.destino
+      : actual + resto * (1 - Math.exp(-dt / 48));
+    if (actual !== z) {
+      const desdeCentro = g.cursor.subtract(map.getSize().divideBy(2));
+      const centro = map.unproject(map.project(g.ancla, z).subtract(desdeCentro), z);
+      map._move(centro, z, { flyTo: true });
+    }
+    const pausa = t - g.entrada;
+    if (z === g.destino && pausa > (movimientoReducido.matches ? 65 : 245)) terminar();
+    else frame = requestAnimationFrame(avanzar);
+  }
+
+  nodo.addEventListener("wheel", e => {
+    const delta = L.DomEvent.getWheelDelta(e);
+    if (!delta) return;
+    e.preventDefault();
+    if (map._animatingZoom || map.touchZoom?._zooming) return;
+    const actual = map.getZoom();
+    const cursor = gesto && e.clientX === gesto.x && e.clientY === gesto.y
+      ? gesto.cursor : map.mouseEventToContainerPoint(e);
+    // Al invertir el sentido, descartar el recorrido que aún quedaba por animar.
+    const base = gesto && (gesto.destino - actual) * delta >= 0 ? gesto.destino : actual;
+    const destino = Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(), base + delta / 220));
+    if (!gesto) {
+      if (destino === actual) return;
+      map._stop();
+      map._moveStart(true);
+      gesto = { frameAnterior: performance.now() - 16 };
+      frame = requestAnimationFrame(avanzar);
+    }
+    if (!gesto.cursor || !gesto.cursor.equals(cursor)) {
+      gesto.cursor = cursor;
+      gesto.ancla = map.containerPointToLatLng(cursor);
+    }
+    gesto.x = e.clientX;
+    gesto.y = e.clientY;
+    gesto.destino = destino;
+    gesto.entrada = performance.now();
+  }, { passive: false });
+  nodo.addEventListener("pointerdown", terminar, true);
+  map.on("movestart", terminar);
+  window.addEventListener("blur", terminar);
+}
+const movimientoReducido = matchMedia("(prefers-reduced-motion: reduce)");
+activarZoomRueda(mapa);
+
+// Conservar el margen de selección de 17 px que ofrecía Canvas en trazos finos.
+mapa.on("click", e => {
+  if (e.sourceTarget !== mapa || !mapa.hasLayer(trazos)) return;
+  const grupo = trazos._rootGroup;
+  for (let nodo = grupo.lastElementChild; nodo; nodo = nodo.previousElementSibling) {
+    const layer = mapa._targets[L.Util.stamp(nodo)];
+    if (layer && layer.listens("click") && layer._containsPoint(e.layerPoint)) {
+      layer.fire("click", e);
+      break;
+    }
+  }
+});
 
 let capaBase = null;
 function ponerBase(k) {
@@ -773,7 +1002,7 @@ function ponerBase(k) {
   capaBase = L.tileLayer(url, {
     attribution: "© IGN · datos: OSM / REE / MITMA / MITECO / CSN / CORES / Enagás",
     maxNativeZoom: 18, maxZoom: 19, crossOrigin: true,
-    updateWhenIdle: false, keepBuffer: 4
+    updateWhenZooming: true, keepBuffer: 4
   }).addTo(mapa);
   capaBase.bringToBack();
   document.documentElement.dataset.base = BASES[k] ? k : "radar";
@@ -2039,63 +2268,110 @@ function celda(z) {
   return Math.max(0.06, Math.min(3, grados));
 }
 
+function pasoPuntos(c, z) {
+  return c.siempreIndividual || z >= (c.zoomDetalle || ZOOM_DETALLE) ? null : celda(z);
+}
+
+// En capas pequeñas basta con compensar el radio en el SVG. Las densas
+// comparten un lienzo por capa para evitar recalcular el estilo de cada círculo.
+const MIN_PUNTOS_EN_LIENZO = 64;
+const SvgPuntos = SvgConLienzo.extend({
+  _onZoom(e) {
+    const marcas = this.options.capa.__marcas;
+    const lienzo = (e.flyTo || e.pinch) && marcas?.size >= MIN_PUNTOS_EN_LIENZO && this._iniciarLienzo();
+    if (lienzo) {
+      const { ctx, k, delta, size } = lienzo;
+      for (const m of marcas.values()) {
+        const x = m._point.x * k + delta.x, y = m._point.y * k + delta.y;
+        const r = Math.max(1, Math.round(m._radius)), o = m.options;
+        if (x + r < 0 || x - r > size.x || y + r < 0 || y - r > size.y) continue;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, 2 * Math.PI);
+        ctx.fillStyle = o.fillColor;
+        ctx.globalAlpha = o.fillOpacity;
+        ctx.fill();
+        ctx.strokeStyle = o.color;
+        ctx.globalAlpha = o.opacity;
+        ctx.lineWidth = o.weight;
+        ctx.stroke();
+      }
+      return;
+    }
+    this._mostrarSvg();
+    L.SVG.prototype._onZoom.call(this);
+    const inversa = this._map.getZoomScale(this._zoom, this._map.getZoom());
+    this._container.style.setProperty("--escala-radio", inversa);
+  },
+  _onZoomEnd() {
+    this._mostrarSvg();
+    L.SVG.prototype._onZoomEnd.call(this);
+  },
+  _update() {
+    L.SVG.prototype._update.call(this);
+    this._origen = this._map.getPixelOrigin();
+    if (this._zoom === this._map.getZoom()) this._container.style.removeProperty("--escala-radio");
+  }
+});
+
 function pintarPuntos(c) {
   const feats = datos[c.id];
   if (!feats) return;
-  c.__zPintado = mapa.getZoom();
-  capas[c.id].clearLayers();
-  elementos[c.id] = [];
   const z = mapa.getZoom();
-
-  // `zoomDetalle` por capa: una capa de 2.000 puntos no debe desplegarse al mismo zoom
-  // que una de 20. Antes solo habia un umbral global y las camaras se pintaban sueltas
-  // a z8: 1.623 puntos solapados donde no se podia pinchar ninguno.
-  if (c.siempreIndividual || z >= (c.zoomDetalle || ZOOM_DETALLE)) {
-    // solo se crean los marcadores que caen en la vista (con margen): a zoom alto
-    // una capa de 3.000 puntos ocupaba el mapa entero y no se veía ninguno de fuera
-    const b = mapa.getBounds().pad(0.25);
-    const visibles = feats.filter(f => {
-      const g = f.geometry;
-      if (!g || !g.coordinates) return false;
-      const [lng, lat] = g.coordinates;
-      return lat >= b.getSouth() && lat <= b.getNorth() && lng >= b.getWest() && lng <= b.getEast();
+  const paso = pasoPuntos(c, z);
+  const individual = paso === null;
+  if (!c.__panel) {
+    const pane = "puntos-" + c.id;
+    c.__panel = mapa.createPane(pane);
+    c.__panel.classList.add("puntos-pane");
+    c.__renderer = new SvgPuntos({ pane, padding: 0.15, capa: c });
+    c.__panel.addEventListener("transitionend", e => {
+      if (e.target === c.__panel && e.propertyName === "opacity" &&
+          c.__panel.classList.contains("cambiando") && !mapa._animatingZoom) {
+        actualizarGrupoEnZoom(c);
+      }
     });
-    (visibles.length ? visibles : feats).forEach(f => {
+  }
+  const vista = mapa.getBounds();
+  const mismoNivel = c.__paso === paso;
+  if (mismoNivel && c.__vista.contains(vista)) return;
+  if (!individual && !mismoNivel) {
+    const celdas = new Map();
+    for (const f of feats) {
       const [lng, lat] = f.geometry.coordinates;
-      const p = f.properties || {};
-      const m = L.circleMarker([lat, lng], {
-        radius: radioDe(c, p), fillColor: colorDe(c, p), fillOpacity: c.opacidad || .78,
-        color: "#fff", weight: 1, opacity: .45
-      });
-      m.on("click", e => { abrirFicha(p, c, e.latlng); L.DomEvent.stopPropagation(e); });
-      m.addTo(capas[c.id]);
-      elementos[c.id].push(m);
-    });
-    return;
+      const k = Math.floor(lat / paso) + ":" + Math.floor(lng / paso);
+      if (!celdas.has(k)) celdas.set(k, []);
+      celdas.get(k).push(f);
+    }
+    c.__grupos = Array.from(celdas.values(), items => ({
+      items,
+      lat: items.reduce((a, f) => a + f.geometry.coordinates[1], 0) / items.length,
+      lng: items.reduce((a, f) => a + f.geometry.coordinates[0], 0) / items.length
+    }));
   }
 
-  // agrupado: una burbuja por celda
-  const g = celda(z), celdas = new Map();
-  feats.forEach(f => {
-    const [lng, lat] = f.geometry.coordinates;
-    const k = Math.floor(lat / g) + ":" + Math.floor(lng / g);
-    if (!celdas.has(k)) celdas.set(k, []);
-    celdas.get(k).push(f);
-  });
-  celdas.forEach(items => {
-    const lat = items.reduce((a, f) => a + f.geometry.coordinates[1], 0) / items.length;
-    const lng = items.reduce((a, f) => a + f.geometry.coordinates[0], 0) / items.length;
-    const n = items.length;
-    const r = n === 1 ? radioDe(c, items[0].properties)
-                      : Math.min(19, 6 + 3.1 * Math.log2(n + 1));
+  c.__paso = paso;
+  c.__vista = vista.pad(0.25);
+  if (z < c.zoomMin) c.__tenue = undefined;
+  const anteriores = c.__marcas || new Map();
+  const marcas = new Map();
+  function mostrar(f, lat, lng, items) {
+    if (!c.__vista.contains([lat, lng])) return;
+    const n = items ? items.length : 1;
+    const clave = n === 1 ? f : items;
+    if (anteriores.has(clave)) {
+      marcas.set(clave, anteriores.get(clave));
+      return;
+    }
+    const p = f.properties || {};
     const m = L.circleMarker([lat, lng], {
-      radius: r,
-      fillColor: n === 1 ? colorDe(c, items[0].properties) : c.color,
+      renderer: c.__renderer,
+      radius: n === 1 ? radioDe(c, p) : Math.min(19, 6 + 3.1 * Math.log2(n + 1)),
+      fillColor: n === 1 ? colorDe(c, p) : c.color,
       fillOpacity: n === 1 ? (c.opacidad || .78) : .3,
-      color: c.color, weight: n === 1 ? 1 : 1.6, opacity: n === 1 ? .45 : .95
+      color: n === 1 ? "#fff" : c.color, weight: n === 1 ? 1 : 1.6, opacity: n === 1 ? .45 : .95
     });
     m.on("click", e => {
-      if (n === 1) abrirFicha(items[0].properties, c, e.latlng);
+      if (n === 1) abrirFicha(p, c, e.latlng);
       else {
         POPUP.setLatLng(e.latlng).setContent(fichaGrupo(items, c)).openOn(mapa);
         engancharGrupo();
@@ -2103,8 +2379,22 @@ function pintarPuntos(c) {
       L.DomEvent.stopPropagation(e);
     });
     m.addTo(capas[c.id]);
-    elementos[c.id].push(m);
+    marcas.set(clave, m);
+  }
+  if (individual) {
+    for (const f of feats) {
+      if (!f.geometry?.coordinates) continue;
+      const [lng, lat] = f.geometry.coordinates;
+      mostrar(f, lat, lng);
+    }
+  } else {
+    for (const {items, lat, lng} of c.__grupos) mostrar(items[0], lat, lng, items);
+  }
+  anteriores.forEach((m, clave) => {
+    if (!marcas.has(clave)) capas[c.id].removeLayer(m);
   });
+  c.__marcas = marcas;
+  elementos[c.id] = Array.from(marcas.values());
 }
 
 function cargar(c) {
@@ -2159,7 +2449,6 @@ function cargar(c) {
       conteo[c.id] = feats.length;
       const el = document.getElementById("n-" + c.id);
       if (el) el.textContent = nf(feats.length);
-      if (c.zoomMin) aplicarZoomMin();
       document.querySelector('[data-fila="' + c.id + '"]').classList.add("activa");
 
       // indice para el buscador: nombre + coordenadas
@@ -2211,6 +2500,7 @@ function cargar(c) {
           }
         }).addTo(capas[c.id]);
       }
+      atenuarCapa(c);
       estado();
     })
     .catch(e => {
@@ -2233,11 +2523,15 @@ function ponerCapa(id, on, silencioso) {
   if (chk.checked !== on) chk.checked = on;
   if (on) {
     cargar(c);
+    if (c.tipo === "punto") pintarPuntos(c);
+    atenuarCapa(c);
     // siempre al mapa, en cualquier zoom: por debajo de su zoomMin se atenua, no se esconde
     capas[id].addTo(mapa);
     if (c.colorCampo || c.colorPorEscala) { ULTIMA_CON_COLOR = id; window.__leyendaOff = false; }
   } else {
     mapa.removeLayer(capas[id]);
+    c.__panel?.classList.remove("cambiando");
+    if (c.__renderer) mapa.removeLayer(c.__renderer);
   }
   if (!silencioso) { actualizarLeyenda(); estado(); }   // en lote (vistas, enlace) se hace una vez al final
   return true;
@@ -2262,84 +2556,58 @@ document.querySelectorAll("[data-capa]").forEach(chk => {
 });
 
 
-/* ---------------- LOD: cada capa aparece a partir de su zoom ----------------
-   `zoomMin` estaba declarado en CAPAS y no se aplicaba en ningun sitio: con 36 capas
-   a zoom nacional se dibujaban 10.000 objetos y el mapa era ilegible. */
-function aplicarLOD() {
-  const z = mapa.getZoom();
-  CAPAS.forEach(c => {
-    const chk = document.querySelector(`[data-capa="${c.id}"]`);
-    if (!chk || !chk.checked) return;
-    const debe = z >= (c.zoomMin || 0);
-    const puesta = mapa.hasLayer(capas[c.id]);
-    if (debe && !puesta) capas[c.id].addTo(mapa);
-    else if (!debe && puesta) mapa.removeLayer(capas[c.id]);
-  });
-  estado();
+function atenuarCapa(c) {
+  if (!c.zoomMin || !datos[c.id]) return;
+  const tenue = mapa.getZoom() < c.zoomMin;
+  if (tenue === c.__tenue) return;
+  const restaurar = c.__tenue === true;
+  c.__tenue = tenue;
+  if (!tenue && !restaurar) return;
+  function aplicar(l) {
+    if (l.eachLayer) return l.eachLayer(aplicar);
+    if (!l.setStyle) return;
+    const base = l.__opacidad || (l.__opacidad = {
+      opacity: l.options.opacity, fillOpacity: l.options.fillOpacity
+    });
+    l.setStyle(tenue ? {
+      opacity: Math.min(base.opacity, 0.35), fillOpacity: Math.min(base.fillOpacity, 0.12)
+    } : base);
+  }
+  capas[c.id].eachLayer(aplicar);
 }
 
-/* al cambiar de zoom, re-agrupar los puntos visibles (barato: solo los cargados) */
-let pendiente = null;
-let moverPendiente = null;
-mapa.on("zoomend", aplicarLOD);
+function actualizarGrupoEnZoom(c) {
+  if (mapa.hasLayer(capas[c.id]) && pasoPuntos(c, mapa.getZoom()) !== c.__paso) {
+    pintarPuntos(c);
+    atenuarCapa(c);
+    if (mapa.hasLayer(c.__renderer)) {
+      c.__renderer._onZoomEnd();
+      c.__renderer._update();
+    }
+  }
+  c.__panel.classList.remove("cambiando");
+}
+
+// La representación saliente se desvanece durante el movimiento de Leaflet.
+function prepararZoomPuntos(z, continuo = false) {
+  CAPAS.forEach(c => {
+    if (c.__panel && mapa.hasLayer(capas[c.id])) {
+      const cambia = pasoPuntos(c, z) !== c.__paso;
+      if (cambia && continuo && movimientoReducido.matches) actualizarGrupoEnZoom(c);
+      else c.__panel.classList.toggle("cambiando", cambia);
+    }
+  });
+}
+mapa.on("zoomanim", e => prepararZoomPuntos(e.zoom));
+mapa.on("zoom", e => { if (e.pinch || e.flyTo) prepararZoomPuntos(mapa.getZoom(), true); });
 mapa.on("moveend", () => {
-  aplicarLOD();
-  clearTimeout(moverPendiente);
-  moverPendiente = setTimeout(() => {
-    CAPAS.forEach(c => {
-      if (c.tipo !== "punto" || !c.__cargada || c.__cargando) return;
-      if (!document.querySelector(`[data-capa="${c.id}"]`)?.checked) return;
-      if (c.siempreIndividual) return;
-      // cada capa tiene su umbral de detalle; el global ya no corta aqui
-      if (mapa.getZoom() < (c.zoomDetalle || ZOOM_DETALLE) && !c.__agrupada) {
-        // agrupada y sin desplegar: nada que recalcular salvo el paso de nivel
-      }
-      pintarPuntos(c);
-    });
-  }, 220);
-});
-
-mapa.on("zoomend", () => {
-  const z = mapa.getZoom();
-  clearTimeout(pendiente);
-  pendiente = setTimeout(() => {
-    CAPAS.forEach(c => {
-      if (c.tipo !== "punto" || !c.__cargada || c.siempreIndividual) return;
-      if (!document.querySelector(`[data-capa="${c.id}"]`)?.checked) return;
-      // re-agrupar solo al cambiar de nivel entero: dentro del mismo nivel la celda es la misma
-      const antes = Math.floor(c.__zPintado === undefined ? -99 : c.__zPintado);
-      const ahora = Math.floor(z);
-      const u = (c.zoomDetalle || ZOOM_DETALLE);
-      const cruzaDetalle = (c.__zPintado < u) !== (z < u);
-      if (antes !== ahora || cruzaDetalle) pintarPuntos(c);
-    });
-  }, 160);
-});
-
-/* ---------------- capas por nivel de zoom ----------------
-   A escala nacional una capa de 3.000 líneas no aporta y cuesta un redibujado entero.
-   Por debajo de su zoomMin se retira del mapa (sigue cargada: no vuelve a descargarse). */
-function aplicarZoomMin() {
-  // David: «todas las capas tienen que poder verse en cualquier zoom». Antes se quitaban por
-  // debajo de su zoomMin y parecia que la capa estaba rota. Ahora no se quita ninguna: solo se
-  // atenuan las que recomiendan mas zoom, para que no tapen a las de detalle.
-  const z = mapa.getZoom();
   CAPAS.forEach(c => {
-    if (!c.__cargada) return;
-    const chk = document.querySelector(`[data-capa="${c.id}"]`);
-    if (!chk || !chk.checked) return;
-    if (!mapa.hasLayer(capas[c.id])) capas[c.id].addTo(mapa);
-    if (!c.zoomMin) return;
-    const tenue = z < c.zoomMin;
-    capas[c.id].eachLayer(function (l) {
-      if (!l.setStyle) return;
-      if (l.options.__opBase === undefined) l.options.__opBase = l.options.opacity != null ? l.options.opacity : 1;
-      l.setStyle({ opacity: tenue ? Math.min(l.options.__opBase, 0.35) : l.options.__opBase,
-                   fillOpacity: l.options.fillOpacity != null
-                     ? (tenue ? Math.min(l.options.fillOpacity, 0.12) : l.options.fillOpacity) : undefined });
-    });
+    if (!mapa.hasLayer(capas[c.id])) return;
+    if (c.tipo === "punto") pintarPuntos(c);
+    atenuarCapa(c);
+    c.__panel?.classList.remove("cambiando");
   });
-}
+});
 
 /* ---------------- estado ---------------- */
 function estado() {
@@ -2350,8 +2618,7 @@ function estado() {
   $("#s-peso").textContent = nf(n) + " objetos";
   $("#sub-hud").textContent = (BASES[sel.value] ? BASES[sel.value][0] : "") + " · " + nf(n) + " objetos";
 }
-mapa.on("zoomend moveend", estado);
-mapa.on("zoomend", aplicarZoomMin);
+mapa.on("zoomend", estado);
 mapa.on("mousemove", e => {
   $("#s-coord").textContent = e.latlng.lat.toFixed(4) + ", " + e.latlng.lng.toFixed(4);
 });
@@ -2831,6 +3098,14 @@ window.OpenInfraES = {
     const def = CAPAS.find(x => x.id === capaId);
     if (def) cargar(def);
     const intentar = (n) => {
+      const puntos = def.tipo === "punto" && datos[capaId];
+      if (puntos && puntos.length) {
+        const f = puntos[i] || puntos[0];
+        const centro = L.GeoJSON.coordsToLatLng(f.geometry.coordinates);
+        mapa.setView(centro, zoom);
+        abrirFicha(f.properties, def, centro);
+        return "ok";
+      }
       const ls = elementos[capaId] || [];
       if (!ls.length) { if (n > 0) return setTimeout(() => intentar(n - 1), 350); return "capa vacia"; }
       const l = ls[i] || ls[0];
