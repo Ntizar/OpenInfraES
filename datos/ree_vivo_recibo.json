@@ -2,123 +2,123 @@
  "fuente": "REE · ESIOS",
  "url": "https://api.esios.ree.es/indicators",
  "fecha": "2026-11-23",
- "descargado": "2026-11-23T13:03:12",
+ "descargado": "2026-11-23T13:11:11",
  "indicadores_ok": 19,
  "indicadores_probados": 19,
  "series": {
   "demanda": {
    "id": 2037,
    "puntos": 72,
-   "ultimo": 36188.0,
-   "hora": "13:55"
+   "ultimo": 36198.0,
+   "hora": "14:00"
   },
   "demanda_gen": {
    "id": 10004,
    "puntos": 72,
-   "ultimo": 56728.0,
-   "hora": "13:55"
+   "ultimo": 56500.0,
+   "hora": "14:00"
   },
   "ciclo": {
    "id": 2041,
    "puntos": 72,
-   "ultimo": 2537.0,
-   "hora": "13:55"
+   "ultimo": 2598.0,
+   "hora": "14:00"
   },
   "hidro": {
    "id": 2042,
    "puntos": 72,
-   "ultimo": 825.0,
-   "hora": "13:55"
+   "ultimo": 918.0,
+   "hora": "14:00"
   },
   "eolica": {
    "id": 2038,
    "puntos": 72,
-   "ultimo": 3083.0,
-   "hora": "13:55"
+   "ultimo": 3058.0,
+   "hora": "14:00"
   },
   "solar_fv": {
    "id": 2044,
    "puntos": 72,
-   "ultimo": 25162.0,
-   "hora": "13:55"
+   "ultimo": 25036.0,
+   "hora": "14:00"
   },
   "solar_ter": {
    "id": 2045,
    "puntos": 72,
-   "ultimo": 504.0,
-   "hora": "13:55"
+   "ultimo": 495.0,
+   "hora": "14:00"
   },
   "solar_ter_pen": {
    "id": 1294,
    "puntos": 72,
-   "ultimo": 503.0,
-   "hora": "13:55"
+   "ultimo": 494.0,
+   "hora": "14:00"
   },
   "co2": {
    "id": 10355,
    "puntos": 72,
-   "ultimo": 0.03,
-   "hora": "13:50"
+   "ultimo": 0.04,
+   "hora": "14:00"
   },
   "exp_andorra": {
    "id": 2068,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "13:55"
+   "hora": "14:00"
   },
   "imp_andorra": {
    "id": 2073,
    "puntos": 72,
    "ultimo": 20.0,
-   "hora": "13:55"
+   "hora": "14:00"
   },
   "exp_marruecos": {
    "id": 2069,
    "puntos": 72,
-   "ultimo": -573.0,
-   "hora": "13:55"
+   "ultimo": -608.0,
+   "hora": "14:00"
   },
   "imp_marruecos": {
    "id": 2074,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "13:55"
+   "hora": "14:00"
   },
   "exp_portugal": {
    "id": 2070,
    "puntos": 72,
-   "ultimo": -3741.0,
-   "hora": "13:55"
+   "ultimo": -3822.0,
+   "hora": "14:00"
   },
   "imp_portugal": {
    "id": 2075,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "13:55"
+   "hora": "14:00"
   },
   "exp_francia": {
    "id": 2071,
    "puntos": 72,
-   "ultimo": -513.0,
-   "hora": "13:55"
+   "ultimo": -404.0,
+   "hora": "14:00"
   },
   "imp_francia": {
    "id": 2076,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "13:55"
+   "hora": "14:00"
   },
   "bombeo_cons": {
    "id": 2078,
    "puntos": 72,
-   "ultimo": -1584.0,
-   "hora": "13:55"
+   "ultimo": -1623.0,
+   "hora": "14:00"
   },
   "bombeo_turb": {
    "id": 2079,
    "puntos": 72,
    "ultimo": 78.0,
-   "hora": "13:55"
+   "hora": "14:00"
   }
  },
  "fallos": []
