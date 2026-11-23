@@ -4,9 +4,9 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 604,
+ "features": 593,
  "paneles_localizados": 2537,
- "descargado": "2026-11-23T18:36:48",
+ "descargado": "2026-11-23T18:48:52",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
@@ -37,15 +37,15 @@
    "paneles": 7
   },
   {
+   "texto": "CONTROL DE VELOCIDAD POR RADAR · CONTROL DE VELOCIDADE POR RADAR",
+   "paneles": 7
+  },
+  {
    "texto": "CONTROL DE VELOCIDAD POR RADAR",
    "paneles": 6
   },
   {
    "texto": "EN N-232 4 EJES O MAS",
-   "paneles": 6
-  },
-  {
-   "texto": "4 EJES O MAS",
    "paneles": 6
   }
  ]
