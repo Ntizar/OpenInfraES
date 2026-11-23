@@ -2,15 +2,15 @@
  "fuente": "REE · ESIOS",
  "url": "https://api.esios.ree.es/indicators",
  "fecha": "2026-11-23",
- "descargado": "2026-11-23T22:36:09",
+ "descargado": "2026-11-23T23:09:34",
  "indicadores_ok": 19,
  "indicadores_probados": 19,
  "series": {
   "demanda": {
    "id": 2037,
-   "puntos": 72,
-   "ultimo": 29196.0,
-   "hora": "23:25"
+   "puntos": 1,
+   "ultimo": 27521.0,
+   "hora": "00:00"
   },
   "demanda_gen": {
    "id": 10004,
@@ -20,106 +20,113 @@
   },
   "ciclo": {
    "id": 2041,
-   "puntos": 72,
-   "ultimo": 8495.0,
-   "hora": "23:25"
+   "puntos": 1,
+   "ultimo": 7971.0,
+   "hora": "00:00"
   },
   "hidro": {
    "id": 2042,
-   "puntos": 72,
-   "ultimo": 6272.0,
-   "hora": "23:25"
+   "puntos": 1,
+   "ultimo": 5679.0,
+   "hora": "00:00"
   },
   "eolica": {
    "id": 2038,
-   "puntos": 72,
-   "ultimo": 5436.0,
-   "hora": "23:25"
+   "puntos": 1,
+   "ultimo": 5553.0,
+   "hora": "00:00"
   },
   "solar_fv": {
    "id": 2044,
-   "puntos": 72,
+   "puntos": 1,
    "ultimo": 80.0,
-   "hora": "23:25"
+   "hora": "00:00"
   },
   "solar_ter": {
    "id": 2045,
-   "puntos": 72,
-   "ultimo": 32.0,
-   "hora": "23:25"
+   "puntos": 1,
+   "ultimo": 33.0,
+   "hora": "00:00"
   },
   "solar_ter_pen": {
    "id": 1294,
-   "puntos": 72,
+   "puntos": 1,
    "ultimo": 32.0,
-   "hora": "23:25"
+   "hora": "00:00"
   },
   "co2": {
    "id": 10355,
-   "puntos": 72,
+   "puntos": 1,
    "ultimo": 0.13,
-   "hora": "23:25"
+   "hora": "00:00"
   },
   "exp_andorra": {
    "id": 2068,
-   "puntos": 72,
+   "puntos": 1,
    "ultimo": 0.0,
-   "hora": "23:25"
+   "hora": "00:00"
   },
   "imp_andorra": {
    "id": 2073,
-   "puntos": 72,
-   "ultimo": 16.0,
-   "hora": "23:25"
+   "puntos": 1,
+   "ultimo": 14.0,
+   "hora": "00:00"
   },
   "exp_marruecos": {
    "id": 2069,
-   "puntos": 72,
-   "ultimo": -727.0,
-   "hora": "23:25"
+   "puntos": 1,
+   "ultimo": -807.0,
+   "hora": "00:00"
   },
   "imp_marruecos": {
    "id": 2074,
-   "puntos": 72,
+   "puntos": 1,
    "ultimo": 0.0,
-   "hora": "23:25"
+   "hora": "00:00"
   },
   "exp_portugal": {
    "id": 2070,
-   "puntos": 72,
-   "ultimo": -288.0,
-   "hora": "23:25"
+   "puntos": 1,
+   "ultimo": -1447.0,
+   "hora": "00:00"
   },
   "imp_portugal": {
    "id": 2075,
-   "puntos": 72,
+   "puntos": 1,
    "ultimo": 0.0,
-   "hora": "23:25"
+   "hora": "00:00"
   },
   "exp_francia": {
    "id": 2071,
-   "puntos": 72,
+   "puntos": 1,
    "ultimo": 0.0,
-   "hora": "23:25"
+   "hora": "00:00"
   },
   "imp_francia": {
    "id": 2076,
-   "puntos": 72,
-   "ultimo": 375.0,
-   "hora": "23:25"
+   "puntos": 1,
+   "ultimo": 976.0,
+   "hora": "00:00"
   },
   "bombeo_cons": {
    "id": 2078,
-   "puntos": 72,
+   "puntos": 1,
    "ultimo": 0.0,
-   "hora": "23:25"
+   "hora": "00:00"
   },
   "bombeo_turb": {
    "id": 2079,
-   "puntos": 72,
-   "ultimo": 888.0,
-   "hora": "23:25"
+   "puntos": 1,
+   "ultimo": 733.0,
+   "hora": "00:00"
   }
  },
- "fallos": []
+ "fallos": [
+  {
+   "id": 10004,
+   "clave": "demanda_gen",
+   "tipo": "sin_datos",
+   "motivo": "sin datos en este periodo: https://api.esios.ree.es/indicators/10004"
+  }
+ ]
 }
