@@ -1484,12 +1484,12 @@ const CAPAS = [
      GeoJSON nativo, sin clave y con CORS. La ficha del objeto enseña solo los campos que se
      leen; el original trae 45 columnas y ninguna pantalla aguanta eso. --- */
   { id:"aforos", grupo:"Agua", label:"Estaciones de aforo (SAIH-ROEA)", tipo:"punto", on:false,
-    color:"#38bdf8", fichero:"datos/aforos.geojson", radio:4.4, zoomMin:0, popupTitulo:"nombre" },
+    color:"#38bdf8", fichero:"datos/aforos.geojson", radio:4.4, zoomMin:7, popupTitulo:"nombre" },
   { id:"canales-miteco", grupo:"Agua", label:"Canales principales (MITECO)", tipo:"linea", on:false,
     color:"#0ea5e9", fichero:"datos/canales-miteco.geojson", peso:1.4, opacidad:.75, zoomMin:6,
     popupTitulo:"nombre" },
   { id:"calidad-aire-estaciones", grupo:"Medio ambiente", label:"Estaciones de calidad del aire", tipo:"punto", on:false,
-    color:"#a3e635", fichero:"datos/calidad-aire-estaciones.geojson", radio:4.2, zoomMin:0,
+    color:"#a3e635", fichero:"datos/calidad-aire-estaciones.geojson", radio:4.2, zoomMin:7,
     popupTitulo:"nombre" },
   /* --- ráster oficial. Solo el PNOA publica teselas en EPSG:3857, que es el CRS del mapa.
      La hidrografía del IDEe y el Catastro solo sirven WMS en 4326/25830: mezclar CRS en
