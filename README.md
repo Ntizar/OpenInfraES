@@ -90,6 +90,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | [`docs/FUENTES.md`](docs/FUENTES.md) | **ficha por organismo**: qué publica, URL, cómo se obtiene, licencia, frecuencia y límites |
 | [`docs/apis.md`](docs/apis.md) | estado técnico de cada API, con los errores literales |
 | [`docs/PATRON-MCP.md`](docs/PATRON-MCP.md) | convertir un recurso oficial en servidor MCP, con el estudio medido de `ree-mcp` |
+| [`docs/MCP-FEDERADO.md`](docs/MCP-FEDERADO.md) | **las 77 capas como un solo MCP**: estudio medido de CivicMesh OS, contrato de respuesta y las 12 herramientas publicadas |
 | [`docs/AUDITORIA.md`](docs/AUDITORIA.md) | auditorías del proyecto: qué fallaba, qué se corrigió y cómo se verificó |
 | [`docs/emplazamiento.md`](docs/emplazamiento.md) | **consultar un punto**: el contexto que da el dato abierto y lo que falta, con el probador y sus huecos |
 | [`GUIA.md`](GUIA.md) | reglas de trabajo: cómo añadir una capa, sin editar a mano, sin inventar |
@@ -298,6 +299,11 @@ python scripts/catalogo.py        # datos/catalogo.json (contrato machine-readab
 python scripts/sanear_atribuciones.py   # limpia atribuciones dentro de los GeoJSON
 python scripts/cifras.py --check  # las cifras de este README, contadas del dato
 python scripts/validar.py         # el arnés: RESULTADO: VERDE
+
+# La puerta para agentes: las 77 capas como un solo MCP
+python scripts/mcp_openinfra.py --test        # autochequeo (12 herramientas)
+python scripts/mcp_openinfra.py               # stdio para Claude Code / Cursor
+python scripts/mcp_openinfra.py --http 8077   # POST /api/mcp + GET /api/state para la web
 ```
 
 Las claves van en `.env` (`NAP_API_KEY`, `ENTSOE_TOKEN`) y nunca al repositorio. `scripts/snapshot.py`

@@ -27,3 +27,9 @@ jobs:
           python -m py_compile scripts/descargar.py
           python -m py_compile scripts/agregar.py
           python -m py_compile scripts/validar.py
+          python -m py_compile scripts/mcp_openinfra.py
+      - name: MCP federado
+        # Habla con el servidor como cliente MCP real: handshake, tools/list y una
+        # llamada por herramienta comprobando el contenido. Si una capa falta o el
+        # framing se rompe, esto se pone rojo antes que el agente que lo use.
+        run: python scripts/mcp_openinfra.py --test

@@ -218,3 +218,11 @@ Está en `scripts/http_oficial.py` (cliente con las cinco distinciones) y `scrip
 El mismo patrón sobre **embalses**: `get_embalse(nombre)`, `compare_semana_actual(embalse)`,
 `embalses_bajo_minimo(demarcacion)`. El recurso ya está (402 embalses con capacidad y volumen semanal);
 lo que falta es la capa de preguntas.
+
+## De un recurso a 77: la federación
+
+Este documento convierte **un** organismo en un servidor. Cuando el problema es que hay 77 capas y
+ningún agente sabe cuál abrir, el patrón es otro: una sola superficie con namespace de dominio, catálogo
+como dato y contrato de respuesta con fuente, edad y caducidad. Está medido y construido en
+[`MCP-FEDERADO.md`](MCP-FEDERADO.md) y vive en `scripts/mcp_openinfra.py` (12 herramientas, stdio y
+HTTP, autochequeo `--test`).
