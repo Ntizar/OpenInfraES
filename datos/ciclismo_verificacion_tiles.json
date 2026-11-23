@@ -1,0 +1,274 @@
+{
+ "generado": "2026-11-23T12:55:45Z",
+ "plantilla_teselas": "https://tiles.openfreemap.org/planet/20261115_080022_pt/{z}/{x}/{y}.pbf",
+ "maxzoom": 14,
+ "nota": "el id de la feature en las teselas NO es el osm_id; el cotejo es por reparto de km",
+ "zonas": {
+  "madrid-centro": {
+   "z": 14,
+   "teselas": [
+    [
+     8022,
+     6176
+    ],
+    [
+     8023,
+     6176
+    ],
+    [
+     8022,
+     6177
+    ],
+    [
+     8023,
+     6177
+    ]
+   ],
+   "vias_tesela": 2752,
+   "km_tesela": 702.7,
+   "vias_osm": 9333,
+   "km_osm": 705.9,
+   "desvio_km_pct": -0.46,
+   "campos_ausentes_en_tesela": {
+    "surface": 265,
+    "bicycle": 2466,
+    "oneway": 306,
+    "subclass": 2454,
+    "access": 2577
+   },
+   "clases": [
+    {
+     "clase": "desmonte",
+     "km_tesela": 5.65,
+     "km_osm": 5.72,
+     "pct_tesela": 0.8,
+     "pct_osm": 0.81
+    },
+    {
+     "clase": "dudoso",
+     "km_tesela": 5.89,
+     "km_osm": 6.14,
+     "pct_tesela": 0.84,
+     "pct_osm": 0.87
+    },
+    {
+     "clase": "no explicito",
+     "km_tesela": 29.33,
+     "km_osm": 33.31,
+     "pct_tesela": 4.17,
+     "pct_osm": 4.72
+    },
+    {
+     "clase": "no implicito",
+     "km_tesela": 359.58,
+     "km_osm": 352.32,
+     "pct_tesela": 51.17,
+     "pct_osm": 49.91
+    },
+    {
+     "clase": "prob no",
+     "km_tesela": 29.91,
+     "km_osm": 34.79,
+     "pct_tesela": 4.26,
+     "pct_osm": 4.93
+    },
+    {
+     "clase": "prob si",
+     "km_tesela": 26.57,
+     "km_osm": 25.08,
+     "pct_tesela": 3.78,
+     "pct_osm": 3.55
+    },
+    {
+     "clase": "si explicito",
+     "km_tesela": 19.25,
+     "km_osm": 23.38,
+     "pct_tesela": 2.74,
+     "pct_osm": 3.31
+    },
+    {
+     "clase": "si ida explicito",
+     "km_tesela": 28.05,
+     "km_osm": 29.49,
+     "pct_tesela": 3.99,
+     "pct_osm": 4.18
+    },
+    {
+     "clase": "si ida implicito",
+     "km_tesela": 159.85,
+     "km_osm": 159.41,
+     "pct_tesela": 22.75,
+     "pct_osm": 22.58
+    },
+    {
+     "clase": "si implicito",
+     "km_tesela": 38.59,
+     "km_osm": 36.27,
+     "pct_tesela": 5.49,
+     "pct_osm": 5.14
+    }
+   ]
+  },
+  "barcelona-eixample": {
+   "z": 14,
+   "teselas": [
+    [
+     8289,
+     6118
+    ],
+    [
+     8290,
+     6118
+    ],
+    [
+     8289,
+     6119
+    ],
+    [
+     8290,
+     6119
+    ]
+   ],
+   "vias_tesela": 4667,
+   "km_tesela": 883.0,
+   "vias_osm": 16704,
+   "km_osm": 871.8,
+   "desvio_km_pct": 1.29,
+   "campos_ausentes_en_tesela": {
+    "surface": 304,
+    "bicycle": 3875,
+    "oneway": 320,
+    "subclass": 3537,
+    "access": 4565
+   },
+   "clases": [
+    {
+     "clase": "desmonte",
+     "km_tesela": 3.76,
+     "km_osm": 3.73,
+     "pct_tesela": 0.43,
+     "pct_osm": 0.43
+    },
+    {
+     "clase": "dudoso",
+     "km_tesela": 1.43,
+     "km_osm": 1.43,
+     "pct_tesela": 0.16,
+     "pct_osm": 0.16
+    },
+    {
+     "clase": "no explicito",
+     "km_tesela": 21.66,
+     "km_osm": 21.18,
+     "pct_tesela": 2.45,
+     "pct_osm": 2.43
+    },
+    {
+     "clase": "no implicito",
+     "km_tesela": 485.0,
+     "km_osm": 473.6,
+     "pct_tesela": 54.93,
+     "pct_osm": 54.33
+    },
+    {
+     "clase": "prob no",
+     "km_tesela": 6.45,
+     "km_osm": 6.2,
+     "pct_tesela": 0.73,
+     "pct_osm": 0.71
+    },
+    {
+     "clase": "prob si",
+     "km_tesela": 5.72,
+     "km_osm": 5.79,
+     "pct_tesela": 0.65,
+     "pct_osm": 0.66
+    },
+    {
+     "clase": "si explicito",
+     "km_tesela": 34.34,
+     "km_osm": 33.94,
+     "pct_tesela": 3.89,
+     "pct_osm": 3.89
+    },
+    {
+     "clase": "si ida explicito",
+     "km_tesela": 93.72,
+     "km_osm": 92.47,
+     "pct_tesela": 10.61,
+     "pct_osm": 10.61
+    },
+    {
+     "clase": "si ida implicito",
+     "km_tesela": 212.78,
+     "km_osm": 215.64,
+     "pct_tesela": 24.1,
+     "pct_osm": 24.74
+    },
+    {
+     "clase": "si implicito",
+     "km_tesela": 18.13,
+     "km_osm": 17.8,
+     "pct_tesela": 2.05,
+     "pct_osm": 2.04
+    }
+   ]
+  },
+  "gredos-rural": {
+   "z": 14,
+   "teselas": [
+    [
+     7957,
+     6184
+    ],
+    [
+     7958,
+     6184
+    ],
+    [
+     7957,
+     6185
+    ],
+    [
+     7958,
+     6185
+    ]
+   ],
+   "vias_tesela": 9,
+   "km_tesela": 16.8,
+   "vias_osm": 18,
+   "km_osm": 36.1,
+   "desvio_km_pct": -53.47,
+   "campos_ausentes_en_tesela": {
+    "surface": 9,
+    "bicycle": 3,
+    "oneway": 9,
+    "subclass": 3,
+    "access": 9
+   },
+   "clases": [
+    {
+     "clase": "dudoso",
+     "km_tesela": 0.89,
+     "km_osm": 3.53,
+     "pct_tesela": 5.32,
+     "pct_osm": 9.78
+    },
+    {
+     "clase": "no explicito",
+     "km_tesela": 14.96,
+     "km_osm": 29.97,
+     "pct_tesela": 89.21,
+     "pct_osm": 83.12
+    },
+    {
+     "clase": "si explicito",
+     "km_tesela": 0.92,
+     "km_osm": 2.56,
+     "pct_tesela": 5.47,
+     "pct_osm": 7.1
+    }
+   ]
+  }
+ }
+}

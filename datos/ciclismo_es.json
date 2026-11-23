@@ -1,0 +1,353 @@
+{
+ "titulo": "Accesibilidad ciclista en España — réplica de bertt/cyclingallowed sobre OSM",
+ "generado": "2026-11-23T12:55:45Z",
+ "extracto": {
+  "fichero": "espana.osm.pbf",
+  "bytes": 1716243185,
+  "url": "https://download.openstreetmap.fr/extracts/europe/spain.osm.pbf",
+  "fuente": "OpenStreetMap Foundation — extracto de España de openstreetmap.fr"
+ },
+ "reglas": {
+  "proyecto": "https://github.com/bertt/cyclingallowed",
+  "fichero": "index.html → CLASS_EXPR",
+  "base": "OpenFreeMap · capa transportation del esquema OpenMapTiles (máx. z14)",
+  "equivalencia": "misma precedencia; surface y service ya vienen normalizados por OpenMapTiles"
+ },
+ "licencia": "ODbL 1.0 — © colaboradores de OpenStreetMap",
+ "totales": {
+  "vias": 5848803,
+  "km": 1782643.1
+ },
+ "clases": [
+  {
+   "clave": "si explicito",
+   "etiqueta": "Sí (explícito)",
+   "grupo": "sí",
+   "vias": 134316,
+   "km": 51856.0,
+   "pct_km": 2.91
+  },
+  {
+   "clave": "si implicito",
+   "etiqueta": "Sí (implícito)",
+   "grupo": "sí",
+   "vias": 1470775,
+   "km": 403867.3,
+   "pct_km": 22.66
+  },
+  {
+   "clave": "si ida explicito",
+   "etiqueta": "Sí, solo un sentido (explícito)",
+   "grupo": "sí, un solo sentido",
+   "vias": 24089,
+   "km": 3315.1,
+   "pct_km": 0.19
+  },
+  {
+   "clave": "si ida implicito",
+   "etiqueta": "Sí, solo un sentido (implícito)",
+   "grupo": "sí, un solo sentido",
+   "vias": 562100,
+   "km": 56921.9,
+   "pct_km": 3.19
+  },
+  {
+   "clave": "si vuelta explicito",
+   "etiqueta": "Sí, sentido contrario al dibujo (explícito)",
+   "grupo": "sí, un solo sentido",
+   "vias": 7,
+   "km": 0.4,
+   "pct_km": 0.0
+  },
+  {
+   "clave": "si vuelta implicito",
+   "etiqueta": "Sí, sentido contrario al dibujo (implícito)",
+   "grupo": "sí, un solo sentido",
+   "vias": 334,
+   "km": 31.1,
+   "pct_km": 0.0
+  },
+  {
+   "clave": "desmonte",
+   "etiqueta": "Desmonte (explícito)",
+   "grupo": "desmonte",
+   "vias": 2890,
+   "km": 233.5,
+   "pct_km": 0.01
+  },
+  {
+   "clave": "no explicito",
+   "etiqueta": "No (explícito)",
+   "grupo": "no",
+   "vias": 141502,
+   "km": 32730.4,
+   "pct_km": 1.84
+  },
+  {
+   "clave": "no implicito",
+   "etiqueta": "No (implícito)",
+   "grupo": "no",
+   "vias": 1124669,
+   "km": 112860.2,
+   "pct_km": 6.33
+  },
+  {
+   "clave": "prob si",
+   "etiqueta": "Probablemente sí",
+   "grupo": "probable",
+   "vias": 357794,
+   "km": 80371.3,
+   "pct_km": 4.51
+  },
+  {
+   "clave": "prob no",
+   "etiqueta": "Probablemente no",
+   "grupo": "probable no",
+   "vias": 473184,
+   "km": 190167.6,
+   "pct_km": 10.67
+  },
+  {
+   "clave": "dudoso",
+   "etiqueta": "Dudoso",
+   "grupo": "dudoso",
+   "vias": 1557143,
+   "km": 850288.2,
+   "pct_km": 47.7
+  }
+ ],
+ "grupos": {
+  "sí": {
+   "vias": 1605091,
+   "km": 455723.3,
+   "pct_km": 25.56
+  },
+  "sí, un solo sentido": {
+   "vias": 586530,
+   "km": 60268.5,
+   "pct_km": 3.38
+  },
+  "desmonte": {
+   "vias": 2890,
+   "km": 233.5,
+   "pct_km": 0.01
+  },
+  "no": {
+   "vias": 1266171,
+   "km": 145590.6,
+   "pct_km": 8.17
+  },
+  "probable": {
+   "vias": 357794,
+   "km": 80371.3,
+   "pct_km": 4.51
+  },
+  "probable no": {
+   "vias": 473184,
+   "km": 190167.6,
+   "pct_km": 10.67
+  },
+  "dudoso": {
+   "vias": 1557143,
+   "km": 850288.2,
+   "pct_km": 47.7
+  }
+ },
+ "por_highway": {
+  "track": {
+   "vias": 1479119,
+   "km": 910163.2
+  },
+  "path": {
+   "vias": 499745,
+   "km": 200192.3
+  },
+  "residential": {
+   "vias": 1182045,
+   "km": 158523.6
+  },
+  "unclassified": {
+   "vias": 246459,
+   "km": 130215.6
+  },
+  "tertiary": {
+   "vias": 275079,
+   "km": 106705.9
+  },
+  "service": {
+   "vias": 564801,
+   "km": 69919.5
+  },
+  "footway": {
+   "vias": 844109,
+   "km": 53524.8
+  },
+  "secondary": {
+   "vias": 135549,
+   "km": 39956.6
+  },
+  "motorway": {
+   "vias": 44622,
+   "km": 31351.4
+  },
+  "primary": {
+   "vias": 99061,
+   "km": 23764.3
+  },
+  "trunk": {
+   "vias": 60742,
+   "km": 17785.7
+  },
+  "cycleway": {
+   "vias": 52583,
+   "km": 11736.9
+  },
+  "motorway_link": {
+   "vias": 40656,
+   "km": 8483.6
+  },
+  "living_street": {
+   "vias": 85305,
+   "km": 7183.0
+  },
+  "pedestrian": {
+   "vias": 85545,
+   "km": 6219.7
+  },
+  "trunk_link": {
+   "vias": 20682,
+   "km": 2374.6
+  },
+  "steps": {
+   "vias": 80920,
+   "km": 1329.1
+  },
+  "primary_link": {
+   "vias": 17872,
+   "km": 1229.7
+  },
+  "secondary_link": {
+   "vias": 15173,
+   "km": 826.0
+  },
+  "tertiary_link": {
+   "vias": 14793,
+   "km": 699.1
+  },
+  "platform": {
+   "vias": 2044,
+   "km": 354.2
+  },
+  "corridor": {
+   "vias": 1760,
+   "km": 65.8
+  },
+  "bridleway": {
+   "vias": 82,
+   "km": 26.0
+  },
+  "road": {
+   "vias": 57,
+   "km": 12.6
+  }
+ },
+ "carril_bici_km": 11736.9,
+ "conflictos": {
+  "bici_permitida_pero_privada": 4160,
+  "contraflujo_no_visible": 2915,
+  "condicional_perdido": 13595,
+  "tunel_excluido_km": 2275.7,
+  "area_excluida": 29831,
+  "sin_superficie_km": 980036.3
+ },
+ "zonas_muestra": [
+  {
+   "nombre": "madrid-centro",
+   "teselas": [
+    [
+     8022,
+     6176
+    ],
+    [
+     8023,
+     6176
+    ],
+    [
+     8022,
+     6177
+    ],
+    [
+     8023,
+     6177
+    ]
+   ],
+   "z": 14,
+   "bbox": [
+    -3.735352,
+    40.413496,
+    -3.691406,
+    40.446947
+   ],
+   "vias": 9333
+  },
+  {
+   "nombre": "barcelona-eixample",
+   "teselas": [
+    [
+     8289,
+     6118
+    ],
+    [
+     8290,
+     6118
+    ],
+    [
+     8289,
+     6119
+    ],
+    [
+     8290,
+     6119
+    ]
+   ],
+   "z": 14,
+   "bbox": [
+    2.131348,
+    41.376809,
+    2.175293,
+    41.409776
+   ],
+   "vias": 16704
+  },
+  {
+   "nombre": "gredos-rural",
+   "teselas": [
+    [
+     7957,
+     6184
+    ],
+    [
+     7958,
+     6184
+    ],
+    [
+     7957,
+     6185
+    ],
+    [
+     7958,
+     6185
+    ]
+   ],
+   "z": 14,
+   "bbox": [
+    -5.163574,
+    40.279526,
+    -5.119629,
+    40.313043
+   ],
+   "vias": 18
+  }
+ ],
+ "segundos": 687.2
+}

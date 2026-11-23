@@ -207,3 +207,29 @@ Esta tabla es parte de la biblioteca: una fuente descartada con su motivo ahorra
 | **QLever** (`qlever.dev/api/osm-planet`, SPARQL) | consulta de `power=cable` + `location=underwater` con geometría | responde en 4 ms a patrones simples, pero **corta** la consulta con `OPTIONAL` de geometría | queda como vía alternativa a Overpass para consultas **simples**; no para volcados con geometría |
 | **Global Energy Monitor** (plantas) | catálogo de plantas >50 MW | — | no entra: REE y el registro MITECO ya están, y son el productor oficial |
 | **ENTSO-E** (carga de red) | — | — | ya cubierto por `scripts/entsoe.py` |
+
+## 14. OpenStreetMap — accesibilidad ciclista por vía (cyclingallowed)
+
+**Qué publica.** No publica un mapa de «bici permitida»: publica las etiquetas de cada vía
+(`highway`, `bicycle`, `access`, `oneway`, `surface`, `foot`, `mtb:scale`). La clasificación en 12
+clases es una **lectura** de esas etiquetas, y la más difundida es la del visor
+<https://bertt.github.io/cyclingallowed/> (Bert Temme), que la aplica sobre la capa `transportation`
+de OpenFreeMap.
+
+- **Productor del dato**: © colaboradores de **OpenStreetMap** · <https://www.openstreetmap.org/copyright>
+- **Cómo se obtiene**: extracto oficial de España en `.osm.pbf` (1,7 GB, sin clave) y las reglas
+  replicadas sobre las etiquetas crudas → `scripts/ciclismo_osm.py`. Endpoint de las teselas para el
+  cotejo: `https://tiles.openfreemap.org/planet` (TileJSON; plantilla versionada, **maxzoom 14**),
+  capa `transportation` del esquema OpenMapTiles.
+- **Licencia**: **ODbL 1.0** (comparte igual) → mezclarla con capas CC BY en un mismo producto hace
+  que el conjunto herede ODbL. Atribución: «© colaboradores de OpenStreetMap».
+- **Frecuencia**: continua (OSM se edita a diario); el extracto se regenera a diario.
+- **Alimenta**: `datos/ciclismo_es.json` (5.848.803 vías, 1.782.643 km por clase),
+  `datos/ciclismo_es_clases.csv`, `datos/ciclismo_madrid.geojson` (muestra de 9.333 vías) y
+  `datos/ciclismo_verificacion_tiles.json`. **Método completo y límites: [`docs/ciclismo.md`](ciclismo.md).**
+- **Limitaciones**: las teselas **no traen `osm_id`** (el `id` de la feature no es el de OSM) y a z14
+  fusionan vías en `MultiLineString`; `surface` llega colapsada a paved/unpaved; `service` pierde
+  `drive-through`/`emergency_access`; `access=destination|customers` se pierde (no hay clase
+  condicional); `oneway:bicycle` no viaja (contraflujo invisible); la geometría se recorta al borde de
+  la tesela. Medido en España: **47,7 % del kilometraje sale «dudoso»** porque 980.036 km no declaran
+  `surface`. Cotejo teselas↔extracto: −0,46 % (Madrid) y +1,29 % (Barcelona) en kilómetros.

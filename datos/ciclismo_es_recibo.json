@@ -1,0 +1,10 @@
+{
+ "fuente": "OpenStreetMap Foundation — extracto de España de openstreetmap.fr",
+ "url": "https://download.openstreetmap.fr/extracts/europe/spain.osm.pbf",
+ "licencia": "ODbL 1.0",
+ "generado": "2026-11-23T12:55:45Z",
+ "vias": 5848803,
+ "km": 1782643.1,
+ "fichero": "ciclismo_es.json",
+ "metodo": "scripts/ciclismo_osm.py"
+}
