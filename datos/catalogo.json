@@ -1,12 +1,12 @@
 {
- "generado": "2026-11-23T14:36:53",
+ "generado": "2026-11-23T19:00:05",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 77,
  "resumen": {
   "licencia_si": 72,
   "licencia_pendiente": 5,
-  "caducados": 28,
+  "caducados": 27,
   "oficiales": 63,
   "comunitarias": 14,
   "por_jerarquia": {
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 36,
-  "kb_total": 80446.1
+  "kb_total": 80441.0
  },
  "avisos": {
   "pendiente": [
@@ -52,7 +52,6 @@
    "regas",
    "residuos",
    "residuos-radiactivos",
-   "sismos",
    "solares",
    "subestaciones"
   ]
@@ -914,11 +913,11 @@
    "ttl_segundos": 120,
    "ultima_verificacion": "2026-11-23",
    "crs": "EPSG:4326",
-   "features": 449,
-   "bytes": 128008,
-   "kb": 125.0,
-   "fecha_dato": "2026-11-23T14:13:04",
-   "fecha_descarga": "2026-11-23T14:13:01",
+   "features": 430,
+   "bytes": 122742,
+   "kb": 119.9,
+   "fecha_dato": "2026-11-23T16:13:04",
+   "fecha_descarga": "2026-11-23T16:13:01",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1712,7 +1711,7 @@
    "oficial": true,
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
-   "producto": "BTN Continua: red y recintos de subestación",
+   "producto": "BTN Continua: subestaciones (recintos) y tendido 220/400 kV",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -1909,17 +1908,17 @@
    },
    "endpoint": "https://www.seismicportal.eu/fdsnws/event/1/query",
    "modo": "vivo",
-   "frecuencia_fuente": "30 minutos",
-   "ttl_segundos": 1800,
+   "frecuencia_fuente": "acumulativa (ventana de 7 días)",
+   "ttl_segundos": 604800,
    "ultima_verificacion": "2026-11-23",
    "crs": "EPSG:4326",
    "features": 90,
    "bytes": 30011,
    "kb": 29.3,
-   "fecha_dato": "2026-11-16",
+   "fecha_dato": "2026-11-23",
    "fecha_descarga": "2026-11-23",
-   "edad_dias": 7,
-   "caducado": true
+   "edad_dias": 0,
+   "caducado": false
   },
   "solares": {
    "id": "solares",
@@ -1955,7 +1954,7 @@
    "oficial": true,
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
-   "producto": "BTN Continua: red y recintos de subestación",
+   "producto": "BTN Continua: subestaciones (recintos) y tendido 220/400 kV",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",

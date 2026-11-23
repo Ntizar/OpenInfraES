@@ -132,7 +132,7 @@
    "descargado": "2026-11-23",
    "features": 659,
    "url": "https://www.ign.es",
-   "metodo": "BTN Continua: red y recintos de subestación"
+   "metodo": "BTN Continua: subestaciones (recintos) y tendido 220/400 kV"
   },
   "conducciones-combustible": {
    "capa": "conducciones-combustible",
@@ -528,7 +528,7 @@
    "descargado": "2026-11-23",
    "features": 659,
    "url": "https://www.ign.es",
-   "metodo": "BTN Continua: red y recintos de subestación"
+   "metodo": "BTN Continua: subestaciones (recintos) y tendido 220/400 kV"
   },
   "eolicos": {
    "capa": "eolicos",
@@ -896,9 +896,9 @@
    "fuente": "Operadores (Renfe)",
    "editor": "GTFS-Realtime",
    "licencia": "condiciones del editor",
-   "actualizado": "2026-11-23T14:13:04",
-   "descargado": "2026-11-23T14:13:01",
-   "features": 449,
+   "actualizado": "2026-11-23T16:13:04",
+   "descargado": "2026-11-23T16:13:01",
+   "features": 430,
    "url": "https://gtfsrt.renfe.com/vehicle_positions.pb",
    "metodo": "protobuf GTFS-RT, refresco continuo"
   },
