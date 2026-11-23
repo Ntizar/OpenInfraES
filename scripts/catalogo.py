@@ -86,7 +86,10 @@ TTL = {
     "esios_prevision": (21600, "6 horas", "vivo"),
     "aemet_avisos": (3600, "cada hora", "vivo"),
     "aemet-zonas": (3600, "cada hora", "vivo"),
-    "sismos": (1800, "30 minutos", "vivo"),
+    # acumulativa por VENTANA: el fichero trae los N últimos días, así que su TTL es la ventana.
+    # Con 30 minutos salía «caducada» todos los días por llevar un sismo de anteayer, que es
+    # justo lo que la capa quiere enseñar.
+    "sismos": (604800, "acumulativa (ventana de 7 días)", "vivo"),
     "dgt-camaras": (600, "10 minutos", "foto"),
     "dgt-incidencias": (300, "5 minutos", "vivo"),
     "gtfsrt": (120, "2 minutos", "vivo"),
@@ -100,6 +103,11 @@ TTL = {
     "alertas-gdacs": (10368000, "acumulativa (ventana de 120 días)", "foto"),
 }
 TTL_DEFECTO = (2592000, "mensual o inferior", "foto")
+
+# Capas que publican una VENTANA de los N últimos días, no una foto: la «fecha del dato» de esos
+# ficheros es la del evento más viejo de la ventana, y tomarla como edad del fichero lo declara
+# viejo el primer día. Para ellas la fecha del dato es la de descarga (la ventana entra hasta hoy).
+VENTANA = {"sismos": 7}
 
 # JERARQUIA de la fuente. David: «dar mas valor a los datos oficiales que a los no oficiales».
 #   1  organismo que PRODUCE el dato (INE, MITECO, REE, Adif, DGT, AEMET, IGN, CSN...)
@@ -197,6 +205,10 @@ def main():
         # fecha del dato y fecha de descarga son cosas distintas (P2)
         fecha_dato = f.get("actualizado") or f.get("descargado")
         fecha_desc = f.get("descargado")
+        if cid in VENTANA:
+            # la capa es una ventana de los N últimos días: su dato es de hoy, no del evento
+            # más viejo que contenga
+            fecha_dato = fecha_desc or fecha_dato
 
         # ¿está caducado? se declara, no se oculta
         # La caducidad se mide sobre la FECHA DEL DATO, no sobre cuando se descargo: un fichero

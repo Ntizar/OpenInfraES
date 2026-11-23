@@ -24,7 +24,7 @@ OFICIAL = {
     "nuclear": ("CSN", "https://www.csn.es", "Centrales y reactores autorizados"),
     "residuos-radiactivos": ("ENRESA", "https://www.enresa.es", "Instalaciones de gestión de residuos"),
     "electricidad-interconexiones": ("REE", "https://www.ree.es", "Interconexiones del sistema eléctrico"),
-    "red-electrica": ("IGN", "https://www.ign.es", "BTN Continua: red y recintos de subestación"),
+    "red-electrica": ("IGN", "https://www.ign.es", "BTN Continua: subestaciones (recintos) y tendido 220/400 kV"),
     "conducciones-combustible": ("Enagás", "https://www.enagas.es", "Conducciones de gas"),
     "generacion-electrica-provincia": ("REE", "https://www.ree.es", "Reparto provincial de generación"),
     "hidrogeno-produccion": ("MITECO", "https://www.miteco.gob.es", "Proyectos de Interés Común (PCI)"),

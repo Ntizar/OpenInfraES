@@ -81,6 +81,12 @@ jobs:
           python scripts/snapshot.py || true
 
       - name: Validador
+        # El validador NO puede congelar el dato. Pasó: la DGT añadió el código DATEX
+        # `heavyTraffic`, el validador salió rojo por «código sin traducir» y el paso de commit
+        # nunca se ejecutó: los paneles «en vivo» se quedaron tres horas con la demanda de las
+        # 15:25 y sin decirlo. El gate estricto es validar.yml, que corre en cada push; aquí el
+        # rojo deja un aviso en la ejecución pero los datos se publican igual.
+        continue-on-error: true
         run: python scripts/validar.py
 
       - name: Commit de los datos refrescados

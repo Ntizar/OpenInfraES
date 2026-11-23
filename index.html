@@ -456,24 +456,37 @@
   #leyenda .ly span { flex:1; color:var(--tinta); font-size:11.2px; }
   #leyenda .ly b { color:var(--suave); font-weight:500; font-variant-numeric:tabular-nums; }
 
-  /* barra de KPIs: los numeros que resumen el pais ahora mismo, siempre a la vista */
+  /* barra de KPIs: CUATRO cifras, y las cuatro se pinchan. Cada una declara su ventana
+     temporal en la etiqueta (instante, acumulado del día, día completo). */
   #kpis { position:fixed; top:16px; left:354px; right:16px; display:flex; gap:8px;
     z-index:850; pointer-events:none; transition:right .18s ease; }
   body:has(#info-der.on) #kpis { right:322px; }
   #kpis .kpi { flex:1 1 0; min-width:0; display:flex; align-items:center; gap:9px;
     background:rgba(12,18,30,.92); border:1px solid var(--borde); border-radius:6px;
     padding:8px 11px; box-shadow:0 4px 18px rgba(0,0,0,.35);
-    pointer-events:auto; }
+    pointer-events:auto; font:inherit; color:inherit; text-align:left; cursor:pointer;
+    -webkit-appearance:none; appearance:none; transition:border-color .12s, background .12s; }
+  #kpis .kpi:hover, #kpis .kpi:focus-visible { border-color:var(--borde-fuerte);
+    background:rgba(12,24,38,.97); outline:none; }
   #kpis .kpi i { font-size:15px; font-style:normal; opacity:.75; flex:0 0 auto; }
-  #kpis .kpi div { min-width:0; }
+  #kpis .kpi div { min-width:0; flex:1 1 auto; }
+  #kpis .kpi em { margin-left:auto; font-style:normal; color:var(--tenue); font-size:15px;
+    line-height:1; flex:0 0 auto; opacity:.6; }
+  #kpis .kpi:hover em { color:var(--cian); opacity:1; }
   #kpis .kpi b { display:block; font-family:var(--mono); font-size:15px; font-weight:600;
     color:var(--tinta); line-height:1.1; letter-spacing:-.02em; white-space:nowrap; }
+  #kpis .kpi u { text-decoration:none; font-family:inherit; font-size:9.6px; font-weight:400;
+    letter-spacing:0; color:var(--suave); margin-left:7px; }
+  #kpis .kpi.aviso u { color:var(--ambar); }
+  #kpis .kpi.alerta u { color:#f87171; }
   #kpis .kpi span { display:block; font-size:8.8px; text-transform:uppercase; letter-spacing:.09em;
     color:var(--suave); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   #kpis .kpi.alerta { border-color:rgba(239,68,68,.45); }
   #kpis .kpi.alerta b { color:#f87171; }
+  #kpis .kpi.aviso { border-color:rgba(251,191,36,.45); }
+  #kpis .kpi.aviso b { color:var(--ambar); }
   #kpis .kpi.bien b { color:#4ade80; }
-  @media (max-width:1100px) { #kpis { left:16px; right:16px; } #kpis .kpi:nth-child(n+6) { display:none; } }
+  @media (max-width:1100px) { #kpis { left:16px; right:16px; } }
   #panel-dato .pd-foto { display:block; margin:0 0 10px; }
   #panel-dato .pd-foto img { width:100%; max-height:210px; object-fit:cover; border-radius:5px;
     border:1px solid var(--borde); display:block; }
@@ -508,6 +521,24 @@
   #caja-salud .chip.ok { background:rgba(74,222,128,.16); color:#4ade80; }
   #caja-salud .chip.vacia { background:rgba(248,113,113,.16); color:#f87171; }
   #caja-salud .chip.off { background:rgba(255,255,255,.07); color:var(--tenue); }
+  #caja-salud .chip.aviso { background:rgba(251,191,36,.16); color:var(--ambar); }
+  #caja-salud .chip.info { background:rgba(34,211,238,.14); color:var(--cian); }
+  /* paneles de los KPIs */
+  #caja-salud .nota-kpi { margin:16px 0 0; font-size:11px; color:var(--suave);
+    border-top:1px solid var(--borde); padding-top:9px; line-height:1.5; }
+  #caja-salud .aviso-caja { margin:0 0 16px; padding:9px 12px; border-radius:5px;
+    border-left:3px solid var(--ambar); background:rgba(251,191,36,.08);
+    font-size:11.6px; color:#e9d8a6; line-height:1.5; }
+  #caja-salud .barra-mix { display:block; height:8px; min-width:2px; border-radius:2px;
+    background:linear-gradient(90deg,#22d3ee,#4ade80); }
+  #caja-salud td.barra-celda { width:34%; padding-right:12px; }
+  #caja-salud .sub-aviso { color:var(--suave); font-size:10.6px; display:block; margin-top:2px; }
+  #caja-salud .sec { margin:20px 0 8px; font-size:12.6px; color:var(--tinta); font-weight:600; }
+  #caja-salud .sec span { color:var(--suave); font-weight:400; }
+  #caja-salud button.ir { background:rgba(34,211,238,.12); color:var(--cian);
+    border:1px solid rgba(34,211,238,.4); border-radius:4px; padding:3px 9px; font-size:10.6px;
+    cursor:pointer; font-family:inherit; }
+  #caja-salud button.ir:hover { background:rgba(34,211,238,.22); }
 
   /* Escala grafica: abajo a la DERECHA (David: "la escala deberia salir abajo a la derecha").
      Leaflet apila los controles del mismo rincon, asi que la escala queda ENCIMA de la
@@ -563,12 +594,13 @@
     #acciones button b { font-size:16px; }
     #capas { padding:8px 4px 8px 10px; }
 
-    /* KPIs: dos columnas, solo los que caben de verdad */
-    #kpis { top:58px; left:8px; right:8px; display:grid; grid-template-columns:1fr 1fr; gap:6px; }
-    #kpis .kpi { padding:6px 8px; }
-    #kpis .kpi:nth-child(n+5) { display:none; }
-    #kpis .kpi b { font-size:13px; }
-    #kpis .kpi span { font-size:8.2px; }
+    /* KPIs: cuatro, en dos columnas. Ninguno se oculta: ahora son cuatro y los cuatro se pinchan. */
+    #kpis { top:58px; left:8px; right:8px; display:grid; grid-template-columns:1fr 1fr; gap:5px; }
+    #kpis .kpi { padding:5px 7px; gap:7px; }
+    #kpis .kpi b { font-size:12.6px; }
+    #kpis .kpi span { font-size:8.2px; white-space:normal; overflow:visible; text-overflow:clip;
+      line-height:1.3; }
+    #kpis .kpi em { display:none; }
 
     /* paneles: a todo el ancho, por encima del pie */
     #panel-dato { top:auto !important; left:8px !important; right:8px !important;
@@ -603,7 +635,7 @@
   }
 
   @media (max-width: 420px) {
-    #kpis .kpi:nth-child(n+3) { display:none; }
+    #kpis .kpi span { font-size:7.6px; }
     #estado .der { display:none; }
     #panel-dato { max-height:42vh; }
     #leyenda { display:none; }   /* en pantallas muy pequeñas estorba más que ayuda */
@@ -1457,7 +1489,7 @@ const CAPAS = [
 const ZOOM_DETALLE = 8;
 // Version de los datos: se sube al regenerar los geojson. Sin ella el navegador puede seguir
 // sirviendo de cache un fichero viejo y los cambios no aparecen por mucho que recargues.
-const VER_DATOS = "2026-11-20j";
+const VER_DATOS = "2026-11-23l";
 
 const grupos = {}, capas = {}, conteo = {}, elementos = {}, datos = {}, INDICE = [];
 CAPAS.forEach(c => {
@@ -1528,61 +1560,373 @@ function bloqueEstimacion(p) {
 
 
 /* ---------------- barra de KPIs ----------------
-   Los numeros que resumen el pais ahora mismo. Se alimentan de los mismos JSON que el resto del
-   visor: si un dato no esta, su chip no se pinta (mejor hueco que un cero mintiendo). */
-function chipKPI(icono, valor, etiqueta, clase) {
-  return `<div class="kpi ${clase || ""}"><i>${icono}</i><div><b>${valor}</b><span>${etiqueta}</span></div></div>`;
+   CUATRO cifras, y las cuatro se pinchan. La regla que se paga cara: un chip no mezcla
+   ventanas temporales. Antes convivian "432 GWh hoy" (acumulado hasta las 15:00), "eolica 17 %"
+   (cuota de ese acumulado) y "36.497 MW" (un instante de las 15:25), y al lado del panel de REE
+   —que publica el dia completo— parecia que los datos se contradicen. No se contradecian: eran
+   tres ventanas distintas con la misma tipografia. Ahora cada etiqueta dice desde y hasta cuando. */
+function chipKPI(icono, valor, etiqueta, clase, panel, nota) {
+  return `<button type="button" class="kpi ${clase || ""}" data-panel="${panel}"><i>${icono}</i>` +
+         `<div><b>${valor}${nota ? "<u>" + nota + "</u>" : ""}</b><span>${etiqueta}</span></div>` +
+         `<em>›</em></button>`;
 }
+
+/* Los sellos de los JSON van en UTC y las horas de las series en local. Sin forzar la Z,
+   "2026-11-23T14:36:29" se lee como hora local y la edad del dato sale negativa o absurda. */
+function edadMinutos(iso) {
+  if (!iso) return null;
+  let t = String(iso).trim();
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(t)) t += "Z";
+  const ms = Date.parse(t);
+  return isNaN(ms) ? null : Math.round((Date.now() - ms) / 60000);
+}
+function textoEdad(m) {
+  if (m == null) return "";
+  if (m < 1) return "ahora mismo";
+  if (m < 60) return "hace " + m + " min";
+  const h = Math.floor(m / 60), r = m % 60;
+  if (h < 24) return "hace " + h + " h" + (r ? " " + r + " min" : "");
+  return "hace " + Math.floor(h / 24) + " d";
+}
+function claseEdad(m) { return m == null ? "" : m > 180 ? "alerta" : m > 45 ? "aviso" : ""; }
+/* precios: un decimal siempre ("205,6" y "130,0"), que es como se leen en el mercado */
+const nf1 = n => (typeof n === "number" && isFinite(n))
+  ? n.toLocaleString("es-ES", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : n;
 
 function pintarKPIs() {
   const barra = document.getElementById("kpis");
   if (!barra) return;
+  const v = VER_DATOS;
   const pedidos = [
-    fetch("datos/entsoe_mix.json?v=" + VER_DATOS).then(r => r.json()).catch(() => null),
-    fetch("datos/omie_precio.json?v=" + VER_DATOS).then(r => r.json()).catch(() => null),
-    fetch("datos/ree_vivo.json?v=" + VER_DATOS).then(r => r.json()).catch(() => null),
-    fetch("datos/sismos.geojson?v=" + VER_DATOS).then(r => r.json()).catch(() => null),
-    fetch("datos/aemet_zonas.geojson?v=" + VER_DATOS).then(r => r.json()).catch(() => null)
+    fetch("datos/entsoe_mix.json?v=" + v).then(r => r.json()).catch(() => null),
+    fetch("datos/omie_precio.json?v=" + v).then(r => r.json()).catch(() => null),
+    fetch("datos/ree_vivo.json?v=" + v).then(r => r.json()).catch(() => null),
+    fetch("datos/aemet_zonas.geojson?v=" + v).then(r => r.json()).catch(() => null),
+    fetch("datos/catalogo.json?v=" + v).then(r => r.json()).catch(() => null)
   ];
-  Promise.all(pedidos).then(([mix, omie, vivo, sismos, aemet]) => {
+  Promise.all(pedidos).then(([mix, omie, vivo, aemet, cat]) => {
+    window.__KPI = { mix, omie, vivo, aemet, cat };
     let h = "";
+    // 1 · instante: demanda real de REE (5 min)
+    const d = vivo && vivo.series && vivo.series.demanda;
+    if (d && d.valor) {
+      const edad = edadMinutos(vivo.actualizado);
+      const nota = edad == null ? "" : edad < 1 ? "ahora" : textoEdad(edad).replace("hace ", "");
+      h += chipKPI("◉", Math.round(Number(d.valor)).toLocaleString("es-ES"),
+        "MW de demanda · " + (d.hora || "—"), claseEdad(edad), "demanda", nota);
+    }
+    // 2 · acumulado del dia EN CURSO, con la ventana que trae la fuente (no es el dia completo)
     if (mix && mix.total_mwh) {
-      const eol = (mix.tecnologias || []).find(t => t.nombre === "Eólica terrestre");
-      h += chipKPI("⚡", (mix.total_mwh / 1000).toFixed(0), "GWh generados hoy",
-                   mix.total_mwh > 0 ? "bien" : "");
-      if (eol) h += chipKPI("🌬", eol.pct.toFixed(0) + "%", "eólica del mix");
+      const cuartos = Number(mix.cuartos_cubiertos || 0);
+      const vent = ventanaMix(mix);
+      h += chipKPI("⚡", nf(Math.round(mix.total_mwh / 1000)) + " GWh",
+        "generado " + vent.ini + "–" + vent.fin, "", "mix", cuartos + "/96");
     }
+    // 3 · dia completo: la subasta diaria de OMIE ya trae los 96 cuartos
     if (omie && omie.media != null) {
-      h += chipKPI("€", omie.media.toFixed(1), "€/MWh media del día");
+      h += chipKPI("€", nf1(Number(omie.media)), "€/MWh media del día", "", "precio");
     }
-    if (vivo && vivo.series) {
-      const d = vivo.series.demanda;
-      if (d && d.valor) h += chipKPI("◉", Math.round(Number(d.valor)).toLocaleString("es-ES"),
-                                     "MW de demanda · " + (d.hora || ""));
-      // el CO2 de ESIOS viene en tCO2/MW: 1 t/MW = 1.000 g/kWh
-      const co2 = vivo.series.co2;
-      if (co2 && co2.valor) h += chipKPI("CO₂", Math.round(Number(co2.valor) * 1000),
-                                        "g CO₂/kWh");
-    }
-    if (sismos && sismos.features) {
-      const n = sismos.features.length;
-      const max = Math.max(...sismos.features.map(f => Number(f.properties.magnitud) || 0));
-      h += chipKPI("〜", n, "sismos 7 días · máx M" + max.toFixed(1));
-    }
-    const cat = window.CATALOGO;
-    if (cat && cat.resumen) {
-      const pend = cat.resumen.licencia_pendiente || 0;
-      const cad = cat.resumen.caducados || 0;   // caducado = dato viejo segun su TTL; no es licencia
-      const clase = (pend || cad) ? "alerta" : "bien";
-      h += chipKPI("⚖", pend, "capas sin licencia evaluada", clase);
-    }
-    if (aemet && aemet.features) {
-      const n = aemet.features.length;
-      h += chipKPI("⚠", n, "avisos AEMET activos", n > 20 ? "alerta" : "");
+    // 4 · lo que puede estar mal: licencias, frescura y avisos previstos
+    const pend = capasUnicas(cat && cat.capas).filter(c => (c.v.licencia || {}).estado === "pendiente").length;
+    const aem = contarAemet(aemet);
+    if (cat && cat.capas) {
+      h += chipKPI("⚖", pend, (pend === 1 ? "capa sin licencia" : "capas sin licencia") +
+        " · " + aem.zonas + " zonas AEMET", pend ? "aviso" : "bien", "estado");
     }
     barra.innerHTML = h;
   });
 }
+
+/* ---------------- paneles de los KPIs ----------------
+   Un chip que no se puede pinchar es un adorno. Cada panel enseña el dato completo, de donde
+   sale, con que resolucion y de cuando, y lo que el chip no cabe a decir. */
+function kpiCaja(html) {
+  const velo = document.getElementById("velo-salud");
+  const cuerpo = document.getElementById("salud-cuerpo");
+  if (!velo || !cuerpo) return;
+  cuerpo.innerHTML = html;
+  velo.hidden = false;
+}
+function kpiTarjeta(valor, etiqueta, clase) {
+  return `<div class="rc ${clase || ""}"><b>${valor}</b><span>${etiqueta}</span></div>`;
+}
+function fhCorta(iso) {
+  const d = new Date(iso);
+  if (isNaN(d)) return String(iso || "—");
+  return d.toLocaleString("es-ES", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+}
+
+/* Una serie en 150 px de alto, sin ejes: solo la forma y el maximo y el minimo. */
+function chispa(puntos, opciones) {
+  const o = Object.assign({ ancho: 720, alto: 150, dec: 0, cero: false, unidad: "" }, opciones || {});
+  if (!puntos || puntos.length < 2) return "";
+  const ys = puntos.map(p => p[1]);
+  let min = Math.min.apply(null, ys), max = Math.max.apply(null, ys);
+  if (o.cero) min = Math.min(0, min);
+  if (max === min) max = min + 1;
+  const W = o.ancho, H = o.alto, pad = 18;
+  const X = i => pad + i * (W - 2 * pad) / (puntos.length - 1);
+  const Y = v => H - pad - (v - min) / (max - min) * (H - 2 * pad);
+  const lin = puntos.map((p, i) => (i ? "L" : "M") + X(i).toFixed(1) + "," + Y(p[1]).toFixed(1)).join(" ");
+  const area = lin + " L" + X(puntos.length - 1).toFixed(1) + "," + Y(min).toFixed(1) +
+               " L" + X(0).toFixed(1) + "," + Y(min).toFixed(1) + " Z";
+  const iMax = ys.indexOf(Math.max.apply(null, ys));
+  const iMin = ys.indexOf(Math.min.apply(null, ys));
+  const fmt = v => v.toLocaleString("es-ES", { maximumFractionDigits: o.dec });
+  const marca = (i, dy) => `<circle cx="${X(i).toFixed(1)}" cy="${Y(ys[i]).toFixed(1)}" r="3" fill="#22d3ee"/>` +
+    `<text x="${X(i).toFixed(1)}" y="${(Y(ys[i]) + dy).toFixed(1)}" fill="#93a9bd" font-size="10" ` +
+    `text-anchor="middle" font-family="ui-monospace,Consolas,monospace">${fmt(ys[i])}</text>`;
+  const rot = [[0, "start"], [Math.round((puntos.length - 1) / 2), "middle"], [puntos.length - 1, "end"]]
+    .map(([i, an]) => `<text x="${X(i).toFixed(1)}" y="${H - 3}" fill="#63788c" font-size="9.6" ` +
+      `text-anchor="${an}">${puntos[i][0]}</text>`).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="serie del día" ` +
+    `style="margin:2px 0 10px;display:block">` +
+    `<path d="${area}" fill="rgba(34,211,238,.12)"/>` +
+    `<path d="${lin}" fill="none" stroke="#22d3ee" stroke-width="1.8"/>` +
+    marca(iMax, -7) + marca(iMin, -7) + rot + "</svg>";
+}
+
+const FRONTERAS = [["francia", "Francia"], ["portugal", "Portugal"],
+                   ["marruecos", "Marruecos"], ["andorra", "Andorra"]];
+
+function panelDemanda() {
+  const D = window.__KPI || {}, v = D.vivo || {}, s = v.series || {}, e = v.estado || {};
+  const d = s.demanda || {};
+  const serie = (d.serie || []).filter(x => x && x.length === 2 && isFinite(Number(x[1])))
+    .map(x => [String(x[0]), Number(x[1])]);
+  const edad = edadMinutos(v.actualizado);
+  const co2 = e.co2 != null ? Number(e.co2) : null;
+  // el saldo se suma con el signo de ESIOS: negativo = España exporta
+  let saldo = 0;
+  const filas = FRONTERAS.map(([k, n]) => {
+    const val = Number(e["exp_" + k] || 0) + Number(e["imp_" + k] || 0);
+    saldo += val;
+    const txt = val === 0 ? "0" : (val > 0 ? "+" : "−") + Math.abs(val).toLocaleString("es-ES");
+    const que = val > 0 ? "importa" : val < 0 ? "exporta" : "sin flujo";
+    return `<tr><td>${n}</td><td class="n">${txt} MW</td>` +
+           `<td style="color:var(--suave);font-size:10.6px">${que}</td></tr>`;
+  }).join("");
+  const bombeo = Math.abs(Number(e.bombeo_cons || 0));      // ESIOS lo da en negativo
+  const turbinado = Number(e.bombeo_turb || 0);
+  const neto = turbinado - bombeo;                            // negativo = consume más de lo que turbina
+  let h = `<h3>Demanda eléctrica</h3><div class="sb">REE · ESIOS · resolución de 5 minutos · ` +
+    `${v.fecha || ""} · descargado ${textoEdad(edad)}</div>` +
+    `<div class="resumen">` +
+    kpiTarjeta((d.valor ? Math.round(Number(d.valor)).toLocaleString("es-ES") : "—") + " MW", "demanda nacional " + (d.hora || "")) +
+    (co2 != null ? kpiTarjeta(Math.round(co2 * 1000) + " g", "CO₂ por kWh") : "") +
+    kpiTarjeta((neto < 0 ? "−" : "+") + Math.abs(Math.round(neto)).toLocaleString("es-ES") + " MW",
+      "bombeo neto · consume " + Math.round(bombeo).toLocaleString("es-ES") +
+      " · turbina " + Math.round(turbinado).toLocaleString("es-ES")) +
+    kpiTarjeta((saldo ? (saldo > 0 ? "+" : "−") + Math.abs(saldo).toLocaleString("es-ES") : "0") + " MW", "saldo internacional (suma ESIOS)") +
+    `</div>`;
+  if (serie.length > 1) h += chispa(serie, { dec: 0, unidad: "MW" });
+  h += `<h4 class="sec">Intercambios con los vecinos <span>· negativo = España exporta</span></h4>` +
+    `<table><thead><tr><th>frontera</th><th style="text-align:right">saldo</th><th>flujo</th></tr></thead>` +
+    `<tbody>${filas}</tbody></table>` +
+    `<p class="nota-kpi">La demanda de ESIOS son 5 minutos reales; el mix del mapa, cuartos de hora de ` +
+    `ENTSO-E. El saldo de arriba es la suma de las cuatro fronteras con el signo que publica ESIOS: ` +
+    `el panel de REE pone −3.987 MW porque cuenta los 20 MW de importación de Andorra con el signo ` +
+    `de las exportaciones. Es la misma foto con dos convenios; aquí se resta lo que la serie dice.</p>`;
+  kpiCaja(h);
+}
+
+/* La ventana real del mix. ENTSO-E publica por día UTC, así que en invierno la serie empieza a
+   la 01:00 local: 70 cuartos y «hasta las 18:15» no cuadraban con un día desde las 00:00, y no era
+   un error de suma sino que falta la primera hora. Se calcula la ventana y se publica tal cual. */
+function ventanaMix(m) {
+  const cuartos = Number((m && m.cuartos_cubiertos) || 0);
+  const fin = String((m && m.hora_ultimo) || "");
+  const p = fin.split(":");
+  const hhmm = n => {
+    n = ((Math.round(n) % 1440) + 1440) % 1440;
+    return String(Math.floor(n / 60)).padStart(2, "0") + ":" + String(n % 60).padStart(2, "0");
+  };
+  if (cuartos < 1 || p.length !== 2) return { ini: "—", fin: fin || "—", horas: cuartos * 0.25 };
+  const min = Number(p[0]) * 60 + Number(p[1]);   // inicio del último cuarto publicado
+  return { ini: hhmm(min - (cuartos - 1) * 15), fin: hhmm(min + 15), horas: cuartos * 0.25 };
+}
+
+function panelMix() {
+  const D = window.__KPI || {}, m = D.mix || {};
+  const techs = (m.tecnologias || []).filter(t => Number(t.mwh) > 0)
+    .sort((a, b) => Number(b.mwh) - Number(a.mwh));
+  const cuartos = Number(m.cuartos_cubiertos || 0);
+  const vent = ventanaMix(m), horas = vent.horas;
+  const total = Number(m.total_mwh || 0);
+  const proy = cuartos ? total * 96 / cuartos : 0;
+  const maxp = Math.max.apply(null, techs.map(t => Number(t.pct) || 0).concat([1]));
+  const filas = techs.map(t => `<tr><td>${t.nombre}</td>` +
+    `<td class="barra-celda"><span class="barra-mix" style="width:${(Number(t.pct) / maxp * 100).toFixed(1)}%"></span></td>` +
+    `<td class="n">${nf(Number(t.pct))} %</td><td class="n">${nf(Math.round(Number(t.mwh)))}</td>` +
+    `<td class="n">${nf(Math.round(Number(t.ultimo_mw)))}</td></tr>`).join("");
+  let h = `<h3>Generación del día en curso</h3><div class="sb">ENTSO-E · A75 actual generation per ` +
+    `production type · cuartos de hora · ${m.fecha || ""}</div>` +
+    `<div class="aviso-caja"><b>El día no ha terminado, y no empieza a las 00:00.</b> La ventana que ` +
+    `trae ENTSO-E va de las <b>${vent.ini}</b> a las <b>${vent.fin}</b> (${cuartos} de 96 cuartos, ` +
+    `${nf(horas)} h): publica por día UTC, así que en invierno falta la primera hora local. Al ritmo de ` +
+    `hoy saldrían <b>${nf(Math.round(proy / 1000))} GWh</b> en el día completo; los ` +
+    `${nf(Math.round(total / 1000))} GWh de arriba son lo generado en esa ventana, no el total del día.</div>` +
+    `<div class="resumen">` +
+    kpiTarjeta(nf(Math.round(total / 1000)) + " GWh", "acumulado " + vent.ini + "–" + vent.fin) +
+    kpiTarjeta(techs.length, "tecnologías generando") +
+    kpiTarjeta(nf(horas) + " h", vent.ini + " a " + vent.fin) +
+    `</div>` +
+    `<table><thead><tr><th>tecnología</th><th></th><th style="text-align:right">cuota</th>` +
+    `<th style="text-align:right">MWh</th><th style="text-align:right">MW último cuarto</th></tr></thead>` +
+    `<tbody>${filas}</tbody></table>` +
+    `<p class="nota-kpi">El consumo de bombeo (${nf(m.consumo_total_mwh || 0)} MWh) va aparte y NO se ` +
+    `resta de la generación: ESIOS lo publica en negativo y sumarlo con la turbinación convertiría ` +
+    `consumo en producción. Los porcentajes son de este acumulado; el panel de REE da los del día ` +
+    `anterior completo, por eso no coinciden.</p>`;
+  kpiCaja(h);
+}
+
+function panelPrecio() {
+  const D = window.__KPI || {}, o = D.omie || {};
+  const hs = (o.horas || []).filter(x => x.es != null)
+    .map(x => [x.hora + ":" + String(x.minuto || 0).padStart(2, "0"), Number(x.es)]);
+  const filas = (o.horas || []).filter(x => x.es != null).map(x =>
+    `<tr><td>${String(x.hora).padStart(2, "0")}:${String(x.minuto || 0).padStart(2, "0")}</td>` +
+    `<td class="n">${nf(Number(x.es))} €/MWh</td></tr>`).join("");
+  let h = `<h3>Precio del mercado diario</h3><div class="sb">OMIE · subasta marginalista ` +
+    `MARGINALPDBC · 96 cuartos de 15 minutos · ${o.fecha || ""}</div>` +
+    `<div class="resumen">` +
+    kpiTarjeta(nf1(Number(o.media)) + " €", "media del día") +
+    kpiTarjeta(nf1(Number(o.min)) + " €", "mínimo · " + (o.hora_min || "")) +
+    kpiTarjeta(nf1(Number(o.max)) + " €", "máximo · " + (o.hora_max || "")) +
+    `</div>` +
+    chispa(hs, { dec: 1, unidad: "€/MWh" }) +
+    `<table><thead><tr><th>hora</th><th style="text-align:right">precio</th></tr></thead>` +
+    `<tbody>${filas}</tbody></table>` +
+    `<p class="nota-kpi">El mercado diario pasó a resolución de 15 minutos: las 96 filas del fichero ` +
+    `son 96 cuartos, no 96 horas. La media es de los 96 cuartos y coincide con la que publica REE ` +
+    `para el día completo.</p>`;
+  kpiCaja(h);
+}
+
+/* Dos ids del catálogo pueden ser el mismo fichero (alias del visor): sin agrupar, el mismo
+   problema se cuenta dos veces y el chip dice 5 donde hay 4. */
+function capasUnicas(cat) {
+  const g = new Map();
+  Object.keys(cat || {}).forEach(k => {
+    const v = cat[k];
+    const clave = [v.titulo, v.features, String(v.fecha_dato || "").slice(0, 10), v.organismo].join("|");
+    if (!g.has(clave)) g.set(clave, { id: k, v: v, alias: [] });
+    else g.get(clave).alias.push(k);
+  });
+  return Array.from(g.values());
+}
+
+function contarAemet(aemet) {
+  const f = (aemet && aemet.features) || [];
+  const ahora = Date.now();
+  let total = 0, activos = 0, desde = null;
+  f.forEach(z => (z.properties.avisos || []).forEach(a => {
+    total += 1;
+    const t0 = Date.parse(a.desde), t1 = Date.parse(a.hasta);
+    if (!isNaN(t0) && !isNaN(t1) && ahora >= t0 && ahora <= t1) activos += 1;
+    if (!isNaN(t0) && (desde === null || t0 < desde)) desde = t0;
+  }));
+  return { zonas: f.length, total: total, activos: activos, desde: desde };
+}
+
+function panelEstado() {
+  const D = window.__KPI || {};
+  const cat = (D.cat || window.CATALOGO || {}).capas || {};
+  const capas = capasUnicas(cat);
+  const registros = Object.keys(cat).length;
+  const pend = capas.filter(c => (c.v.licencia || {}).estado === "pendiente");
+  const sinRefresco = capas.filter(c => {
+    const m = edadMinutos(c.v.fecha_descarga);
+    return m != null && m * 60 > Number(c.v.ttl_segundos || 0);
+  });
+  const viejas = capas.filter(c => c.v.edad_dias != null && c.v.modo !== "vivo" &&
+    c.v.edad_dias * 86400 > Number(c.v.ttl_segundos || 0));
+  const aem = contarAemet(D.aemet);
+
+  const filaCapa = c => {
+    const v = c.v, lic = v.licencia || {};
+    let chip, por;
+    if (lic.estado === "pendiente") {
+      chip = '<span class="chip aviso">licencia sin evaluar</span>';
+      por = "No se sabe bajo qué condiciones se puede reutilizar: no se expone en un MCP público.";
+    } else if (sinRefresco.indexOf(c) !== -1) {
+      chip = '<span class="chip vacia">sin refrescar</span>';
+      por = "El fichero no se ha vuelto a descargar dentro de su TTL de " +
+        nf(Math.round(Number(v.ttl_segundos || 0) / 86400 * 10) / 10) + " días.";
+    } else {
+      chip = '<span class="chip info">dato de origen antiguo</span>';
+      por = "Se descarga cada ciclo, pero la fuente no publica nada más nuevo desde el " +
+        (v.fecha_dato || "—") + ". No es un fallo del visor: es lo que hay en el origen.";
+    }
+    const extra = c.alias.length ? " · se repite como " + c.alias.join(", ") : "";
+    return `<tr><td><b>${v.titulo || c.id}</b><span class="sub-aviso">${v.organismo || "—"} · ` +
+      `${v.modo || "foto"} · ${nf(v.features || 0)} objetos${extra}</span></td>` +
+      `<td>${chip}<span class="sub-aviso">${por}</span></td>` +
+      `<td class="n" style="font-size:10.6px;color:var(--suave)">${v.fecha_dato || "—"}` +
+      `<span class="sub-aviso">descarga ${String(v.fecha_descarga || "—").slice(0, 10)}</span></td></tr>`;
+  };
+  const problemas = pend.concat(viejas).filter((c, i, a) => a.indexOf(c) === i);
+  const avisos = [];
+  ((D.aemet && D.aemet.features) || []).forEach(z => {
+    const p = z.properties || {};
+    (p.avisos || []).forEach(a => avisos.push({ z: p, a: a }));
+  });
+  const nivelChip = n => n === 3 ? '<span class="chip vacia">rojo</span>'
+    : n === 2 ? '<span class="chip aviso">naranja</span>'
+    : '<span class="chip aviso">amarillo</span>';
+  const filasAemet = avisos.map(x => `<tr>` +
+    `<td><b>${x.z.zona || "—"}</b><span class="sub-aviso">${x.z.provincia || ""} · ${x.z.codigo || ""}</span></td>` +
+    `<td>${x.a.fenomeno || "—"} ${nivelChip(Number(x.a.nivel))}` +
+    `<span class="sub-aviso">${x.a.descripcion || ""}</span></td>` +
+    `<td class="n" style="font-size:10.6px">${fhCorta(x.a.desde)}<span class="sub-aviso">→ ${fhCorta(x.a.hasta)}</span></td>` +
+    `<td class="n" style="font-size:10.6px">${x.a.probabilidad || "—"}</td></tr>`).join("");
+
+  let h = `<h3>Estado de los datos</h3><div class="sb">Lo que puede estar mal en el catálogo y los ` +
+    `avisos de AEMET, uno por uno.</div>` +
+    `<div class="resumen">` +
+    kpiTarjeta(capas.length, "capas distintas", "") +
+    kpiTarjeta(pend.length, "sin licencia evaluada", pend.length ? "mal" : "bien") +
+    kpiTarjeta(sinRefresco.length, "sin refrescar", sinRefresco.length ? "mal" : "bien") +
+    kpiTarjeta(viejas.length, "con dato de origen antiguo", "") +
+    kpiTarjeta(aem.zonas, "zonas con aviso AEMET", aem.zonas ? "aviso" : "bien") +
+    `</div>`;
+
+  if (aem.total) {
+    const cuando = aem.activos
+      ? `<b>${aem.activos} de ${aem.total} avisos están activos ahora mismo</b>`
+      : `<b>Ninguno activo todavía</b> (${aem.total} avisos previstos, el primero entra el ` +
+        `${fhCorta(aem.desde)})`;
+    h += `<h4 class="sec">Avisos de AEMET <span>· ${aem.total} avisos en ${aem.zonas} zonas</span>` +
+      ` <button type="button" class="ir" data-capa-ir="aemet-zonas">ver en el mapa</button></h4>` +
+      `<div class="aviso-caja">${cuando}. AEMET publica la predicción de avisos con hasta dos días ` +
+      `de antelación: la capa del mapa enseña las zonas, pero «activo» y «previsto» no son lo mismo.</div>` +
+      `<table><thead><tr><th>zona</th><th>fenómeno</th><th style="text-align:right">ventana</th>` +
+      `<th style="text-align:right">probabilidad</th></tr></thead><tbody>${filasAemet}</tbody></table>`;
+  } else {
+    h += `<h4 class="sec">Avisos de AEMET <span>· ninguno publicado</span></h4>` +
+      `<p class="nota-kpi">La capa está vacía porque AEMET no tiene avisos: una capa vacía aquí es un dato, no un fallo.</p>`;
+  }
+
+  h += `<h4 class="sec">Capas que pueden estar mal <span>· ${problemas.length} de ${capas.length}` +
+    ` (${registros} registros, ${registros - capas.length} alias del mismo fichero)</span></h4>` +
+    `<table><thead><tr><th>capa</th><th>qué le pasa</th><th style="text-align:right">dato / descarga</th></tr></thead>` +
+    `<tbody>${problemas.map(filaCapa).join("") || "<tr><td>Ninguna: todas con licencia evaluada y refrescadas.</td></tr>"}</tbody></table>` +
+    `<p class="nota-kpi">«Dato de origen antiguo» no es un error: la infraestructura cambia despacio y el ` +
+    `organismo publica de vez en cuando; el visor lo vuelve a descargar en cada ciclo. Lo que sí sería ` +
+    `un fallo es «sin refrescar» (ahora ${sinRefresco.length === 0 ? "ninguna" : sinRefresco.length + " capa" + (sinRefresco.length === 1 ? "" : "s")}): ` +
+    `el fichero lleva más tiempo del que declara su TTL sin volver a bajarse, y entonces el número que ` +
+    `enseña el mapa ya no es el de hoy. Para capas vacías y errores de JavaScript está el botón <b>⚕ Salud</b>.</p>`;
+  kpiCaja(h);
+}
+
+function panelKPI(tipo) {
+  if (tipo === "demanda") return panelDemanda();
+  if (tipo === "mix") return panelMix();
+  if (tipo === "precio") return panelPrecio();
+  if (tipo === "estado") return panelEstado();
+}
+
 
 /* ---------------- leyenda ----------------
    Cuando una capa pinta por un campo (tramos de poblacion, nivel de aviso, tecnologia), la leyenda
@@ -1840,6 +2184,10 @@ const VALORES = {
   useOfSpecifiedLanesOrCarriagewaysAllowed: "Uso permitido de los carriles indicados",
   vehicleWithOverwideLoad: "Vehículo con carga sobredimensionada",
   weightRestrictionInOperation: "Limitación de peso",
+  // DATEX · tráfico anómalo (la DGT añade códigos nuevos sin avisar: si aparece uno sin traducir,
+  // el validador lo canta y el refresco NO se congela — el gate estricto es validar.yml)
+  heavyTraffic: "Tráfico denso", queue: "Cola", stationaryTraffic: "Retención",
+  longTermRoadworks: "Obras de larga duración",
   // DATEX · carril
   allLanesCompleteCarriageway: "Calzada completa", rightLane: "Carril derecho",
   leftLane: "Carril izquierdo", middleLane: "Carril central", tidalFlowLane: "Carril reversible",
@@ -3284,6 +3632,19 @@ document.getElementById("salud-x").addEventListener("click", () => {
 });
 document.getElementById("velo-salud").addEventListener("click", e => {
   if (e.target.id === "velo-salud") e.target.hidden = true;
+});
+
+/* los cuatro chips abren su panel; dentro del panel, un botón puede encender la capa */
+document.getElementById("kpis").addEventListener("click", e => {
+  const b = e.target.closest(".kpi");
+  if (b && b.dataset.panel) panelKPI(b.dataset.panel);
+});
+document.getElementById("salud-cuerpo").addEventListener("click", e => {
+  const b = e.target.closest("[data-capa-ir]");
+  if (!b) return;
+  const chk = document.querySelector('[data-capa="' + b.dataset.capaIr + '"]');
+  if (chk && !chk.checked) chk.click();
+  document.getElementById("velo-salud").hidden = true;
 });
 </script>
 </body>
