@@ -1,228 +1,125 @@
 {
  "fuente": "REE · ESIOS",
  "url": "https://api.esios.ree.es/indicators",
- "fecha": "2026-11-16",
- "descargado": "2026-11-16T19:08:05",
- "indicadores_ok": 18,
+ "fecha": "2026-11-23",
+ "descargado": "2026-11-23T13:27:17",
+ "indicadores_ok": 19,
  "indicadores_probados": 19,
  "series": {
   "demanda": {
    "id": 2037,
    "puntos": 72,
-   "ultimo": 35028.0,
-   "hora": "18:35"
+   "ultimo": 36397.0,
+   "hora": "13:10"
   },
   "demanda_gen": {
    "id": 10004,
    "puntos": 72,
-   "ultimo": 35099.0,
-   "hora": "18:40"
+   "ultimo": 57473.0,
+   "hora": "13:15"
   },
   "ciclo": {
    "id": 2041,
    "puntos": 72,
-   "ultimo": 5917.0,
-   "hora": "18:35"
+   "ultimo": 2502.0,
+   "hora": "13:15"
   },
   "hidro": {
    "id": 2042,
    "puntos": 72,
-   "ultimo": 7201.0,
-   "hora": "18:35"
+   "ultimo": 478.0,
+   "hora": "13:15"
   },
   "eolica": {
    "id": 2038,
    "puntos": 72,
-   "ultimo": 13184.0,
-   "hora": "18:35"
+   "ultimo": 3429.0,
+   "hora": "13:15"
   },
   "solar_fv": {
    "id": 2044,
    "puntos": 72,
-   "ultimo": 130.0,
-   "hora": "18:35"
+   "ultimo": 25639.0,
+   "hora": "13:15"
   },
   "solar_ter": {
    "id": 2045,
    "puntos": 72,
-   "ultimo": 127.0,
-   "hora": "18:35"
+   "ultimo": 522.0,
+   "hora": "13:15"
+  },
+  "solar_ter_pen": {
+   "id": 1294,
+   "puntos": 72,
+   "ultimo": 522.0,
+   "hora": "13:15"
   },
   "co2": {
    "id": 10355,
    "puntos": 72,
-   "ultimo": 0.07,
-   "hora": "18:55"
+   "ultimo": 0.03,
+   "hora": "13:15"
   },
   "exp_andorra": {
    "id": 2068,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "18:35"
+   "hora": "13:15"
   },
   "imp_andorra": {
    "id": 2073,
    "puntos": 72,
-   "ultimo": 37.0,
-   "hora": "18:35"
+   "ultimo": 21.0,
+   "hora": "13:15"
   },
   "exp_marruecos": {
    "id": 2069,
    "puntos": 72,
-   "ultimo": -875.0,
-   "hora": "18:35"
+   "ultimo": -838.0,
+   "hora": "13:15"
   },
   "imp_marruecos": {
    "id": 2074,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "18:35"
+   "hora": "13:15"
   },
   "exp_portugal": {
    "id": 2070,
    "puntos": 72,
-   "ultimo": 0.0,
-   "hora": "18:35"
+   "ultimo": -3633.0,
+   "hora": "13:15"
   },
   "imp_portugal": {
    "id": 2075,
    "puntos": 72,
-   "ultimo": 1934.0,
-   "hora": "18:35"
+   "ultimo": 0.0,
+   "hora": "13:15"
   },
   "exp_francia": {
    "id": 2071,
    "puntos": 72,
-   "ultimo": -1646.0,
-   "hora": "18:35"
+   "ultimo": -449.0,
+   "hora": "13:15"
   },
   "imp_francia": {
    "id": 2076,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "18:35"
+   "hora": "13:15"
   },
   "bombeo_cons": {
    "id": 2078,
    "puntos": 72,
-   "ultimo": 0.0,
-   "hora": "18:35"
+   "ultimo": -1682.0,
+   "hora": "13:15"
   },
   "bombeo_turb": {
    "id": 2079,
    "puntos": 72,
-   "ultimo": 2133.0,
-   "hora": "18:35"
+   "ultimo": 85.0,
+   "hora": "13:15"
   }
  },
- "fallos": [
-  {
-   "id": 2037,
-   "clave": "demanda",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 10004,
-   "clave": "demanda_gen",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2041,
-   "clave": "ciclo",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2042,
-   "clave": "hidro",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2038,
-   "clave": "eolica",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2044,
-   "clave": "solar_fv",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2045,
-   "clave": "solar_ter",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 1294,
-   "clave": "solar_ter_pen",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2068,
-   "clave": "exp_andorra",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2073,
-   "clave": "imp_andorra",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2069,
-   "clave": "exp_marruecos",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2074,
-   "clave": "imp_marruecos",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2070,
-   "clave": "exp_portugal",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2075,
-   "clave": "imp_portugal",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2071,
-   "clave": "exp_francia",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2076,
-   "clave": "imp_francia",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2078,
-   "clave": "bombeo_cons",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  },
-  {
-   "id": 2079,
-   "clave": "bombeo_turb",
-   "tipo": "bloqueo_waf",
-   "motivo": "403 del WAF (Imperva/CloudFront): bloqueo por comportamiento, no falta de clave. Espaciar "
-  }
- ]
+ "fallos": []
 }

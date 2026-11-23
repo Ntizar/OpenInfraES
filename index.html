@@ -2835,9 +2835,18 @@ function pintarSis() {
         fuenteMix = "ENTSO-E" + (mix.hora_ultimo ? " · " + mix.hora_ultimo : " · 15 min") +
                     (edad != null && edad > 75 ? " · hace " + Math.round(edad / 60) + " h" : "");
       }
+      // la demanda solo es «ahora» si el dato es de ahora: si viene heredada del último día
+      // bueno, se dice la fecha y la hora en vez de presumir de presente
+      const serD = v.series.demanda;
+      const demVieja = !!(serD && serD.heredado);
+      const edadD = (serD && serD.edad_min != null) ? serD.edad_min : null;
+      const demAtrasada = demVieja || (edadD != null && edadD > 30);
+      const horaD = (serD ? (serD.hora || "") : "") +
+                    (demVieja && v.fecha ? " · " + v.fecha
+                     : (edadD != null && edadD > 30 ? " · hace " + Math.round(edadD) + " min" : ""));
       h += '<div class="sis-cab"><span class="tot">' + nf(Math.round(est.demanda || 0)) + '</span>' +
-           '<span class="uni">MW de demanda ahora</span><span class="dia">' +
-           (v.series.demanda ? v.series.demanda.hora : "") + '</span></div>';
+           '<span class="uni">MW de demanda ' + (demAtrasada ? '· último dato' : 'ahora') + '</span>' +
+           '<span class="dia">' + horaD + '</span></div>';
       if (gen.length && tot > 0) {
         h += '<div class="cabecera"><span class="n">Generando ahora · ' + fuenteMix + '</span><span class="track"></span>' +
              '<span class="v">MW</span><span class="p">%</span></div>';
@@ -2851,29 +2860,45 @@ function pintarSis() {
         });
       }
       if (tot > 0) {
+        // restar dos instantes distintos no significa nada: la diferencia solo se afirma si
+        // generación y demanda son del mismo cuarto; si no, se dan las dos horas y no se resta
+        const mismoInstante = !demAtrasada && mix && mix.edad_min != null && mix.edad_min <= 30;
         h += '<div class="nota-pie">' + nf(Math.round(tot)) + ' MW generados por las tecnologías ' +
-             'de arriba · demanda ' + nf(Math.round(est.demanda || 0)) + ' MW. La diferencia son ' +
-             'pérdidas, autoconsumo y saldo exterior.</div>';
+             'de arriba' + (mix && mix.hora_ultimo ? ' a las ' + mix.hora_ultimo : '') +
+             ' · demanda ' + nf(Math.round(est.demanda || 0)) + ' MW' +
+             (serD && serD.hora ? ' a las ' + serD.hora : '') + '. ' +
+             (mismoInstante
+               ? 'La diferencia son pérdidas, autoconsumo y saldo exterior.'
+               : 'Son instantes distintos: no se restan (el saldo exterior va medido aparte).') +
+             '</div>';
       }
       // una linea: emisiones, intercambios netos, bombeo
-      const co2 = est.co2 != null ? est.co2.toFixed(3) + " tCO₂/MW" : "—";
+      // la magnitud de ESIOS es tCO₂/MW, que integrada una hora es tCO₂/MWh: se dice la
+      // intensidad, no una potencia disfrazada de emisiones
+      const co2 = est.co2 != null ? est.co2.toFixed(3) + " tCO₂/MWh" : "—";
       const ints = ["francia", "portugal", "marruecos", "andorra"].map(p2 => {
         const e = est["exp_" + p2] || 0, i = est["imp_" + p2] || 0;
         return [p2, Math.round(e - i)];
       }).filter(x => x[1] !== 0);
       const netoInt = ints.reduce((a, x) => a + x[1], 0);
-      h += '<div class="sis-sec">Ahora mismo</div><div class="vivo-fila">' +
-           '<span><b>' + co2 + '</b><i>emisiones asociadas</i></span>' +
+      // ESIOS da el consumo de bombeo en NEGATIVO: restarlo lo sumaba y publicaba 1.767 MW de
+      // bombeo donde había 1.597 consumiendo. Se suman los dos con su signo.
+      const netoBombeo = (est.bombeo_turb || 0) + (est.bombeo_cons || 0);
+      h += '<div class="sis-sec">' + (demAtrasada ? 'Último dato' : 'Ahora mismo') + '</div><div class="vivo-fila">' +
+           '<span><b>' + co2 + '</b><i>intensidad del mix</i></span>' +
            '<span><b>' + (netoInt >= 0 ? "+" : "") + nf(Math.round(netoInt)) + ' MW</b><i>saldo internacional</i></span>' +
-           '<span><b>' + nf(Math.round((est.bombeo_turb || 0) - (est.bombeo_cons || 0))) + ' MW</b><i>bombeo neto</i></span>' +
+           '<span><b>' + (netoBombeo >= 0 ? "+" : "") + nf(Math.round(netoBombeo)) +
+           ' MW</b><i>bombeo neto (negativo = consume)</i></span>' +
            '</div>';
       if (ints.length) {
         h += '<div class="nota-pie">Saldo con ' + ints.map(x => x[0] + " " +
              (x[1] >= 0 ? "+" : "") + nf(x[1])).join(" · ") + ' MW. Positivo = exporta.</div>';
       }
-      if (v.series.demanda && v.series.demanda.heredado) {
-        h += '<div class="nota-pie">Sin actualizar: el WAF de ESIOS bloqueó la descarga. ' +
-             'Último dato bueno de las ' + (v.series.demanda.hora || "") + '.</div>';
+      if (demAtrasada) {
+        h += '<div class="nota-pie">Sin actualizar: ESIOS no devolvió dato fresco (desde el ' +
+             '2026-11-23 da 403 sin clave). Último dato bueno: ' +
+             (serD && serD.heredado_de ? serD.heredado_de
+              : ((v.fecha || "") + ' ' + (serD ? serD.hora : ''))) + '.</div>';
       }
       if (mix && mix.tecnologias) {
         window.__mixEntsoe = mix;   // lo usa la ficha de planta para estimar
@@ -2887,9 +2912,14 @@ function pintarSis() {
                '<span class="mix-p">' + pct.toFixed(1) + '%</span></div>';
         });
         h += '</div>';
-        h += '<div class="nota-pie">' + mix.puntos + ' puntos de 15 min' +
+        const cuartosMix = mix.cuartos_cubiertos || mix.puntos;
+        h += '<div class="nota-pie">' + cuartosMix + ' cuartos de 15 min' +
              (mix.hora_ultimo ? ' · hasta las ' + mix.hora_ultimo : '') + ' · ' +
-             (mix.total_mwh / 1000).toFixed(0) + ' GWh acumulados. ' +
+             (mix.total_mwh / 1000).toFixed(0) + ' GWh acumulados' +
+             (cuartosMix < 96 ? ' (día en curso: faltan cuartos)' : '') + '. ' +
+             (mix.consumo_total_mwh
+               ? 'Bombeo: ' + (mix.consumo_total_mwh / 1000).toFixed(1) +
+                 ' GWh consumidos, que no entran en la generación de arriba. ' : '') +
              'No existe generación por planta en abierto: esto es por tecnología.</div>';
       }
       if (omie && omie.horas) {
@@ -2935,28 +2965,47 @@ function pintarSis() {
       h += '<div class="sis-sec">Previsión (ESIOS)</div><div class="prev">';
       const series = [["prevision_demanda", "Demanda prevista", "MW"],
                       ["prevision_eolica", "Eólica prevista", "MW"]];
+      // ESIOS devuelve TRES días (288 cuartos). Cortar por la cola enseñaba mañana sin decirlo:
+      // se agrupa por día y se enseña hoy (lo que queda) o, si ya no queda, el día siguiente,
+      // con la fecha en el título.
+      const hoyISO = new Date().toLocaleDateString("sv-SE");
       series.forEach(([clave, titulo, uni]) => {
         const ss = p.series[clave];
         if (!ss || !ss.valores || !ss.valores.length) return;
-        const hoy = new Date().toISOString().slice(0, 10);
-        const vals = ss.valores.slice(-96);       // últimas 24 h en cuartos de hora
+        const porDia = {};
+        ss.valores.forEach(v => {
+          const d = (v.t || "").slice(0, 10);
+          if (d) (porDia[d] = porDia[d] || []).push(v);
+        });
+        const dias = Object.keys(porDia).sort();
+        const dia = dias.includes(hoyISO) ? hoyISO : dias[dias.length - 1];
+        let vals = (porDia[dia] || []).slice();
+        if (dia === hoyISO) {
+          const ahora = new Date().toTimeString().slice(0, 5);
+          const restantes = vals.filter(v => (v.t || "").slice(11, 16) >= ahora);
+          if (restantes.length >= 4) vals = restantes;
+        }
+        if (!vals.length) return;
         const max = Math.max(...vals.map(v => v.v || 0), 1);
+        const pico = vals.reduce((a, v) => ((v.v || 0) > (a.v || 0) ? v : a), vals[0]);
         const barras = vals.map(v =>
           '<i style="height:' + Math.max(2, ((v.v || 0) / max) * 52) + 'px" title="' +
           (v.t || "").slice(11, 16) + " · " + nf(v.v) + " " + uni + '"></i>').join("");
         const ultimo = vals[vals.length - 1];
         const ini = (vals[0].t || "").slice(11, 16), fin = (ultimo.t || "").slice(11, 16);
-        const pico = Math.max(...vals.map(v => v.v || 0));
-        h += '<div class="caja"><div class="t">' + titulo + '</div>' +
+        h += '<div class="caja"><div class="t">' + titulo + ' · ' +
+             dia.slice(8) + '/' + dia.slice(5, 7) + '</div>' +
              '<div class="spark">' + barras + '</div>' +
-             '<div class="rango"><span>' + ini + '</span><span>máx ' + nf(Math.round(pico)) + '</span><span>' + fin + '</span></div>' +
-             '<div class="m">' + nf(ultimo.v) + ' <small>' + uni + ' · último dato</small></div></div>';
+             '<div class="rango"><span>' + ini + '</span><span>máx ' + nf(Math.round(pico.v || 0)) +
+             (pico.t ? ' a las ' + pico.t.slice(11, 16) : '') + '</span><span>' + fin + '</span></div>' +
+             '<div class="m">' + nf(ultimo.v) + ' <small>' + uni + ' · ' + fin + '</small></div></div>';
       });
       h += "</div>";
     }
     $("#sis-barras").innerHTML = h;
-    $("#sis-nota").innerHTML = "<b>En vivo</b>: ESIOS, indicadores abiertos sin clave, 5 min. " +
+    $("#sis-nota").innerHTML = "<b>En vivo</b>: ESIOS con clave (desde el 23-11-2026 da 403 sin ella), 5 min. " +
       "<b>Del día</b>: REE apidatos (agregado diario). " +
+      "<b>Mix</b>: ENTSO-E A75, cuartos completados. " +
       "<b>Previsión</b>: ESIOS 460 y 541. Por planta requiere ENTSO-E.";
   });
 }

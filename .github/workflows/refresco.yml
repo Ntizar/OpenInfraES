@@ -49,6 +49,7 @@ jobs:
           : > .env
           # solo se escriben las que existan como secret; las demas quedan vacias y su script
           # se salta en vez de fallar
+          [ -n "${{ secrets.ESIOS_TOKEN }}" ] && echo "ESIOS_TOKEN=${{ secrets.ESIOS_TOKEN }}" >> .env || true
           [ -n "${{ secrets.ENTSOE_TOKEN }}" ] && echo "ENTSOE_TOKEN=${{ secrets.ENTSOE_TOKEN }}" >> .env || true
           [ -n "${{ secrets.NAP_API_KEY }}" ] && echo "NAP_API_KEY=${{ secrets.NAP_API_KEY }}" >> .env || true
           cat .env 2>/dev/null | sed 's/=.*/=<oculto>/' || echo "sin .env"
@@ -59,7 +60,7 @@ jobs:
         # anotacion de aviso en la ejecucion.
         continue-on-error: true
         run: |
-          for s in "ree_vivo.py" "omie.py" "entsoe.py --mix" "aemet_geo.py" "dgt_rt.py --incidencias" "dgt_rt.py --paneles"; do
+          for s in "ree_vivo.py" "omie.py" "entsoe.py --mix" "aemet_geo.py" "dgt_rt.py --incidencias" "dgt_rt.py --paneles" "ree_estado.py" "esios_prevision.py"; do
             echo "=== $s ==="
             rc=0
             salida=$(python scripts/$s 2>&1) || rc=$?
@@ -86,7 +87,13 @@ jobs:
         run: |
           git config user.name "OpenInfraES bot"
           git config user.email "bot@users.noreply.github.com"
-          git add datos/ README.md docs/BIBLIOTECA.md PROYECTO.md 2>/dev/null || true
+          # OJO: un pathspec que no existe tumba el `git add` ENTERO ("fatal: pathspec
+          # 'PROYECTO.md' did not match any files") y el `|| true` lo tapaba: los datos se
+          # refrescaban y nunca se commiteaban. Se añade fichero a fichero, solo si existe.
+          git add -A datos/
+          for f in README.md docs/BIBLIOTECA.md PROYECTO.md GUIA.md; do
+            if [ -e "$f" ]; then git add "$f"; fi
+          done
           if git diff --cached --quiet; then
             echo "sin cambios"
           else

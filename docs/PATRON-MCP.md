@@ -143,8 +143,13 @@ código real de cada una. Si solo hay visor, hay que buscar su endpoint interno 
 visor Hermes de MITMA: abierto y sin clave). **Esto se documenta en `docs/apis.md` con el error literal.**
 
 ### Paso 2 — Probar el catálogo entero, no un ejemplo
-Los 29 indicadores de ESIOS se probaron uno a uno: **19 responden sin token y 10 dan 403**. Nadie lo
+Los 29 indicadores de ESIOS se probaron uno a uno: **19 respondían sin token y 10 daban 403**. Nadie lo
 sabía, ni el propio repo que los usa. Esa tabla es el activo.
+
+> **Ojo, 2026-11-23: eso ya no es cierto.** ESIOS cerró el acceso sin clave: hoy los 19 dan **403** sin
+> `x-api-key` y **200** con ella (medido en el 2037: 36 bytes sin clave, 37.979 con clave). El token
+> pasó a ser obligatorio en `ree_vivo.py` y en los secrets del repo. Un catálogo «abierto» caduca: se
+> vuelve a medir antes de fiarse.
 
 ```
 ID    indicador                      ¿abierto?

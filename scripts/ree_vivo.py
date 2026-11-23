@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-"""REE en vivo — los indicadores de ESIOS que están ABIERTOS sin token.
+"""REE en vivo — demanda, generación, emisiones, intercambios y bombeo de ESIOS.
 
-Se probaron los 29 indicadores que usa el MCP ree-mcp: **19 responden 200 sin clave**
-(demanda, generación por tecnología, emisiones, intercambios y bombeo). Los de precio,
-PVPC y demanda peninsular de 5 min devuelven 403 y sí necesitan token.
+**ESIOS ya NO está abierto.** Hasta el 2026-11-16 los 19 indicadores de este script respondían
+`200` sin clave; el 2026-11-23 dan **`403` sin `x-api-key` y `200` con ella** (medido: 36 bytes
+de cuerpo sin clave, 37.979 con clave en el 2037). Sin token no hay dato en vivo: la capa se
+queda con lo último bueno y su hora, que es honesto pero no es lo que se quiere.
 
 Granularidad real: 5 minutos. Demanda nacional trae 224 valores al día.
 
@@ -27,6 +28,28 @@ from http_oficial import (SinDatos, SinPermiso, NoExiste, PeticionMala,
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEST = os.path.join(RAIZ, "datos")
 BASE = "https://api.esios.ree.es/indicators"
+
+
+def token():
+    """Clave de ESIOS: primero el entorno (CI), luego el .env de casa."""
+    t = os.environ.get("ESIOS_TOKEN")
+    if t and t.strip():
+        return t.strip()
+    ruta = os.path.join(RAIZ, ".env")
+    if not os.path.exists(ruta):
+        return None
+    for linea in open(ruta, encoding="utf-8"):
+        if linea.startswith("ESIOS_TOKEN="):
+            v = linea.split("=", 1)[1].strip()
+            if v:            # una linea vacia arriba no debe tapar la buena
+                return v
+    return None
+
+
+CABECERAS = {}
+_TK = token()
+if _TK:
+    CABECERAS["x-api-key"] = _TK
 
 # unidad real de cada magnitud (ESIOS no la declara en `unit`)
 UNIDADES = {10355: "tCO₂/MW", 1294: "MW", 10004: "MW"}
@@ -57,7 +80,8 @@ ABIERTOS = {
 
 def trae(ind):
     """Un 200 con `values: []` es SIN DATOS, no una averia. El cliente lo distingue."""
-    return pide("%s/%s" % (BASE, ind), vacio_si=("indicator", "values"))
+    return pide("%s/%s" % (BASE, ind), cabeceras=CABECERAS,
+                vacio_si=("indicator", "values"))
 
 
 def limpia(v):
@@ -68,6 +92,20 @@ def limpia(v):
             continue
         salida.append([p["datetime"][11:16], round(float(p["value"]), 2)])
     return salida
+
+
+def edad_min(fecha, hhmm):
+    """Minutos transcurridos desde la marca de la serie (la fuente da fecha + HH:MM)."""
+    try:
+        d = datetime.datetime.fromisoformat("%sT%s" % (fecha, hhmm))
+    except Exception:
+        return None
+    minutos = (datetime.datetime.now() - d).total_seconds() / 60.0
+    if minutos > 12 * 60:          # la marca es de ayer (pasada la medianoche)
+        minutos -= 24 * 60
+    if minutos < -60 or minutos > 24 * 60:
+        return None
+    return int(max(minutos, 0))
 
 
 def main():
@@ -99,6 +137,7 @@ def main():
             series[clave] = {"etiqueta": etiqueta, "grupo": grupo, "id": ind,
                              "unidad": UNIDADES.get(ind, "MW"),
                              "hora": vals[-1][0], "valor": vals[-1][1],
+                             "edad_min": edad_min(fecha, vals[-1][0]),
                              "serie": vals[-72:]}   # últimas ~6 h a 5 min
             estado[clave] = vals[-1][1]
         except (SinPermiso, NoExiste, PeticionMala, ServidorCaido, SinDatos, BloqueoWAF) as e:
@@ -115,10 +154,14 @@ def main():
             fallos.append({"id": ind, "clave": clave, "tipo": "otro", "motivo": str(e)[:90]})
         time.sleep(1.1)
 
+    edades = [v.get("edad_min") for k, v in series.items()
+              if k not in heredados and v.get("edad_min") is not None]
     salida = {
         "fecha": fecha,
         "actualizado": datetime.datetime.now().isoformat(timespec="seconds"),
-        "fuente": "REE · ESIOS (indicadores abiertos, sin clave)",
+        "edad_min": min(edades) if edades else None,
+        "con_clave": bool(_TK),
+        "fuente": "REE · ESIOS (token)" if _TK else "REE · ESIOS (sin clave: 403)",
         "resolucion": "5 minutos",
         "estado": estado,
         "series": series,

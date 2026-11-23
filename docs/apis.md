@@ -91,7 +91,16 @@ fichero de 0 bytes con 200 es un fallo silencioso, no un éxito.
 Ninguno cuesta dinero. Los dos primeros son un formulario.
 
 
-### El 403 de ESIOS no siempre es «falta de clave»
+### El 403 de ESIOS: primero fue el WAF, hoy es la clave (2026-11-23)
+
+**Actualización 2026-11-23:** los 19 indicadores que se leían sin clave **ya no están abiertos**. Medido
+el mismo día: `GET /indicators/2037` sin cabecera → **403 con 36 bytes de cuerpo**;
+con `x-api-key: <token>` → **200 con 37.979 bytes**. La capa «en vivo» (demanda, emisiones,
+intercambios, bombeo) estuvo congelada en el último dato bueno del 16-11 hasta que el token entró en
+`ree_vivo.py` y en los secrets del repo. Moraleja doble: un 403 de ESIOS **puede** ser el WAF, pero
+también puede ser que cerraron la puerta — se distingue probando **con** clave.
+
+Lo que sigue es el caso del WAF, que también ocurrió y volverá a ocurrir con barridos:
 
 Tras ~50 peticiones seguidas, **los 19 indicadores abiertos empezaron a devolver 403**. El cuerpo es
 siempre el mismo genérico:

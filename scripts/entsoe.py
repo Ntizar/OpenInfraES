@@ -106,6 +106,54 @@ def puntos(root):
     return salida
 
 
+def puntos_series(root):
+    """Como `puntos`, pero guardando de que SERIE viene cada punto y su direccion.
+
+    A75 trae varias `TimeSeries` por documento: una por PSRType y, en el bombeo, una por
+    direccion (`inBiddingZone_Domain` = lo que turbina hacia la red, `outBiddingZone_Domain` =
+    lo que consume de la red para bombear). Sin la direccion se suman las dos y el consumo
+    entra en el mix como si fuera generacion.
+    """
+    salida = []
+    for serie in root.iter():
+        if not serie.tag.endswith("TimeSeries"):
+            continue
+        tipo, mrid, direccion = None, None, "generacion"
+        for hijo in serie:
+            if hijo.tag.endswith("MktPSRType"):
+                for h2 in hijo:
+                    if h2.tag.endswith("psrType"):
+                        tipo = h2.text
+            if hijo.tag.endswith("mRID"):
+                mrid = hijo.text
+            if hijo.tag.endswith("outBiddingZone_Domain.mRID"):
+                direccion = "consumo"
+        for periodo in serie:
+            if not periodo.tag.endswith("Period"):
+                continue
+            ini = res = None
+            for h in periodo:
+                if h.tag.endswith("timeInterval"):
+                    for h2 in h:
+                        if h2.tag.endswith("start"):
+                            ini = h2.text
+                if h.tag.endswith("resolution"):
+                    res = h.text
+            for p in periodo:
+                if not p.tag.endswith("Point"):
+                    continue
+                pos = cant = None
+                for h in p:
+                    if h.tag.endswith("position"):
+                        pos = int(h.text)
+                    if h.tag.endswith("quantity"):
+                        cant = float(h.text)
+                salida.append({"tipo": tipo, "mrid": mrid, "direccion": direccion,
+                               "posicion": pos, "valor": cant, "inicio": ini,
+                               "resolucion": res})
+    return salida
+
+
 
 def puntos_precio(root):
     """A44 usa <price.amount>, no <quantity>. Se agrupa por periodo para no mezclar dias."""
@@ -284,6 +332,22 @@ def mix(fecha=None):
 
     Es el dato mas fino que publica REE en abierto. A73 (por unidad/planta) NO existe para
     Espana: el endpoint responde «No matching data found» con cualquier processType.
+
+    Tres reglas que hay que respetar o las cifras salen plausibles y falsas:
+
+    1. A75 da MW MEDIOS del cuarto, no energia: energia = MW x 0,25 h. Sumar MW y llamarlo MWh
+       multiplica por cuatro (daba 1.468 GWh para un dia de ~700).
+    2. ENTSO-E COMPRIME las series (`curveType=A03`): solo manda los puntos donde cambia el
+       valor. Cada punto vale hasta el siguiente, y el ultimo hasta el ultimo cuarto publicado.
+       Contar solo los puntos enviados dejaba la nuclear en 13 de 47 cuartos: 16,8 GWh donde hay
+       ~72, y su porcentaje del mix a un sexto de lo real. El relleno hacia delante no es una
+       estimacion: es como se lee una serie escalonada.
+    3. El bombeo viene en DOS series con el mismo PSRType: `inBiddingZone_Domain` es lo que
+       turbina (generacion) y `outBiddingZone_Domain` lo que consume para bombear. Sumarlas
+       mezcla las dos direcciones y publica consumo como si fuera produccion.
+
+    `pos_max` es el ultimo cuarto publicado del documento: si el dia esta en curso faltan
+    cuartos, y eso se declara por tecnologia en vez de dar el total por cerrado.
     """
     if fecha is None:
         hoy = datetime.date.today()
@@ -294,57 +358,60 @@ def mix(fecha=None):
     root = ET.fromstring(pedir({"documentType": "A75", "processType": "A16",
                                 "in_Domain": ES, "out_Domain": ES,
                                 "periodStart": ini, "periodEnd": fin}))
-    filas = puntos(root)
-    # OJO: A75 da MW MEDIOS de cada cuarto, no energia. Sumar MW y llamarlo MWh multiplica por 4
-    # la cifra (daba 1.468 GWh para un dia de ~700). La energia de un cuarto es MW x 0,25 h.
-    # Cada punto necesita su FECHA: «ultimo» por orden de aparicion daba las 13:30 cuando el
-    # fichero se descargo a esa hora, y el visor lo pintaba como «generando ahora».
-    def _ts(pt):
-        if not pt.get("inicio") or not pt.get("posicion"):
-            return None
-        try:
-            t0 = datetime.datetime.fromisoformat(pt["inicio"].replace("Z", "+00:00"))
-        except ValueError:
-            return None
-        m = re.match(r"PT(\d+)M", pt.get("resolucion") or "PT15M")
-        paso = int(m.group(1)) if m else 15
-        return t0 + datetime.timedelta(minutes=paso * (pt["posicion"] - 1))
+    filas = puntos_series(root)
 
-    ultimo, ultimo_t, acumulado, cuartos = {}, {}, {}, {}
+    # una entrada por serie y posicion: la clave lleva la direccion o el bombeo se mezcla
+    por_serie, inicio0 = {}, None
     for f in filas:
         t = f.get("tipo")
-        if not t or f.get("valor") is None:
+        if not t or f.get("valor") is None or not f.get("posicion"):
             continue
-        v = float(f["valor"])
-        acumulado[t] = acumulado.get(t, 0.0) + v * 0.25
-        cuartos[t] = cuartos.get(t, 0) + 1
-        ts = _ts(f)
-        if ts is None or t not in ultimo_t or ultimo_t[t] is None or ts >= ultimo_t[t]:
-            ultimo[t] = v
-            ultimo_t[t] = ts
+        clave = (t, f.get("mrid") or t, f.get("direccion") or "generacion",
+                 f.get("inicio"), f.get("resolucion") or "PT15M")
+        por_serie.setdefault(clave, {})[f["posicion"]] = float(f["valor"])
+        if f.get("inicio") and (inicio0 is None or f["inicio"] < inicio0):
+            inicio0 = f["inicio"]
+
+    pos_max = max([max(v) for v in por_serie.values()] or [0])
+
+    # energia de cada serie: integral de la escalera (cada punto vale hasta el siguiente)
+    gen_mwh, gen_cuartos, cons_mwh, ult_mw = {}, {}, {}, {}
+    for (tipo, _mrid, direccion, _inicio, _res), pts in por_serie.items():
+        previo = None
+        energia = 0.0
+        cubiertos = 0
+        for pos in range(1, pos_max + 1):
+            if pos in pts:
+                previo = pts[pos]
+            if previo is None:
+                continue                       # la serie aun no ha empezado
+            energia += previo * 0.25
+            cubiertos += 1
+        if not cubiertos:
+            continue
+        if direccion == "consumo":
+            cons_mwh[tipo] = cons_mwh.get(tipo, 0.0) + energia
+        else:
+            gen_mwh[tipo] = gen_mwh.get(tipo, 0.0) + energia
+            gen_cuartos[tipo] = gen_cuartos.get(tipo, 0) + cubiertos
+            ult_mw[tipo] = ult_mw.get(tipo, 0.0) + (previo or 0.0)
 
     # la hora del último cuarto REAL, en hora de Madrid, y cuántos minutos tiene encima
-    hora_ultimo = None
-    try:
-        ts_max = max([x for x in ultimo_t.values() if x], default=None)
-        if ts_max:
+    hora_ultimo, edad_min = None, None
+    if inicio0 and pos_max:
+        try:
+            base = datetime.datetime.fromisoformat(inicio0.replace("Z", "+00:00"))
+            ts_max = base + datetime.timedelta(minutes=15 * (pos_max - 1))
             try:
                 import zoneinfo
                 ts_max = ts_max.astimezone(zoneinfo.ZoneInfo("Europe/Madrid"))
             except Exception:
                 pass
             hora_ultimo = ts_max
-    except ValueError:
-        hora_ultimo = None
-    edad_min = None
-    if hora_ultimo:
-        try:
-            ahora = datetime.datetime.now(hora_ultimo.tzinfo) if hora_ultimo.tzinfo \
-                    else datetime.datetime.now()
-            edad_min = int((ahora - hora_ultimo).total_seconds() // 60)
+            edad_min = int((datetime.datetime.now(hora_ultimo.tzinfo)
+                            - hora_ultimo).total_seconds() // 60)
         except Exception:
-            edad_min = None
-    total_dia = sum(acumulado.values()) or 1.0
+            hora_ultimo, edad_min = None, None
 
     # capacidad instalada por tecnologia, para el factor de carga y la estimacion por planta
     capacidad = {}
@@ -365,21 +432,26 @@ def mix(fecha=None):
     # sumandos de la misma tecnología (B03 y B05 son las dos «carbón») se suman en una fila
     def _nombre(cod):
         return PSR.get(cod, "Otras")
-    nu, ne, nc = {}, {}, {}
-    for c, v in ultimo.items():
-        nu[_nombre(c)] = nu.get(_nombre(c), 0.0) + v
-    for c, v in acumulado.items():
-        ne[_nombre(c)] = ne.get(_nombre(c), 0.0) + v
-    for c, v in cuartos.items():
-        nc[_nombre(c)] = nc.get(_nombre(c), 0) + v
-    acumulado, ultimo, cuartos = ne, nu, nc
+    acumulado, ultimo, cuartos, consumo = {}, {}, {}, {}
+    for c, v in gen_mwh.items():
+        n = _nombre(c)
+        acumulado[n] = acumulado.get(n, 0.0) + v
+        ultimo[n] = ultimo.get(n, 0.0) + ult_mw.get(c, 0.0)
+        cuartos[n] = cuartos.get(n, 0) + gen_cuartos.get(c, 0)
+    for c, v in cons_mwh.items():
+        n = _nombre(c)
+        consumo[n] = consumo.get(n, 0.0) + v
+
+    total_dia = sum(acumulado.values()) or 1.0
+    consumo_total = sum(consumo.values())
 
     techs = [{"codigo": t, "nombre": t,
               "mwh": round(acumulado[t], 1),
               "pct": round(100 * acumulado[t] / total_dia, 2),
-              "ultimo_mw": round(ultimo[t], 1),
+              "ultimo_mw": round(ultimo.get(t, 0.0), 1),
               "cuartos": cuartos[t],
               "horas": round(cuartos[t] * 0.25, 2),
+              "consumo_mwh": round(consumo.get(t, 0.0), 1),
               # factor de carga: energia producida / (potencia instalada x horas transcurridas)
               "factor_carga": None}
              for t in sorted(acumulado, key=lambda x: -acumulado[x])]
@@ -408,23 +480,34 @@ def mix(fecha=None):
         "fecha": hoy.isoformat(),
         "resolucion": "PT15M",
         "puntos": len(filas),
+        "puntos_enviados": len(filas),
+        "cuartos_cubiertos": pos_max,
         "hora_ultimo": hora_ultimo.strftime("%H:%M") if hora_ultimo else None,
         "edad_min": edad_min,
         "series": len(acumulado),
         "total_mwh": round(total_dia, 1),
+        "consumo_total_mwh": round(consumo_total, 1),
+        "consumo_por_tecnologia": {k: round(v, 1) for k, v in consumo.items()},
         "tecnologias": techs,
         "descargado": datetime.datetime.now().isoformat(timespec="seconds"),
-        "unidad": "MWh (MW del cuarto x 0,25 h)",
+        "unidad": "MWh (MW del cuarto x 0,25 h; series comprimidas rellenadas hasta el siguiente punto)",
         "capacidad_tecnologia_mw": {k: round(v, 1) for k, v in capacidad.items()},
         "nota": ("No existe generacion por planta en abierto: ENTSO-E A73 responde «No matching "
-                 "data found» para Espana. Lo mas fino que hay es esto, por tecnologia. Si el dia "
-                 "esta en curso, faltan cuartos: mirar `cuartos` por tecnologia."),
+                 "data found» para Espana. Lo mas fino que hay es esto, por tecnologia. A75 "
+                 "comprime las series (solo manda los puntos donde cambia el valor): cada punto "
+                 "vale hasta el siguiente. El bombeo va en dos series y el consumo se publica "
+                 "aparte, no sumado a la generacion. Si el dia esta en curso, faltan cuartos: "
+                 "mirar `cuartos` por tecnologia."),
     }
     json.dump(salida, open(os.path.join(DEST, "entsoe_mix.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=1)
-    print("  A75 %s · %d puntos · %.1f GWh" % (hoy, len(filas), total_dia / 1000))
+    print("  A75 %s · %d puntos · %d cuartos · %.1f GWh" % (hoy, len(filas), pos_max,
+                                                           total_dia / 1000))
     for t in techs[:8]:
-        print("   %-22s %8.1f GWh  %5.1f%%" % (t["nombre"], t["mwh"] / 1000, t["pct"]))
+        print("   %-22s %8.1f GWh  %5.1f%%  (%d cuartos)" % (t["nombre"], t["mwh"] / 1000,
+                                                             t["pct"], t["cuartos"]))
+    for k, v in consumo.items():
+        print("   consumo %-14s %8.1f MWh" % (k, v))
     return salida
 
 

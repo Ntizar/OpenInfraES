@@ -909,7 +909,7 @@
    "editor": "AEMET · Meteoalerta",
    "licencia": "© AEMET, citar como autora",
    "actualizado": "20261123",
-   "descargado": "2026-11-23T12:27:26",
+   "descargado": "2026-11-23T12:30:35",
    "features": 21,
    "url": "https://www.aemet.es/es/eltiempo/prediccion/avisos",
    "metodo": "tar.gz de GeoJSON de la pagina de avisos (sin clave)"
