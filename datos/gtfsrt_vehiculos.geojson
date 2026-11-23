@@ -1,1 +1,1 @@
-{"type": "FeatureCollection", "features": []}
+{"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1.525086, 41.186302]}, "properties": {"operador": "Renfe", "linea": "R4", "vehiculo": "77400", "etiqueta": "R4-77400", "rumbo": null, "velocidad": null, "ultima": "2026-11-23T02:12:57+00:00", "retraso_s": null}}]}
