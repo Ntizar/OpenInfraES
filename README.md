@@ -111,11 +111,11 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **Agua** | 12 | 21.190 |
 | **Demografía** | 5 | 8.199 |
 | **Transporte** | 13 | 19.176 |
-| **DGT · Tráfico** | 4 | 16.320 |
+| **DGT · Tráfico** | 4 | 15.836 |
 | **Tiempo real** | 3 | 12.294 |
-| **Riesgo** | 3 | 112 |
+| **Riesgo** | 3 | 113 |
 | **Medio ambiente** | 1 | 783 |
-| **Total** | **59** | **93.040** |
+| **Total** | **59** | **92.557** |
 <!-- CIFRAS-GRUPOS:FIN -->
 
 Los objetos se cuentan de los ficheros que usa cada grupo **sin contar dos veces el mismo fichero**
