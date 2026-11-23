@@ -33,19 +33,30 @@ out geom tags;"""
 def overpass(q):
     ultimo = None
     for url in ESPEJOS:
-        for intento in range(2):
-            try:
-                datos = urllib.parse.urlencode({"data": q}).encode()
-                req = urllib.request.Request(url, data=datos, headers=UA)
-                with urllib.request.urlopen(req, timeout=300) as r:
-                    return json.loads(r.read().decode("utf-8"))
-            except Exception as e:
-                ultimo = "%s: %s" % (url.split("/")[2], type(e).__name__)
-                time.sleep(3 * (intento + 1))
+        try:
+            datos = urllib.parse.urlencode({"data": q}).encode()
+            req = urllib.request.Request(url, data=datos, headers=UA)
+            with urllib.request.urlopen(req, timeout=150) as r:
+                return json.loads(r.read().decode("utf-8"))
+        except Exception as e:
+            ultimo = "%s: %s" % (url.split("/")[2], type(e).__name__)
+            time.sleep(2)
     raise RuntimeError(ultimo)
 
 
-d = overpass(Q)
+try:
+    d = overpass(Q)
+except RuntimeError as e:
+    # Una fuente caida no puede pintar el refresco de rojo ni tirar el dato que ya sirve:
+    # se queda el GeoJSON anterior y el recibo lo marca `heredado` por antiguedad.
+    previo = os.path.join(DEST, "agua-conducciones.geojson")
+    if not os.path.exists(previo):
+        raise
+    with open(previo, encoding="utf-8") as fh:
+        n = len(json.load(fh).get("features", []))
+    print("aviso: Overpass no responde (%s); se mantiene el dato anterior (%d tramos)" % (e, n))
+    raise SystemExit(0)
+
 feats = []
 for el in d.get("elements", []):
     t = el.get("tags", {})

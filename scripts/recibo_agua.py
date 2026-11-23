@@ -6,6 +6,7 @@ porque la descarga de OSM se corta a veces por timeout y el recibo no llega a es
 """
 import json
 import os
+import time
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATOS = os.path.join(RAIZ, "datos")
@@ -29,6 +30,13 @@ for capa, (fich, titulo) in CAPAS.items():
     recibo[capa] = {"features": len(feats), "con_nombre": con_nombre,
                     "nombres": len(nombres), "titulo": titulo,
                     "fichero": fich, "kb": round(os.path.getsize(ruta) / 1024)}
+    # Frescura medida por mtime: si el refresco semanal no pudo bajar la capa, el recibo lo
+    # dice (`estado: heredado`) en vez de callarse, y se limpia solo cuando llega dato nuevo.
+    mtime = os.path.getmtime(ruta)
+    recibo[capa]["refrescado_en"] = time.strftime("%Y-%m-%dT%H:%MZ", time.gmtime(mtime))
+    if (time.time() - mtime) / 86400 > 8:
+        recibo[capa]["estado"] = "heredado"
+        recibo[capa]["heredado_en"] = recibo[capa]["refrescado_en"]
     print("  %-18s %5d features (%d con nombre) %5.0f KB" % (capa, len(feats), con_nombre,
           os.path.getsize(ruta) / 1024))
 

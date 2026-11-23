@@ -173,11 +173,15 @@ def main():
                                      "agua-conducciones": "Conducciones de agua"}.get(capa, capa),
             "fuente": OSM["nombre"], "editor": OSM["editor"],
             "licencia": OSM["licencia"],
-            "actualizado": HOY, "descargado": HOY,
+            "actualizado": (r.get("refrescado_en") or HOY)[:10],
+            "descargado": (r.get("refrescado_en") or HOY)[:10],
             "features": r.get("features"),
             "url": OSM["url"],
             "metodo": "%s · %d con nombre" % (OSM["metodo"], r.get("con_nombre", 0)),
         }
+        if r.get("estado"):
+            fuentes[capa]["estado"] = r["estado"]
+
 
     # el recibo de Hermes puede no tener una capa descargada aparte: se completa contando el fichero
     carpeta = os.path.join(DATOS, "hermes")
