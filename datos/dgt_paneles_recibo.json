@@ -4,48 +4,48 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 1019,
- "paneles_localizados": 2534,
- "descargado": "2026-11-18T19:30:24",
+ "features": 679,
+ "paneles_localizados": 2537,
+ "descargado": "2026-11-23T12:46:15",
  "mensajes_top": [
   {
-   "texto": "MODERE LA VELOCIDAD",
-   "paneles": 102
-  },
-  {
-   "texto": "CON LLUVIA MODERE VELOCIDAD",
-   "paneles": 99
-  },
-  {
-   "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
-   "paneles": 94
+   "texto": "VELOCIDAD CONTROLADA POR RADAR",
+   "paneles": 81
   },
   {
    "texto": "@H @F",
-   "paneles": 83
+   "paneles": 78
   },
   {
-   "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 77
-  },
-  {
-   "texto": "SOL BAJO MODERE VELOCIDAD",
-   "paneles": 31
+   "texto": "CONTROL MOVIL DE VELOCIDAD",
+   "paneles": 15
   },
   {
    "texto": "MODERE VELOCIDAD",
-   "paneles": 27
+   "paneles": 14
+  },
+  {
+   "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
+   "paneles": 9
+  },
+  {
+   "texto": "HASTA KM 73",
+   "paneles": 9
   },
   {
    "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
    "paneles": 8
   },
   {
-   "texto": "CONTROL MOVIL DE VELOCIDAD",
+   "texto": "CONTROL DE VELOCIDAD POR RADAR · CONTROL DE VELOCIDADE POR RADAR",
    "paneles": 8
   },
   {
-   "texto": "CONTROL DE VELOCIDAD POR RADAR",
+   "texto": "CARRIL IZQUIERDO BUS-VAO · CARRIL ESQUERRE BUS-VAO",
+   "paneles": 7
+  },
+  {
+   "texto": "PRECAUCION ZONA DE OBRAS",
    "paneles": 7
   }
  ]
