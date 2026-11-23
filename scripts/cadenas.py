@@ -72,6 +72,19 @@ CADENAS = {
                     "Dominio público. Es infraestructura física: no trae tráfico ni pasajeros, eso es MITMA."),
     "alertas-gdacs": ("GDACS — Comisión Europea (JRC)", "Descarga directa del RSS público",
                       "Acumulativa por (tipo, id) con ventana de 120 días; el nivel de alerta va en el dato."),
+    # --- MITECO · OGC API Features (datos de alto valor, Reglamento UE 2023/138) ---
+    "aforos": ("MITECO — Red Integrada de Estaciones de Aforo (SAIH-ROEA)",
+               "OGC API Features del propio ministerio",
+               "Colección agua:Estaciones_Aforos. Es la estación de aforo, no el caudal: el caudal "
+               "en vivo es otro dato y no está abierto en la misma colección."),
+    "canales-miteco": ("Confederaciones hidrográficas / MITECO — red de canales principales",
+                       "OGC API Features del propio ministerio",
+                       "Colección agua:canales (792 trazos). No confundir con la capa de OSM: "
+                       "aquella son 10.800 acequias mapeadas, esta es la red principal declarada."),
+    "calidad-aire-estaciones": ("MITECO y comunidades autónomas — red de evaluación de la calidad del aire",
+                                "OGC API Features del propio ministerio",
+                                "Colección evaluacionambiental:ca_red_estaciones. Son las estaciones, "
+                                "no las medidas: el índice horario va por otra vía y no se publica aquí."),
 }
 
 
@@ -119,6 +132,7 @@ ORGANISMOS = {
     "nap-lineas-metro": "NAP · MITMA", "nap-lineas-cercanias": "NAP · MITMA",
     "dgt-camaras": "DGT", "dgt-incidencias": "DGT", "dgt-paneles": "DGT", "dgt-electrolineras": "DGT", "gtfsrt": "Renfe", "aemet-zonas": "AEMET",
     "aeropuertos": "OurAirports", "alertas-gdacs": "GDACS (JRC · Comisión Europea)",
+    "aforos": "MITECO", "canales-miteco": "MITECO", "calidad-aire-estaciones": "MITECO",
 }
 
 

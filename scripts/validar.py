@@ -224,6 +224,9 @@ def main():
     capas = leer_array_capas(html)
 
     # (a) un valor con pinta de codigo que no esta en el diccionario saldria crudo en la ficha
+    # Los campos de TEXTO LIBRE no se revisan: un toponimo puede ser camelCase («vVadillo», en la
+    # red de canales del MITECO) y no es un codigo sin traducir. La revision es para enumerados.
+    TEXTO_LIBRE = {"nombre", "titulo", "descripcion", "mensaje", "lugar", "toma", "nota"}
     crudos = {}
     vistos_fich = set()
     for c in capas:
@@ -240,7 +243,7 @@ def main():
             continue
         for ft in d.get("features", [])[:5000]:
             for k, v in (ft.get("properties") or {}).items():
-                if k.endswith("__v") or k.endswith("__f"):
+                if k.endswith("__v") or k.endswith("__f") or k in TEXTO_LIBRE:
                     continue
                 if isinstance(v, str) and (camel.match(v) or under.match(v)) and v not in traducidos:
                     crudos.setdefault(k, set()).add(v)

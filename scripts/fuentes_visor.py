@@ -390,6 +390,29 @@ def main():
                              "descargado": HOY, "features": r.get("features"),
                              "url": url, "metodo": met}
 
+    # --- MITECO · OGC API Features: aforos, canales y calidad del aire ---
+    # Una sola via para las tres colecciones; el recibo de cada una declara la coleccion exacta,
+    # el numberMatched de la fuente y cuantos objetos se guardaron.
+    for capa, fich, titulo, met in (
+        ("aforos", "aforos_recibo.json", "Estaciones de aforo (SAIH-ROEA)",
+         "OGC API Features, coleccion agua:Estaciones_Aforos"),
+        ("canales-miteco", "canales-miteco_recibo.json", "Red de canales principales",
+         "OGC API Features, coleccion agua:canales, simplificado a ~22 m"),
+        ("calidad-aire-estaciones", "calidad-aire-estaciones_recibo.json",
+         "Estaciones de calidad del aire",
+         "OGC API Features, coleccion evaluacionambiental:ca_red_estaciones"),
+    ):
+        r = leer(fich, {})
+        if r:
+            fuentes[capa] = {
+                "capa": capa, "titulo": titulo,
+                "fuente": "MITECO", "editor": "MITECO · OGC API Features (GeoServer)",
+                "licencia": "Reutilización Ley 37/2007 con atribución",
+                "actualizado": None, "descargado": (r.get("descargado") or HOY)[:10],
+                "features": r.get("features"),
+                "url": r.get("url"), "metodo": met,
+            }
+
     # --- NAP: paradas de GTFS (Metro, Cercanías, AVE) ---
     for capa, etq, titulo in (
         ("nap-metro", "metro-madrid", "Metro de Madrid (NAP)"),

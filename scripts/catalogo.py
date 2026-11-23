@@ -101,6 +101,10 @@ TTL = {
     "ine-paro": (7776000, "trimestral (EPA)", "foto"),
     "aeropuertos": (604800, "semanal", "foto"),
     "alertas-gdacs": (10368000, "acumulativa (ventana de 120 días)", "foto"),
+    # OGC API Features del MITECO: inventarios que se actualizan con cada planificación
+    "aforos": (7776000, "trimestral", "foto"),
+    "canales-miteco": (7776000, "trimestral", "foto"),
+    "calidad-aire-estaciones": (7776000, "trimestral", "foto"),
 }
 TTL_DEFECTO = (2592000, "mensual o inferior", "foto")
 

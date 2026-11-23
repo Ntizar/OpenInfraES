@@ -1,0 +1,18 @@
+{
+ "capa": "calidad-aire-estaciones",
+ "titulo": "Estaciones de calidad del aire",
+ "fuente": "MITECO",
+ "editor": "MITECO · OGC API Features (GeoServer)",
+ "producto": "Conjunto de datos de alto valor (HVD) publicado como coleccion OGC API Features",
+ "coleccion": "evaluacionambiental:ca_red_estaciones",
+ "url": "https://gis.miteco.gob.es/geoserver/ogc/features/v1/collections/evaluacionambiental%3Aca_red_estaciones",
+ "licencia": "Reutilización Ley 37/2007 con atribución (© MITECO)",
+ "crs": "EPSG:4326 (CRS84)",
+ "features": 783,
+ "descartados_sin_geometria": 0,
+ "numberMatched": 783,
+ "bytes": 156790,
+ "kb": 153.1,
+ "descargado": "2026-11-23T19:25:35",
+ "metodo": "OGC API Features: gis.miteco.gob.es/geoserver/ogc/features/v1/collections/evaluacionambiental:ca_red_estaciones/items, lotes de 1000"
+}

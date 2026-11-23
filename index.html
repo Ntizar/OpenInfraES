@@ -1480,6 +1480,17 @@ const CAPAS = [
   { id:"alertas-gdacs", grupo:"Riesgo", label:"Alertas de desastre (120 días)", tipo:"punto", on:false,
     color:"#22c55e", fichero:"datos/alertas-gdacs.geojson", radio:7, siempreIndividual:true,
     colorCampo:"color", popupTitulo:"titulo" },
+  /* --- MITECO · OGC API Features (datos de alto valor). Una sola API oficial para las tres:
+     GeoJSON nativo, sin clave y con CORS. La ficha del objeto enseña solo los campos que se
+     leen; el original trae 45 columnas y ninguna pantalla aguanta eso. --- */
+  { id:"aforos", grupo:"Agua", label:"Estaciones de aforo (SAIH-ROEA)", tipo:"punto", on:false,
+    color:"#38bdf8", fichero:"datos/aforos.geojson", radio:4.4, zoomMin:0, popupTitulo:"nombre" },
+  { id:"canales-miteco", grupo:"Agua", label:"Canales principales (MITECO)", tipo:"linea", on:false,
+    color:"#0ea5e9", fichero:"datos/canales-miteco.geojson", peso:1.4, opacidad:.75, zoomMin:6,
+    popupTitulo:"nombre" },
+  { id:"calidad-aire-estaciones", grupo:"Medio ambiente", label:"Estaciones de calidad del aire", tipo:"punto", on:false,
+    color:"#a3e635", fichero:"datos/calidad-aire-estaciones.geojson", radio:4.2, zoomMin:0,
+    popupTitulo:"nombre" },
   /* --- ráster oficial. Solo el PNOA publica teselas en EPSG:3857, que es el CRS del mapa.
      La hidrografía del IDEe y el Catastro solo sirven WMS en 4326/25830: mezclar CRS en
      Leaflet pide el bbox en un sistema y coloca el tile en otro, y salen parches de otra zona. --- */
@@ -2129,7 +2140,12 @@ const ETIQUETA = {
   iata:"Código IATA", icao:"Código OACI", elevacion_m:"Altitud (m)",
   servicio_programado:"Vuelo regular", enlace:"Enlace oficial",
   tipo_evento:"Tipo de evento", nivel:"Nivel de alerta", pais:"País", publicado:"Publicado",
-  titulo:"Título"
+  titulo:"Título",
+  // OGC API Features del MITECO (aforos, canales, calidad del aire)
+  organismo:"Organismo de cuenca", situacion:"Situación", cota_m:"Cota (m)",
+  inicio:"Año de inicio de medidas", transmision:"Transmisión", sensor:"Sensor",
+  codigo_saih:"Código SAIH", codigo_europeo:"Código europeo", demarcacion:"Demarcación",
+  codigo:"Código", toma:"Toma", codigo_canal:"Código de canal"
 };
 
 function nombreCampo(k) {

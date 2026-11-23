@@ -1,0 +1,18 @@
+{
+ "capa": "aforos",
+ "titulo": "Estaciones de aforo (SAIH-ROEA)",
+ "fuente": "MITECO",
+ "editor": "MITECO · OGC API Features (GeoServer)",
+ "producto": "Conjunto de datos de alto valor (HVD) publicado como coleccion OGC API Features",
+ "coleccion": "agua:Estaciones_Aforos",
+ "url": "https://gis.miteco.gob.es/geoserver/ogc/features/v1/collections/agua%3AEstaciones_Aforos",
+ "licencia": "Reutilización Ley 37/2007 con atribución (© MITECO)",
+ "crs": "EPSG:4326 (CRS84)",
+ "features": 2191,
+ "descartados_sin_geometria": 0,
+ "numberMatched": 2191,
+ "bytes": 677236,
+ "kb": 661.4,
+ "descargado": "2026-11-23T19:25:32",
+ "metodo": "OGC API Features: gis.miteco.gob.es/geoserver/ogc/features/v1/collections/agua:Estaciones_Aforos/items, lotes de 1000"
+}

@@ -33,7 +33,11 @@ Documentación: [`docs/PROYECTO.md`](docs/PROYECTO.md) (visión general) · [`do
 ## Cómo añadir una capa
 
 1. **Script propio** en `scripts/<fuente>.py`: descarga, normaliza y escribe su `_recibo.json`.
-2. **Simplificar** si trae geometría: añadirla a `scripts/simplificar.py` con su tolerancia.
+   Si la fuente es una API OGC API Features (MITECO, IDEE), no escribas otra descarga: añade una
+   entrada al diccionario `CAPAS` de `scripts/miteco_ogc.py`.
+2. **Simplificar** si trae geometría: `scripts/simplificar.py` con su tolerancia, o en el propio
+   capturador cuando la capa llega de una API (`simplificar: 0.0002` en `miteco_ogc.py`), dejando la
+   tolerancia en el recibo (`simplificado_m`).
 3. **Declarar la fuente** en `scripts/fuentes_visor.py` (el id del visor y el id del origen no siempre
    coinciden: hay un mapa de alias) y en `scripts/cadenas.py` (productor → publica → descarga).
 4. **Añadir la capa** al array `CAPAS` de `index.html`, con `zoomMin` si a escala nacional no aporta.
