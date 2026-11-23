@@ -57,6 +57,26 @@ CAPAS = {
         "campos": {"nombre": "nombre", "cod_nacional": "codigo", "cod_europeo": "codigo_europeo",
                    "municipio": "municipio"},
     },
+    "masas-subterraneas": {
+        "coleccion": "agua:estado_masas_aguasub_2027_global",
+        "titulo": "Masas de agua subterránea (estado)",
+        # 97 MB de polígonos sin tocar: la geometría oficial viene con un detalle de escala de
+        # detalle. A 220 m (0,002°) sigue teniendo la forma y el visor la puede mover.
+        "simplificar": 0.002,
+        "campos": {"cod_masa": "codigo", "nom_masa": "nombre", "nom_demarc": "demarcacion",
+                   "est_global": "estado_global", "est_cu_desc": "estado_cuantitativo",
+                   "est_qu_desc": "estado_quimico", "riesgo_cu": "riesgo_cuantitativo",
+                   "riesgo_qu": "riesgo_quimico", "f_bue_est_cu": "periodo"},
+    },
+    "dpmt": {
+        "coleccion": "costas:dominio_publico_maritimo_terrestre",
+        "titulo": "Dominio público marítimo-terrestre",
+        # 12.684 tramos de línea de costa: sin tocar son varios MB de vértices que a escala
+        # nacional no se ven. Douglas-Peucker a ~22 m y se declara en el recibo.
+        "simplificar": 0.0002,
+        "campos": {"tm": "municipio", "provincia": "provincia", "referencia": "referencia",
+                   "tipo_linea": "tipo_linea", "sit_admin": "situacion", "estado": "estado"},
+    },
 }
 
 VACIOS = ("", "None", "none", "null", "NULL", "-")
@@ -119,12 +139,51 @@ def _dp(puntos, tol):
     return [p for p, k in zip(puntos, keep) if k]
 
 
+def _anillo(puntos, tol):
+    """Anillo de polígono: se cierra antes de simplificar y se comprueba que sigue cerrado."""
+    if len(puntos) < 4:
+        return puntos
+    base = puntos[:-1] if puntos[0] == puntos[-1] else puntos[:]
+    if len(base) < 3:
+        return puntos
+    out = _dp(base + [base[0]], tol)
+    if out[0] != out[-1]:
+        out.append(out[0])
+    return out
+
+
 def simplifica_geometria(g, tol):
-    if g.get("type") == "LineString":
-        return {"type": "LineString", "coordinates": _dp(g["coordinates"], tol)}
-    if g.get("type") == "MultiLineString":
-        return {"type": "MultiLineString",
-                "coordinates": [_dp(c, tol) for c in g["coordinates"] if len(c) > 1]}
+    t = g.get("type")
+    if t == "LineString":
+        return {"type": t, "coordinates": _dp(g["coordinates"], tol)}
+    if t == "MultiLineString":
+        return {"type": t, "coordinates": [_dp(c, tol) for c in g["coordinates"] if len(c) > 1]}
+    if t == "Polygon":
+        return {"type": t, "coordinates": [_anillo(r, tol) for r in g["coordinates"]]}
+    if t == "MultiPolygon":
+        return {"type": t, "coordinates": [[_anillo(r, tol) for r in poly] for poly in g["coordinates"]]}
+    return g
+
+
+def redondea(g, dec=5):
+    """5 decimales son ~1 m: mas precision en un GeoJSON de 100 MB es ruido que no se pinta."""
+    t = g.get("type")
+    if t == "Point":
+        return {"type": t, "coordinates": [round(c, dec) for c in g["coordinates"]]}
+    if t in ("LineString", "MultiLineString", "Polygon", "MultiPolygon"):
+        def rp(c):
+            return [round(c[0], dec), round(c[1], dec)]
+        def rl(lista):
+            return [rp(c) for c in lista]
+        if t == "LineString":
+            coords = rl(g["coordinates"])
+        elif t == "MultiLineString":
+            coords = [rl(l) for l in g["coordinates"]]
+        elif t == "Polygon":
+            coords = [rl(r) for r in g["coordinates"]]
+        else:
+            coords = [[rl(r) for r in poly] for poly in g["coordinates"]]
+        return {"type": t, "coordinates": coords}
     return g
 
 
@@ -169,6 +228,7 @@ def descargar(clave, cfg):
                 g["coordinates"] = [y, x]
         if cfg.get("simplificar"):
             g = simplifica_geometria(g, cfg["simplificar"])
+        g = redondea(g)
         salida.append({"type": "Feature", "geometry": g, "properties": nuevo})
 
     ruta = os.path.join(DATOS, clave + ".geojson")

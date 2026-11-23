@@ -1,21 +1,21 @@
 {
- "generado": "2026-11-23T18:36:51",
+ "generado": "2026-11-23T19:47:29",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 80,
+ "total": 82,
  "resumen": {
-  "licencia_si": 75,
+  "licencia_si": 77,
   "licencia_pendiente": 5,
   "caducados": 27,
-  "oficiales": 66,
+  "oficiales": 68,
   "comunitarias": 14,
   "por_jerarquia": {
-   "1": 48,
+   "1": 50,
    "2": 18,
    "3": 14
   },
   "descargables_ligeros": 38,
-  "kb_total": 82505.7
+  "kb_total": 90635.3
  },
  "avisos": {
   "pendiente": [
@@ -592,6 +592,33 @@
    "features": 604,
    "bytes": 128927,
    "kb": 125.9,
+   "fecha_dato": "2026-11-23",
+   "fecha_descarga": "2026-11-23",
+   "edad_dias": 0,
+   "caducado": false
+  },
+  "dpmt": {
+   "id": "dpmt",
+   "titulo": "Dominio público marítimo-terrestre",
+   "organismo": "MITECO",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "OGC API Features, coleccion costas:dominio_publico_maritimo_terrestre, simplificado a ~22 m",
+   "licencia": {
+    "estado": "si",
+    "nombre": "Reutilización Ley 37/2007 con atribución",
+    "url_terminos": "https://www.miteco.gob.es/es/aviso-legal"
+   },
+   "endpoint": "https://gis.miteco.gob.es/geoserver/ogc/features/v1/collections/costas%3Adominio_publico_maritimo_terrestre",
+   "modo": "foto",
+   "frecuencia_fuente": "por deslinde aprobado",
+   "ttl_segundos": 31536000,
+   "ultima_verificacion": "2026-11-23",
+   "crs": "EPSG:4326",
+   "features": 12684,
+   "bytes": 6215578,
+   "kb": 6069.9,
    "fecha_dato": "2026-11-23",
    "fecha_descarga": "2026-11-23",
    "edad_dias": 0,
@@ -1402,6 +1429,33 @@
    "features": null,
    "bytes": 1585833,
    "kb": 1548.7,
+   "fecha_dato": "2026-11-23",
+   "fecha_descarga": "2026-11-23",
+   "edad_dias": 0,
+   "caducado": false
+  },
+  "masas-subterraneas": {
+   "id": "masas-subterraneas",
+   "titulo": "Masas de agua subterránea (estado)",
+   "organismo": "MITECO",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "OGC API Features, coleccion agua:estado_masas_aguasub_2027_global, simplificado a ~220 m",
+   "licencia": {
+    "estado": "si",
+    "nombre": "Reutilización Ley 37/2007 con atribución",
+    "url_terminos": "https://www.miteco.gob.es/es/aviso-legal"
+   },
+   "endpoint": "https://gis.miteco.gob.es/geoserver/ogc/features/v1/collections/agua%3Aestado_masas_aguasub_2027_global",
+   "modo": "foto",
+   "frecuencia_fuente": "por ciclo de planificación (6 años)",
+   "ttl_segundos": 31536000,
+   "ultima_verificacion": "2026-11-23",
+   "crs": "EPSG:4326",
+   "features": 804,
+   "bytes": 2109183,
+   "kb": 2059.7,
    "fecha_dato": "2026-11-23",
    "fecha_descarga": "2026-11-23",
    "edad_dias": 0,

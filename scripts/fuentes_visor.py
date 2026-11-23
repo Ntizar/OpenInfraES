@@ -401,6 +401,11 @@ def main():
         ("calidad-aire-estaciones", "calidad-aire-estaciones_recibo.json",
          "Estaciones de calidad del aire",
          "OGC API Features, coleccion evaluacionambiental:ca_red_estaciones"),
+        ("masas-subterraneas", "masas-subterraneas_recibo.json",
+         "Masas de agua subterránea (estado)",
+         "OGC API Features, coleccion agua:estado_masas_aguasub_2027_global, simplificado a ~220 m"),
+        ("dpmt", "dpmt_recibo.json", "Dominio público marítimo-terrestre",
+         "OGC API Features, coleccion costas:dominio_publico_maritimo_terrestre, simplificado a ~22 m"),
     ):
         r = leer(fich, {})
         if r:

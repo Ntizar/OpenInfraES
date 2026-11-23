@@ -85,6 +85,14 @@ CADENAS = {
                                 "OGC API Features del propio ministerio",
                                 "Colección evaluacionambiental:ca_red_estaciones. Son las estaciones, "
                                 "no las medidas: el índice horario va por otra vía y no se publica aquí."),
+    "masas-subterraneas": ("MITECO y confederaciones hidrográficas — masas de agua subterránea (PHC 2022-2027)",
+                           "OGC API Features del propio ministerio",
+                           "Colección agua:estado_masas_aguasub_2027_global. El estado es el que declara "
+                           "el plan hidrológico vigente, no una medición de hoy."),
+    "dpmt": ("Dirección General de la Costa y del Mar (MITECO) — deslinde del dominio público",
+             "OGC API Features del propio ministerio",
+             "Colección costas:dominio_publico_maritimo_terrestre. Cada tramo lleva su referencia de "
+             "deslinde y la orden ministerial; es un límite administrativo, no una cota de marea."),
 }
 
 
@@ -133,6 +141,7 @@ ORGANISMOS = {
     "dgt-camaras": "DGT", "dgt-incidencias": "DGT", "dgt-paneles": "DGT", "dgt-electrolineras": "DGT", "gtfsrt": "Renfe", "aemet-zonas": "AEMET",
     "aeropuertos": "OurAirports", "alertas-gdacs": "GDACS (JRC · Comisión Europea)",
     "aforos": "MITECO", "canales-miteco": "MITECO", "calidad-aire-estaciones": "MITECO",
+    "masas-subterraneas": "MITECO", "dpmt": "MITECO",
 }
 
 

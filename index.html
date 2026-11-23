@@ -1491,6 +1491,13 @@ const CAPAS = [
   { id:"calidad-aire-estaciones", grupo:"Medio ambiente", label:"Estaciones de calidad del aire", tipo:"punto", on:false,
     color:"#a3e635", fichero:"datos/calidad-aire-estaciones.geojson", radio:4.2, zoomMin:8,
     popupTitulo:"nombre" },
+  { id:"masas-subterraneas", grupo:"Agua", label:"Masas de agua subterránea", tipo:"poligono", on:false,
+    color:"#facc15", fichero:"datos/masas-subterraneas.geojson", opacidad:.16, peso:1, zoomMin:0,
+    colorCampo:"estado_global", colores:{"Bueno":"#4ade80", "Malo":"#f87171"},
+    popupTitulo:"nombre" },
+  { id:"dpmt", grupo:"Medio ambiente", label:"Dominio público marítimo-terrestre", tipo:"linea", on:false,
+    color:"#f59e0b", fichero:"datos/dpmt.geojson", peso:1.5, opacidad:.85, zoomMin:7,
+    popupTitulo:"municipio" },
   /* --- ráster oficial. Solo el PNOA publica teselas en EPSG:3857, que es el CRS del mapa.
      La hidrografía del IDEe y el Catastro solo sirven WMS en 4326/25830: mezclar CRS en
      Leaflet pide el bbox en un sistema y coloca el tile en otro, y salen parches de otra zona. --- */
@@ -2145,7 +2152,12 @@ const ETIQUETA = {
   organismo:"Organismo de cuenca", situacion:"Situación", cota_m:"Cota (m)",
   inicio:"Año de inicio de medidas", transmision:"Transmisión", sensor:"Sensor",
   codigo_saih:"Código SAIH", codigo_europeo:"Código europeo", demarcacion:"Demarcación",
-  codigo:"Código", toma:"Toma", codigo_canal:"Código de canal"
+  codigo:"Código", toma:"Toma", codigo_canal:"Código de canal",
+  // masas de agua subterránea (PHC 2022-2027) y deslinde de costas
+  estado_global:"Estado global", estado_cuantitativo:"Estado cuantitativo",
+  estado_quimico:"Estado químico", riesgo_cuantitativo:"Riesgo cuantitativo",
+  riesgo_quimico:"Riesgo químico", periodo:"Periodo evaluado",
+  tipo_linea:"Tipo de línea", referencia:"Referencia del deslinde"
 };
 
 function nombreCampo(k) {

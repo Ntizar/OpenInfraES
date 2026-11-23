@@ -105,6 +105,8 @@ TTL = {
     "aforos": (7776000, "trimestral", "foto"),
     "canales-miteco": (7776000, "trimestral", "foto"),
     "calidad-aire-estaciones": (7776000, "trimestral", "foto"),
+    "masas-subterraneas": (31536000, "por ciclo de planificación (6 años)", "foto"),
+    "dpmt": (31536000, "por deslinde aprobado", "foto"),
 }
 TTL_DEFECTO = (2592000, "mensual o inferior", "foto")
 
