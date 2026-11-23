@@ -1,39 +1,11 @@
 {
  "trasvases": [
   {
-   "nombre": "Canal de Trasvase Entrepeñas–Buendía",
-   "tramos": 1,
-   "trazos": 1,
-   "km": 0.8,
-   "descartados": 0
-  },
-  {
-   "nombre": "Trasvase Cerneja-Ordunte",
-   "tramos": 4,
-   "trazos": 1,
-   "km": 5.0,
-   "descartados": 0
-  },
-  {
-   "nombre": "Trasvase Curueño-Porma",
-   "tramos": 5,
-   "trazos": 1,
-   "km": 6.7,
-   "descartados": 0
-  },
-  {
    "nombre": "Trasvase de la Llanura Manchega",
    "tramos": 3,
    "trazos": 1,
    "km": 162.7,
    "descartados": 0
-  },
-  {
-   "nombre": "Trasvase Murias-Tuerto",
-   "tramos": 4,
-   "trazos": 1,
-   "km": 2.2,
-   "descartados": 1
   },
   {
    "nombre": "Trasvase Picadas Toledo",
@@ -44,16 +16,9 @@
   },
   {
    "nombre": "Trasvase Tajo-Segura",
-   "tramos": 79,
-   "trazos": 3,
-   "km": 253.0,
-   "descartados": 7
-  },
-  {
-   "nombre": "Túnel del Trasvase del Río Alhama",
-   "tramos": 4,
-   "trazos": 1,
-   "km": 9.1,
+   "tramos": 3,
+   "trazos": 2,
+   "km": 16.9,
    "descartados": 0
   }
  ],

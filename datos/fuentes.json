@@ -310,7 +310,7 @@
    "licencia": "ODbL 1.0",
    "actualizado": "2026-11-23",
    "descargado": "2026-11-23",
-   "features": 3039,
+   "features": 3040,
    "url": "https://www.openstreetmap.org",
    "metodo": "Overpass API (man_made=*) · 1648 con nombre"
   },
@@ -334,9 +334,9 @@
    "licencia": "ODbL 1.0",
    "actualizado": "2026-11-23",
    "descargado": "2026-11-23",
-   "features": 10918,
+   "features": 2829,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (man_made=*) · 10918 con nombre"
+   "metodo": "Overpass API (man_made=*) · 579 con nombre"
   },
   "carreteras": {
    "capa": "carreteras",
@@ -682,9 +682,9 @@
    "licencia": "ODbL 1.0",
    "actualizado": "2026-11-23",
    "descargado": "2026-11-23",
-   "features": 8,
+   "features": 3,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (man_made=*) · 106 tramos unidos en 11 trazos de 8 trasvases (scripts/unir_trasvases_v2.py, tolerancia 66 m)"
+   "metodo": "Overpass API (man_made=*) · 12 tramos unidos en 5 trazos de 3 trasvases (scripts/unir_trasvases_v2.py, tolerancia 66 m)"
   },
   "canales": {
    "capa": "canales",
@@ -694,7 +694,7 @@
    "licencia": "ODbL 1.0",
    "actualizado": "2026-11-23",
    "descargado": "2026-11-23",
-   "features": 10800,
+   "features": 2813,
    "url": "https://www.openstreetmap.org",
    "metodo": "Overpass API (man_made=*) · resto: canales de riego, acequias y aducciones"
   },
@@ -1063,18 +1063,18 @@
   "agua-conducciones.geojson": {
    "id": "agua-conducciones.geojson",
    "tolerancia": 0.0008,
-   "features": 10918,
-   "vertices_antes": 209425,
-   "vertices_despues": 32505,
-   "ahorro_pct": 84.5,
-   "kb": 2873
+   "features": 2829,
+   "vertices_antes": 26767,
+   "vertices_despues": 7300,
+   "ahorro_pct": 72.7,
+   "kb": 750
   },
   "edar.geojson": {
    "id": "edar.geojson",
    "tolerancia": 0.0,
-   "features": 3039,
-   "vertices_antes": 3039,
-   "vertices_despues": 3039,
+   "features": 3040,
+   "vertices_antes": 3040,
+   "vertices_despues": 3040,
    "ahorro_pct": 0.0,
    "kb": 629
   },
@@ -1099,11 +1099,11 @@
   "trasvases-union.geojson": {
    "id": "trasvases-union.geojson",
    "tolerancia": 0.0006,
-   "features": 8,
-   "vertices_antes": 3423,
-   "vertices_despues": 573,
-   "ahorro_pct": 83.3,
-   "kb": 18
+   "features": 3,
+   "vertices_antes": 863,
+   "vertices_despues": 217,
+   "ahorro_pct": 74.9,
+   "kb": 7
   }
  },
  "total_capas": 82
