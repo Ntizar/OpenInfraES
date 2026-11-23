@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-23T18:48:56",
+ "generado": "2026-11-23T19:08:43",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 82,
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 38,
-  "kb_total": 90622.6
+  "kb_total": 90596.1
  },
  "avisos": {
   "pendiente": [
@@ -107,7 +107,7 @@
    "bytes": 113461,
    "kb": 110.8,
    "fecha_dato": "20261123",
-   "fecha_descarga": "2026-11-23T18:48:50",
+   "fecha_descarga": "2026-11-23T19:08:37",
    "edad_dias": 0,
    "caducado": false
   },
@@ -562,9 +562,9 @@
    "ttl_segundos": 300,
    "ultima_verificacion": "2026-11-23",
    "crs": "EPSG:4326",
-   "features": 1062,
-   "bytes": 452912,
-   "kb": 442.3,
+   "features": 1024,
+   "bytes": 433995,
+   "kb": 423.8,
    "fecha_dato": "2026-11-23",
    "fecha_descarga": "2026-11-23",
    "edad_dias": 0,
@@ -589,9 +589,9 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-23",
    "crs": "EPSG:4326",
-   "features": 593,
-   "bytes": 126678,
-   "kb": 123.7,
+   "features": 555,
+   "bytes": 118462,
+   "kb": 115.7,
    "fecha_dato": "2026-11-23",
    "fecha_descarga": "2026-11-23",
    "edad_dias": 0,
