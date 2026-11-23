@@ -38,6 +38,8 @@ def token():
     if t:
         return t.strip()
     ruta = os.path.join(RAIZ, ".env")
+    if not os.path.exists(ruta):        # sin fichero no hay clave: se avisa, no se revienta
+        return None
     for linea in open(ruta, encoding="utf-8"):
         if linea.startswith("ENTSOE_TOKEN="):
             v = linea.split("=", 1)[1].strip()
@@ -49,7 +51,8 @@ def token():
 def pedir(params):
     tk = token()
     if not tk:
-        raise SystemExit("falta ENTSOE_TOKEN en .env (ver cabecera del script)")
+        print("  falta ENTSOE_TOKEN (ni en el entorno ni en .env): se mantiene el fichero anterior")
+        raise SystemExit(3)             # 3 = sin clave; el workflow lo trata como salto, no como caida
     q = urllib.parse.urlencode({**params, "securityToken": tk})
     req = urllib.request.Request(API + "?" + q, headers={"User-Agent": "OpenInfraES/1.0"})
     try:

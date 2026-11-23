@@ -44,6 +44,9 @@ jobs:
 
       - name: Claves (.env)
         run: |
+          # el .env existe siempre: los scripts que leen clave saben saltarse una linea vacia,
+          # pero no un fichero que no esta (antes eso era un traceback, no un salto limpio)
+          : > .env
           # solo se escriben las que existan como secret; las demas quedan vacias y su script
           # se salta en vez de fallar
           [ -n "${{ secrets.ENTSOE_TOKEN }}" ] && echo "ENTSOE_TOKEN=${{ secrets.ENTSOE_TOKEN }}" >> .env || true
@@ -61,7 +64,9 @@ jobs:
             rc=0
             salida=$(python scripts/$s 2>&1) || rc=$?
             echo "$salida" | tail -4
-            if [ "$rc" -ne 0 ]; then
+            if [ "$rc" -eq 3 ]; then
+              echo "::notice title=Sin clave::$s necesita una clave que no esta en los secrets · se salta"
+            elif [ "$rc" -ne 0 ]; then
               echo "::warning title=Fuente caida::$s salio con codigo $rc · se mantiene el fichero anterior"
             fi
           done
