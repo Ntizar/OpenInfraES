@@ -28,6 +28,7 @@ jobs:
           python -m py_compile scripts/agregar.py
           python -m py_compile scripts/validar.py
           python -m py_compile scripts/mcp_openinfra.py
+          python -m py_compile scripts/chat_web.py
       - name: MCP federado
         # Habla con el servidor como cliente MCP real: handshake, tools/list y una
         # llamada por herramienta comprobando el contenido. Si una capa falta o el

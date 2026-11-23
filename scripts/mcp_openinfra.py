@@ -110,6 +110,14 @@ def frescura(capa_id: str) -> dict:
     }
 
 
+def frescura_viva(nombre: str, fuente: str, edad_min=None, resolucion=None,
+                  actualizado=None) -> dict:
+    """Procedencia de un flujo en vivo: no está en el catálogo, y no debe heredar
+    los avisos de una capa estática que no se ha usado."""
+    return {"flujo": nombre, "organismo": fuente, "edad_min": edad_min,
+            "resolucion": resolucion, "actualizado": actualizado, "caducado": None}
+
+
 def avisos_de(capas: list[str]) -> list[str]:
     out = []
     for cid in capas:
@@ -226,7 +234,7 @@ def centroide(geom) -> tuple | None:
 
 def responder(tool: str, texto: str, datos: dict, fuentes: list[str],
               citados: list[str] | None = None, t0: float | None = None,
-              extra: dict | None = None) -> dict:
+              extra: dict | None = None, vivos: list[dict] | None = None) -> dict:
     avisos = avisos_de(fuentes)
     meta = {
         "toolName": tool,
@@ -234,7 +242,7 @@ def responder(tool: str, texto: str, datos: dict, fuentes: list[str],
         "latencyMs": int((time.time() - t0) * 1000) if t0 else 0,
         "dataSourceIds": fuentes,
         "citedIds": citados or [],
-        "frescura": [frescura(f) for f in fuentes],
+        "frescura": [frescura(f) for f in fuentes] + (vivos or []),
     }
     if avisos:
         meta["aviso"] = avisos
@@ -376,11 +384,15 @@ def t_energia_estado(args: dict) -> dict:
     t0 = time.time()
     ree = cargar_json("ree_vivo.json")
     e = ree["estado"]
-    fuentes = ["demanda-electrica", "generacion-electrica-provincia"]
+    fuentes = []
+    vivos = [frescura_viva("demanda-generacion-emisiones", "REE · ESIOS",
+                           ree.get("edad_min"), ree.get("resolucion"), ree.get("actualizado"))]
     mix = None
     if (DATOS / "entsoe_mix.json").exists():
         mix = cargar_json("entsoe_mix.json")
-        fuentes.append("red-electrica")
+        vivos.append(frescura_viva("mix-generacion", "ENTSO-E Transparency · A75",
+                                   mix.get("edad_min"), mix.get("resolucion"),
+                                   f"{mix.get('fecha')} {mix.get('hora_ultimo')}"))
     renovables = {"eolica", "solar_fv", "solar_ter", "hidro"}
     gen_esios = sum(v for k, v in e.items() if k in renovables) + e.get("ciclo", 0)
     datos = {
@@ -430,7 +442,8 @@ def t_energia_estado(args: dict) -> dict:
             + "."
         )
     texto += " Ojo: ESIOS solo abre 5 series de generación; el mix completo se lee de ENTSO-E A75."
-    return responder("es.energia.estado_ahora", texto, datos, fuentes, citados, t0)
+    return responder("es.energia.estado_ahora", texto, datos, fuentes, citados, t0,
+                     vivos=vivos)
 
 
 def t_energia_mix(args: dict) -> dict:
@@ -472,8 +485,11 @@ def t_energia_mix(args: dict) -> dict:
         + ", ".join(f"{f['tecnologia']} {f['pct']}%" for f in filas[:5])
         + f". Consumo de bombeo y almacenamiento: {mix.get('consumo_total_mwh'):,.0f} MWh (se descuenta, no se suma)."
     )
-    return responder("es.energia.mix_tecnologia", texto, datos, ["generacion-electrica-provincia"],
-                     [f["tecnologia"] for f in filas[:6]], t0)
+    return responder("es.energia.mix_tecnologia", texto, datos, [],
+                     [f["tecnologia"] for f in filas[:6]], t0,
+                     vivos=[frescura_viva("mix-generacion", "ENTSO-E Transparency · A75",
+                                          mix.get("edad_min"), mix.get("resolucion"),
+                                          f"{mix.get('fecha')} {mix.get('hora_ultimo')}")])
 
 
 def t_energia_precio(args: dict) -> dict:

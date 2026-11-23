@@ -174,6 +174,7 @@ python scripts/mcp_openinfra.py                 # stdio NDJSON — Claude Code, 
 python scripts/mcp_openinfra.py --http 8077     # POST /api/mcp + GET /api/state — web y remoto
 python scripts/mcp_openinfra.py --test          # autochequeo: 12 herramientas, framing y contenido
 python scripts/mcp_openinfra.py --list-tools    # el catálogo en una pantalla
+python scripts/chat_web.py                      # chat con Qwen 3.6 sobre las mismas herramientas
 ```
 
 Registro en un cliente MCP:
@@ -221,6 +222,67 @@ VERDE: 12 herramientas, framing correcto, contenido verificado
 
 Y por HTTP: `GET /api/state` responde en 14 ms con KPIs, mix, precio y agua; `POST /api/mcp` acepta
 `tools/list` y `tools/call`; `GET /salud` da el estado del proceso.
+
+## 11. Un chat encima: Qwen 3.6 (NaN) hablando con los datos
+
+La misma superficie tiene un tercer consumidor: una persona preguntando en lenguaje natural.
+
+```
+navegador  ──POST /chat──▶  chat_web.py  ──tools──▶  qwen3.6 (NaN)  ──▶ elige herramienta
+   ▲                             │                                        │
+   └────── respuesta + traza ────┴────────── ejecuta el MCP en proceso ◀──┘
+```
+
+![Chat de OpenInfraES con Qwen 3.6](img/chat-openinfraes.png)
+
+`scripts/chat_web.py` (stdlib, sin dependencias):
+
+```bash
+python scripts/chat_web.py                 # http://127.0.0.1:8080
+python scripts/chat_web.py --probar        # 3 preguntas end-to-end, sin navegador
+```
+
+**La clave del modelo no sale nunca al navegador.** El proceso hace de proxy: el navegador solo
+habla con `/chat`, y el servidor pone la `Authorization`. Es la razón por la que esto no puede ser
+JavaScript en GitHub Pages: publicar la clave es regalarla.
+
+### Lo que se midió de qwen3.6 (NaN, vía gateway LiteLLM)
+
+| Prueba | Resultado |
+|---|---|
+| ¿Hace tool-calling? | **Sí**, y en paralelo (2 herramientas en la misma respuesta) |
+| Latencia eligiendo herramienta | **707 ms** con `reasoning_effort: "low"` |
+| Sin ese freno | **1.537 tokens de razonamiento**, `finish_reason="length"` y `content` **vacío** |
+| Respuesta completa (1 herramienta) | 2,3 s · ~5.400 tokens de prompt (las 12 herramientas pesan) |
+| Respuesta con 2-3 herramientas | 2,5-11 s según el número de saltos |
+
+Trampa pagada: qwen3.6 es un modelo **pensante**. Con `max_tokens` corto gasta el presupuesto en el
+razonamiento y devuelve vacío sin llamar a ninguna herramienta — y eso no es un error del MCP ni de
+los datos. Tres defensas, todas en el código:
+
+1. `reasoning_effort: "low"` en cada llamada;
+2. si la primera respuesta llega vacía y sin herramienta, **reintento con `tool_choice: "required"`**;
+3. si aun así no hay texto, se devuelve el texto de la herramienta marcado como tal: un hueco
+   declarado vale más que una frase inventada.
+
+### Qué hace y qué no hace el modelo
+
+- **Elige** entre las 12 herramientas y sus argumentos.
+- **Redacta** con el `structuredData` que ya viene calculado.
+- **Repite** los avisos de caducidad (regla del *system prompt*).
+- **No calcula**: ni porcentajes, ni agregados, ni distancias. Eso está hecho antes de que él llegue.
+
+### Llevarlo a la web pública
+
+| Vía | Qué hace falta | Coste |
+|---|---|---|
+| **A. El proceso en la VM NaN + túnel** | `chat_web.py` corriendo 24/7 y un `cloudflared tunnel` al puerto | gratis (el túnel) + la VM que ya tienes |
+| **B. Worker de Cloudflare + MCP por túnel** | el Worker guarda la clave, hace el bucle de herramientas contra `POST /api/mcp` | gratis en el plan free |
+| **C. Clave en el navegador** | nada | **no se hace** |
+
+En A, el propio `chat_web.py` sirve la página: cero infraestructura extra. En B hace falta exponer el
+MCP y traducir los esquemas a JS, a cambio de aguantar más visitas sin la VM. Las dos respetan la
+regla: la clave vive en el servidor, y el chat es un consumidor más del mismo vocabulario.
 
 ## Fuentes de este documento
 

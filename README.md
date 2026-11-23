@@ -304,6 +304,7 @@ python scripts/validar.py         # el arnés: RESULTADO: VERDE
 python scripts/mcp_openinfra.py --test        # autochequeo (12 herramientas)
 python scripts/mcp_openinfra.py               # stdio para Claude Code / Cursor
 python scripts/mcp_openinfra.py --http 8077   # POST /api/mcp + GET /api/state para la web
+python scripts/chat_web.py                    # chat con Qwen 3.6 sobre las mismas 12 herramientas
 ```
 
 Las claves van en `.env` (`NAP_API_KEY`, `ENTSOE_TOKEN`) y nunca al repositorio. `scripts/snapshot.py`
