@@ -19,6 +19,7 @@ Uso:
     d = pide("https://api.esios.ree.es/indicators/2037", vacio_si=("indicator", "values"))
 """
 import json
+import ssl
 import time
 import urllib.error
 import urllib.request
@@ -53,6 +54,16 @@ class BloqueoWAF(FalloFuente):
     indistinguible de «falta clave» si solo se mira el código.
     """
     tipo = "bloqueo_waf"
+
+
+class CertificadoInvalido(FalloFuente):
+    """El TLS del servidor no valida: certificado caducado, cadena rota o nombre que no casa.
+
+    No es un fallo de red ni nuestro: reintentar no arregla nada (el ministerio tiene que
+    renovarlo). Se separa de `ServidorCaido` para que el script que lo recibe pueda decidir
+    heredar el ultimo dato bueno en vez de entrar en backoff y rendirse con un error opaco.
+    """
+    tipo = "certificado"
 
 
 class PeticionMala(FalloFuente):
@@ -127,7 +138,13 @@ def pide(url, cabeceras=None, vacio_si=None, timeout=60, reintentos=REINTENTOS,
             raise ultimo
 
         except (urllib.error.URLError, TimeoutError, OSError) as e:
-            ultimo = ServidorCaido("red: %s · %s" % (str(e)[:90], url))
+            motivo = str(getattr(e, "reason", e))
+            if ("CERTIFICATE_VERIFY_FAILED" in motivo
+                    or isinstance(getattr(e, "reason", None), ssl.SSLCertVerificationError)):
+                # Sin reintentos ni backoff: el certificado lo renueva el servidor, no nosotros.
+                raise CertificadoInvalido("certificado del servidor no valida: %s · %s"
+                                          % (motivo[:90], url))
+            ultimo = ServidorCaido("red: %s · %s" % (motivo[:90], url))
             if intento < reintentos:
                 time.sleep(espera * (2 ** intento))
                 continue

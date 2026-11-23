@@ -107,13 +107,13 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **Red eléctrica** | 4 | 5.593 |
 | **Generación** | 8 | 8.530 |
 | **Gas** | 6 | 843 |
-| **Agua** | 10 | 18.206 |
+| **Agua** | 10 | 18.207 |
 | **Demografía** | 5 | 8.199 |
 | **Transporte** | 13 | 19.176 |
 | **DGT · Tráfico** | 4 | 16.490 |
-| **Tiempo real** | 3 | 11.886 |
-| **Riesgo** | 3 | 160 |
-| **Total** | **56** | **89.083** |
+| **Tiempo real** | 3 | 12.047 |
+| **Riesgo** | 3 | 158 |
+| **Total** | **56** | **89.243** |
 <!-- CIFRAS-GRUPOS:FIN -->
 
 Los objetos se cuentan de los ficheros que usa cada grupo **sin contar dos veces el mismo fichero**

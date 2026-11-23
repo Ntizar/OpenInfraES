@@ -31,5 +31,8 @@
   "TAJO",
   "TENERIFE",
   "TINTO, ODIEL Y PIEDRAS"
- ]
+ ],
+ "estado": "heredado",
+ "motivo": "certificado del servidor no valida: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl. · https://sig.miteco.gob.es/arcgis/rest/services/25830/aguaHidroDemarcaci",
+ "heredado_en": "2026-11-23T07:02Z"
 }
