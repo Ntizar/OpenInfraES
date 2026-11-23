@@ -1,12 +1,12 @@
 {
- "generado": "2026-11-23T04:58:00",
+ "generado": "2026-11-23T12:28:24",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 77,
  "resumen": {
   "licencia_si": 72,
   "licencia_pendiente": 5,
-  "caducados": 29,
+  "caducados": 28,
   "oficiales": 63,
   "comunitarias": 14,
   "por_jerarquia": {
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 36,
-  "kb_total": 80622.2
+  "kb_total": 80501.1
  },
  "avisos": {
   "pendiente": [
@@ -27,7 +27,6 @@
   ],
   "sin_organismo": [],
   "caducado": [
-   "aemet-zonas",
    "almacenamiento-petrolifero",
    "conducciones-combustible",
    "desaladoras",
@@ -105,13 +104,13 @@
    "ttl_segundos": 3600,
    "ultima_verificacion": "2026-11-23",
    "crs": "EPSG:4326",
-   "features": 70,
-   "bytes": 360845,
-   "kb": 352.4,
-   "fecha_dato": "20261118",
-   "fecha_descarga": "2026-11-18T19:20:33",
-   "edad_dias": 5,
-   "caducado": true
+   "features": 21,
+   "bytes": 184276,
+   "kb": 180.0,
+   "fecha_dato": "20261123",
+   "fecha_descarga": "2026-11-23T12:27:26",
+   "edad_dias": 0,
+   "caducado": false
   },
   "aeropuertos": {
    "id": "aeropuertos",
@@ -294,10 +293,10 @@
    "ttl_segundos": 86400,
    "ultima_verificacion": "2026-11-23",
    "crs": "EPSG:4326",
-   "features": 11448,
-   "bytes": 4826329,
-   "kb": 4713.2,
-   "fecha_dato": "22/11/2026 7:21:15",
+   "features": 11444,
+   "bytes": 4824561,
+   "kb": 4711.5,
+   "fecha_dato": "23/11/2026 8:03:03",
    "fecha_descarga": "2026-11-23",
    "edad_dias": null,
    "caducado": false
@@ -915,11 +914,11 @@
    "ttl_segundos": 120,
    "ultima_verificacion": "2026-11-23",
    "crs": "EPSG:4326",
-   "features": 194,
-   "bytes": 55447,
-   "kb": 54.1,
-   "fecha_dato": "2026-11-23T04:12:58",
-   "fecha_descarga": "2026-11-23T04:13:00",
+   "features": 381,
+   "bytes": 108736,
+   "kb": 106.2,
+   "fecha_dato": "2026-11-23T11:13:00",
+   "fecha_descarga": "2026-11-23T11:13:01",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1914,9 +1913,9 @@
    "ttl_segundos": 1800,
    "ultima_verificacion": "2026-11-23",
    "crs": "EPSG:4326",
-   "features": 87,
-   "bytes": 29065,
-   "kb": 28.4,
+   "features": 90,
+   "bytes": 30011,
+   "kb": 29.3,
    "fecha_dato": "2026-11-16",
    "fecha_descarga": "2026-11-23",
    "edad_dias": 7,

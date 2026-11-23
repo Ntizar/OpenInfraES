@@ -15,13 +15,16 @@ AEMET publica las **zonas de aviso como polígonos**, sin clave, en la propia p�
 
 ```
 https://www.aemet.es/es/eltiempo/prediccion/avisos
-  -> /es/geojson/download/avisos/geojson_<epoch>.tar.gz     (~2,2 MB)
-      r_D+0_<elaborado>_penbal_<...>.geojson   península y Baleares
-      r_D+0_<elaborado>_can_<...>.geojson      Canarias
+  -> /es/geojson/download/avisos/geojson_<epoch>.tar.gz     (~0,8 MB)
+      av_hh_<elaborado>_penbal_<AAAAMMDDHH>CET_<...>.geojson   península y Baleares, por hora
+      av_hh_<elaborado>_can_<AAAAMMDDHH>WET_<...>.geojson      Canarias, por hora
+      r_D+N_<elaborado>_<area>_<AAAAMMDD><CET|WET>_<...>.geojson   resumen diario (respaldo)
 ```
 
-El tar se **regenera cada hora** y trae D+0 (hoy), D+1 y D+2; `penbal` y `can` separan los dos ámbitos.
-Los ficheros de **menos de 300 bytes van vacíos**: esa área no tiene avisos.
+El tar se **regenera cada hora**. Desde el **2026-11-23** el dato vivo está en la **rejilla horaria**
+`av_hh_*`: un fichero por área y hora local de validez. Los `r_D+0_*` siguen viniendo pero **vacíos**
+(167 bytes) mientras AEMET hace la migración; el script acepta las dos familias y usa la diaria solo si no
+hay horarios con datos. Los ficheros de **menos de 300 bytes van vacíos**: esa área no tiene avisos.
 
 ```bash
 python scripts/aemet_geo.py
@@ -29,9 +32,13 @@ python scripts/aemet_geo.py
 
 Salida: `datos/aemet_zonas.geojson` (zonas con aviso, como polígonos) y su recibo.
 
-**Medido el 2026-11-18 (elaborado 17:57):** **70 zonas con aviso — 59 rojas y 11 naranjas.** Cada zona
-trae `zona`, `provincia`, `codigo`, `nivel`, `nivel_txt`, los fenómenos y la descripción de cada aviso con
-sus horas de inicio y fin.
+La capa publica los avisos **vigentes o previstos en las próximas 48 h** (`ventana_horas` en el recibo).
+Cada zona sale una vez, con su nivel máximo y la lista de avisos dentro; el recibo separa `vigentes` de
+`previstas` en `por_estado`.
+
+**Medido el 2026-11-23 (elaborado 10:48):** **21 zonas previstas, todas amarillas** (nevadas y costeros);
+ninguna vigente en ese momento — el aviso de costeros del Ampurdán había caducado a las 11:59. El máximo
+histórico medido fue de **70 zonas (59 rojas, 11 naranjas)** el 2026-11-18.
 
 Capa **«Avisos AEMET (zonas)»** en el grupo Riesgo, con el relleno coloreado por nivel: amarillo, naranja
 y rojo. Es la única capa del visor que cambia de color por feature.
@@ -61,6 +68,17 @@ python scripts/aemet.py     # -> datos/aemet_avisos.json
   y el regex del enlace sigue funcionando, así que el fallo no se nota hasta que lees los nombres.
 - **Los ficheros vacíos pesan menos de 300 bytes**, no cero. Comprobar `> 300` y no `> 0`, o se intenta
   parsear un GeoJSON de 200 bytes y salta una excepción que tumba el bucle.
+- **`Nivel_COCO` y `Nivel_NENV` son códigos, no niveles: 3 = amarillo.** Leerlos como número pinta de rojo
+  media España. El nivel sale del texto: `Sev_*` («Amarillo»/«Naranja»/«Rojo») y, si falta, de
+  `Resum_*`/`Des_*` («Aviso de nevadas de nivel amarillo»).
+- **Hay dos familias de campos en el mismo tar**: `*_COCO` (catálogo antiguo: costeros, lluvias) y `*_NENV`
+  (avisos nuevos de Meteoalerta: nevadas, viento). Un parser que solo mire `Avis_COCO` pierde la mitad.
+- **Una capa viva puede estar vacía de verdad** (no hay avisos, no hay incidencias). El validador lo admite
+  si el recibo lo declara con fecha reciente y cuenta 0; si el recibo falta o está viejo, el vacío es una
+  descarga rota y sale en rojo.
+- **El esquema cambia sin avisar.** El 2026-11-23 los `r_D+0_*` pasaron a venir vacíos y el dato se mudó a
+  `av_hh_*`. Por eso el script **falla sin escribir** cuando no reconoce ningún fichero: mejor una capa con
+  fecha vieja y un aviso en la ejecución que una capa vacía publicada.
 - **AEMET OpenData (`opendata.aemet.es`) exige clave** para `avisos_cap`. Ese camino no hace falta: el
   `tar.gz` de la web es el mismo dato con geometría y sin registro.
 

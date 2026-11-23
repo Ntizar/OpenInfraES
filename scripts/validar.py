@@ -10,6 +10,7 @@ Comprueba:
 Sale 0 si todo esta en verde.
 """
 import csv
+import datetime
 import json
 import os
 import re
@@ -22,6 +23,43 @@ errores = []
 
 def error(m):
     errores.append(m)
+
+
+def vacio_declarado(ruta_geojson):
+    """Motivo si el recibo del GeoJSON declara un vacio legitimo y reciente; None si no.
+
+    Convencion del repo: el recibo de `datos/x.geojson` es `datos/x_recibo.json`. Vale si dice
+    0 objetos y se descargo en las ultimas 12 horas; si el recibo falta, esta viejo o declara
+    otra cuenta, el vacio es un fallo de descarga y se devuelve None para que salte el error.
+    """
+    base = ruta_geojson[:-len(".geojson")] if ruta_geojson.endswith(".geojson") else ruta_geojson
+    ruta_recibo = base + "_recibo.json"
+    if not os.path.exists(ruta_recibo):
+        return None
+    try:
+        rec = json.load(open(ruta_recibo, encoding="utf-8"))
+    except Exception:
+        return None
+    if not isinstance(rec, dict):
+        return None
+    cuenta = rec.get("features", rec.get("objetos"))
+    if cuenta is not None and cuenta != 0:
+        return None
+    for clave in ("descargado", "actualizado", "capturado", "generado"):
+        valor = rec.get(clave)
+        if not isinstance(valor, str) or len(valor) < 10:
+            continue
+        try:
+            cuando = datetime.datetime.fromisoformat(valor.strip().replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if cuando.tzinfo:
+            cuando = cuando.astimezone().replace(tzinfo=None)
+        horas = (datetime.datetime.now() - cuando).total_seconds() / 3600.0
+        if 0 <= horas <= 12:
+            return "(sin datos, recibo de hace %.1f h)" % horas
+        return None
+    return None
 
 
 def leer_csv(nombre):
@@ -212,8 +250,11 @@ def main():
     print("  codigos traducidos ......... %d claves · %d campos crudos"
           % (len(traducidos), len(crudos)))
 
-    # (b) una capa del visor con 0 features no es una capa: o se arregla o se retira
-    vacias = []
+    # (b) una capa del visor con 0 features no es una capa: o se arregla o se retira...
+    # ...salvo que su recibo declare a las claras que hoy no hay nada (no hay avisos de AEMET,
+    # no hay incidencias de DGT). Esa capa vacia es un dato, no un fallo. Lo que si es un fallo
+    # es un vacio sin recibo o con recibo viejo: eso es una descarga rota disfrazada.
+    vacias, declaradas = [], []
     for c in capas:
         f = c.get("fichero")
         if not f:
@@ -226,10 +267,17 @@ def main():
         except Exception:
             n = -1
         if n == 0:
-            vacias.append(c["id"])
+            motivo = vacio_declarado(ruta)
+            if motivo:
+                declaradas.append((c["id"], motivo))
+            else:
+                vacias.append(c["id"])
     if vacias:
-        error("capas del visor con 0 features: %s" % ", ".join(sorted(set(vacias))))
-    print("  capas vacias .............. %d" % len(set(vacias)))
+        error("capas del visor con 0 features y sin recibo que lo declare: %s"
+              % ", ".join(sorted(set(vacias))))
+    print("  capas vacias .............. %d%s"
+          % (len(set(vacias)),
+             "".join(" · %s %s" % (i, m) for i, m in declaradas) if declaradas else ""))
 
     # (c) el mismo fichero en dos capas solo vale si cada una lo filtra de otra forma
     bloque = html[html.index("const CAPAS = ["):]

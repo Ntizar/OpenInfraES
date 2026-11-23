@@ -2,18 +2,58 @@
  "fuente": "AEMET",
  "dataset": "Meteoalerta — zonas de aviso",
  "url": "https://www.aemet.es/es/eltiempo/prediccion/avisos",
- "url_geojson": "https://www.aemet.es/es/geojson/download/avisos/geojson_1795025160.tar.gz",
+ "url_geojson": "https://www.aemet.es/es/geojson/download/avisos/geojson_1795431600.tar.gz",
  "licencia": "© AEMET. Reproducción autorizada citando a AEMET como autora.",
- "elaborado": "20261118175717",
- "descargado": "2026-11-18T19:20:33",
+ "elaborado": "20261123104858",
+ "descargado": "2026-11-23T12:30:35",
+ "esquema": "av_hh",
+ "ventana_horas": 48,
  "ficheros": [
-  "r_D+0_20261118175717_penbal_20261118CET_1795025160.geojson"
+  "av_hh_20261123104858_penbal_2026112311CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112509CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112421CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112520CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112422CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112510CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112521CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112423CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112500CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112511CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112522CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112501CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112512CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112523CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112502CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112513CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112503CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112514CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112416CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112504CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112515CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112417CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112505CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112516CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112418CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112506CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112517CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112419CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112507CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112518CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112508CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112519CET_1795431600.geojson",
+  "av_hh_20261123104858_penbal_2026112420CET_1795431600.geojson"
  ],
- "features": 70,
+ "features": 21,
  "por_nivel": {
-  "rojo": 59,
-  "naranja": 11
+  "amarillo": 21
+ },
+ "por_estado": {
+  "previsto": 21
+ },
+ "descartados": {
+  "caducados": 1,
+  "fuera_de_ventana": 0
  },
  "geometria": true,
- "nota": "Zonas con aviso, como polígonos. Los ficheros de menos de 300 bytes van vacíos (sin aviso)."
+ "nota": "Zonas con aviso vigente o previsto en las próximas 48 h, como polígonos. El nivel sale del texto Sev_*/Resum_*: Nivel_COCO es un código (3 = amarillo). Ficheros de menos de 300 bytes = sin avisos en esa área y hora."
 }

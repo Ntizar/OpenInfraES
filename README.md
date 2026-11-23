@@ -111,9 +111,9 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **Demografía** | 5 | 8.199 |
 | **Transporte** | 13 | 19.176 |
 | **DGT · Tráfico** | 4 | 16.490 |
-| **Tiempo real** | 3 | 12.047 |
-| **Riesgo** | 3 | 158 |
-| **Total** | **56** | **89.243** |
+| **Tiempo real** | 3 | 12.230 |
+| **Riesgo** | 3 | 112 |
+| **Total** | **56** | **89.380** |
 <!-- CIFRAS-GRUPOS:FIN -->
 
 Los objetos se cuentan de los ficheros que usa cada grupo **sin contar dos veces el mismo fichero**

@@ -33,9 +33,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -51,12 +51,19 @@ jobs:
           cat .env 2>/dev/null | sed 's/=.*/=<oculto>/' || echo "sin .env"
 
       - name: Capas vivas
+        # una fuente caida NO puede teñir de rojo el repo (el dato anterior sigue publicado y su
+        # fecha lo delata), pero tampoco puede pasar en silencio: cada script que falle deja una
+        # anotacion de aviso en la ejecucion.
         continue-on-error: true
         run: |
-          set +e
           for s in "ree_vivo.py" "omie.py" "entsoe.py --mix" "aemet_geo.py" "dgt_rt.py --incidencias" "dgt_rt.py --paneles"; do
             echo "=== $s ==="
-            python scripts/$s 2>&1 | tail -4
+            rc=0
+            salida=$(python scripts/$s 2>&1) || rc=$?
+            echo "$salida" | tail -4
+            if [ "$rc" -ne 0 ]; then
+              echo "::warning title=Fuente caida::$s salio con codigo $rc · se mantiene el fichero anterior"
+            fi
           done
 
       - name: Catalogo y cifras
