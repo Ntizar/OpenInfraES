@@ -708,7 +708,7 @@
    "descargado": "2026-11-23",
    "features": 260,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (man_made=*) · 14261 tramos agrupados, mínimo 12 km; caudal por Open-Meteo Flood (GloFAS)"
+   "metodo": "Overpass API (man_made=*) · 14263 tramos agrupados, mínimo 12 km; caudal por Open-Meteo Flood (GloFAS)"
   },
   "carburantes": {
    "capa": "carburantes",
@@ -956,9 +956,9 @@
    "fuente": "Operadores (Renfe)",
    "editor": "GTFS-Realtime",
    "licencia": "condiciones del editor",
-   "actualizado": "2026-11-23T21:13:02",
-   "descargado": "2026-11-23T21:13:00",
-   "features": 304,
+   "actualizado": "2026-11-23T22:12:58",
+   "descargado": "2026-11-23T22:13:01",
+   "features": 167,
    "url": "https://gtfsrt.renfe.com/vehicle_positions.pb",
    "metodo": "protobuf GTFS-RT, refresco continuo"
   },
@@ -1091,7 +1091,7 @@
    "id": "rios.geojson",
    "tolerancia": 0.0012,
    "features": 260,
-   "vertices_antes": 496672,
+   "vertices_antes": 496676,
    "vertices_despues": 44481,
    "ahorro_pct": 91.0,
    "kb": 1197

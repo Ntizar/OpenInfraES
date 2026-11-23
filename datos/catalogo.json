@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-23T22:09:10",
+ "generado": "2026-11-23T22:17:52",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 82,
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 38,
-  "kb_total": 90514.7
+  "kb_total": 90476.4
  },
  "avisos": {
   "pendiente": [
@@ -1021,11 +1021,11 @@
    "ttl_segundos": 120,
    "ultima_verificacion": "2026-11-23",
    "crs": "EPSG:4326",
-   "features": 304,
-   "bytes": 86915,
-   "kb": 84.9,
-   "fecha_dato": "2026-11-23T21:13:02",
-   "fecha_descarga": "2026-11-23T21:13:00",
+   "features": 167,
+   "bytes": 47723,
+   "kb": 46.6,
+   "fecha_dato": "2026-11-23T22:12:58",
+   "fecha_descarga": "2026-11-23T22:13:01",
    "edad_dias": 0,
    "caducado": false
   },
@@ -2008,7 +2008,7 @@
    "oficial": false,
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
-   "producto": "Overpass API (man_made=*) · 14261 tramos agrupados, mínimo 12 km; caudal por Open-Meteo Flood (GloFAS)",
+   "producto": "Overpass API (man_made=*) · 14263 tramos agrupados, mínimo 12 km; caudal por Open-Meteo Flood (GloFAS)",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
