@@ -78,7 +78,7 @@
    "id": "agua-conducciones.geojson",
    "tolerancia": 0.0008,
    "features": 10918,
-   "vertices_antes": 209423,
+   "vertices_antes": 209425,
    "vertices_despues": 32505,
    "ahorro_pct": 84.5,
    "kb": 2873
@@ -86,9 +86,9 @@
   {
    "id": "edar.geojson",
    "tolerancia": 0.0,
-   "features": 3038,
-   "vertices_antes": 3038,
-   "vertices_despues": 3038,
+   "features": 3039,
+   "vertices_antes": 3039,
+   "vertices_despues": 3039,
    "ahorro_pct": 0.0,
    "kb": 629
   },
@@ -105,10 +105,10 @@
    "id": "rios.geojson",
    "tolerancia": 0.0012,
    "features": 260,
-   "vertices_antes": 496633,
-   "vertices_despues": 44469,
+   "vertices_antes": 496672,
+   "vertices_despues": 44481,
    "ahorro_pct": 91.0,
-   "kb": 1196
+   "kb": 1197
   },
   {
    "id": "trasvases-union.geojson",

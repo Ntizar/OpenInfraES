@@ -12,7 +12,7 @@
  "servicio_programado": 46,
  "descartados_cerrados": 36,
  "descartados_sin_coordenadas": 0,
- "fecha_dato": "2026-11-21",
+ "fecha_dato": "2026-11-23",
  "fuente": "OurAirports",
  "url": "https://ourairports.com/data/",
  "fichero": "aeropuertos.geojson"
