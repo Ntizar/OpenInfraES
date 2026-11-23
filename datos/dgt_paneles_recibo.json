@@ -4,9 +4,9 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 679,
+ "features": 676,
  "paneles_localizados": 2537,
- "descargado": "2026-11-23T13:36:38",
+ "descargado": "2026-11-23T14:11:27",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
@@ -14,15 +14,15 @@
   },
   {
    "texto": "@H @F",
-   "paneles": 80
-  },
-  {
-   "texto": "MODERE VELOCIDAD",
-   "paneles": 14
+   "paneles": 79
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD",
-   "paneles": 11
+   "paneles": 22
+  },
+  {
+   "texto": "MODERE VELOCIDAD",
+   "paneles": 13
   },
   {
    "texto": "HASTA KM 73 OBRA MOVIL",
