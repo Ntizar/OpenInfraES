@@ -1,21 +1,21 @@
 {
- "generado": "2026-11-24T22:45:25",
+ "generado": "2026-11-24T22:59:15",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 102,
+ "total": 104,
  "resumen": {
-  "licencia_si": 97,
+  "licencia_si": 99,
   "licencia_pendiente": 5,
   "caducados": 27,
-  "oficiales": 88,
+  "oficiales": 90,
   "comunitarias": 14,
   "por_jerarquia": {
-   "1": 65,
+   "1": 67,
    "2": 23,
    "3": 14
   },
-  "descargables_ligeros": 49,
-  "kb_total": 107137.7
+  "descargables_ligeros": 51,
+  "kb_total": 107977.2
  },
  "avisos": {
   "pendiente": [
@@ -272,6 +272,33 @@
    "fecha_descarga": "2026-11-24",
    "edad_dias": 63,
    "caducado": true
+  },
+  "alojamiento-ign": {
+   "id": "alojamiento-ign",
+   "titulo": "Alojamiento (campings, albergues, autocaravanas)",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "Capas 15, 16, 24, 25 y 17 de 03_construcciones_otros; una capa con el tipo como atributo",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/",
+   "modo": "foto",
+   "frecuencia_fuente": "anual",
+   "ttl_segundos": 31536000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 2703,
+   "bytes": 649178,
+   "kb": 634.0,
+   "fecha_dato": "2026-11-24",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
+   "caducado": false
   },
   "aviacion-ligera": {
    "id": "aviacion-ligera",
@@ -1973,6 +2000,33 @@
    "fecha_descarga": "2026-11-24",
    "edad_dias": 63,
    "caducado": true
+  },
+  "ocio-ign": {
+   "id": "ocio-ign",
+   "titulo": "Ocio y nieve (parques temáticos, circuitos, estaciones invernales)",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "Capas 20, 18 y 14 de 03_construcciones_otros",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/",
+   "modo": "foto",
+   "frecuencia_fuente": "anual",
+   "ttl_segundos": 31536000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 837,
+   "bytes": 210404,
+   "kb": 205.5,
+   "fecha_dato": "2026-11-24",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
+   "caducado": false
   },
   "parques-eolicos": {
    "id": "parques-eolicos",

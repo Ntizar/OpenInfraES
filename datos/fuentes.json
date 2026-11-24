@@ -1058,6 +1058,18 @@
    "url": "https://open-meteo.com/",
    "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias"
   },
+  "alojamiento-ign": {
+   "capa": "alojamiento-ign",
+   "titulo": "Alojamiento (campings, albergues, autocaravanas)",
+   "fuente": "IGN · SignA",
+   "editor": "Instituto Geográfico Nacional",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 2703,
+   "url": "https://signa.ign.es/",
+   "metodo": "Capas 15, 16, 24, 25 y 17 de 03_construcciones_otros; una capa con el tipo como atributo"
+  },
   "aviacion-ligera": {
    "capa": "aviacion-ligera",
    "titulo": "Aviación ligera · aeródromos y helipuertos",
@@ -1165,6 +1177,18 @@
    "features": 884,
    "url": "https://signa.ign.es/",
    "metodo": "Capa 1 de 05_servicios_industria"
+  },
+  "ocio-ign": {
+   "capa": "ocio-ign",
+   "titulo": "Ocio y nieve (parques temáticos, circuitos, estaciones invernales)",
+   "fuente": "IGN · SignA",
+   "editor": "Instituto Geográfico Nacional",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 837,
+   "url": "https://signa.ign.es/",
+   "metodo": "Capas 20, 18 y 14 de 03_construcciones_otros"
   },
   "patrimonio-ign": {
    "capa": "patrimonio-ign",
@@ -1346,5 +1370,5 @@
    "kb": 7
   }
  },
- "total_capas": 102
+ "total_capas": 104
 }

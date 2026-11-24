@@ -601,26 +601,20 @@
     border:1px solid var(--borde-fuerte); border-radius:6px; font-size:18px; cursor:pointer;
     box-shadow:0 6px 22px rgba(0,0,0,.5); }
 
-  /* mapa vacío: la vista por defecto arranca sin capas encendidas (antes eran 8 y el mapa
-     salía saturado). Aquí se dice qué hacer en vez de dejar un mapa mudo. */
-  #vacio { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); z-index:840;
-    display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center;
-    padding:18px 22px; background:rgba(12,18,30,.93); border:1px solid var(--borde);
-    border-radius:10px; box-shadow:0 10px 34px rgba(0,0,0,.45); max-width:min(330px,86vw); }
-  #vacio[hidden] { display:none; }
-  #vacio b { font-size:14px; color:var(--tinta); font-weight:600; }
-  #vacio span { font-size:11.5px; color:var(--suave); line-height:1.45; }
-  #vacio button { margin-top:6px; padding:8px 14px; font:inherit; font-size:11.5px;
-    color:var(--tinta); background:transparent; border:1px solid var(--borde-fuerte);
-    border-radius:6px; cursor:pointer; }
-  #vacio button:hover, #vacio button:focus-visible { border-color:var(--cian); color:var(--cian); }
-
   /* burbujas de agrupación: el número dentro; sin él, cientos de círculos parecen una trama */
   .burbuja { background:none; border:0; }
   .burbuja span { display:flex; align-items:center; justify-content:center; width:100%; height:100%;
     background:rgba(12,18,30,.82); border:1.5px solid currentColor; border-radius:50%;
     font-weight:600; line-height:1; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
   .burbuja.tenue { opacity:.45; }
+
+  /* sin capas encendidas, el boton de capas late una vez: la pista mas discreta posible */
+  #btn-hud.sugerir { position:relative; }
+  #btn-hud.sugerir::after { content:""; position:absolute; top:5px; right:5px; width:7px; height:7px;
+    border-radius:50%; background:var(--cian); animation:latido 2.2s ease-out infinite; }
+  @keyframes latido { 0% { box-shadow:0 0 0 0 rgba(34,211,238,.75); }
+    70% { box-shadow:0 0 0 8px rgba(34,211,238,0); } 100% { box-shadow:0 0 0 0 rgba(34,211,238,0); } }
+  @media (prefers-reduced-motion: reduce) { #btn-hud.sugerir::after { animation:none; } }
 
   @media (max-width: 820px) {
     html, body { overflow:hidden; }
@@ -702,20 +696,12 @@
     #panel-dato { max-height:42vh; }
     /* la leyenda sí se queda: es lo único que explica los colores. Compacta, no oculta. */
     #leyenda { display:block; max-height:24vh; font-size:10px; }
-    #vacio { top:44%; padding:14px 16px; }
-    #vacio b { font-size:13px; }
-    #vacio span { font-size:10.5px; }
   }
 </style>
 </head>
 <body>
 <div id="mapa"></div>
 
-<div id="vacio" hidden>
-  <b>Mapa vacío, a propósito</b>
-  <span id="vacio-sub">Elige qué quieres ver</span>
-  <button id="vacio-abrir">Abrir capas</button>
-</div>
 
 <button id="btn-hud" aria-label="Capas y controles" title="Capas y controles">☰</button>
 <div id="hud">
@@ -1605,6 +1591,19 @@ const CAPAS = [
   { id:"hospitales-ign", grupo:"Sanidad", label:"Hospitales (IGN)", tipo:"punto", on:false,
     color:"#ef4444", fichero:"datos/hospitales_ign.geojson", radio:3.4, zoomMin:7,
     popupTitulo:"nombre", leyendaSimple:true },
+  /* Equipamientos: el IGN publica campings, albergues, áreas de autocaravanas, balnearios, parques
+     temáticos, circuitos y estaciones de esquí. Ocho capas serían ocho chinchetas del mismo tipo de
+     sitio: van dos, con el tipo como atributo y su color en el dato. */
+  { id:"alojamiento-ign", grupo:"Equipamientos", label:"Alojamiento (campings, albergues, autocaravanas)", tipo:"punto", on:false,
+    color:"#22c55e", colorCampo:"color", etiquetaCampo:"tipo", fichero:"datos/alojamiento_ign.geojson",
+    radio:3.2, zoomMin:6, zoomDetalle:9, popupTitulo:"nombre",
+    campos:["tipo","municipio","provincia"],
+    etiquetas:{municipio:"Municipio", provincia:"Provincia"} },
+  { id:"ocio-ign", grupo:"Equipamientos", label:"Ocio y nieve (parques, circuitos, estaciones)", tipo:"punto", on:false,
+    color:"#f472b6", colorCampo:"color", etiquetaCampo:"tipo", fichero:"datos/ocio_ign.geojson",
+    radio:3.2, zoomMin:6, popupTitulo:"nombre",
+    campos:["tipo","municipio","provincia"],
+    etiquetas:{municipio:"Municipio", provincia:"Provincia"} },
   { id:"cimas-ign", grupo:"Relieve", label:"Cimas y puntos acotados (IGN)", tipo:"punto", on:false,
     color:"#fbbf24", fichero:"datos/cimas_ign.geojson", zoomMin:9, zoomDetalle:10, radio:2.2, opacidad:.55,
     popupTitulo:"nombre", leyendaSimple:true,
@@ -1705,7 +1704,7 @@ const ETIQUETA_VISTA = {
   "Red eléctrica": "Eléctrico", "Generación": "Generación", "Gas": "Gas", "Agua": "Agua",
   "Demografía": "Población", "Transporte": "Transporte", "DGT · Tráfico": "DGT",
   "Tiempo real": "En vivo", "Riesgo": "Riesgo", "Medio ambiente": "Medio ambiente",
-  "Clima": "Clima", "Patrimonio": "Patrimonio", "Relieve": "Relieve", "Sanidad": "Sanidad"
+  "Clima": "Clima", "Patrimonio": "Patrimonio", "Relieve": "Relieve", "Sanidad": "Sanidad", "Equipamientos": "Equipamientos"
 };
 const cajaPresets = $("#presets");
 if (cajaPresets) {
@@ -2963,10 +2962,10 @@ function abrirPanelDato(p, c, latlng) {
   for (const k of claves) {
     const v = valorLegible(p[k], k);
     if (v === null) continue;
-    const firma = nombreCampo(k) + "=" + v;     // «Kilómetro 45» dos veces no informa de nada
+    const firma = nombreCampo(k, c) + "=" + v;     // «Kilómetro 45» dos veces no informa de nada
     if (yaVisto[firma]) continue;
     yaVisto[firma] = 1;
-    filas += `<div class="pd-k"><span>${nombreCampo(k)}</span><span>${v}</span></div>`;
+    filas += `<div class="pd-k"><span>${nombreCampo(k, c)}</span><span>${v}</span></div>`;
   }
 
   // métricas destacadas: los números que importan, en grande y con su unidad
@@ -3588,20 +3587,13 @@ mapa.on("moveend", () => {
 });
 
 /* ---------------- estado ---------------- */
-/* el aviso de mapa vacío abre el cajón de capas: el botón que necesita el que llega */
-$("#vacio-abrir")?.addEventListener("click", () => plegarHud(true));
-
 function estado() {
   $("#s-zoom").textContent = mapa.getZoom().toFixed(2).replace(/\.00$/, "");
   const activas = CAPAS.filter(c => document.querySelector(`[data-capa="${c.id}"]`)?.checked);
   $("#s-capas").textContent = activas.length + "/" + CAPAS.length;
-  /* mapa vacío: el aviso solo existe mientras no hay ninguna capa encendida. */
-  const vacio = $("#vacio");
-  if (vacio) {
-    vacio.hidden = activas.length > 0;
-    const sub = $("#vacio-sub");
-    if (sub) sub.textContent = CAPAS.length + " capas disponibles. Elige una y el mapa se llena.";
-  }
+  /* sin capas, el boton de capas avisa con un punto: nada de cartel en mitad del mapa */
+  document.getElementById("btn-hud")?.classList.toggle("sugerir", activas.length === 0);
+
   let n = 0; activas.forEach(c => n += conteo[c.id] || 0);
   $("#s-peso").textContent = nf(n) + " objetos";
   $("#sub-hud").textContent = (BASES[sel.value] ? BASES[sel.value][0] : "") + " · " + nf(n) + " objetos";

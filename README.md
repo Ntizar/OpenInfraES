@@ -100,7 +100,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 
 ## Capas del visor
 
-**77 capas en 14 grupos temáticos**, con carga bajo demanda: nada se descarga hasta que lo enciendes.
+**79 capas en 15 grupos temáticos**, con carga bajo demanda: nada se descarga hasta que lo enciendes.
 
 <!-- CIFRAS-GRUPOS:INICIO (lo reescribe scripts/cifras.py) -->
 | Grupo | Capas | Objetos |
@@ -117,9 +117,10 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **Medio ambiente** | 4 | 15.503 |
 | **Patrimonio** | 1 | 20.116 |
 | **Sanidad** | 1 | 884 |
+| **Equipamientos** | 2 | 3.540 |
 | **Relieve** | 2 | 19.739 |
 | **Clima** | 2 | 104 |
-| **Total** | **77** | **158.381** |
+| **Total** | **79** | **161.921** |
 <!-- CIFRAS-GRUPOS:FIN -->
 
 Los objetos se cuentan de los ficheros que usa cada grupo **sin contar dos veces el mismo fichero**
@@ -132,9 +133,9 @@ Agua · Transporte · DGT · En vivo · Riesgo**. Al elegir una vista se enciend
 se filtra**: solo ves el grupo que toca, con un botón «Ver todas» para volver.
 
 **El visor arranca vacío a propósito.** Antes abría con ocho capas encendidas y el mapa salía
-saturado: líneas, puntos y etiquetas compitiendo. Ahora la primera pantalla es el mapa limpio con un
-aviso que dice cuántas capas hay y un botón para abrir el cajón. Cuesta un clic y se entiende qué se
-está viendo; con el mapa lleno, nada.
+saturado: líneas, puntos y etiquetas compitiendo. Ahora la primera pantalla es el mapa limpio y el
+único aviso es un **punto cian que late en el botón de capas**: ni carteles en mitad del mapa ni
+ventanas que estorben. Un clic y el mapa se llena.
 
 **En móvil** (≤ 820 px) el cajón es un panel sólido a pantalla completa, las cifras van en una tira
 horizontal que se desliza —en dos columnas se comían la mitad del mapa—, el zoom tiene botones de
@@ -406,7 +407,7 @@ hay que atribuir a OpenStreetMap y compartir igual. El **código** (visor, scrip
 | | |
 |---|---|
 | Capas en el visor | **77** en **14 grupos** |
-| Capas documentadas en `fuentes.json` | **102** |
+| Capas documentadas en `fuentes.json` | **104** |
 | Fusión geoespacial | **4.784 EDAR** únicas desde 8.708 filas de tres fuentes |
 | Organismos citados | **19** — MITECO, MITMA, IGN, REE, DGT, AEMET, CSN, CORES, Enagás, ENRESA, INE, Renfe, Adif, EMSC-CSEM, I-ReWater HUB, OpenStreetMap |
 | Fuentes sin clave | MITECO, IGN, MITMA, Enagás, CORES, CSN, ENRESA, Renfe, Adif, DGT, AEMET, INE, OMIE, ESIOS (19 indicadores) |

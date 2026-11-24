@@ -1,0 +1,11 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "titulo": "Alojamiento (campings, albergues, autocaravanas)",
+ "fuente": "IGN · SignA",
+ "metodo": "Capas 15, 16, 24, 25 y 17 de 03_construcciones_otros; una capa con el tipo como atributo",
+ "features": 2703,
+ "kb": 634.0,
+ "descargado": "2026-11-24"
+}
