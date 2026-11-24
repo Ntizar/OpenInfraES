@@ -4,13 +4,13 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 827,
+ "features": 791,
  "paneles_localizados": 2537,
- "descargado": "2026-11-24T20:36:31",
+ "descargado": "2026-11-24T21:09:40",
  "mensajes_top": [
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
-   "paneles": 144
+   "paneles": 143
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
@@ -18,22 +18,18 @@
   },
   {
    "texto": "@H @F",
-   "paneles": 80
-  },
-  {
-   "texto": "CONTROL MOVIL DE VELOCIDAD",
-   "paneles": 35
+   "paneles": 79
   },
   {
    "texto": "CON LLUVIA MODERE VELOCIDAD",
-   "paneles": 34
-  },
-  {
-   "texto": "PREVISION NEVADAS · INFORMESE Y PLANIFIQUE SU VIAJE",
-   "paneles": 31
+   "paneles": 33
   },
   {
    "texto": "MODERE LA VELOCIDAD",
+   "paneles": 30
+  },
+  {
+   "texto": "PREVISION NEVADAS · INFORMESE Y PLANIFIQUE SU VIAJE",
    "paneles": 30
   },
   {
@@ -46,6 +42,10 @@
   },
   {
    "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
+   "paneles": 8
+  },
+  {
+   "texto": "MAQUINA MOVIL TRABAJANDO · MAQUINA MOBIL TREBALLANT",
    "paneles": 8
   }
  ]
