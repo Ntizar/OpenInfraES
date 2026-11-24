@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-24T23:02:55",
+ "generado": "2026-11-24T23:08:55",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 104,
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 51,
-  "kb_total": 107980.9
+  "kb_total": 107966.8
  },
  "avisos": {
   "pendiente": [
@@ -107,7 +107,7 @@
    "bytes": 218094,
    "kb": 213.0,
    "fecha_dato": "20261124",
-   "fecha_descarga": "2026-11-24T23:02:47",
+   "fecha_descarga": "2026-11-24T23:08:50",
    "edad_dias": 0,
    "caducado": false
   },
@@ -566,7 +566,7 @@
    "bytes": null,
    "kb": null,
    "fecha_dato": "2026-11-25T00:00",
-   "fecha_descarga": "2026-11-24T23:02:54Z",
+   "fecha_descarga": "2026-11-24T23:08:54Z",
    "edad_dias": -1,
    "caducado": false
   },
@@ -593,7 +593,7 @@
    "bytes": 76133,
    "kb": 74.3,
    "fecha_dato": "2026-11-25T00:00",
-   "fecha_descarga": "2026-11-24T23:02:54Z",
+   "fecha_descarga": "2026-11-24T23:08:54Z",
    "edad_dias": -1,
    "caducado": false
   },
@@ -620,7 +620,7 @@
    "bytes": 76133,
    "kb": 74.3,
    "fecha_dato": "2026-11-25T00:00",
-   "fecha_descarga": "2026-11-24T23:02:54Z",
+   "fecha_descarga": "2026-11-24T23:08:54Z",
    "edad_dias": -1,
    "caducado": false
   },
@@ -647,7 +647,7 @@
    "bytes": 54390,
    "kb": 53.1,
    "fecha_dato": "2026-11-25T00:00",
-   "fecha_descarga": "2026-11-24T23:02:54Z",
+   "fecha_descarga": "2026-11-24T23:08:54Z",
    "edad_dias": -1,
    "caducado": false
   },
@@ -805,9 +805,9 @@
    "ttl_segundos": 300,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 890,
-   "bytes": 392272,
-   "kb": 383.1,
+   "features": 870,
+   "bytes": 384653,
+   "kb": 375.6,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -832,9 +832,9 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 864,
-   "bytes": 189945,
-   "kb": 185.5,
+   "features": 832,
+   "bytes": 183170,
+   "kb": 178.9,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
