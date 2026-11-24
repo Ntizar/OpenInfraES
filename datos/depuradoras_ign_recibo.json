@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-24",
+ "titulo": "Estaciones depuradoras de aguas residuales (IGN)",
+ "fuente": "IGN · SignA",
+ "metodo": "Capa 28 de 05_servicios_industria",
+ "features": 3582,
+ "kb": 826.8,
+ "fichero": "depuradoras_ign.geojson"
+}

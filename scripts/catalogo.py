@@ -103,6 +103,10 @@ TTL = {
     # Estructuras de la RCE: el inventario del MITMA cambia con las obras, no cada día.
     "tuneles-rce": (2592000, "mensual", "foto"),
     "puentes-rce": (2592000, "mensual", "foto"),
+    # Patrimonio y equipamientos del IGN: cambian con las declaraciones y las obras, no a diario.
+    "patrimonio-ign": (2592000, "mensual", "foto"),
+    "depuradoras-ign": (2592000, "mensual", "foto"),
+    "hospitales-ign": (2592000, "mensual", "foto"),
     "plantas": (2592000, "mensual", "foto"),
     "ine-provincias": (31536000, "anual (padrón)", "foto"),
     "ine-ccaa": (31536000, "anual (padrón)", "foto"),

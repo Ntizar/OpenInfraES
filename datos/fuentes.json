@@ -742,7 +742,7 @@
    "licencia": "abierta con atribución",
    "actualizado": "2026-11-17",
    "descargado": "2026-11-24",
-   "features": 87,
+   "features": 88,
    "url": "https://www.seismicportal.eu/fdsnws/event/1/query",
    "metodo": "FDSN query con bbox de Espana"
   },
@@ -1004,9 +1004,9 @@
    "fuente": "Operadores (Renfe)",
    "editor": "GTFS-Realtime",
    "licencia": "condiciones del editor",
-   "actualizado": "2026-11-24T20:12:12",
-   "descargado": "2026-11-24T20:12:06",
-   "features": 379,
+   "actualizado": "2026-11-24T21:12:11",
+   "descargado": "2026-11-24T21:12:07",
+   "features": 289,
    "url": "https://gtfsrt.renfe.com/vehicle_positions.pb",
    "metodo": "protobuf GTFS-RT, refresco continuo"
   },
@@ -1041,7 +1041,7 @@
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
    "actualizado": "2026-11-24T22:00",
-   "descargado": "2026-11-24T21:09:45Z",
+   "descargado": "2026-11-24T21:12:08Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el poligono), paso 15 min"
@@ -1053,7 +1053,7 @@
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
    "actualizado": "2026-11-24T22:00",
-   "descargado": "2026-11-24T21:09:45Z",
+   "descargado": "2026-11-24T21:12:08Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias"
@@ -1065,7 +1065,7 @@
    "editor": "Open-Meteo",
    "licencia": "CC BY 4.0",
    "actualizado": "2026-11-24T22:00",
-   "descargado": "2026-11-24T21:09:45Z",
+   "descargado": "2026-11-24T21:12:08Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el polígono), paso 15 min"
@@ -1077,10 +1077,46 @@
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
    "actualizado": "2026-11-24T22:00",
-   "descargado": "2026-11-24T21:09:45Z",
+   "descargado": "2026-11-24T21:12:08Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "una llamada por lotes a /v1/forecast (current) y rejilla IDW vectorial propia"
+  },
+  "depuradoras-ign": {
+   "capa": "depuradoras-ign",
+   "titulo": "Estaciones depuradoras de aguas residuales (IGN)",
+   "fuente": "IGN · SignA",
+   "editor": "Instituto Geográfico Nacional",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 3582,
+   "url": "https://signa.ign.es/",
+   "metodo": "Capa 28 de 05_servicios_industria"
+  },
+  "hospitales-ign": {
+   "capa": "hospitales-ign",
+   "titulo": "Hospitales (IGN)",
+   "fuente": "IGN · SignA",
+   "editor": "Instituto Geográfico Nacional",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 884,
+   "url": "https://signa.ign.es/",
+   "metodo": "Capa 1 de 05_servicios_industria"
+  },
+  "patrimonio-ign": {
+   "capa": "patrimonio-ign",
+   "titulo": "Patrimonio cultural (IGN)",
+   "fuente": "IGN · SignA",
+   "editor": "Instituto Geográfico Nacional",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 20116,
+   "url": "https://signa.ign.es/",
+   "metodo": "Capas 1, 6-13 y 26 de 03_construcciones_otros, fundidas por sitio a 60 m"
   },
   "puentes-rce": {
    "capa": "puentes-rce",
@@ -1226,5 +1262,5 @@
    "kb": 7
   }
  },
- "total_capas": 92
+ "total_capas": 95
 }

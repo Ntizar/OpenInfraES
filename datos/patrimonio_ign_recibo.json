@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-24",
+ "titulo": "Patrimonio cultural (IGN)",
+ "fuente": "IGN · SignA",
+ "metodo": "Capas 1, 6-13 y 26 de 03_construcciones_otros, fundidas por sitio a 60 m",
+ "features": 20116,
+ "kb": 5647.3,
+ "fichero": "patrimonio_ign.geojson"
+}

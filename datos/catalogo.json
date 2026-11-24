@@ -1,21 +1,21 @@
 {
- "generado": "2026-11-24T21:09:45",
+ "generado": "2026-11-24T21:23:49",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 92,
+ "total": 95,
  "resumen": {
-  "licencia_si": 87,
+  "licencia_si": 90,
   "licencia_pendiente": 5,
   "caducados": 27,
-  "oficiales": 77,
+  "oficiales": 80,
   "comunitarias": 15,
   "por_jerarquia": {
-   "1": 54,
+   "1": 57,
    "2": 23,
    "3": 15
   },
-  "descargables_ligeros": 46,
-  "kb_total": 88870.2
+  "descargables_ligeros": 48,
+  "kb_total": 95520.2
  },
  "avisos": {
   "pendiente": [
@@ -431,7 +431,7 @@
    "bytes": null,
    "kb": null,
    "fecha_dato": "2026-11-24T22:00",
-   "fecha_descarga": "2026-11-24T21:09:45Z",
+   "fecha_descarga": "2026-11-24T21:12:08Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -458,7 +458,7 @@
    "bytes": 76208,
    "kb": 74.4,
    "fecha_dato": "2026-11-24T22:00",
-   "fecha_descarga": "2026-11-24T21:09:45Z",
+   "fecha_descarga": "2026-11-24T21:12:08Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -485,7 +485,7 @@
    "bytes": 76208,
    "kb": 74.4,
    "fecha_dato": "2026-11-24T22:00",
-   "fecha_descarga": "2026-11-24T21:09:45Z",
+   "fecha_descarga": "2026-11-24T21:12:08Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -512,7 +512,7 @@
    "bytes": 54373,
    "kb": 53.1,
    "fecha_dato": "2026-11-24T22:00",
-   "fecha_descarga": "2026-11-24T21:09:45Z",
+   "fecha_descarga": "2026-11-24T21:12:08Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -565,6 +565,33 @@
    "features": 25,
    "bytes": 1805514,
    "kb": 1763.2,
+   "fecha_dato": "2026-11-24",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
+   "caducado": false
+  },
+  "depuradoras-ign": {
+   "id": "depuradoras-ign",
+   "titulo": "Estaciones depuradoras de aguas residuales (IGN)",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "Capa 28 de 05_servicios_industria",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 3582,
+   "bytes": 846660,
+   "kb": 826.8,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -1156,11 +1183,11 @@
    "ttl_segundos": 120,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 379,
-   "bytes": 108249,
-   "kb": 105.7,
-   "fecha_dato": "2026-11-24T20:12:12",
-   "fecha_descarga": "2026-11-24T20:12:06",
+   "features": 289,
+   "bytes": 82576,
+   "kb": 80.6,
+   "fecha_dato": "2026-11-24T21:12:11",
+   "fecha_descarga": "2026-11-24T21:12:07",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1298,6 +1325,33 @@
    "fecha_descarga": "2026-11-24",
    "edad_dias": 110,
    "caducado": true
+  },
+  "hospitales-ign": {
+   "id": "hospitales-ign",
+   "titulo": "Hospitales (IGN)",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "Capa 1 de 05_servicios_industria",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 884,
+   "bytes": 205538,
+   "kb": 200.7,
+   "fecha_dato": "2026-11-24",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
+   "caducado": false
   },
   "ine-ccaa": {
    "id": "ine-ccaa",
@@ -1812,6 +1866,33 @@
    "edad_dias": 109,
    "caducado": true
   },
+  "patrimonio-ign": {
+   "id": "patrimonio-ign",
+   "titulo": "Patrimonio cultural (IGN)",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "Capas 1, 6-13 y 26 de 03_construcciones_otros, fundidas por sitio a 60 m",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 20116,
+   "bytes": 5782829,
+   "kb": 5647.3,
+   "fecha_dato": "2026-11-24",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
+   "caducado": false
+  },
   "petrolifero": {
    "id": "petrolifero",
    "titulo": "Almacenamiento de productos petrolíferos",
@@ -2290,9 +2371,9 @@
    "ttl_segundos": 604800,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 87,
-   "bytes": 29173,
-   "kb": 28.5,
+   "features": 88,
+   "bytes": 29516,
+   "kb": 28.8,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
