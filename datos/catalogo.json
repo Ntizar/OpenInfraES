@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-24T22:59:15",
+ "generado": "2026-11-24T23:02:55",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 104,
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 51,
-  "kb_total": 107977.2
+  "kb_total": 107980.9
  },
  "avisos": {
   "pendiente": [
@@ -104,10 +104,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 47,
-   "bytes": 217829,
-   "kb": 212.7,
+   "bytes": 218094,
+   "kb": 213.0,
    "fecha_dato": "20261124",
-   "fecha_descarga": "2026-11-24T22:41:29",
+   "fecha_descarga": "2026-11-24T23:02:47",
    "edad_dias": 0,
    "caducado": false
   },
@@ -565,9 +565,9 @@
    "features": 52,
    "bytes": null,
    "kb": null,
-   "fecha_dato": "2026-11-24T23:30",
-   "fecha_descarga": "2026-11-24T22:36:44Z",
-   "edad_dias": 0,
+   "fecha_dato": "2026-11-25T00:00",
+   "fecha_descarga": "2026-11-24T23:02:54Z",
+   "edad_dias": -1,
    "caducado": false
   },
   "clima-provincias": {
@@ -590,11 +590,11 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76156,
-   "kb": 74.4,
-   "fecha_dato": "2026-11-24T23:30",
-   "fecha_descarga": "2026-11-24T22:36:44Z",
-   "edad_dias": 0,
+   "bytes": 76133,
+   "kb": 74.3,
+   "fecha_dato": "2026-11-25T00:00",
+   "fecha_descarga": "2026-11-24T23:02:54Z",
+   "edad_dias": -1,
    "caducado": false
   },
   "clima-temperatura": {
@@ -617,11 +617,11 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76156,
-   "kb": 74.4,
-   "fecha_dato": "2026-11-24T23:30",
-   "fecha_descarga": "2026-11-24T22:36:44Z",
-   "edad_dias": 0,
+   "bytes": 76133,
+   "kb": 74.3,
+   "fecha_dato": "2026-11-25T00:00",
+   "fecha_descarga": "2026-11-24T23:02:54Z",
+   "edad_dias": -1,
    "caducado": false
   },
   "clima-viento": {
@@ -644,11 +644,11 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 54399,
+   "bytes": 54390,
    "kb": 53.1,
-   "fecha_dato": "2026-11-24T23:30",
-   "fecha_descarga": "2026-11-24T22:36:44Z",
-   "edad_dias": 0,
+   "fecha_dato": "2026-11-25T00:00",
+   "fecha_descarga": "2026-11-24T23:02:54Z",
+   "edad_dias": -1,
    "caducado": false
   },
   "conducciones-combustible": {
@@ -805,9 +805,9 @@
    "ttl_segundos": 300,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 887,
-   "bytes": 390588,
-   "kb": 381.4,
+   "features": 890,
+   "bytes": 392272,
+   "kb": 383.1,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -832,9 +832,9 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 854,
-   "bytes": 188056,
-   "kb": 183.6,
+   "features": 864,
+   "bytes": 189945,
+   "kb": 185.5,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
