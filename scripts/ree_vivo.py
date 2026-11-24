@@ -55,15 +55,26 @@ if _TK:
 UNIDADES = {10355: "tCO₂/MW", 1294: "MW", 10004: "MW"}
 
 # id -> (clave, etiqueta, grupo)
+# ESIOS abre las trece tecnologías «Generación T.Real» al mismo minuto (204 puntos al día): con
+# todas ellas la suma cuadra con la demanda y con el saldo de intercambios, y no hace falta
+# mezclar ENTSO-E (15 min y 30-40 de retraso) para tener el mix completo.
 ABIERTOS = {
     2037: ("demanda", "Demanda real nacional", "demanda"),
     10004: ("demanda_gen", "Demanda real (suma de generación)", "demanda"),
+    2038: ("eolica", "Eólica", "generacion"),
+    2039: ("nuclear", "Nuclear", "generacion"),
+    2040: ("carbon", "Carbón", "generacion"),
     2041: ("ciclo", "Ciclo combinado", "generacion"),
     2042: ("hidro", "Hidráulica", "generacion"),
-    2038: ("eolica", "Eólica", "generacion"),
     2044: ("solar_fv", "Solar fotovoltaica", "generacion"),
     2045: ("solar_ter", "Solar térmica", "generacion"),
-    1294: ("solar_ter_pen", "Solar térmica (peninsular)", "generacion"),
+    2046: ("termica_renovable", "Térmica renovable", "generacion"),
+    2047: ("diesel", "Motor diésel", "generacion"),
+    2048: ("turbina_gas", "Turbina de gas", "generacion"),
+    2049: ("turbina_vapor", "Turbina de vapor", "generacion"),
+    2050: ("auxiliar", "Generación auxiliar", "generacion"),
+    2051: ("cogen_residuos", "Cogeneración y residuos", "generacion"),
+    2043: ("intercambios", "Intercambios internacionales", "intercambios"),
     10355: ("co2", "CO₂ asociado a la generación", "emisiones"),
     2068: ("exp_andorra", "Exportación a Andorra", "intercambios"),
     2073: ("imp_andorra", "Importación de Andorra", "intercambios"),
@@ -156,10 +167,33 @@ def main():
 
     edades = [v.get("edad_min") for k, v in series.items()
               if k not in heredados and v.get("edad_min") is not None]
+
+    # Los indicadores no cierran el mismo minuto entre sí: unos publican a las 20:20 y otros se
+    # quedan en 20:15. Sumar 20:20 con 20:15 fabrica una foto que no existe. Se elige el último
+    # minuto que comparten TODAS las series vivas y se publica ese, con su hora.
+    comunes = None
+    for k, v in series.items():
+        if v.get("heredado") or not v.get("serie"):
+            continue
+        horas = {p[0] for p in v["serie"]}
+        comunes = horas if comunes is None else (comunes & horas)
+    hora_comun = max(comunes) if comunes else None
+    if hora_comun:
+        for k, v in series.items():
+            mapa = {p[0]: p[1] for p in (v.get("serie") or [])}
+            if hora_comun in mapa:
+                v["hora"] = hora_comun
+                v["valor"] = mapa[hora_comun]
+                v["edad_min"] = edad_min(fecha, hora_comun)
+                estado[k] = mapa[hora_comun]
+        edades = [v.get("edad_min") for k, v in series.items()
+                  if k not in heredados and v.get("edad_min") is not None]
+
     salida = {
         "fecha": fecha,
         "actualizado": datetime.datetime.now().isoformat(timespec="seconds"),
         "edad_min": min(edades) if edades else None,
+        "hora_comun": hora_comun,
         "con_clave": bool(_TK),
         "fuente": "REE · ESIOS (token)" if _TK else "REE · ESIOS (sin clave: 403)",
         "resolucion": "5 minutos",
