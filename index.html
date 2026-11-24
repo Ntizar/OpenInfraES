@@ -1520,9 +1520,11 @@ const CAPAS = [
     /* `halo` pinta un trazo oscuro debajo: sin el, flechas azul claro sobre provincias azules
        del coropleta se perdian. Con halo se leen sobre cualquier relleno. */
     halo:4.5, color:"#7dd3fc", fichero:"datos/clima_viento.geojson", peso:1.7, opacidad:.9, zoomMin:0,
+    pesoPorTramo:{"flojo":1.3, "moderado":2.1, "fuerte":3.2, "muy fuerte":3.9, "temporal":4.6},
     colorCampo:"tramo",
-    colores:{"flojo":"#7dd3fc", "moderado":"#38bdf8", "fuerte":"#22d3ee", "muy fuerte":"#fbbf24",
-             "temporal":"#f87171"},
+    /* misma rampa que TRAMOS_V del script: cian, verde, ambar, naranja, rojo */
+    colores:{"flojo":"#67e8f9", "moderado":"#4ade80", "fuerte":"#fbbf24", "muy fuerte":"#fb923c",
+             "temporal":"#ef4444"},
     rangos:{"flojo":"< 10 km/h", "moderado":"10–20 km/h", "fuerte":"20–40 km/h",
             "muy fuerte":"40–60 km/h", "temporal":"> 60 km/h"},
     nota:"la flecha apunta hacia donde sopla",
@@ -3211,10 +3213,17 @@ function cargar(c) {
       if (c.colorCampo) actualizarLeyenda();
       if (c.tipo === "punto") { pintarPuntos(c); }
       else {
-        // lineas y poligonos: halo debajo si se pide (solo 400/220 kV)
+        // lineas y poligonos: halo debajo si se pide (solo 400/220 kV y el viento)
         if (c.halo) {
+          // el halo sigue al grosor del tramo: uno fijo de 4,5 sobre una flecha de 1,3 la
+          // convertia en una mancha oscura, y sobre una de 3,2 no dejaba borde. Siempre +2,4.
+          const haloDe = (f) => {
+            if (!c.pesoPorTramo || !f || !f.properties) return c.halo;
+            const w = c.pesoPorTramo[f.properties[c.colorCampo]];
+            return w ? w + 2.4 : c.halo;
+          };
           L.geoJSON({ type:"FeatureCollection", features:feats }, {
-            style: () => ({ color:"#0b1220", weight:c.halo, opacity:.85, fill:false })
+            style: (f) => ({ color:"#0b1220", weight:haloDe(f), opacity:.9, fill:false })
           }).addTo(capas[c.id]);
         }
         L.geoJSON({ type:"FeatureCollection", features:feats }, {
@@ -3230,8 +3239,13 @@ function cargar(c) {
             // En polígonos el TRAZO va en un tono oscuro fijo: dos comunidades con el mismo
             // dato comparten relleno y sin borde propio se leían como una sola mancha.
             const esPoli = c.tipo === "poligono";
+            // `pesoPorTramo`: el grosor tambien dice la intensidad. Una flecha de temporal
+            // dibujada con el mismo pelo que una de 6 km/h se pierde en el campo.
+            const pesoBase = c.peso || 1.2;
+            const peso = (!esPoli && c.pesoPorTramo && f && f.properties)
+              ? (c.pesoPorTramo[f.properties[c.colorCampo]] || pesoBase) : pesoBase;
             return { color: esPoli ? "rgba(4,7,12,.92)" : col,
-                     weight: esPoli ? Math.max(1.2, c.peso || 1.2) : (c.peso || 1.2),
+                     weight: esPoli ? Math.max(1.2, pesoBase) : peso,
                      opacity: c.opacidad || .8,
                      fillColor: col, fillOpacity: esPoli ? (c.opacidad || .3) : .12 };
           },

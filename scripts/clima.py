@@ -50,9 +50,11 @@ TRAMOS_T = [(-99, 0, "helado", "#818cf8"), (0, 5, "muy frío", "#6366f1"),
             (5, 10, "frío", "#3b82f6"), (10, 15, "fresco", "#22d3ee"),
             (15, 20, "suave", "#a3e635"), (20, 25, "templado", "#fbbf24"),
             (25, 30, "cálido", "#fb923c"), (30, 99, "caluroso", "#f97316")]
-TRAMOS_V = [(0, 10, "flojo", "#7dd3fc"), (10, 20, "moderado", "#38bdf8"),
-            (20, 40, "fuerte", "#22d3ee"), (40, 60, "muy fuerte", "#fbbf24"),
-            (60, 999, "temporal", "#f87171")]
+# Rampa de aviso (cian -> verde -> ambar -> naranja -> rojo), no cinco azules: con #7dd3fc,
+# #38bdf8 y #22d3ee el campo entero se veia del mismo color y el tramo solo se sabia por la ficha.
+TRAMOS_V = [(0, 10, "flojo", "#67e8f9"), (10, 20, "moderado", "#4ade80"),
+            (20, 40, "fuerte", "#fbbf24"), (40, 60, "muy fuerte", "#fb923c"),
+            (60, 999, "temporal", "#ef4444")]
 
 
 def tramo(valor, tabla):
