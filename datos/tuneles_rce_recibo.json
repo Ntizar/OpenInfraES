@@ -1,0 +1,11 @@
+{
+ "titulo": "Túneles de la Red de Carreteras del Estado",
+ "fuente": "MITMA",
+ "editor": "Ministerio de Transportes y Movilidad Sostenible",
+ "licencia": "Reutilización con atribución (Ley 37/2007)",
+ "url": "https://mapas.fomento.gob.es/arcgis2/rest/services/Hermes/1_INFRAESTRUCTURA_B%C3%81SICA_/MapServer/929",
+ "metodo": "ArcGIS REST, capa 929, un elemento por túnel con sus tubos anidados",
+ "features": 366,
+ "kb": 513.9,
+ "fichero": "tuneles_rce.geojson"
+}
