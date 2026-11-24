@@ -1817,21 +1817,32 @@ function indicadores(D) {
   }
 
   /* ── medio ambiente / datos ─────────────────────────────────────────────── */
+  /* El catálogo tiene MÁS entradas que capas sirve el visor (hay viejas y de datos que no se
+     pintan). Mezclarlas daba dos cifras distintas para lo mismo: 69 arriba y "CAPAS 63" abajo.
+     El chip habla de lo que el visitante puede encender; la licencia, del catálogo entero. */
   const capas = capasUnicas(cat.capas);
+  /* "objetos" se cuenta por CAPA DEL VISOR, no por entrada del catálogo: capasUnicas deduplica
+     capas publicadas en varios sitios y su id es el de la primera clave, así que filtrar por
+     id daba 55 donde la barra de abajo dice 63. Dos cifras para lo mismo es un fallo. */
+  const catCrudo = cat.capas || {};
   if (capas.length) {
     const pend = capas.filter(c => (c.v.licencia || {}).estado === "pendiente").length;
     anade({ id: "licencias", dominio: "datos", panel: "estado", icono: "⚖",
-      valor: pend, etiqueta: pend === 1 ? "capa sin licencia evaluada" : "capas sin licencia evaluada",
+      valor: pend, etiqueta: pend === 1 ? "capa del catálogo sin licencia evaluada"
+                                        : "capas del catálogo sin licencia evaluada",
       clase: pend ? "aviso" : "bien",
       ventana: "estado del catálogo a día de hoy",
-      detalle: [["Capas distintas", capas.length],
+      detalle: [["Entradas distintas en el catálogo", capas.length],
+                ["De ellas, en el visor", CAPAS.length],
                 ["Sin licencia evaluada", pend]],
       fuente: "catálogo propio (datos/catalogo.json)" });
-    const objetos = capas.reduce((a, c) => a + (Number(c.v.features) || 0), 0);
+    const objetos = CAPAS.reduce((a, c) =>
+      a + (Number((catCrudo[c.id] || {}).features) || 0), 0);
     anade({ id: "objetos", dominio: "datos", icono: "◫",
-      valor: nf(objetos), etiqueta: "objetos descargados en " + capas.length + " capas",
-      ventana: "suma de las features del catálogo, hoy",
-      detalle: [["Objetos", nf(objetos)], ["Capas", capas.length]],
+      valor: nf(objetos), etiqueta: "objetos servidos · " + CAPAS.length + " capas",
+      ventana: "suma de las features que sirve el visor, hoy",
+      detalle: [["Objetos", nf(objetos)], ["Capas en el visor", CAPAS.length],
+                ["Entradas en el catálogo", capas.length]],
       fuente: "catálogo propio" });
   }
   return out;
