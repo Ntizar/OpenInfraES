@@ -100,7 +100,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 
 ## Capas del visor
 
-**72 capas en 13 grupos temáticos**, con carga bajo demanda: nada se descarga hasta que lo enciendes.
+**70 capas en 13 grupos temáticos**, con carga bajo demanda: nada se descarga hasta que lo enciendes.
 
 <!-- CIFRAS-GRUPOS:INICIO (lo reescribe scripts/cifras.py) -->
 | Grupo | Capas | Objetos |
@@ -108,7 +108,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **Red eléctrica** | 4 | 5.593 |
 | **Generación** | 8 | 8.530 |
 | **Gas** | 6 | 843 |
-| **Agua** | 16 | 21.254 |
+| **Agua** | 14 | 17.330 |
 | **Demografía** | 5 | 8.199 |
 | **Transporte** | 15 | 30.488 |
 | **DGT · Tráfico** | 4 | 15.841 |
@@ -118,7 +118,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **Patrimonio** | 1 | 20.116 |
 | **Población** | 1 | 884 |
 | **Clima** | 2 | 104 |
-| **Total** | **72** | **139.639** |
+| **Total** | **70** | **135.715** |
 <!-- CIFRAS-GRUPOS:FIN -->
 
 Los objetos se cuentan de los ficheros que usa cada grupo **sin contar dos veces el mismo fichero**
@@ -357,7 +357,7 @@ hay que atribuir a OpenStreetMap y compartir igual. El **código** (visor, scrip
 
 | | |
 |---|---|
-| Capas en el visor | **72** |
+| Capas en el visor | **70** |
 | Capas documentadas en `fuentes.json` | **95** |
 | Organismos citados | **19** — MITECO, MITMA, IGN, REE, DGT, AEMET, CSN, CORES, Enagás, ENRESA, INE, Renfe, Adif, EMSC-CSEM, I-ReWater HUB, OpenStreetMap |
 | Fuentes sin clave | MITECO, IGN, MITMA, Enagás, CORES, CSN, ENRESA, Renfe, Adif, DGT, AEMET, INE, OMIE, ESIOS (19 indicadores) |

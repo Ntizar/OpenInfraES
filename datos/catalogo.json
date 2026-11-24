@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-24T21:27:45",
+ "generado": "2026-11-24T21:32:43",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 95,
@@ -7,15 +7,15 @@
   "licencia_si": 90,
   "licencia_pendiente": 5,
   "caducados": 27,
-  "oficiales": 80,
-  "comunitarias": 15,
+  "oficiales": 81,
+  "comunitarias": 14,
   "por_jerarquia": {
-   "1": 57,
+   "1": 58,
    "2": 23,
-   "3": 15
+   "3": 14
   },
-  "descargables_ligeros": 48,
-  "kb_total": 95510.2
+  "descargables_ligeros": 46,
+  "kb_total": 96118.0
  },
  "avisos": {
   "pendiente": [
@@ -570,33 +570,6 @@
    "edad_dias": 0,
    "caducado": false
   },
-  "depuradoras-ign": {
-   "id": "depuradoras-ign",
-   "titulo": "Estaciones depuradoras de aguas residuales (IGN)",
-   "organismo": "IGN",
-   "oficial": true,
-   "jerarquia": 1,
-   "jerarquia_txt": "organismo productor",
-   "producto": "Capa 28 de 05_servicios_industria",
-   "licencia": {
-    "estado": "si",
-    "nombre": "CC BY 4.0 · © scne.es",
-    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
-   },
-   "endpoint": "https://signa.ign.es/",
-   "modo": "foto",
-   "frecuencia_fuente": "mensual",
-   "ttl_segundos": 2592000,
-   "ultima_verificacion": "2026-11-24",
-   "crs": "EPSG:4326",
-   "features": 3582,
-   "bytes": 846660,
-   "kb": 826.8,
-   "fecha_dato": "2026-11-24",
-   "fecha_descarga": "2026-11-24",
-   "edad_dias": 0,
-   "caducado": false
-  },
   "desaladoras": {
    "id": "desaladoras",
    "titulo": "Desaladoras",
@@ -761,29 +734,56 @@
   },
   "edar": {
    "id": "edar",
-   "titulo": "EDAR (depuradoras)",
-   "organismo": "OpenStreetMap",
-   "oficial": false,
-   "jerarquia": 3,
-   "jerarquia_txt": "fuente comunitaria",
-   "producto": "Overpass API (man_made=*) · 1648 con nombre",
+   "titulo": "EDAR · depuradoras unificadas",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro",
    "licencia": {
     "estado": "si",
-    "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
-    "url_terminos": "https://opendatacommons.org/licenses/odbl/1-0/"
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
    },
-   "endpoint": "https://www.openstreetmap.org",
+   "endpoint": "https://signa.ign.es/",
    "modo": "foto",
    "frecuencia_fuente": "mensual o inferior",
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 3040,
-   "bytes": 644546,
-   "kb": 629.4,
-   "fecha_dato": "2026-11-23",
-   "fecha_descarga": "2026-11-23",
-   "edad_dias": 1,
+   "features": 4784,
+   "bytes": 1650198,
+   "kb": 1611.5,
+   "fecha_dato": "2026-11-24",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
+   "caducado": false
+  },
+  "edar-unificado": {
+   "id": "edar-unificado",
+   "titulo": "EDAR · depuradoras unificadas",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual o inferior",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 4784,
+   "bytes": 1650198,
+   "kb": 1611.5,
+   "fecha_dato": "2026-11-24",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
    "caducado": false
   },
   "electricidad-interconexiones": {
@@ -1535,8 +1535,8 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 2086,
-   "bytes": 1186779,
-   "kb": 1159.0,
+   "bytes": null,
+   "kb": null,
    "fecha_dato": "2026-11-19",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 5,
