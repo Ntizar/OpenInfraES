@@ -742,7 +742,7 @@
    "licencia": "abierta con atribución",
    "actualizado": "2026-11-17",
    "descargado": "2026-11-24",
-   "features": 86,
+   "features": 87,
    "url": "https://www.seismicportal.eu/fdsnws/event/1/query",
    "metodo": "FDSN query con bbox de Espana"
   },
@@ -1004,9 +1004,9 @@
    "fuente": "Operadores (Renfe)",
    "editor": "GTFS-Realtime",
    "licencia": "condiciones del editor",
-   "actualizado": "2026-11-24T19:11:54",
-   "descargado": "2026-11-24T19:11:58",
-   "features": 419,
+   "actualizado": "2026-11-24T20:12:12",
+   "descargado": "2026-11-24T20:12:06",
+   "features": 379,
    "url": "https://gtfsrt.renfe.com/vehicle_positions.pb",
    "metodo": "protobuf GTFS-RT, refresco continuo"
   },
@@ -1041,7 +1041,7 @@
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
    "actualizado": "2026-11-24T21:00",
-   "descargado": "2026-11-24T20:09:49Z",
+   "descargado": "2026-11-24T20:12:07Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el poligono), paso 15 min"
@@ -1053,10 +1053,58 @@
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
    "actualizado": "2026-11-24T21:00",
-   "descargado": "2026-11-24T20:09:49Z",
+   "descargado": "2026-11-24T20:12:07Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias"
+  },
+  "clima-provincias": {
+   "capa": "clima-provincias",
+   "titulo": "clima-provincias",
+   "fuente": "Open-Meteo",
+   "editor": "Open-Meteo",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24T21:00",
+   "descargado": "2026-11-24T20:12:07Z",
+   "features": 52,
+   "url": "https://open-meteo.com/",
+   "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el polígono), paso 15 min"
+  },
+  "clima": {
+   "capa": "clima",
+   "titulo": "clima",
+   "fuente": "Open-Meteo",
+   "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24T21:00",
+   "descargado": "2026-11-24T20:12:07Z",
+   "features": 52,
+   "url": "https://open-meteo.com/",
+   "metodo": "una llamada por lotes a /v1/forecast (current) y rejilla IDW vectorial propia"
+  },
+  "puentes-rce": {
+   "capa": "puentes-rce",
+   "titulo": "Puentes y viaductos de la RCE",
+   "fuente": "OpenStreetMap",
+   "editor": "Colaboradores de OpenStreetMap",
+   "licencia": "ODbL 1.0 (atribución y compartir igual)",
+   "actualizado": null,
+   "descargado": null,
+   "features": 10946,
+   "url": "https://overpass-api.de/",
+   "metodo": "Overpass `bridge` sobre vías A-/AP-/N-, calzadas fundidas por proximidad de 45 m"
+  },
+  "tuneles-rce": {
+   "capa": "tuneles-rce",
+   "titulo": "Túneles de la Red de Carreteras del Estado",
+   "fuente": "MITMA",
+   "editor": "Ministerio de Transportes y Movilidad Sostenible",
+   "licencia": "Reutilización con atribución (Ley 37/2007)",
+   "actualizado": null,
+   "descargado": null,
+   "features": 366,
+   "url": "https://mapas.fomento.gob.es/arcgis2/rest/services/Hermes/1_INFRAESTRUCTURA_B%C3%81SICA_/MapServer/929",
+   "metodo": "ArcGIS REST, capa 929, un elemento por túnel con sus tubos anidados"
   }
  },
  "simplificacion": {
@@ -1178,5 +1226,5 @@
    "kb": 7
   }
  },
- "total_capas": 88
+ "total_capas": 92
 }

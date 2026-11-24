@@ -6,6 +6,6 @@
  "url": "https://mapas.fomento.gob.es/arcgis2/rest/services/Hermes/1_INFRAESTRUCTURA_B%C3%81SICA_/MapServer/929",
  "metodo": "ArcGIS REST, capa 929, un elemento por túnel con sus tubos anidados",
  "features": 366,
- "kb": 513.9,
+ "kb": 365.2,
  "fichero": "tuneles_rce.geojson"
 }

@@ -574,6 +574,28 @@ def main():
                 "metodo": met,
             }
 
+    # Estructuras de la RCE: túneles del MITMA y puentes de OSM. Cada fichero trae su propio recibo
+    # (`*_recibo.json`) para que la ficha no dependa de una lista escrita a mano.
+    for fich in sorted(os.listdir(DATOS)):
+        if not fich.endswith("_recibo.json"):
+            continue
+        base = fich[: -len("_recibo.json")]
+        capa = base.replace("_", "-")
+        if capa in fuentes:
+            continue
+        r = leer(fich, {})
+        if not (r.get("fuente") and r.get("licencia") and r.get("features") is not None):
+            continue
+        fuentes[capa] = {
+            "capa": capa, "titulo": r.get("titulo") or capa,
+            "fuente": r.get("fuente"), "editor": r.get("editor") or r.get("fuente"),
+            "licencia": r.get("licencia"),
+            "actualizado": r.get("actualizado") or r.get("descargado"),
+            "descargado": r.get("descargado"),
+            "features": r.get("features"),
+            "url": r.get("url"), "metodo": r.get("metodo"),
+        }
+
     sim = leer("simplificado/_recibo.json", {})
     simpl = {os.path.basename(c["id"]): c for c in sim.get("capas", [])}
 

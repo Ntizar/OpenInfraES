@@ -1,0 +1,11 @@
+{
+ "titulo": "Puentes y viaductos de la RCE",
+ "fuente": "OpenStreetMap",
+ "editor": "Colaboradores de OpenStreetMap",
+ "licencia": "ODbL 1.0 (atribución y compartir igual)",
+ "url": "https://overpass-api.de/",
+ "metodo": "Overpass `bridge` sobre vías A-/AP-/N-, calzadas fundidas por proximidad de 45 m",
+ "features": 10946,
+ "kb": 2327.9,
+ "fichero": "puentes_rce.geojson"
+}

@@ -1,21 +1,21 @@
 {
- "generado": "2026-11-24T20:09:50",
+ "generado": "2026-11-24T20:22:46",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 88,
+ "total": 92,
  "resumen": {
-  "licencia_si": 83,
+  "licencia_si": 87,
   "licencia_pendiente": 5,
   "caducados": 27,
-  "oficiales": 74,
-  "comunitarias": 14,
+  "oficiales": 77,
+  "comunitarias": 15,
   "por_jerarquia": {
    "1": 54,
-   "2": 20,
-   "3": 14
+   "2": 23,
+   "3": 15
   },
-  "descargables_ligeros": 44,
-  "kb_total": 86127.9
+  "descargables_ligeros": 46,
+  "kb_total": 88884.7
  },
  "avisos": {
   "pendiente": [
@@ -408,6 +408,60 @@
    "edad_dias": 0,
    "caducado": false
   },
+  "clima": {
+   "id": "clima",
+   "titulo": "clima",
+   "organismo": "Open-Meteo",
+   "oficial": true,
+   "jerarquia": 2,
+   "jerarquia_txt": "organismo agregador",
+   "producto": "una llamada por lotes a /v1/forecast (current) y rejilla IDW vectorial propia",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · atribuir a Open-Meteo y al modelo (ICON/GFS)",
+    "url_terminos": "https://open-meteo.com/en/license"
+   },
+   "endpoint": "https://open-meteo.com/",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual o inferior",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 52,
+   "bytes": null,
+   "kb": null,
+   "fecha_dato": "2026-11-24T21:00",
+   "fecha_descarga": "2026-11-24T20:12:07Z",
+   "edad_dias": 0,
+   "caducado": false
+  },
+  "clima-provincias": {
+   "id": "clima-provincias",
+   "titulo": "clima-provincias",
+   "organismo": "Open-Meteo",
+   "oficial": true,
+   "jerarquia": 2,
+   "jerarquia_txt": "organismo agregador",
+   "producto": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el polígono), paso 15 min",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · atribuir a Open-Meteo y al modelo (ICON/GFS)",
+    "url_terminos": "https://open-meteo.com/en/license"
+   },
+   "endpoint": "https://open-meteo.com/",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual o inferior",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 52,
+   "bytes": 76148,
+   "kb": 74.4,
+   "fecha_dato": "2026-11-24T21:00",
+   "fecha_descarga": "2026-11-24T20:12:07Z",
+   "edad_dias": 0,
+   "caducado": false
+  },
   "clima-temperatura": {
    "id": "clima-temperatura",
    "titulo": "Temperatura ahora (provincia)",
@@ -431,7 +485,7 @@
    "bytes": 76148,
    "kb": 74.4,
    "fecha_dato": "2026-11-24T21:00",
-   "fecha_descarga": "2026-11-24T20:09:49Z",
+   "fecha_descarga": "2026-11-24T20:12:07Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -458,7 +512,7 @@
    "bytes": 54338,
    "kb": 53.1,
    "fecha_dato": "2026-11-24T21:00",
-   "fecha_descarga": "2026-11-24T20:09:49Z",
+   "fecha_descarga": "2026-11-24T20:12:07Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1102,11 +1156,11 @@
    "ttl_segundos": 120,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 419,
-   "bytes": 119564,
-   "kb": 116.8,
-   "fecha_dato": "2026-11-24T19:11:54",
-   "fecha_descarga": "2026-11-24T19:11:58",
+   "features": 379,
+   "bytes": 108249,
+   "kb": 105.7,
+   "fecha_dato": "2026-11-24T20:12:12",
+   "fecha_descarga": "2026-11-24T20:12:06",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1893,6 +1947,33 @@
    "edad_dias": 0,
    "caducado": false
   },
+  "puentes-rce": {
+   "id": "puentes-rce",
+   "titulo": "Puentes y viaductos de la RCE",
+   "organismo": "OpenStreetMap",
+   "oficial": false,
+   "jerarquia": 3,
+   "jerarquia_txt": "fuente comunitaria",
+   "producto": "Overpass `bridge` sobre vías A-/AP-/N-, calzadas fundidas por proximidad de 45 m",
+   "licencia": {
+    "estado": "si",
+    "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
+    "url_terminos": "https://opendatacommons.org/licenses/odbl/1-0/"
+   },
+   "endpoint": "https://overpass-api.de/",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 10946,
+   "bytes": 2383804,
+   "kb": 2327.9,
+   "fecha_dato": null,
+   "fecha_descarga": null,
+   "edad_dias": null,
+   "caducado": false
+  },
   "puertos": {
    "id": "puertos",
    "titulo": "Puertos de interés general",
@@ -2209,9 +2290,9 @@
    "ttl_segundos": 604800,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 86,
-   "bytes": 28811,
-   "kb": 28.1,
+   "features": 87,
+   "bytes": 29173,
+   "kb": 28.5,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -2431,6 +2512,33 @@
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
+   "caducado": false
+  },
+  "tuneles-rce": {
+   "id": "tuneles-rce",
+   "titulo": "Túneles de la Red de Carreteras del Estado",
+   "organismo": "MITMA",
+   "oficial": true,
+   "jerarquia": 2,
+   "jerarquia_txt": "organismo agregador",
+   "producto": "ArcGIS REST, capa 929, un elemento por túnel con sus tubos anidados",
+   "licencia": {
+    "estado": "si",
+    "nombre": "Ley 37/2007 · NAP",
+    "url_terminos": "https://nap.transportes.gob.es"
+   },
+   "endpoint": "https://mapas.fomento.gob.es/arcgis2/rest/services/Hermes/1_INFRAESTRUCTURA_B%C3%81SICA_/MapServer/929",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 366,
+   "bytes": 373916,
+   "kb": 365.2,
+   "fecha_dato": null,
+   "fecha_descarga": null,
+   "edad_dias": null,
    "caducado": false
   }
  }

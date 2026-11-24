@@ -1532,6 +1532,12 @@ const CAPAS = [
   { id:"presas", grupo:"Agua", label:"Presas (IGN)", tipo:"linea", on:false,
     color:"#64748b", fichero:"datos/presas.geojson", peso:1.1, opacidad:.6, zoomMin:8,
     tituloFijo:"Presa (IGN)", leyendaSimple:true, nota:"el muro, sin nombre" },
+  { id:"tuneles-rce", grupo:"Transporte", label:"Túneles de la RCE (MITMA)", tipo:"linea", on:false,
+    color:"#a78bfa", fichero:"datos/tuneles_rce.geojson", peso:3, opacidad:.95, zoomMin:7,
+    popupTitulo:"nombre", leyendaSimple:true, nota:"un túnel = un elemento, con sus tubos dentro" },
+  { id:"puentes-rce", grupo:"Transporte", label:"Puentes y viaductos de la RCE", tipo:"punto", on:false,
+    color:"#f59e0b", fichero:"datos/puentes_rce.geojson", radio:3.2, zoomMin:9,
+    popupTitulo:"nombre", leyendaSimple:true, nota:"calzadas del mismo puente fundidas en un punto" },
   { id:"dpmt", grupo:"Medio ambiente", label:"Dominio público marítimo-terrestre", tipo:"linea", on:false,
     color:"#f59e0b", fichero:"datos/dpmt.geojson", peso:1.5, opacidad:.85, zoomMin:7,
     popupTitulo:"municipio" },
@@ -2688,6 +2694,8 @@ const VALORES = {
   // DATEX · sentido
   unspecifiedCarriageway: "No especificado", exitSlipRoad: "Salida", entrySlipRoad: "Incorporación",
   serviceRoad: "Vía de servicio", both: "Ambos sentidos",
+  // códigos DATEX de carril que llegan sin traducir desde las incidencias de la DGT
+  escapeLane: "Carril de escape", setDownArea: "Zona de parada",
   positive: "Sentido creciente", negative: "Sentido decreciente",
   // tecnología normalizada (plantas.geojson) y estado del registro OSM
   solar_pv: "Solar fotovoltaica", solar_thermal: "Solar térmica", wind: "Eólica",
