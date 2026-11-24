@@ -4,17 +4,17 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 502,
+ "features": 550,
  "paneles_localizados": 2537,
- "descargado": "2026-11-24T05:10:58",
+ "descargado": "2026-11-24T05:36:30",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 92
+   "paneles": 91
   },
   {
    "texto": "@H @F",
-   "paneles": 89
+   "paneles": 82
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
@@ -22,10 +22,6 @@
   },
   {
    "texto": "CONTROL DE VELOCIDAD POR RADAR · CONTROL DE VELOCIDADE POR RADAR",
-   "paneles": 8
-  },
-  {
-   "texto": "CORTADO PUENTE DE LAS DELICIAS · DESVIOS ALTERNATIVOS SEÑALIZADOS",
    "paneles": 8
   },
   {
@@ -46,6 +42,10 @@
   },
   {
    "texto": "4 EJES O MAS",
+   "paneles": 6
+  },
+  {
+   "texto": "CON VIENTO MODERE LA VELOCIDAD · CON VENTO MODERE A VELOCIDADE",
    "paneles": 6
   }
  ]
