@@ -1,21 +1,21 @@
 {
- "generado": "2026-11-24T21:38:32",
+ "generado": "2026-11-24T22:01:14",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 97,
+ "total": 102,
  "resumen": {
-  "licencia_si": 92,
+  "licencia_si": 97,
   "licencia_pendiente": 5,
   "caducados": 27,
-  "oficiales": 83,
+  "oficiales": 88,
   "comunitarias": 14,
   "por_jerarquia": {
-   "1": 60,
+   "1": 65,
    "2": 23,
    "3": 14
   },
-  "descargables_ligeros": 46,
-  "kb_total": 101869.1
+  "descargables_ligeros": 49,
+  "kb_total": 107169.1
  },
  "avisos": {
   "pendiente": [
@@ -273,6 +273,60 @@
    "edad_dias": 63,
    "caducado": true
   },
+  "aviacion-ligera-ign": {
+   "id": "aviacion-ligera-ign",
+   "titulo": "Aviación ligera · aeródromos y helipuertos",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "Capas 6 y 7 de 02_redes_transporte, multiPoint desdoblado en puntos",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual o inferior",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 1748,
+   "bytes": 431397,
+   "kb": 421.3,
+   "fecha_dato": "2026-11-24",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
+   "caducado": false
+  },
+  "cable-ign": {
+   "id": "cable-ign",
+   "titulo": "Transporte por cable",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "Capas 1-3 de 02_redes_transporte (teleférico, telesilla, telesquí)",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/",
+   "modo": "foto",
+   "frecuencia_fuente": "anual",
+   "ttl_segundos": 31536000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 310,
+   "bytes": 64533,
+   "kb": 63.0,
+   "fecha_dato": "2026-11-24",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
+   "caducado": false
+  },
   "calidad-aire-estaciones": {
    "id": "calidad-aire-estaciones",
    "titulo": "Estaciones de calidad del aire",
@@ -298,6 +352,33 @@
    "fecha_dato": "2026-11-23",
    "fecha_descarga": "2026-11-23",
    "edad_dias": 1,
+   "caducado": false
+  },
+  "caminos-santiago-ign": {
+   "id": "caminos-santiago-ign",
+   "titulo": "Caminos de Santiago",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "Capa 18 de 02_redes_transporte, con agrupación y longitud",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual o inferior",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 756,
+   "bytes": 2081739,
+   "kb": 2032.9,
+   "fecha_dato": "2026-11-24",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
    "caducado": false
   },
   "canales": {
@@ -1000,6 +1081,33 @@
    "fecha_dato": "2026-11-23",
    "fecha_descarga": "2026-11-23",
    "edad_dias": 1,
+   "caducado": false
+  },
+  "ferris-ign": {
+   "id": "ferris-ign",
+   "titulo": "Líneas de ferri",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "Capa 23 de 02_redes_transporte",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/",
+   "modo": "foto",
+   "frecuencia_fuente": "anual",
+   "ttl_segundos": 31536000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 58,
+   "bytes": 31393,
+   "kb": 30.7,
+   "fecha_dato": "2026-11-24",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
    "caducado": false
   },
   "gas-almacenamiento": {
@@ -2674,6 +2782,33 @@
    "fecha_dato": null,
    "fecha_descarga": null,
    "edad_dias": null,
+   "caducado": false
+  },
+  "vias-verdes-ign": {
+   "id": "vias-verdes-ign",
+   "titulo": "Vías verdes",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "Capa 19 de 02_redes_transporte, con firme y longitud",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual o inferior",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 142,
+   "bytes": 2818161,
+   "kb": 2752.1,
+   "fecha_dato": "2026-11-24",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
    "caducado": false
   }
  }
