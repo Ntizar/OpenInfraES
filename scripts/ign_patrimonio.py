@@ -184,6 +184,38 @@ def escribe(nombre, feats, meta):
     print("%-28s %6d  %7.1f KB" % (nombre, len(feats), kb), flush=True)
 
 
+def relieve():
+    """Cimas acotadas y alineaciones montañosas: la altitud es el dato que las hace útiles."""
+    cimas = []
+    for f in capa("Signa/07_orografia_paisaje", 1):
+        if not f.get("geometry"):
+            continue
+        p = f.get("properties") or {}
+        lon, lat = f["geometry"]["coordinates"][:2]
+        cimas.append({"type": "Feature",
+                      "geometry": {"type": "Point", "coordinates": [round(lon, 5), round(lat, 5)]},
+                      "properties": {"nombre": limpia(p.get("nombre")),
+                                     "cota_m": p.get("cota_m") if isinstance(p.get("cota_m"), (int, float)) else None,
+                                     "clase": limpia(p.get("clase")),
+                                     "puerto": (limpia(p.get("puerto_carretera")) == "Sí"),
+                                     "municipio": limpia(p.get("municipio")),
+                                     "provincia": limpia(p.get("provincia")),
+                                     "fuente": "IGN · SignA"}})
+    sierras = []
+    for f in capa("Signa/07_orografia_paisaje", 4):
+        if not f.get("geometry"):
+            continue
+        p = f.get("properties") or {}
+        g = f["geometry"]
+        g["coordinates"] = [[[round(x, 5), round(y, 5)] for x, y in anillo] for anillo in g["coordinates"]] \
+            if g.get("type") == "Polygon" else [[round(x, 5), round(y, 5)] for x, y in g["coordinates"]]
+        sierras.append({"type": "Feature", "geometry": g,
+                        "properties": {"nombre": limpia(p.get("nombre")),
+                                       "jerarquia": limpia(p.get("jerarquia")),
+                                       "fuente": "IGN · SignA"}})
+    return cimas, sierras
+
+
 def main():
     que = (sys.argv[1] if len(sys.argv) > 1 else "todo").lower()
     comun = {"editor": "Instituto Geográfico Nacional", "licencia": "CC BY 4.0",
@@ -204,6 +236,16 @@ def main():
                                                 "Hospitales", "Hospital"), dict(comun, **{
             "titulo": "Hospitales (IGN)",
             "fuente": "IGN · SignA", "metodo": "Capa 1 de 05_servicios_industria"}))
+
+
+    if que in ("todo", "relieve"):
+        cimas, sierras = relieve()
+        escribe("cimas_ign.geojson", cimas, dict(comun, **{
+            "titulo": "Cimas y puntos acotados (IGN)", "fuente": "IGN · SignA",
+            "metodo": "Capa 1 de 07_orografia_paisaje con cota, clase y municipio"}))
+        escribe("sierras_ign.geojson", sierras, dict(comun, **{
+            "titulo": "Alineaciones montañosas (IGN)", "fuente": "IGN · SignA",
+            "metodo": "Capa 4 de 07_orografia_paisaje"}))
 
 
 if __name__ == "__main__":

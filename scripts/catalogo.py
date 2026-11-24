@@ -106,6 +106,8 @@ TTL = {
     # Patrimonio y equipamientos del IGN: cambian con las declaraciones y las obras, no a diario.
     "patrimonio-ign": (2592000, "mensual", "foto"),
     "hospitales-ign": (2592000, "mensual", "foto"),
+    "cimas-ign": (31536000, "anual", "foto"),
+    "sierras-ign": (31536000, "anual", "foto"),
     "plantas": (2592000, "mensual", "foto"),
     "ine-provincias": (31536000, "anual (padrón)", "foto"),
     "ine-ccaa": (31536000, "anual (padrón)", "foto"),

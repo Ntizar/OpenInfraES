@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-24",
+ "titulo": "Cimas y puntos acotados (IGN)",
+ "fuente": "IGN · SignA",
+ "metodo": "Capa 1 de 07_orografia_paisaje con cota, clase y municipio",
+ "features": 14793,
+ "kb": 3552.3,
+ "fichero": "cimas_ign.geojson"
+}

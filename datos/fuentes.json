@@ -1058,6 +1058,18 @@
    "url": "https://open-meteo.com/",
    "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias"
   },
+  "cimas-ign": {
+   "capa": "cimas-ign",
+   "titulo": "Cimas y puntos acotados (IGN)",
+   "fuente": "IGN · SignA",
+   "editor": "Instituto Geográfico Nacional",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 14793,
+   "url": "https://signa.ign.es/",
+   "metodo": "Capa 1 de 07_orografia_paisaje con cota, clase y municipio"
+  },
   "clima-provincias": {
    "capa": "clima-provincias",
    "titulo": "clima-provincias",
@@ -1129,6 +1141,18 @@
    "features": 10946,
    "url": "https://overpass-api.de/",
    "metodo": "Overpass `bridge` sobre vías A-/AP-/N-, calzadas fundidas por proximidad de 45 m"
+  },
+  "sierras-ign": {
+   "capa": "sierras-ign",
+   "titulo": "Alineaciones montañosas (IGN)",
+   "fuente": "IGN · SignA",
+   "editor": "Instituto Geográfico Nacional",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 4946,
+   "url": "https://signa.ign.es/",
+   "metodo": "Capa 4 de 07_orografia_paisaje"
   },
   "tuneles-rce": {
    "capa": "tuneles-rce",
@@ -1262,5 +1286,5 @@
    "kb": 7
   }
  },
- "total_capas": 95
+ "total_capas": 97
 }
