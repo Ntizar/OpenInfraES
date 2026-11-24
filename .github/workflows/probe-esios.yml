@@ -1,0 +1,31 @@
+name: Sonda ESIOS (temporal)
+
+# Workflow de usar y tirar: la lista de indicadores de ESIOS pide clave y la VM no la tiene.
+# Solo sirve para escribir datos/_probe_esios.json en la rama donde se lance. Se borra después.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sonda:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Clave
+        run: |
+          printf 'ESIOS_TOKEN=%s\n' "${{ secrets.ESIOS_TOKEN }}" > .env
+      - name: Sonda
+        run: python scripts/probe_esios_ids.py
+      - name: Guardar resultado
+        run: |
+          git config user.name "sonda"
+          git config user.email "sonda@users.noreply.github.com"
+          git add datos/_probe_esios.json
+          git commit -m "chore(datos): sonda de indicadores ESIOS" || echo "sin cambios"
+          git push
