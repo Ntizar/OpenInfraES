@@ -4,41 +4,41 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 843,
+ "features": 827,
  "paneles_localizados": 2537,
- "descargado": "2026-11-24T20:24:42",
+ "descargado": "2026-11-24T20:36:31",
  "mensajes_top": [
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
-   "paneles": 143
+   "paneles": 144
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 88
+   "paneles": 89
   },
   {
    "texto": "@H @F",
-   "paneles": 79
-  },
-  {
-   "texto": "MODERE LA VELOCIDAD",
-   "paneles": 61
-  },
-  {
-   "texto": "CON LLUVIA MODERE VELOCIDAD",
-   "paneles": 35
+   "paneles": 80
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD",
    "paneles": 35
   },
   {
+   "texto": "CON LLUVIA MODERE VELOCIDAD",
+   "paneles": 34
+  },
+  {
    "texto": "PREVISION NEVADAS · INFORMESE Y PLANIFIQUE SU VIAJE",
-   "paneles": 29
+   "paneles": 31
+  },
+  {
+   "texto": "MODERE LA VELOCIDAD",
+   "paneles": 30
   },
   {
    "texto": "PRECAUCION BANCOS DE NIEBLA",
-   "paneles": 15
+   "paneles": 29
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
