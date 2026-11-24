@@ -3316,10 +3316,20 @@ function pintarPuntos(c) {
       /* el tamano tambien dice cuanto hay: 11 y 435 no pueden pesar igual */
       const radio = Math.min(18, 5 + 1.35 * Math.log2(n + 1));
       const lado = Math.round(radio * 2);
+      // color del tipo dominante en la celda: 40 campings y 2 balnearios se pintan de camping
+      let tinte = c.color;
+      if (c.colorCampo) {
+        const cuenta = {};
+        items.forEach(f => {
+          const k = colorDe(c, f.properties || {});
+          cuenta[k] = (cuenta[k] || 0) + 1;
+        });
+        tinte = Object.keys(cuenta).sort((a, b) => cuenta[b] - cuenta[a])[0] || c.color;
+      }
       const icono = L.divIcon({
         className: "burbuja",
         iconSize: [lado, lado], iconAnchor: [lado / 2, lado / 2],
-        html: `<span style="border-color:${c.color};color:${c.color};font-size:${Math.max(8, Math.round(lado * 0.34))}px">${n}</span>`
+        html: `<span style="border-color:${tinte};color:${tinte};font-size:${Math.max(8, Math.round(lado * 0.34))}px">${n}</span>`
       });
       const m = L.marker([lat, lng], { icon: icono, keyboard: false, pane: c.__panel });
       m.on("click", e => {

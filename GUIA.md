@@ -86,7 +86,12 @@ repetidos.
   viendo.
 - **Puntos densos, agrupados con cifra**: por debajo de `zoomDetalle` los puntos se agregan por celda
   y cada burbuja **lleva el número dentro** (y crece con el número). Sin cifra, 20.000 puntos son una
-  alfombra naranja; en móvil la celda se agranda ×1,8 porque caben tres veces menos.
+  alfombra naranja; en móvil la celda se agranda ×1,8 porque caben tres veces menos. Si la capa
+  colorea por atributo (`colorCampo`), la burbuja toma **el color del tipo dominante** de la celda:
+  una burbuja verde de 40 es «40 campings», no una mezcla.
+- **Etiquetas de la ficha por capa**: `etiquetas:{municipio:"Municipio"}` corrige el diccionario
+  cuando la fuente usa la misma clave para otra cosa (el IGN llama `municipio` al nombre; OSM, al
+  código). Sin eso, la ficha de un camping decía «Núcleo municipal: Ribas de Sil».
 - **LOD por zoom (`zoomMin`)**: por debajo de su zoom recomendado la capa **se atenúa**, no se retira
   (David: «todas las capas tienen que poder verse en cualquier zoom»; retirarlas parecía que estaban
   rotas). No se vuelve a descargar nunca: el fichero se pide una sola vez por sesión.
