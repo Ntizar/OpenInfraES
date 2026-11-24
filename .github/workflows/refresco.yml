@@ -83,9 +83,6 @@ jobs:
           python scripts/cifras.py || true
           python scripts/snapshot.py || true
 
-      - name: Sonda ESIOS (temporal)
-        run: python scripts/probe_esios_ids.py || true
-
       - name: Validador
         # El validador NO puede congelar el dato. Pasó: la DGT añadió el código DATEX
         # `heavyTraffic`, el validador salió rojo por «código sin traducir» y el paso de commit

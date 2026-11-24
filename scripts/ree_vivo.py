@@ -55,15 +55,26 @@ if _TK:
 UNIDADES = {10355: "tCO₂/MW", 1294: "MW", 10004: "MW"}
 
 # id -> (clave, etiqueta, grupo)
+# ESIOS abre las trece tecnologías «Generación T.Real» al mismo minuto (204 puntos al día): con
+# todas ellas la suma cuadra con la demanda y con el saldo de intercambios, y no hace falta
+# mezclar ENTSO-E (15 min y 30-40 de retraso) para tener el mix completo.
 ABIERTOS = {
     2037: ("demanda", "Demanda real nacional", "demanda"),
     10004: ("demanda_gen", "Demanda real (suma de generación)", "demanda"),
+    2038: ("eolica", "Eólica", "generacion"),
+    2039: ("nuclear", "Nuclear", "generacion"),
+    2040: ("carbon", "Carbón", "generacion"),
     2041: ("ciclo", "Ciclo combinado", "generacion"),
     2042: ("hidro", "Hidráulica", "generacion"),
-    2038: ("eolica", "Eólica", "generacion"),
     2044: ("solar_fv", "Solar fotovoltaica", "generacion"),
     2045: ("solar_ter", "Solar térmica", "generacion"),
-    1294: ("solar_ter_pen", "Solar térmica (peninsular)", "generacion"),
+    2046: ("termica_renovable", "Térmica renovable", "generacion"),
+    2047: ("diesel", "Motor diésel", "generacion"),
+    2048: ("turbina_gas", "Turbina de gas", "generacion"),
+    2049: ("turbina_vapor", "Turbina de vapor", "generacion"),
+    2050: ("auxiliar", "Generación auxiliar", "generacion"),
+    2051: ("cogen_residuos", "Cogeneración y residuos", "generacion"),
+    2043: ("intercambios", "Intercambios internacionales", "intercambios"),
     10355: ("co2", "CO₂ asociado a la generación", "emisiones"),
     2068: ("exp_andorra", "Exportación a Andorra", "intercambios"),
     2073: ("imp_andorra", "Importación de Andorra", "intercambios"),

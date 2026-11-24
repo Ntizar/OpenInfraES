@@ -2093,10 +2093,9 @@ function panelDemanda() {
   h += `<h4 class="sec">Intercambios con los vecinos <span>· negativo = España exporta</span></h4>` +
     `<table><thead><tr><th>frontera</th><th style="text-align:right">saldo</th><th>flujo</th></tr></thead>` +
     `<tbody>${filas}</tbody></table>` +
-    `<p class="nota-kpi">La demanda de ESIOS son 5 minutos reales; el mix del mapa, cuartos de hora de ` +
-    `ENTSO-E. El saldo de arriba es la suma de las cuatro fronteras con el signo que publica ESIOS: ` +
-    `el panel de REE pone −3.987 MW porque cuenta los 20 MW de importación de Andorra con el signo ` +
-    `de las exportaciones. Es la misma foto con dos convenios; aquí se resta lo que la serie dice.</p>`;
+    `<p class="nota-kpi">Todo esto sale de la misma fuente, ESIOS·REE, con resolución de 5 minutos y ` +
+    `al mismo instante: demanda, intercambios y bombeo son comparables entre sí. El saldo va con el ` +
+    `signo de ESIOS, el mismo que publica en su panel: negativo = España exporta.</p>`;
   kpiCaja(h);
 }
 
@@ -3629,34 +3628,24 @@ function pintarSis() {
   ]).then(([d, p, v, omie, mix]) => {
     let h = "";
 
-    /* --- EN VIVO: indicadores abiertos de ESIOS, cada 5 min --- */
+    /* --- EN VIVO: UNA fuente (ESIOS·REE), UN instante ---
+       Antes se mezclaban tres relojes: ESIOS a 5 min para demanda, CO₂, fronteras y bombeo, y
+       ENTSO-E A75 a 15 min —con 30-40 min de retraso— para el mix. La misma tecnología salía con
+       dos porcentajes (cuota del instante arriba, cuota del día abajo) y la suma de tecnologías
+       se quedaba 7 GW corta, porque a ESIOS solo se le pedían 6 series. ESIOS abre las trece
+       tecnologías T.Real en el mismo minuto: el panel entero va con ella y con su hora. */
     if (v && v.series) {
       const COLMIX = { eolica: "#22d3ee", solar_fv: "#fbbf24", solar_ter: "#f59e0b",
-                       hidro: "#3b82f6", ciclo: "#a855f7", nuclear: "#ef4444" };
+                       hidro: "#3b82f6", ciclo: "#a855f7", nuclear: "#ef4444",
+                       cogen_residuos: "#f97316", carbon: "#78716c", turbina_vapor: "#fb7185",
+                       turbina_gas: "#fdba74", diesel: "#eab308", termica_renovable: "#84cc16",
+                       auxiliar: "#64748b" };
       const est = v.estado || {};
-      // El mix en vivo se cuenta de UNA fuente y con TODAS las tecnologías. ESIOS solo abre 5
-      // series (sin nuclear ni cogeneración) y el total salía cojo: 26 GW de una demanda de 35.
-      // ENTSO-E A75 trae MW medios de cada cuarto por tecnología, nuclear incluida; ESIOS se queda
-      // para demanda, emisiones, intercambios y bombeo, que sí da cada 5 minutos.
-      const CLAVE_TEC = {
-        "eólica terrestre": "eolica", "eólica marina": "eolica", "solar fotovoltaica": "solar_fv",
-        "solar térmica": "solar_ter", "hidro embalse": "hidro", "hidro fluyente": "hidro",
-        "hidro bombeo": "bombeo", "nuclear": "nuclear", "gas natural": "ciclo",
-        "carbón": "carbon", "biomasa": "biomasa", "residuos": "residuos", "otras": "otras",
-      };
-      let gen = Object.entries(v.series).filter(([k, x]) => x.grupo === "generacion");
-      let tot = gen.reduce((a, [, x]) => a + (x.valor || 0), 0);
-      let fuenteMix = "ESIOS · 5 min";
-      const tec = (mix && mix.tecnologias) ? mix.tecnologias.filter(t => (t.ultimo_mw || 0) > 0) : [];
-      if (tec.length) {
-        gen = tec.map(t => [CLAVE_TEC[String(t.nombre).toLowerCase()] || "otras",
-                            { etiqueta: t.nombre, valor: t.ultimo_mw }]);
-        tot = tec.reduce((a, t) => a + t.ultimo_mw, 0);
-        // con la hora del último cuarto REAL: el fichero puede tener 40 min o 5 h
-        const edad = mix.edad_min;
-        fuenteMix = "ENTSO-E" + (mix.hora_ultimo ? " · " + mix.hora_ultimo : " · 15 min") +
-                    (edad != null && edad > 75 ? " · hace " + Math.round(edad / 60) + " h" : "");
-      }
+      const gen = Object.entries(v.series)
+        .filter(([, x]) => x.grupo === "generacion" && (x.valor || 0) > 0.5);
+      const tot = gen.reduce((a, [, x]) => a + (x.valor || 0), 0);
+      const horaGen = gen.length ? (gen[0][1].hora || "") : "";
+      const fuenteMix = "ESIOS · 5 min" + (horaGen ? " · " + horaGen : "");
       // la demanda solo es «ahora» si el dato es de ahora: si viene heredada del último día
       // bueno, se dice la fecha y la hora en vez de presumir de presente
       const serD = v.series.demanda;
@@ -3682,39 +3671,46 @@ function pintarSis() {
         });
       }
       if (tot > 0) {
-        // restar dos instantes distintos no significa nada: la diferencia solo se afirma si
-        // generación y demanda son del mismo cuarto; si no, se dan las dos horas y no se resta
-        const mismoInstante = !demAtrasada && mix && mix.edad_min != null && mix.edad_min <= 30;
-        h += '<div class="nota-pie">' + nf(Math.round(tot)) + ' MW generados por las tecnologías ' +
-             'de arriba' + (mix && mix.hora_ultimo ? ' a las ' + mix.hora_ultimo : '') +
-             ' · demanda ' + nf(Math.round(est.demanda || 0)) + ' MW' +
-             (serD && serD.hora ? ' a las ' + serD.hora : '') + '. ' +
+        // con las trece series de ESIOS todo va al mismo minuto, así que la resta sí significa algo.
+        // Si el minuto no coincide (o el dato es heredado), se dan las dos horas y no se resta.
+        const mismoInstante = !demAtrasada && !!horaGen && !!serD && serD.hora === horaGen;
+        const dif = Math.round(tot - (est.demanda || 0));
+        h += '<div class="nota-pie">' + nf(Math.round(tot)) + ' MW suman las tecnologías' +
+             (horaGen ? ' a las ' + horaGen : '') + ' · demanda ' +
+             nf(Math.round(est.demanda || 0)) + ' MW' + (serD && serD.hora ? ' a las ' + serD.hora : '') +
+             '. ' +
              (mismoInstante
-               ? 'La diferencia son pérdidas, autoconsumo y saldo exterior.'
-               : 'Son instantes distintos: no se restan (el saldo exterior va medido aparte).') +
-             '</div>';
+               ? 'Generación − demanda = ' + (dif >= 0 ? '+' : '−') + nf(Math.abs(dif)) +
+                 ' MW: es la exportación neta descontando pérdidas y autoconsumo.'
+               : 'Minutos distintos: no se restan.') + '</div>';
       }
-      // una linea: emisiones, intercambios netos, bombeo
+      // una linea: emisiones, intercambios netos, bombeo — los tres del mismo minuto que el mix
       // la magnitud de ESIOS es tCO₂/MW, que integrada una hora es tCO₂/MWh: se dice la
       // intensidad, no una potencia disfrazada de emisiones
-      const co2 = est.co2 != null ? est.co2.toFixed(3) + " tCO₂/MWh" : "—";
+      const horaCo2 = (v.series.co2 && v.series.co2.hora) || "";
+      const co2 = est.co2 != null ? Number(est.co2).toFixed(3).replace(".", ",") + " t CO₂/MWh" : "—";
+      // 2043 es el saldo neto que publica ESIOS, con signo: negativo = España exporta. Es la
+      // misma cifra que la suma de las cuatro fronteras, sin convenios que interpretar.
       const ints = ["francia", "portugal", "marruecos", "andorra"].map(p2 => {
         const e = est["exp_" + p2] || 0, i = est["imp_" + p2] || 0;
         return [p2, Math.round(e - i)];
       }).filter(x => x[1] !== 0);
-      const netoInt = ints.reduce((a, x) => a + x[1], 0);
+      const netoInt = est.intercambios != null ? Math.round(Number(est.intercambios))
+                     : ints.reduce((a, x) => a + x[1], 0);
       // ESIOS da el consumo de bombeo en NEGATIVO: restarlo lo sumaba y publicaba 1.767 MW de
       // bombeo donde había 1.597 consumiendo. Se suman los dos con su signo.
       const netoBombeo = (est.bombeo_turb || 0) + (est.bombeo_cons || 0);
       h += '<div class="sis-sec">' + (demAtrasada ? 'Último dato' : 'Ahora mismo') + '</div><div class="vivo-fila">' +
-           '<span><b>' + co2 + '</b><i>intensidad del mix</i></span>' +
-           '<span><b>' + (netoInt >= 0 ? "+" : "") + nf(Math.round(netoInt)) + ' MW</b><i>saldo internacional</i></span>' +
-           '<span><b>' + (netoBombeo >= 0 ? "+" : "") + nf(Math.round(netoBombeo)) +
-           ' MW</b><i>bombeo neto (negativo = consume)</i></span>' +
+           '<span><b>' + co2 + '</b><i>intensidad del mix' + (horaCo2 ? ' · ' + horaCo2 : '') + '</i></span>' +
+           '<span><b>' + (netoInt >= 0 ? "+" : "−") + nf(Math.abs(netoInt)) +
+           ' MW</b><i>saldo internacional · negativo = exporta</i></span>' +
+           '<span><b>' + (netoBombeo >= 0 ? "+" : "−") + nf(Math.abs(Math.round(netoBombeo))) +
+           ' MW</b><i>bombeo neto · negativo = consume</i></span>' +
            '</div>';
       if (ints.length) {
         h += '<div class="nota-pie">Saldo con ' + ints.map(x => x[0] + " " +
-             (x[1] >= 0 ? "+" : "") + nf(x[1])).join(" · ") + ' MW. Positivo = exporta.</div>';
+             (x[1] >= 0 ? "+" : "−") + nf(Math.abs(x[1]))).join(" · ") +
+             ' MW, con el signo de ESIOS: negativo = España exporta.</div>';
       }
       if (demAtrasada) {
         h += '<div class="nota-pie">Sin actualizar: ESIOS no devolvió dato fresco (desde el ' +
@@ -3722,28 +3718,10 @@ function pintarSis() {
              (serD && serD.heredado_de ? serD.heredado_de
               : ((v.fecha || "") + ' ' + (serD ? serD.hora : ''))) + '.</div>';
       }
-      if (mix && mix.tecnologias) {
-        window.__mixEntsoe = mix;   // lo usa la ficha de planta para estimar
-        h += '<div class="sis-sec">Generación por tecnología · ENTSO-E cada 15 min</div>';
-        h += '<div class="mix-tabla">';
-        mix.tecnologias.slice(0, 8).forEach(t => {
-          const pct = t.pct || 0;
-          h += '<div class="mix-fila"><span class="mix-n">' + t.nombre + '</span>' +
-               '<span class="mix-b"><span style="width:' + Math.max(2, pct) + '%"></span></span>' +
-               '<span class="mix-v">' + (t.mwh / 1000).toFixed(1) + ' GWh</span>' +
-               '<span class="mix-p">' + pct.toFixed(1) + '%</span></div>';
-        });
-        h += '</div>';
-        const cuartosMix = mix.cuartos_cubiertos || mix.puntos;
-        h += '<div class="nota-pie">' + cuartosMix + ' cuartos de 15 min' +
-             (mix.hora_ultimo ? ' · hasta las ' + mix.hora_ultimo : '') + ' · ' +
-             (mix.total_mwh / 1000).toFixed(0) + ' GWh acumulados' +
-             (cuartosMix < 96 ? ' (día en curso: faltan cuartos)' : '') + '. ' +
-             (mix.consumo_total_mwh
-               ? 'Bombeo: ' + (mix.consumo_total_mwh / 1000).toFixed(1) +
-                 ' GWh consumidos, que no entran en la generación de arriba. ' : '') +
-             'No existe generación por planta en abierto: esto es por tecnología.</div>';
-      }
+      // El mix de ENTSO-E ya no se pinta aquí: era la segunda ventana del mismo dato (GWh del día
+      // frente a MW del instante) y el origen de los dos porcentajes. La ficha de planta lo sigue
+      // usando para estimar la producción de una instalación concreta.
+      if (mix && mix.tecnologias) window.__mixEntsoe = mix;
       if (omie && omie.horas) {
         h += '<div class="sis-sec">Precio del mercado diario · ' + omie.fecha + '</div>';
         h += '<div class="vivo-fila">' +
