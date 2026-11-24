@@ -449,6 +449,7 @@
   #leyenda-x:hover { color:var(--tinta); }
   #leyenda h5 { margin:0 0 6px; padding-right:18px; font-size:10.6px; text-transform:uppercase; letter-spacing:.08em;
     color:var(--suave); font-weight:600; }
+  #leyenda .ly-nota { font-size:10px; opacity:.72; margin:-2px 0 6px; font-style:italic; }
   #leyenda .ly { display:flex; align-items:center; gap:6px; margin-bottom:2px; }
   #leyenda .ly i { width:13px; height:13px; border-radius:2px; flex:0 0 auto;
     border:1px solid rgba(255,255,255,.45); box-shadow:0 0 0 1px rgba(0,0,0,.4); }
@@ -1505,6 +1506,9 @@ const CAPAS = [
     colores:{"helado":"#818cf8", "muy frío":"#6366f1", "frío":"#3b82f6", "fresco":"#22d3ee",
              "suave":"#a3e635", "templado":"#fbbf24", "cálido":"#fb923c", "caluroso":"#f97316",
              "sin dato":"#64748b"},
+    /* el tramo es un adjetivo; sin el rango al lado, "fresco" no dice cuánto */
+    rangos:{"helado":"< 0 °C", "muy frío":"0–5 °C", "frío":"5–10 °C", "fresco":"10–15 °C",
+            "suave":"15–20 °C", "templado":"20–25 °C", "cálido":"25–30 °C", "caluroso":"> 30 °C"},
     popupTitulo:"nombre",
     campos:["nombre","temperatura","sensacion","tiempo","humedad","lluvia_mm","viento_kmh",
             "viento_dir","hora","modelo"] },
@@ -1515,6 +1519,9 @@ const CAPAS = [
     colorCampo:"tramo",
     colores:{"flojo":"#7dd3fc", "moderado":"#38bdf8", "fuerte":"#22d3ee", "muy fuerte":"#fbbf24",
              "temporal":"#f87171"},
+    rangos:{"flojo":"< 10 km/h", "moderado":"10–20 km/h", "fuerte":"20–40 km/h",
+            "muy fuerte":"40–60 km/h", "temporal":"> 60 km/h"},
+    nota:"la flecha apunta hacia donde sopla",
     /* flechas con punta: MultiLineString, cuerpo + dos alas */
     campos:["viento_kmh","rumbo","tramo"] },
   /* --- ráster oficial. Solo el PNOA publica teselas en EPSG:3857, que es el CRS del mapa.
@@ -2339,8 +2346,10 @@ function bloqueLeyenda(c) {
                : (c.corteVar || "").indexOf("densidad") !== -1 ? " hab/km²"
                : (c.corteVar || "").indexOf("poblacion") !== -1 ? " hab" : "";
   return "<h5>" + (c.label || c.id) + "</h5>" +
+    (c.nota ? '<div class="ly-nota">' + c.nota + "</div>" : "") +
     pares.map(x => {
-      let etiqueta = x.lab;
+      // `rangos`: el tramo con su intervalo al lado ("frío · 5–10 °C")
+      let etiqueta = (c.rangos && c.rangos[x.lab]) ? x.lab + " · " + c.rangos[x.lab] : x.lab;
       if (cortes && cortes.length === 3) {
         const orden = ["bajo", "medio-bajo", "medio-alto", "alto"];
         const i = orden.indexOf(x.lab);
