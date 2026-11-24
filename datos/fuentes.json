@@ -922,7 +922,7 @@
    "licencia": "reutilización con atribución",
    "actualizado": null,
    "descargado": "2026-11-24",
-   "features": 544,
+   "features": 505,
    "url": "https://nap.dgt.es",
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Paneles DGT DATEX2 v3.7"
   },
@@ -934,7 +934,7 @@
    "licencia": "reutilización con atribución",
    "actualizado": null,
    "descargado": "2026-11-24",
-   "features": 720,
+   "features": 709,
    "url": "https://nap.dgt.es",
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Incidencias DGT DATEX2 v3.7"
   },
@@ -956,9 +956,9 @@
    "fuente": "Operadores (Renfe)",
    "editor": "GTFS-Realtime",
    "licencia": "condiciones del editor",
-   "actualizado": "2026-11-24T03:12:59",
-   "descargado": "2026-11-24T03:13:00",
-   "features": 20,
+   "actualizado": "2026-11-24T04:12:58",
+   "descargado": "2026-11-24T04:13:01",
+   "features": 183,
    "url": "https://gtfsrt.renfe.com/vehicle_positions.pb",
    "metodo": "protobuf GTFS-RT, refresco continuo"
   },
@@ -969,7 +969,7 @@
    "editor": "AEMET · Meteoalerta",
    "licencia": "© AEMET, citar como autora",
    "actualizado": "20261123",
-   "descargado": "2026-11-24T04:12:16",
+   "descargado": "2026-11-24T04:36:02",
    "features": 22,
    "url": "https://www.aemet.es/es/eltiempo/prediccion/avisos",
    "metodo": "tar.gz de GeoJSON de la pagina de avisos (sin clave)"

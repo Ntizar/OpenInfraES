@@ -4,21 +4,17 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 544,
+ "features": 505,
  "paneles_localizados": 2537,
- "descargado": "2026-11-24T04:12:18",
+ "descargado": "2026-11-24T04:36:04",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 90
+   "paneles": 93
   },
   {
    "texto": "@H @F",
    "paneles": 87
-  },
-  {
-   "texto": "MAQUINAS EN TRATAMIENTO INVERNAL",
-   "paneles": 11
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
@@ -46,6 +42,10 @@
   },
   {
    "texto": "EN N-232 4 EJES O MAS",
+   "paneles": 6
+  },
+  {
+   "texto": "4 EJES O MAS",
    "paneles": 6
   }
  ]
