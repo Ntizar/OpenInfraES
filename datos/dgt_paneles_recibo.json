@@ -4,13 +4,13 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 856,
+ "features": 843,
  "paneles_localizados": 2537,
- "descargado": "2026-11-24T20:09:45",
+ "descargado": "2026-11-24T20:24:42",
  "mensajes_top": [
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
-   "paneles": 144
+   "paneles": 143
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
@@ -22,7 +22,7 @@
   },
   {
    "texto": "MODERE LA VELOCIDAD",
-   "paneles": 71
+   "paneles": 61
   },
   {
    "texto": "CON LLUVIA MODERE VELOCIDAD",
