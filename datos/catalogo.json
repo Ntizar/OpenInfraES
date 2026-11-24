@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-24T18:12:04",
+ "generado": "2026-11-24T18:36:06",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 84,
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 41,
-  "kb_total": 82818.8
+  "kb_total": 82803.0
  },
  "avisos": {
   "pendiente": [
@@ -107,7 +107,7 @@
    "bytes": 217838,
    "kb": 212.7,
    "fecha_dato": "20261124",
-   "fecha_descarga": "2026-11-24T18:11:58",
+   "fecha_descarga": "2026-11-24T18:36:01",
    "edad_dias": 0,
    "caducado": false
   },
@@ -428,10 +428,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76129,
-   "kb": 74.3,
-   "fecha_dato": "2026-11-24T19:00",
-   "fecha_descarga": "2026-11-24T18:12:04Z",
+   "bytes": 76166,
+   "kb": 74.4,
+   "fecha_dato": "2026-11-24T19:30",
+   "fecha_descarga": "2026-11-24T18:36:06Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -455,10 +455,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 54295,
+   "bytes": 54272,
    "kb": 53.0,
-   "fecha_dato": "2026-11-24T19:00",
-   "fecha_descarga": "2026-11-24T18:12:04Z",
+   "fecha_dato": "2026-11-24T19:30",
+   "fecha_descarga": "2026-11-24T18:36:06Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -616,9 +616,9 @@
    "ttl_segundos": 300,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 1207,
-   "bytes": 512413,
-   "kb": 500.4,
+   "features": 1172,
+   "bytes": 498110,
+   "kb": 486.4,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -643,9 +643,9 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 962,
-   "bytes": 211414,
-   "kb": 206.5,
+   "features": 954,
+   "bytes": 209487,
+   "kb": 204.6,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,

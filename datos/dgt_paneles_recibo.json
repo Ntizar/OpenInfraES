@@ -4,17 +4,17 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 962,
+ "features": 954,
  "paneles_localizados": 2537,
- "descargado": "2026-11-24T18:12:01",
+ "descargado": "2026-11-24T18:36:02",
  "mensajes_top": [
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
-   "paneles": 146
+   "paneles": 145
   },
   {
    "texto": "MODERE LA VELOCIDAD",
-   "paneles": 85
+   "paneles": 83
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
@@ -22,11 +22,11 @@
   },
   {
    "texto": "CON LLUVIA MODERE VELOCIDAD",
-   "paneles": 68
+   "paneles": 67
   },
   {
    "texto": "@H @F",
-   "paneles": 46
+   "paneles": 47
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD",
@@ -34,7 +34,7 @@
   },
   {
    "texto": "PREVISION NEVADAS · INFORMESE Y PLANIFIQUE SU VIAJE",
-   "paneles": 29
+   "paneles": 27
   },
   {
    "texto": "PRECAUCION BANCOS DE NIEBLA",
@@ -42,10 +42,10 @@
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
-   "paneles": 10
+   "paneles": 11
   },
   {
-   "texto": "CON LLUVIA MODERE LA VELOCIDAD",
+   "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
    "paneles": 8
   }
  ]
