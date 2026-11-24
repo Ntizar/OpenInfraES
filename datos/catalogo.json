@@ -1,21 +1,21 @@
 {
- "generado": "2026-11-24T18:36:06",
+ "generado": "2026-11-24T19:03:29",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 84,
+ "total": 88,
  "resumen": {
-  "licencia_si": 79,
+  "licencia_si": 83,
   "licencia_pendiente": 5,
   "caducados": 27,
-  "oficiales": 70,
+  "oficiales": 74,
   "comunitarias": 14,
   "por_jerarquia": {
-   "1": 50,
+   "1": 54,
    "2": 20,
    "3": 14
   },
-  "descargables_ligeros": 41,
-  "kb_total": 82803.0
+  "descargables_ligeros": 44,
+  "kb_total": 86236.1
  },
  "avisos": {
   "pendiente": [
@@ -428,10 +428,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76166,
+   "bytes": 76144,
    "kb": 74.4,
-   "fecha_dato": "2026-11-24T19:30",
-   "fecha_descarga": "2026-11-24T18:36:06Z",
+   "fecha_dato": "2026-11-24T19:45",
+   "fecha_descarga": "2026-11-24T18:46:16Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -455,10 +455,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 54272,
-   "kb": 53.0,
-   "fecha_dato": "2026-11-24T19:30",
-   "fecha_descarga": "2026-11-24T18:36:06Z",
+   "bytes": 54329,
+   "kb": 53.1,
+   "fecha_dato": "2026-11-24T19:45",
+   "fecha_descarga": "2026-11-24T18:46:16Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -786,6 +786,33 @@
    "edad_dias": 109,
    "caducado": true
   },
+  "espacios-protegidos": {
+   "id": "espacios-protegidos",
+   "titulo": "Espacios naturales protegidos (IGN)",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "query ArcGIS REST f=geojson, parques nacionales/naturales/otros, simplificado a ~110 m",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/signa/",
+   "modo": "foto",
+   "frecuencia_fuente": "trimestral",
+   "ttl_segundos": 7776000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 246,
+   "bytes": 490594,
+   "kb": 479.1,
+   "fecha_dato": "2026-11-24T19:02:58Z",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
+   "caducado": false
+  },
   "estaciones-cercanias": {
    "id": "estaciones-cercanias",
    "titulo": "Estaciones de Cercanías",
@@ -1075,11 +1102,11 @@
    "ttl_segundos": 120,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 456,
-   "bytes": 130044,
-   "kb": 127.0,
-   "fecha_dato": "2026-11-24T14:13:14",
-   "fecha_descarga": "2026-11-24T14:13:01",
+   "features": 436,
+   "bytes": 124286,
+   "kb": 121.4,
+   "fecha_dato": "2026-11-24T18:46:14",
+   "fecha_descarga": "2026-11-24T18:46:16",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1839,6 +1866,33 @@
    "edad_dias": 95,
    "caducado": true
   },
+  "presas": {
+   "id": "presas",
+   "titulo": "Presas (IGN)",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "query ArcGIS REST f=geojson sobre Hidrografia/0 (solo el muro)",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/signa/",
+   "modo": "foto",
+   "frecuencia_fuente": "trimestral",
+   "ttl_segundos": 7776000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 1072,
+   "bytes": 161631,
+   "kb": 157.8,
+   "fecha_dato": "2026-11-24T19:03:28Z",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
+   "caducado": false
+  },
   "puertos": {
    "id": "puertos",
    "titulo": "Puertos de interés general",
@@ -1919,6 +1973,33 @@
    "fecha_descarga": "2026-11-24",
    "edad_dias": 109,
    "caducado": true
+  },
+  "red-natura": {
+   "id": "red-natura",
+   "titulo": "Red Natura 2000 (LIC y ZEPA)",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "query ArcGIS REST f=geojson sobre Espacios_Protegidos/5 y /6",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/signa/",
+   "modo": "foto",
+   "frecuencia_fuente": "trimestral",
+   "ttl_segundos": 7776000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 1790,
+   "bytes": 1854949,
+   "kb": 1811.5,
+   "fecha_dato": "2026-11-24T19:03:20Z",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
+   "caducado": false
   },
   "refinerias": {
    "id": "refinerias",
@@ -2082,6 +2163,33 @@
    "edad_dias": 0,
    "caducado": false
   },
+  "rios-mtn": {
+   "id": "rios-mtn",
+   "titulo": "Ríos del MTN (IGN)",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "query ArcGIS REST f=geojson sobre Hidrografia/3, tramos de más de 15 km",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/signa/",
+   "modo": "foto",
+   "frecuencia_fuente": "trimestral",
+   "ttl_segundos": 7776000,
+   "ultima_verificacion": "2026-11-24",
+   "crs": "EPSG:4326",
+   "features": 2597,
+   "bytes": 1013346,
+   "kb": 989.6,
+   "fecha_dato": "2026-11-24T19:03:27Z",
+   "fecha_descarga": "2026-11-24",
+   "edad_dias": 0,
+   "caducado": false
+  },
   "sismos": {
    "id": "sismos",
    "titulo": "Sismos",
@@ -2101,9 +2209,9 @@
    "ttl_segundos": 604800,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 84,
-   "bytes": 28138,
-   "kb": 27.5,
+   "features": 86,
+   "bytes": 28811,
+   "kb": 28.1,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,

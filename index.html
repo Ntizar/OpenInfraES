@@ -593,15 +593,9 @@
 
   @media (max-width: 820px) {
     html, body { overflow:hidden; }
-    /* el ☰ vivía en la esquina del +/− de Leaflet y lo tapaba (el «−» asomaba como una raya
-       suelta debajo): en móvil pasa a la derecha, que a esa altura está libre. */
-    #btn-hud { display:flex; left:auto; right:8px; }
-    #btn-hud.abierto { color:var(--cian); border-color:var(--cian); }
+    #btn-hud { display:flex; }
 
-    /* el cajón es un panel, no un cristal: con --panel (88 %) el mapa y los KPIs se leían
-       por debajo y las capas salían con texto fantasma. En móvil, fondo sólido. */
     #hud { display:none; top:58px; left:8px; right:8px; width:auto;
-      background:var(--panel-solido);
       max-height:calc(100% - 130px); border-radius:8px; }
     #hud.abierto { display:flex; }
     #cabeza { padding:11px 13px 9px; }
@@ -1068,7 +1062,8 @@ const ETIQ = {
   Coord1:"Longitud", Coord2:"Latitud", Valido_desde:"Válido desde", Hidrogeno:"Hidrógeno",
   Biodiesel:"Biodiésel", Gas_natural_licuado:"GNL", Gas_natural_comprimido:"GNC",
   Gases_licuados_del_petroleo:"GLP", Nombre_plataforma:"Plataforma", voltage:"Tensión (V)",
-  operator:"Operador", circuits:"Circuitos", Elemento_portuario:"Elemento portuario" };
+  operator:"Operador", circuits:"Circuitos", Elemento_portuario:"Elemento portuario",
+  categoria:"Categoría", superficie_ha:"Superficie (ha)", longitud_km:"Longitud (km)" };
 
 
 
@@ -1078,6 +1073,9 @@ const ETIQ = {
 function etiquetaCorta(p, c) {
   // un panel de mensaje variable vale por lo que DICE, no por la carretera donde está
   if (p.mensaje) return p.mensaje + (p.carretera ? " — " + p.carretera : "");
+  // algunas capas no traen nombre ni por asomo (el muro de una presa del IGN): se dice qué es,
+  // que un "1" de id no informa de nada
+  if (c.tituloFijo) return c.tituloFijo;
   const campos = [c.popupTitulo, "nombre", "name", "Nombre", "Nombre_terminal",
                   "Rotulo", "rotulo", "Direccion", "direccion", "carretera", "label"];
   for (const k of campos) {
@@ -1501,9 +1499,32 @@ const CAPAS = [
     color:"#facc15", fichero:"datos/masas-subterraneas.geojson", opacidad:.16, peso:1, zoomMin:0,
     colorCampo:"estado_global", colores:{"Bueno":"#4ade80", "Malo":"#f87171"},
     popupTitulo:"nombre" },
+  /* el rio con nombre del MTN, no el caudal modelado: son dos cosas y por eso son dos capas */
+  { id:"rios-mtn", grupo:"Agua", label:"Ríos del MTN (IGN)", tipo:"linea", on:false,
+    color:"#0ea5e9", fichero:"datos/rios_mtn.geojson", peso:1.2, opacidad:.7, zoomMin:0,
+    popupTitulo:"nombre", campos:["longitud_km"], leyendaSimple:true, nota:"más de 15 km" },
+  /* las presas del IGN son el muro a secas: sin nombre ni capacidad no hay ficha, solo contexto.
+     A zoom de pais son 1.000 rayas, asi que solo entran a partir de 8. */
+  { id:"presas", grupo:"Agua", label:"Presas (IGN)", tipo:"linea", on:false,
+    color:"#64748b", fichero:"datos/presas.geojson", peso:1.1, opacidad:.6, zoomMin:8,
+    tituloFijo:"Presa (IGN)", leyendaSimple:true, nota:"el muro, sin nombre" },
   { id:"dpmt", grupo:"Medio ambiente", label:"Dominio público marítimo-terrestre", tipo:"linea", on:false,
     color:"#f59e0b", fichero:"datos/dpmt.geojson", peso:1.5, opacidad:.85, zoomMin:7,
     popupTitulo:"municipio" },
+  /* --- IGN · SignA. Tres escalones de proteccion que se pintan a la vez y no se tapan: el parque
+     nacional encima (verde oscuro, 34 % de opacidad), la Red Natura debajo (violeta y rosa, 26 %).
+     Datos del SCNE (CC BY 4.0), descargados por scripts/signa_ign.py. --- */
+  { id:"espacios-protegidos", grupo:"Medio ambiente", label:"Espacios naturales protegidos (IGN)", tipo:"poligono", on:false,
+    color:"#4ade80", fichero:"datos/espacios_protegidos.geojson", opacidad:.34, peso:1, zoomMin:0,
+    borde:"propio",
+    colorCampo:"categoria",
+    colores:{"Parque nacional":"#16a34a", "Parque natural":"#4ade80", "Otro espacio protegido":"#86efac"},
+    popupTitulo:"nombre", campos:["categoria","superficie_ha"] },
+  { id:"red-natura", grupo:"Medio ambiente", label:"Red Natura 2000 (LIC y ZEPA)", tipo:"poligono", on:false,
+    color:"#a78bfa", fichero:"datos/red_natura.geojson", opacidad:.26, peso:1, zoomMin:0,
+    borde:"propio",
+    colorCampo:"categoria", colores:{"LIC":"#a78bfa", "ZEPA":"#f472b6"},
+    popupTitulo:"nombre", campos:["categoria"] },
   /* --- Clima: lo de AHORA, modelado. No es un parte oficial ni una estación de AEMET: es el
      modelo ICON/GFS servido por Open-Meteo (CC BY 4.0) en el centroide de cada provincia y un
      campo de viento interpolado en barbas. Los avisos oficiales son `aemet-zonas`, que es de
@@ -2309,6 +2330,18 @@ function engancharCierreLeyenda(el) {
    Se separa del pintado porque al encender Clima hay DOS capas con color (la temperatura en el
    polígono y las flechas de viento): con un solo dueño la leyenda explicaba el viento y dejaba
    los colores del mapa sin escala. */
+/* Capas de un solo trazo y sin categorías (ríos del MTN, presas del IGN): la leyenda es una
+   fila con el color y el recuento. Las que tienen tramos o categorías no pasan por aquí. */
+function singleColor(c) {
+  if (!c.color) return null;
+  const feats = datos[c.id];
+  if (!feats || !feats.length) return null;
+  return "<h5>" + (c.label || c.id) + "</h5>" +
+    '<div class="ly"><i style="background:' + c.color +
+    ';height:3px;border-radius:2px"></i><span>' + (c.nota || "trazos") + "</span>" +
+    "<b>" + nf(feats.length) + "</b></div>";
+}
+
 function bloqueLeyenda(c) {
   if (!c) return null;
   // capas con magnitud continua: la leyenda es la rampa con sus dos extremos, no una lista
@@ -2320,7 +2353,7 @@ function bloqueLeyenda(c) {
       '<div class="ly"><span>' + numES(e.min) + " " + e.unidad + "</span>" +
       '<b>' + numES(e.max) + " " + e.unidad + "</b></div>";
   }
-  if (!c.colorCampo) return null;
+  if (!c.colorCampo) return c.leyendaSimple ? singleColor(c) : null;
   const feats = datos[c.id];
   if (!feats || !feats.length) return null;
 
@@ -2407,7 +2440,8 @@ function actualizarLeyenda() {
     const chk = document.querySelector('[data-capa="' + id + '"]');
     return !!(chk && chk.checked);
   };
-  const conColor = CAPAS.filter(x => x.colorCampo || x.colorPorEscala);
+  // `leyendaSimple`: capas de un solo trazo que también merecen una fila (ríos, presas del IGN)
+  const conColor = CAPAS.filter(x => x.colorCampo || x.colorPorEscala || x.leyendaSimple);
   let dueno = null;
   if (window.__leyendaDe && estaOn(window.__leyendaDe)) dueno = window.__leyendaDe;
   else if (ULTIMA_CON_COLOR && estaOn(ULTIMA_CON_COLOR)) dueno = ULTIMA_CON_COLOR;
@@ -3244,15 +3278,19 @@ function cargar(c) {
             }
             // En polígonos el TRAZO va en un tono oscuro fijo: dos comunidades con el mismo
             // dato comparten relleno y sin borde propio se leían como una sola mancha.
+            // Salvo que la capa pida `borde:"propio"`: sobre un mapa oscuro un borde casi negro
+            // no separa nada (las capas del IGN se veían como manchas sin contorno).
             const esPoli = c.tipo === "poligono";
             // `pesoPorTramo`: el grosor tambien dice la intensidad. Una flecha de temporal
             // dibujada con el mismo pelo que una de 6 km/h se pierde en el campo.
             const pesoBase = c.peso || 1.2;
             const peso = (!esPoli && c.pesoPorTramo && f && f.properties)
               ? (c.pesoPorTramo[f.properties[c.colorCampo]] || pesoBase) : pesoBase;
-            return { color: esPoli ? "rgba(4,7,12,.92)" : col,
+            const trazoPropio = esPoli && c.borde === "propio";
+            const trazo = (esPoli && !trazoPropio) ? "rgba(4,7,12,.92)" : col;
+            return { color: trazo,
                      weight: esPoli ? Math.max(1.2, pesoBase) : peso,
-                     opacity: c.opacidad || .8,
+                     opacity: trazoPropio ? .9 : (c.opacidad || .8),
                      fillColor: col, fillOpacity: esPoli ? (c.opacidad || .3) : .12 };
           },
           onEachFeature: (f, layer) => {
@@ -3263,6 +3301,9 @@ function cargar(c) {
       }
       atenuarCapa(c);
       estado();
+      // la leyenda se pide al encender la capa, cuando `datos` aun viene vacio: si la capa trae
+      // leyenda (tramos, rampa o una simple fila de trazo), hay que repintarla ya con datos.
+      if (c.colorCampo || c.colorPorEscala || c.leyendaSimple) actualizarLeyenda();
     })
     .catch(e => {
       const el = document.getElementById("n-" + c.id);
@@ -3300,30 +3341,19 @@ function ponerCapa(id, on, silencioso) {
 
 /* cajón de capas en móvil: se abre con ☰ y se cierra al elegir o al tocar el mapa */
 const BTN_HUD = document.getElementById("btn-hud");
-const CAJON_HUD = document.getElementById("hud");
-/* Móvil: el ☰ abre y CIERRA el cajón de capas, y de paso cambia a ✕ para que se vea que
-   el botón ya no abre nada más. */
-function plegarHud(abierto) {
-  if (!CAJON_HUD) return;
-  CAJON_HUD.classList.toggle("abierto", abierto);
-  if (BTN_HUD) {
-    BTN_HUD.classList.toggle("abierto", abierto);
-    BTN_HUD.textContent = abierto ? "✕" : "☰";
-    BTN_HUD.setAttribute("aria-expanded", abierto ? "true" : "false");
-    BTN_HUD.setAttribute("aria-label", abierto ? "Cerrar capas y controles" : "Capas y controles");
-  }
-}
 if (BTN_HUD) BTN_HUD.addEventListener("click", () => {
-  plegarHud(!(CAJON_HUD && CAJON_HUD.classList.contains("abierto")));
+  document.getElementById("hud").classList.toggle("abierto");
 });
 mapa.on("click", () => {
-  if (matchMedia("(max-width:820px)").matches) plegarHud(false);
+  const h = document.getElementById("hud");
+  if (h && matchMedia("(max-width:820px)").matches) h.classList.remove("abierto");
 });
 
 document.querySelectorAll("[data-capa]").forEach(chk => {
   chk.addEventListener("change", e => {
     ponerCapa(e.target.dataset.capa, e.target.checked);
-    if (matchMedia("(max-width:820px)").matches) plegarHud(false);
+    if (matchMedia("(max-width:820px)").matches)
+      document.getElementById("hud").classList.remove("abierto");
   });
 });
 

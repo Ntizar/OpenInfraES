@@ -422,6 +422,33 @@ def main():
                 "url": r.get("url"), "metodo": met,
             }
 
+    # --- IGN · SignA (SCNE): espacios protegidos, Red Natura, rios del MTN y presas ---
+    # Leen su propio recibo: la fuente, la licencia y la fecha vienen del fichero, no se escriben
+    # aqui (si manana cambia la capa, el recibo manda).
+    for capa, fich, titulo, met in (
+        ("espacios-protegidos", "espacios_protegidos_recibo.json",
+         "Espacios naturales protegidos (IGN)",
+         "query ArcGIS REST f=geojson, parques nacionales/naturales/otros, simplificado a ~110 m"),
+        ("red-natura", "red_natura_recibo.json", "Red Natura 2000 (LIC y ZEPA)",
+         "query ArcGIS REST f=geojson sobre Espacios_Protegidos/5 y /6"),
+        ("rios-mtn", "rios_mtn_recibo.json", "Ríos del MTN (IGN)",
+         "query ArcGIS REST f=geojson sobre Hidrografia/3, tramos de más de 15 km"),
+        ("presas", "presas_recibo.json", "Presas (IGN)",
+         "query ArcGIS REST f=geojson sobre Hidrografia/0 (solo el muro)"),
+    ):
+        r = leer(fich, {})
+        if r:
+            fuentes[capa] = {
+                "capa": capa, "titulo": titulo,
+                "fuente": r.get("fuente") or "IGN",
+                "editor": "IGN · SignA (SCNE), servicios GIS",
+                "licencia": r.get("licencia"),
+                "actualizado": r.get("descargado"),
+                "descargado": (r.get("descargado") or HOY)[:10],
+                "features": r.get("features"),
+                "url": r.get("url"), "metodo": met,
+            }
+
     # --- NAP: paradas de GTFS (Metro, Cercanías, AVE) ---
     for capa, etq, titulo in (
         ("nap-metro", "metro-madrid", "Metro de Madrid (NAP)"),

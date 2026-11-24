@@ -742,7 +742,7 @@
    "licencia": "abierta con atribución",
    "actualizado": "2026-11-17",
    "descargado": "2026-11-24",
-   "features": 84,
+   "features": 86,
    "url": "https://www.seismicportal.eu/fdsnws/event/1/query",
    "metodo": "FDSN query con bbox de Espana"
   },
@@ -829,6 +829,54 @@
    "features": 12684,
    "url": "https://gis.miteco.gob.es/geoserver/ogc/features/v1/collections/costas%3Adominio_publico_maritimo_terrestre",
    "metodo": "OGC API Features, coleccion costas:dominio_publico_maritimo_terrestre, simplificado a ~22 m"
+  },
+  "espacios-protegidos": {
+   "capa": "espacios-protegidos",
+   "titulo": "Espacios naturales protegidos (IGN)",
+   "fuente": "IGN · SignA (SCNE)",
+   "editor": "IGN · SignA (SCNE), servicios GIS",
+   "licencia": "CC BY 4.0 · © Instituto Geográfico Nacional de España",
+   "actualizado": "2026-11-24T19:02:58Z",
+   "descargado": "2026-11-24",
+   "features": 246,
+   "url": "https://signa.ign.es/signa/",
+   "metodo": "query ArcGIS REST f=geojson, parques nacionales/naturales/otros, simplificado a ~110 m"
+  },
+  "red-natura": {
+   "capa": "red-natura",
+   "titulo": "Red Natura 2000 (LIC y ZEPA)",
+   "fuente": "IGN · SignA (SCNE)",
+   "editor": "IGN · SignA (SCNE), servicios GIS",
+   "licencia": "CC BY 4.0 · © Instituto Geográfico Nacional de España",
+   "actualizado": "2026-11-24T19:03:20Z",
+   "descargado": "2026-11-24",
+   "features": 1790,
+   "url": "https://signa.ign.es/signa/",
+   "metodo": "query ArcGIS REST f=geojson sobre Espacios_Protegidos/5 y /6"
+  },
+  "rios-mtn": {
+   "capa": "rios-mtn",
+   "titulo": "Ríos del MTN (IGN)",
+   "fuente": "IGN · SignA (SCNE)",
+   "editor": "IGN · SignA (SCNE), servicios GIS",
+   "licencia": "CC BY 4.0 · © Instituto Geográfico Nacional de España",
+   "actualizado": "2026-11-24T19:03:27Z",
+   "descargado": "2026-11-24",
+   "features": 2597,
+   "url": "https://signa.ign.es/signa/",
+   "metodo": "query ArcGIS REST f=geojson sobre Hidrografia/3, tramos de más de 15 km"
+  },
+  "presas": {
+   "capa": "presas",
+   "titulo": "Presas (IGN)",
+   "fuente": "IGN · SignA (SCNE)",
+   "editor": "IGN · SignA (SCNE), servicios GIS",
+   "licencia": "CC BY 4.0 · © Instituto Geográfico Nacional de España",
+   "actualizado": "2026-11-24T19:03:28Z",
+   "descargado": "2026-11-24",
+   "features": 1072,
+   "url": "https://signa.ign.es/signa/",
+   "metodo": "query ArcGIS REST f=geojson sobre Hidrografia/0 (solo el muro)"
   },
   "nap-metro": {
    "capa": "nap-metro",
@@ -956,9 +1004,9 @@
    "fuente": "Operadores (Renfe)",
    "editor": "GTFS-Realtime",
    "licencia": "condiciones del editor",
-   "actualizado": "2026-11-24T14:13:14",
-   "descargado": "2026-11-24T14:13:01",
-   "features": 456,
+   "actualizado": "2026-11-24T18:46:14",
+   "descargado": "2026-11-24T18:46:16",
+   "features": 436,
    "url": "https://gtfsrt.renfe.com/vehicle_positions.pb",
    "metodo": "protobuf GTFS-RT, refresco continuo"
   },
@@ -992,8 +1040,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-24T19:30",
-   "descargado": "2026-11-24T18:36:06Z",
+   "actualizado": "2026-11-24T19:45",
+   "descargado": "2026-11-24T18:46:16Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el poligono), paso 15 min"
@@ -1004,8 +1052,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-24T19:30",
-   "descargado": "2026-11-24T18:36:06Z",
+   "actualizado": "2026-11-24T19:45",
+   "descargado": "2026-11-24T18:46:16Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias"
@@ -1130,5 +1178,5 @@
    "kb": 7
   }
  },
- "total_capas": 84
+ "total_capas": 88
 }

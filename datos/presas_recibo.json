@@ -1,0 +1,10 @@
+{
+ "fichero": "datos/presas.geojson",
+ "features": 1072,
+ "fuente": "IGN · SignA (SCNE)",
+ "editor": "Instituto Geográfico Nacional (SCNE)",
+ "url": "https://signa.ign.es/signa/",
+ "licencia": "CC BY 4.0 · © Instituto Geográfico Nacional de España",
+ "descargado": "2026-11-24T19:03:28Z",
+ "metodo": "query f=geojson sobre Hidrografia/0 (solo geometria del muro)"
+}

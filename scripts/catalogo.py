@@ -113,7 +113,14 @@ TTL = {
     "calidad-aire-estaciones": (7776000, "trimestral", "foto"),
     "masas-subterraneas": (31536000, "por ciclo de planificación (6 años)", "foto"),
     "dpmt": (31536000, "por deslinde aprobado", "foto"),
+    # IGN · SignA: figuras de proteccion y red fluvial oficial. Cambian cuando se declara un
+    # parque o se revisa el MTN, no cada dia; se refrescan con el cron semanal.
+    "espacios-protegidos": (7776000, "trimestral", "foto"),
+    "red-natura": (7776000, "trimestral", "foto"),
+    "rios-mtn": (7776000, "trimestral", "foto"),
+    "presas": (7776000, "trimestral", "foto"),
 }
+
 TTL_DEFECTO = (2592000, "mensual o inferior", "foto")
 
 # Capas que publican una VENTANA de los N últimos días, no una foto: la «fecha del dato» de esos
