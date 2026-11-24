@@ -167,10 +167,33 @@ def main():
 
     edades = [v.get("edad_min") for k, v in series.items()
               if k not in heredados and v.get("edad_min") is not None]
+
+    # Los indicadores no cierran el mismo minuto entre sí: unos publican a las 20:20 y otros se
+    # quedan en 20:15. Sumar 20:20 con 20:15 fabrica una foto que no existe. Se elige el último
+    # minuto que comparten TODAS las series vivas y se publica ese, con su hora.
+    comunes = None
+    for k, v in series.items():
+        if v.get("heredado") or not v.get("serie"):
+            continue
+        horas = {p[0] for p in v["serie"]}
+        comunes = horas if comunes is None else (comunes & horas)
+    hora_comun = max(comunes) if comunes else None
+    if hora_comun:
+        for k, v in series.items():
+            mapa = {p[0]: p[1] for p in (v.get("serie") or [])}
+            if hora_comun in mapa:
+                v["hora"] = hora_comun
+                v["valor"] = mapa[hora_comun]
+                v["edad_min"] = edad_min(fecha, hora_comun)
+                estado[k] = mapa[hora_comun]
+        edades = [v.get("edad_min") for k, v in series.items()
+                  if k not in heredados and v.get("edad_min") is not None]
+
     salida = {
         "fecha": fecha,
         "actualizado": datetime.datetime.now().isoformat(timespec="seconds"),
         "edad_min": min(edades) if edades else None,
+        "hora_comun": hora_comun,
         "con_clave": bool(_TK),
         "fuente": "REE · ESIOS (token)" if _TK else "REE · ESIOS (sin clave: 403)",
         "resolucion": "5 minutos",
