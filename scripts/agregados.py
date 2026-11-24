@@ -98,22 +98,34 @@ def bloque_carburantes():
     d = lee("carburantes.geojson")
     if not d:
         return None
-    vals, fechas = [], set()
+    vals, g95, fechas = [], [], set()
     for f in d.get("features", []):
         p = f.get("properties") or {}
         v = num(p.get("gasoleo_a"))
         if v and v > 0:
             vals.append(v)
+        g = num(p.get("gasolina95"))
+        if g and g > 0:
+            g95.append(g)
         if p.get("fecha_dato"):
             fechas.add(str(p["fecha_dato"])[:10])
     if not vals:
         return None
     vals.sort()
-    return {"gasoleo_medio": round(sum(vals) / len(vals), 3),
-            "gasoleo_mediana": round(vals[len(vals) // 2], 3),
-            "gasoleo_min": round(vals[0], 3), "gasoleo_max": round(vals[-1], 3),
-            "n": len(vals), "fecha": sorted(fechas)[-1] if fechas else None,
-            "fuente": "MITECO · precios de carburantes"}
+    g95.sort()
+    # Las dos medias del surtidor: gasóleo A y gasolina 95, con la misma vara. Antes solo se
+    # calculaba el gasóleo y el mapa nunca enseñaba gasolina.
+    salida = {"gasoleo_medio": round(sum(vals) / len(vals), 3),
+              "gasoleo_mediana": round(vals[len(vals) // 2], 3),
+              "gasoleo_min": round(vals[0], 3), "gasoleo_max": round(vals[-1], 3),
+              "n": len(vals), "fecha": sorted(fechas)[-1] if fechas else None,
+              "fuente": "MITECO · precios de carburantes"}
+    if g95:
+        salida.update({"gasolina_medio": round(sum(g95) / len(g95), 3),
+                       "gasolina_mediana": round(g95[len(g95) // 2], 3),
+                       "gasolina_min": round(g95[0], 3), "gasolina_max": round(g95[-1], 3),
+                       "n_gasolina": len(g95)})
+    return salida
 
 
 def main():

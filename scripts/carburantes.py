@@ -89,14 +89,31 @@ def main():
     # estadísticas para el recibo
     diesel = [f["properties"]["gasoleo_a"] for f in feats if "gasoleo_a" in f["properties"]]
     gas95 = [f["properties"]["gasolina95"] for f in feats if "gasolina95" in f["properties"]]
+
+    def mediana(xs):
+        """El precio que ve el conductor es la mediana: la media la mueven cuatro gasolineras de
+        autopista. Se publican las dos para que el KPI y el mapa no digan cosas distintas."""
+        if not xs:
+            return None
+        v = sorted(xs)
+        n = len(v)
+        m = v[n // 2] if n % 2 else (v[n // 2 - 1] + v[n // 2]) / 2
+        return round(m, 3)
+
     kb = os.path.getsize(DEST) / 1024
     recibo = {
         "features": len(feats), "sin_precio": sin_precio, "fecha_dato": fecha,
         "kb": round(kb), "fuente": "MITECO", "fichero": "carburantes.geojson",
         "gasoleo_a_medio": round(sum(diesel) / len(diesel), 3) if diesel else None,
+        "gasoleo_a_mediana": mediana(diesel),
         "gasoleo_a_min": min(diesel) if diesel else None,
         "gasoleo_a_max": max(diesel) if diesel else None,
         "gasolina95_medio": round(sum(gas95) / len(gas95), 3) if gas95 else None,
+        "gasolina95_mediana": mediana(gas95),
+        "gasolina95_min": min(gas95) if gas95 else None,
+        "gasolina95_max": max(gas95) if gas95 else None,
+        "n_gasoleo_a": len(diesel),
+        "n_gasolina95": len(gas95),
         "con_glp": sum(1 for f in feats if "glp" in f["properties"]),
         "con_gnc": sum(1 for f in feats if "gnc" in f["properties"]),
         "con_gnl": sum(1 for f in feats if "gnl" in f["properties"]),

@@ -458,6 +458,11 @@
   #leyenda .ly i { width:13px; height:13px; border-radius:2px; flex:0 0 auto;
     border:1px solid rgba(255,255,255,.45); box-shadow:0 0 0 1px rgba(0,0,0,.4); }
   #leyenda .ly { margin-bottom:4px; }
+  /* Conmutador de carburante (gasóleo A / gasolina 95) dentro de la leyenda. */
+  #leyenda .ly-chips { gap:5px; flex-wrap:wrap; margin:2px 0 6px; }
+  #leyenda .chip { flex:1 1 auto; padding:3px 6px; font:inherit; font-size:10.6px; cursor:pointer;
+    color:var(--tinta); background:transparent; border:1px solid var(--borde-fuerte); border-radius:4px; }
+  #leyenda .chip.on { background:var(--tinta); color:var(--fondo); border-color:var(--tinta); font-weight:600; }
   #leyenda .ly span { flex:1; color:var(--tinta); font-size:11.2px; }
   #leyenda .ly b { color:var(--suave); font-weight:500; font-variant-numeric:tabular-nums; }
 
@@ -1446,9 +1451,14 @@ const CAPAS = [
     // de 12.144. Con min 22 / max 350 casi todos caian en el mismo tamano.
     escala:{ campo:"potencia_max_kw", min:7, max:150, unidad:"kW" },
     popupTitulo:"tipo_sitio" },
-  { id:"carburantes", grupo:"Tiempo real", label:"Carburantes (gasóleo A)", tipo:"punto", on:false,
-    color:"#22c55e", fichero:"datos/carburantes.geojson", radio:3.6, zoomMin:7,
-    escala:{ campo:"gasoleo_a", min:1.40, max:2.20, unidad:"€/l" } },
+  // Gasóleo y gasolina, con la misma vara y un conmutador en la leyenda: antes solo se pintaba el
+  // gasóleo A y quien repostaba gasolina no tenía nada que ver en el mapa.
+  { id:"carburantes", grupo:"Tiempo real", label:"Carburantes · precio por surtidor", tipo:"punto", on:false,
+    color:"#22c55e", fichero:"datos/carburantes.geojson", radio:4, zoomMin:7,
+    colorPorEscala:true, radioPorMagnitud:true, radioMin:3, radioMax:9,
+    escala:{ campo:"gasoleo_a", min:1.40, max:2.20, unidad:"€/l" },
+    alterna:[{ campo:"gasoleo_a", etiqueta:"Gasóleo A", min:1.40, max:2.20 },
+             { campo:"gasolina95", etiqueta:"Gasolina 95", min:1.30, max:2.10 }] },
   { id:"nap-lineas-metro", grupo:"Transporte", label:"Líneas de Metro Madrid", tipo:"linea", on:false,
     color:"#38bdf8", fichero:"datos/nap_lineas_metro-madrid.geojson", peso:2.6, opacidad:.92,
     zoomMin:9, popupTitulo:"linea", colorCampo:"color", etiquetaCampo:"linea" },
@@ -1869,10 +1879,13 @@ function indicadores(D) {
       valor: nf1(Number(c.gasoleo_mediana)) + " €", etiqueta: "gasóleo A · mediana de hoy",
       nota: nf(c.n) + " surtidores",
       ventana: "foto del día · precios comunicados al MITECO",
-      detalle: [["Mediana", nf1(Number(c.gasoleo_mediana)) + " €/l"],
-                ["Media", c.gasoleo_medio.toFixed(3) + " €/l"],
-                ["Mínima / máxima", nf1(Number(c.gasoleo_min)) + " – " + nf1(Number(c.gasoleo_max)) + " €/l"],
-                ["Surtidores", nf(c.n)]],
+      detalle: [["Gasóleo A · mediana", nf1(Number(c.gasoleo_mediana)) + " €/l"],
+                ["Gasóleo A · mín/máx", nf1(Number(c.gasoleo_min)) + " – " + nf1(Number(c.gasoleo_max)) + " €/l"],
+                ...(c.gasolina_mediana != null
+                  ? [["Gasolina 95 · mediana", nf1(Number(c.gasolina_mediana)) + " €/l"],
+                     ["Gasolina 95 · mín/máx", nf1(Number(c.gasolina_min)) + " – " + nf1(Number(c.gasolina_max)) + " €/l"]]
+                  : []),
+                ["Surtidores", nf(c.n) + " con gasóleo" + (c.n_gasolina ? " · " + nf(c.n_gasolina) + " con gasolina" : "")]],
       fuente: c.fuente || "MITECO" });
   }
 
@@ -2366,7 +2379,13 @@ function bloqueLeyenda(c) {
   // capas con magnitud continua: la leyenda es la rampa con sus dos extremos, no una lista
   if (c.colorPorEscala && c.escala) {
     const e = c.escala;
-    return "<h5>" + (c.label || c.id) + "</h5>" +
+    // Conmutador de carburante: la misma rampa sirve para gasóleo y gasolina; el botón cambia el
+    // campo con el que se colorea y se recalcula todo (color, tamaño y extremos de la leyenda).
+    const chips = c.alterna ? '<div class="ly ly-chips">' + c.alterna.map(o =>
+        '<button class="chip' + (o.campo === e.campo ? " on" : "") + '" data-comb="' + o.campo +
+        '" onclick="cambiarCombustible(\'' + c.id + '\',\'' + o.campo + '\')">' +
+        o.etiqueta + "</button>").join("") + "</div>" : "";
+    return "<h5>" + (c.label || c.id) + "</h5>" + chips +
       '<div class="ly"><i style="width:100%;height:9px;border-radius:2px;' +
       'background:linear-gradient(90deg,#34d399,#facc15,#ef4444)"></i></div>' +
       '<div class="ly"><span>' + numES(e.min) + " " + e.unidad + "</span>" +
@@ -2432,6 +2451,27 @@ function bloqueLeyenda(c) {
 }
 
 /* Pinta la leyenda de UNA capa (llamadas puntuales desde el alta de una capa). */
+/* Conmutador de carburante del mapa: cambia el campo de la escala y vuelve a pintar la capa con
+   los mismos datos (el GeoJSON ya trae gasóleo A, gasolina 95 y 98). Sin recargar el fichero. */
+function cambiarCombustible(id, campo) {
+  let lista = [];
+  try { lista = CAPAS; } catch (e) { lista = window.CAPAS || []; }
+  const c = (lista || []).find(x => x.id === id);
+  if (!c || !c.alterna) return;
+  const op = c.alterna.find(o => o.campo === campo);
+  if (!op) return;
+  c.escala = { campo: op.campo, min: op.min, max: op.max, unidad: "€/l" };
+  c.combustible = campo;
+  try { if (capas && capas[id]) capas[id].clearLayers(); } catch (e) {}
+  c.__cargada = false;
+  // sin esto, pintarPuntos sale por el atajo «la vista ya está pintada» y no repinta nada
+  c.__paso = null;
+  c.__vista = null;
+  cargar(c);
+  pintarLeyenda(c);
+}
+window.cambiarCombustible = cambiarCombustible;
+
 function pintarLeyenda(c) {
   const el = document.getElementById("leyenda");
   if (!el) return;
