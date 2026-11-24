@@ -1497,19 +1497,25 @@ const CAPAS = [
      modelo ICON/GFS servido por Open-Meteo (CC BY 4.0) en el centroide de cada provincia y un
      campo de viento interpolado en barbas. Los avisos oficiales son `aemet-zonas`, que es de
      AEMET; aquí no se avisa de nada, se mira el tiempo que hace. --- */
-  { id:"clima-temperatura", grupo:"Clima", label:"Temperatura ahora (provincia)", tipo:"punto", on:false,
-    color:"#22d3ee", fichero:"datos/clima_provincias.geojson", radio:11, opacidad:.55,
-    siempreIndividual:true, zoomMin:0, colorCampo:"tramo",
-    colores:{"helado":"#c7d2fe", "frío":"#38bdf8", "fresco":"#22d3ee", "templado":"#a3e635",
-             "cálido":"#fbbf24", "caluroso":"#f97316", "sin dato":"#64748b"},
+  /* La temperatura se pinta en el POLÍGONO de la provincia, no en un punto: el shape ya está en
+     nuts3_es.geojson y el dato es de toda la provincia. El centroide solo se usa para preguntar. */
+  { id:"clima-temperatura", grupo:"Clima", label:"Temperatura ahora (provincia)", tipo:"poligono", on:false,
+    color:"#22d3ee", fichero:"datos/clima_provincias.geojson", opacidad:.55, peso:1.1,
+    zoomMin:0, colorCampo:"tramo",
+    colores:{"helado":"#818cf8", "muy frío":"#6366f1", "frío":"#3b82f6", "fresco":"#22d3ee",
+             "suave":"#a3e635", "templado":"#fbbf24", "cálido":"#fb923c", "caluroso":"#f97316",
+             "sin dato":"#64748b"},
     popupTitulo:"nombre",
     campos:["nombre","temperatura","sensacion","tiempo","humedad","lluvia_mm","viento_kmh",
             "viento_dir","hora","modelo"] },
   { id:"clima-viento", grupo:"Clima", label:"Viento ahora (campo interpolado)", tipo:"linea", on:false,
-    color:"#7dd3fc", fichero:"datos/clima_viento.geojson", peso:1.5, opacidad:.8, zoomMin:0,
+    /* `halo` pinta un trazo oscuro debajo: sin el, flechas azul claro sobre provincias azules
+       del coropleta se perdian. Con halo se leen sobre cualquier relleno. */
+    halo:4.5, color:"#7dd3fc", fichero:"datos/clima_viento.geojson", peso:1.7, opacidad:.9, zoomMin:0,
     colorCampo:"tramo",
     colores:{"flojo":"#7dd3fc", "moderado":"#38bdf8", "fuerte":"#22d3ee", "muy fuerte":"#fbbf24",
              "temporal":"#f87171"},
+    /* flechas con punta: MultiLineString, cuerpo + dos alas */
     campos:["viento_kmh","rumbo","tramo"] },
   /* --- ráster oficial. Solo el PNOA publica teselas en EPSG:3857, que es el CRS del mapa.
      La hidrografía del IDEe y el Catastro solo sirven WMS en 4326/25830: mezclar CRS en
@@ -2280,30 +2286,24 @@ function engancharCierreLeyenda(el) {
   };
 }
 
-function pintarLeyenda(c) {
-  const el = document.getElementById("leyenda");
-  if (!el) return;
-  // Una leyenda de una capa APAGADA no se pinta nunca: era el fallo del "cuadro de Cercanias
-  // que se queda abierto" (la capa se apagaba por una vista o por el enlace y el fetch, al llegar
-  // tarde, volvia a pintar su leyenda). Quien decide si hay leyenda es actualizarLeyenda().
-  const chkCapa = c ? document.querySelector('[data-capa="' + c.id + '"]') : null;
-  if (!c || !chkCapa || !chkCapa.checked) return;
+/* HTML de la leyenda de UNA capa, o null si esa capa no tiene nada que contar.
+   Se separa del pintado porque al encender Clima hay DOS capas con color (la temperatura en el
+   polígono y las flechas de viento): con un solo dueño la leyenda explicaba el viento y dejaba
+   los colores del mapa sin escala. */
+function bloqueLeyenda(c) {
+  if (!c) return null;
   // capas con magnitud continua: la leyenda es la rampa con sus dos extremos, no una lista
   if (c.colorPorEscala && c.escala) {
     const e = c.escala;
-    window.__leyendaDe = c.id;
-    el.innerHTML = BOTON_LEYENDA + "<h5>" + (c.label || c.id) + "</h5>" +
+    return "<h5>" + (c.label || c.id) + "</h5>" +
       '<div class="ly"><i style="width:100%;height:9px;border-radius:2px;' +
       'background:linear-gradient(90deg,#34d399,#facc15,#ef4444)"></i></div>' +
       '<div class="ly"><span>' + numES(e.min) + " " + e.unidad + "</span>" +
       '<b>' + numES(e.max) + " " + e.unidad + "</b></div>";
-    el.hidden = false;
-    engancharCierreLeyenda(el);
-    return;
   }
-  if (!c.colorCampo) { el.hidden = true; return; }
+  if (!c.colorCampo) return null;
   const feats = datos[c.id];
-  if (!feats || !feats.length) { el.hidden = true; return; }
+  if (!feats || !feats.length) return null;
 
   // el campo de tramo se deriva del campo de color: color_paro -> tramo_paro, color -> tramo_poblacion
   const campoColor = c.colorCampo;
@@ -2324,16 +2324,21 @@ function pintarLeyenda(c) {
     cuenta[etiqueta].n += 1;
   });
   const pares = Object.keys(cuenta).map(lab => ({ col: cuenta[lab].col, lab: lab, n: cuenta[lab].n }))
-    .sort((a, b) => b.n - a.n);
+    // Con `colores` el orden es el de la RAMPA (helado -> caluroso, verde -> rojo), no el de
+    // frecuencia: una leyenda de escala ordenada por cuántas provincias hay en cada tramo se lee
+    // como un desorden ("fresco, frío, suave, cálido, templado"). Sin `colores` (Cercanías,
+    // etiquetaCampo) manda la frecuencia, que es lo que interesa ahí.
+    .sort((a, b) => c.colores
+      ? Object.keys(c.colores).indexOf(a.lab) - Object.keys(c.colores).indexOf(b.lab)
+      : b.n - a.n);
   // Cercanias tiene 12 lineas + las de otros nucleos (R11, R17...): con tope 14 se ocultaba entera
-  if (pares.length < 2 || pares.length > 40) { el.hidden = true; return; }
+  if (pares.length < 2 || pares.length > 40) return null;
 
   const cortes = (window.__cortes && c.corteVar) ? window.__cortes[c.corteVar] : null;
   const unidad = (c.corteVar || "").indexOf("paro") !== -1 ? " %"
                : (c.corteVar || "").indexOf("densidad") !== -1 ? " hab/km²"
                : (c.corteVar || "").indexOf("poblacion") !== -1 ? " hab" : "";
-  window.__leyendaDe = c.id;      // para saber a quien hay que ocultar al apagarla
-  el.innerHTML = BOTON_LEYENDA + "<h5>" + (c.label || c.id) + "</h5>" +
+  return "<h5>" + (c.label || c.id) + "</h5>" +
     pares.map(x => {
       let etiqueta = x.lab;
       if (cortes && cortes.length === 3) {
@@ -2351,14 +2356,24 @@ function pintarLeyenda(c) {
              `<span>${etiqueta}</span><b>${nf(x.n)}</b></div>`;
     }).join("") +
     `<div class="ly-total">${nf(pares.reduce((a, x) => a + x.n, 0))} datos</div>`;
+}
+
+/* Pinta la leyenda de UNA capa (llamadas puntuales desde el alta de una capa). */
+function pintarLeyenda(c) {
+  const el = document.getElementById("leyenda");
+  if (!el) return;
+  const chkCapa = c ? document.querySelector('[data-capa="' + c.id + '"]') : null;
+  const h = (c && chkCapa && chkCapa.checked) ? bloqueLeyenda(c) : null;
+  if (!h) { el.hidden = true; return; }
+  window.__leyendaDe = c.id;
+  el.innerHTML = BOTON_LEYENDA + h;
   el.hidden = false;
   engancharCierreLeyenda(el);
 }
 
-/* La leyenda tiene UN dueño, y tiene que estar encendido. Esta funcion es la unica que decide
-   que se ve: si la capa de la leyenda sigue encendida se queda; si no, se pasa a la ultima capa
-   con color que se encendio; y si no queda ninguna, se esconde. Asi el cuadro no puede quedarse
-   abierto sobre una capa apagada, ni por una vista tematica ni por un enlace permanente. */
+/* La leyenda tiene UN dueño... pero puede explicar VARIAS capas: la dueña primero y el resto de
+   capas encendidas con color detrás, cada una con su titulo. Asi el coropleta y las flechas del
+   mismo preset se explican juntos en vez de taparse. Si no queda ninguna encendida, se esconde. */
 let ULTIMA_CON_COLOR = null;    // ultima capa con leyenda que se encendio a mano
 function actualizarLeyenda() {
   const el = document.getElementById("leyenda");
@@ -2367,20 +2382,32 @@ function actualizarLeyenda() {
   // en la derecha manda el cuadro abierto: la leyenda espera, o se pisarían
   if (!document.getElementById("panel-dato").hidden ||
       document.getElementById("info-der").classList.contains("on")) { el.hidden = true; return; }
-  const estaOn = id => !!(document.querySelector('[data-capa="' + id + '"]') || {}).checked;
+  const estaOn = id => {
+    const chk = document.querySelector('[data-capa="' + id + '"]');
+    return !!(chk && chk.checked);
+  };
   const conColor = CAPAS.filter(x => x.colorCampo || x.colorPorEscala);
   let dueno = null;
   if (window.__leyendaDe && estaOn(window.__leyendaDe)) dueno = window.__leyendaDe;
   else if (ULTIMA_CON_COLOR && estaOn(ULTIMA_CON_COLOR)) dueno = ULTIMA_CON_COLOR;
-  else {
+  if (!dueno) {
     const vivas = conColor.filter(x => estaOn(x.id));
     dueno = vivas.length ? vivas[vivas.length - 1].id : null;
   }
   if (!dueno) { window.__leyendaDe = null; el.hidden = true; return; }
-  const c = conColor.find(x => x.id === dueno);
-  if (!c) { window.__leyendaDe = null; el.hidden = true; return; }
-  if (!datos[c.id] || !datos[c.id].length) { el.hidden = true; return; }   // aun sin datos: se pintara al cargar
-  pintarLeyenda(c);
+  // Lo que LLENA el mapa va primero: polígonos, luego líneas, luego puntos. Sin esto, con Clima
+  // activo la leyenda abría con las flechas y la escala de color del coropleta quedaba debajo.
+  const rangoTipo = { poligono: 0, linea: 1, punto: 2 };
+  const ids = [dueno].concat(conColor.map(x => x.id).filter(id => id !== dueno && estaOn(id)))
+    .map(id => conColor.find(x => x.id === id))
+    .sort((a, b) => (rangoTipo[a.tipo] ?? 3) - (rangoTipo[b.tipo] ?? 3))
+    .map(x => x.id);
+  const trozos = ids.map(id => bloqueLeyenda(conColor.find(x => x.id === id))).filter(Boolean);
+  if (!trozos.length) { window.__leyendaDe = null; el.hidden = true; return; }
+  window.__leyendaDe = dueno;
+  el.innerHTML = BOTON_LEYENDA + trozos.join("");
+  el.hidden = false;
+  engancharCierreLeyenda(el);
 }
 
 /* ---------------- descargas ---------------- */

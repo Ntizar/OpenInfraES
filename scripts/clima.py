@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Clima · observación actual por provincia y campo de viento (Open-Meteo).
 
-**Qué es y qué no es.** Son las condiciones *de ahora* en el centroide de cada provincia
-(52 puntos), servidas por Open-Meteo a partir de los modelos ICON (DWD) y GFS, con paso de
-15 minutos. No es una estación oficial de AEMET ni un parte: es un modelo interpolado, y la
+**Qué es y qué no es.** Son las condiciones *de ahora* en cada provincia (52 polígonos, el
+shape de `nuts3_es.geojson`, consultado en su centroide), servidas por Open-Meteo a partir de
+los modelos ICON (DWD) y GFS, con paso de 15 minutos. No es una estación oficial de AEMET ni un parte: es un modelo interpolado, y la
 ficha lo dice. Los avisos oficiales están en la capa `aemet-zonas`.
 
 **Por qué Open-Meteo.** AEMET OpenData exige clave para observación; Open-Meteo no pide clave,
@@ -11,8 +11,8 @@ permite 52 coordenadas en una sola llamada y publica con licencia CC BY 4.0. Se 
 capa y en el recibo.
 
 Salida:
-  datos/clima_provincias.geojson   52 puntos · temperatura, sensación, humedad, lluvia, viento
-  datos/clima_viento.geojson       rejilla interpolada (IDW) en barbas de 2 vértices
+  datos/clima_provincias.geojson   52 polígonos · temperatura, sensación, humedad, lluvia, viento
+  datos/clima_viento.geojson       rejilla interpolada (IDW) en flechas con punta
   datos/clima_recibo.json          procedencia, licencia y hora del modelo
 
     python scripts/clima.py
@@ -44,9 +44,12 @@ TIEMPO = {
     95: "Tormenta", 96: "Tormenta con granizo", 99: "Tormenta con granizo fuerte",
 }
 # Los tramos son los de la leyenda del visor: el color no se inventa en el cliente.
-TRAMOS_T = [(-99, 0, "helado", "#c7d2fe"), (0, 8, "frío", "#38bdf8"),
-            (8, 16, "fresco", "#22d3ee"), (16, 24, "templado", "#a3e635"),
-            (24, 30, "cálido", "#fbbf24"), (30, 99, "caluroso", "#f97316")]
+# Tramos de 5 °C, no de 8: con los de 8 casi toda España caía en "frío" o "fresco" y el coropleta
+# se veía de dos colores. El rango útil de un día español cabe entero entre helado y caluroso.
+TRAMOS_T = [(-99, 0, "helado", "#818cf8"), (0, 5, "muy frío", "#6366f1"),
+            (5, 10, "frío", "#3b82f6"), (10, 15, "fresco", "#22d3ee"),
+            (15, 20, "suave", "#a3e635"), (20, 25, "templado", "#fbbf24"),
+            (25, 30, "cálido", "#fb923c"), (30, 99, "caluroso", "#f97316")]
 TRAMOS_V = [(0, 10, "flojo", "#7dd3fc"), (10, 20, "moderado", "#38bdf8"),
             (20, 40, "fuerte", "#22d3ee"), (40, 60, "muy fuerte", "#fbbf24"),
             (60, 999, "temporal", "#f87171")]
@@ -166,13 +169,28 @@ def rejilla_viento(provincias, islas=False):
                 continue
             rumbo = math.degrees(math.atan2(ux, uy))       # 0 = norte, 90 = este
             largo = 0.10 + min(1.0, v / 60.0) * 0.30
-            dlat = largo * math.cos(math.radians(rumbo))
-            dlon = largo * math.sin(math.radians(rumbo)) / max(0.3, math.cos(math.radians(lat)))
+            coslat = max(0.3, math.cos(math.radians(lat)))
+
+            def desplaza(factor, rb):
+                """Paso en grados a lo largo de `rb`, corrigiendo la longitud por el paralelo."""
+                return (largo * factor * math.sin(math.radians(rb)) / coslat,
+                        largo * factor * math.cos(math.radians(rb)))
+
+            # FLECHA, no rayita: cuerpo hasta la punta y dos alas de 28° que la cierran. Antes
+            # eran dos vértices y no se sabía hacia dónde soplaba; el dato estaba bien, faltaba
+            # la punta. Las alas van a 152° y 208° del rumbo (es decir, 28° respecto al cuerpo).
+            dx, dy = desplaza(1.0, rumbo)
+            ax, ay = desplaza(0.42, rumbo + 152)
+            bx, by = desplaza(0.42, rumbo - 152)
+            px, py = lon + dx, lat + dy
             fechas.append({
                 "type": "Feature",
-                "geometry": {"type": "LineString", "coordinates": [
-                    [round(lon, 3), round(lat, 3)],
-                    [round(lon + dlon, 3), round(lat + dlat, 3)]]},
+                # 2 decimales ≈ 1 km: una flecha mide 20-40 km, redondear más no se ve y
+                # engorda el fichero que se descarga el visitante
+                "geometry": {"type": "MultiLineString", "coordinates": [
+                    [[round(lon, 2), round(lat, 2)], [round(px, 2), round(py, 2)]],
+                    [[round(lon + ax, 2), round(lat + ay, 2)], [round(px, 2), round(py, 2)],
+                     [round(lon + bx, 2), round(lat + by, 2)]]]},
                 "properties": {
                     "viento_kmh": round(v, 1),
                     "rumbo": int(round(rumbo)) % 360,
@@ -194,7 +212,7 @@ def main():
         if not c:
             continue
         sitios.append({"provincia": p.get("nombre") or "?", "cod_ine": p.get("cod_ine"),
-                       "lon": c[0], "lat": c[1]})
+                       "lon": c[0], "lat": c[1], "geom": f.get("geometry")})
     sitios.sort(key=lambda s: s["provincia"])
     if len(sitios) < 40:
         raise SystemExit("solo %d provincias con centroide: revisa nuts3_es.geojson" % len(sitios))
@@ -228,9 +246,11 @@ def main():
         provincias.append({"lon": s["lon"], "lat": s["lat"], "viento_kmh": v,
                            "viento_dir": c.get("wind_direction_10m"),
                            "cod_ine": s["cod_ine"]})
+        # El polígono de la provincia, no un punto en su centroide: el dato es de la provincia
+        # entera y el mapa ya trae la forma, así que se pinta el contorno relleno de color. Con
+        # un punto en el centroide, dos provincias vecinas del mismo tono se leían como una sola.
         feats.append({"type": "Feature",
-                      "geometry": {"type": "Point", "coordinates": [round(s["lon"], 4),
-                                                                    round(s["lat"], 4)]},
+                      "geometry": s["geom"],
                       "properties": props})
 
     canarias = {"35", "38"}
@@ -258,7 +278,8 @@ def main():
                   ensure_ascii=False, indent=1)
 
     escribe("clima_provincias", feats,
-            "modelo ICON/GFS por centroide de provincia (nuts3_es.geojson), paso 15 min")
+            "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson "
+            "(consulta en el centroide, pintado en el polígono), paso 15 min")
     escribe("clima_viento", barbas,
             "interpolacion IDW vectorial sobre rejilla de 0,90° x 0,70°, barbas de 2 vertices")
 
@@ -289,7 +310,7 @@ def main():
     }
     json.dump(rec, open(os.path.join(DEST, "clima_recibo.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=1)
-    print("clima: %d provincias · %d barbas · %.1f °C de media · %s %.1f °C / %s %.1f °C"
+    print("clima: %d provincias · %d flechas · %.1f °C de media · %s %.1f °C / %s %.1f °C"
           % (len(feats), len(barbas), rec["temperatura_media"] or 0,
              rec["mas_caliente"]["provincia"], rec["mas_caliente"]["temperatura"] or 0,
              rec["mas_frio"]["provincia"], rec["mas_frio"]["temperatura"] or 0))

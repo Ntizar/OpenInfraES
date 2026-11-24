@@ -530,7 +530,8 @@ def main():
     if r:
         for capa, titulo, met in (
             ("clima-temperatura", "Temperatura ahora (provincia)",
-             "modelo ICON/GFS por centroide de provincia (nuts3_es.geojson), paso 15 min"),
+             "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson "
+             "(consulta en el centroide, pintado en el poligono), paso 15 min"),
             ("clima-viento", "Viento ahora (campo interpolado)",
              "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; "
              "rejilla aparte para Canarias"),

@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-24T13:36:40",
+ "generado": "2026-11-24T13:33:23",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 84,
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 41,
-  "kb_total": 82885.3
+  "kb_total": 82966.5
  },
  "avisos": {
   "pendiente": [
@@ -107,7 +107,7 @@
    "bytes": 194514,
    "kb": 190.0,
    "fecha_dato": "20261124",
-   "fecha_descarga": "2026-11-24T13:36:32",
+   "fecha_descarga": "2026-11-24T13:11:03",
    "edad_dias": 0,
    "caducado": false
   },
@@ -415,7 +415,7 @@
    "oficial": true,
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
-   "producto": "modelo ICON/GFS por centroide de provincia (nuts3_es.geojson), paso 15 min",
+   "producto": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el poligono), paso 15 min",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · atribuir a Open-Meteo y al modelo (ICON/GFS)",
@@ -428,10 +428,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 19816,
-   "kb": 19.4,
+   "bytes": 76072,
+   "kb": 74.3,
    "fecha_dato": "2026-11-24T14:30",
-   "fecha_descarga": "2026-11-24T13:36:40Z",
+   "fecha_descarga": "2026-11-24T13:33:22Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -455,10 +455,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 42794,
-   "kb": 41.8,
+   "bytes": 54476,
+   "kb": 53.2,
    "fecha_dato": "2026-11-24T14:30",
-   "fecha_descarga": "2026-11-24T13:36:40Z",
+   "fecha_descarga": "2026-11-24T13:33:22Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -616,9 +616,9 @@
    "ttl_segundos": 300,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 1519,
-   "bytes": 660759,
-   "kb": 645.3,
+   "features": 1558,
+   "bytes": 675406,
+   "kb": 659.6,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -643,9 +643,9 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 1008,
-   "bytes": 218228,
-   "kb": 213.1,
+   "features": 1010,
+   "bytes": 218818,
+   "kb": 213.7,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
