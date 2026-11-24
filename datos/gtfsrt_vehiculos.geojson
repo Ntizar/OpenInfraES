@@ -1,1 +1,1 @@
-{"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [-3.768673, 40.383572]}, "properties": {"operador": "Renfe", "linea": "C5", "vehiculo": "20941", "etiqueta": "C5-20941", "rumbo": null, "velocidad": null, "ultima": "2026-11-24T00:12:59+00:00", "retraso_s": null}}]}
+{"type": "FeatureCollection", "features": []}
