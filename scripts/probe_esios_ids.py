@@ -50,13 +50,16 @@ def main():
             salida["indicadores"].append({"id": ind, "error": type(e).__name__})
             continue
         vals = [v for v in (d.get("values") or []) if v.get("value") is not None]
+        mag = d.get("magnitud")
+        tie = d.get("time")
         salida["indicadores"].append({
             "id": ind,
             "nombre": d.get("name"),
             "corto": d.get("short_name"),
             "unidad": d.get("unit"),
-            "magnitud": (d.get("magnitud") or {}).get("name"),
-            "tipo": (d.get("time") or {}).get("type"),
+            # ESIOS no siempre devuelve dicts: `magnitud` y `time` llegan como lista en algunos
+            "magnitud": mag.get("name") if isinstance(mag, dict) else None,
+            "tipo": tie.get("type") if isinstance(tie, dict) else None,
             "ultima": vals[-1]["datetime"] if vals else None,
             "valor": vals[-1]["value"] if vals else None,
             "n": len(vals),
