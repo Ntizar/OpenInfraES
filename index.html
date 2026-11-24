@@ -1602,7 +1602,7 @@ const CAPAS = [
     color:"#f59e0b", fichero:"datos/patrimonio_ign.geojson", radio:4, zoomMin:7, zoomDetalle:9,
     popupTitulo:"nombre", colorCampo:"color", etiquetaCampo:"categoria",
     campos:["nombre","categoria","tambien","municipio","provincia"] },
-  { id:"hospitales-ign", grupo:"Población", label:"Hospitales (IGN)", tipo:"punto", on:false,
+  { id:"hospitales-ign", grupo:"Sanidad", label:"Hospitales (IGN)", tipo:"punto", on:false,
     color:"#ef4444", fichero:"datos/hospitales_ign.geojson", radio:3.4, zoomMin:7,
     popupTitulo:"nombre", leyendaSimple:true },
   { id:"cimas-ign", grupo:"Relieve", label:"Cimas y puntos acotados (IGN)", tipo:"punto", on:false,
@@ -1705,7 +1705,7 @@ const ETIQUETA_VISTA = {
   "Red eléctrica": "Eléctrico", "Generación": "Generación", "Gas": "Gas", "Agua": "Agua",
   "Demografía": "Población", "Transporte": "Transporte", "DGT · Tráfico": "DGT",
   "Tiempo real": "En vivo", "Riesgo": "Riesgo", "Medio ambiente": "Medio ambiente",
-  "Clima": "Clima"
+  "Clima": "Clima", "Patrimonio": "Patrimonio", "Relieve": "Relieve", "Sanidad": "Sanidad"
 };
 const cajaPresets = $("#presets");
 if (cajaPresets) {

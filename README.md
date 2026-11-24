@@ -116,7 +116,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **Riesgo** | 3 | 136 |
 | **Medio ambiente** | 4 | 15.503 |
 | **Patrimonio** | 1 | 20.116 |
-| **Población** | 1 | 884 |
+| **Sanidad** | 1 | 884 |
 | **Relieve** | 2 | 19.739 |
 | **Clima** | 2 | 104 |
 | **Total** | **77** | **158.381** |
