@@ -1,0 +1,11 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "titulo": "Aviación ligera · aeródromos y helipuertos",
+ "fuente": "IGN · SignA",
+ "metodo": "Capas 6 y 7 de 02_redes_transporte, multiPoint desdoblado en puntos",
+ "features": 1748,
+ "kb": 421.3,
+ "descargado": "2026-11-24"
+}

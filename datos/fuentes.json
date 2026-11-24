@@ -1058,6 +1058,42 @@
    "url": "https://open-meteo.com/",
    "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias"
   },
+  "aviacion-ligera-ign": {
+   "capa": "aviacion-ligera-ign",
+   "titulo": "Aviación ligera · aeródromos y helipuertos",
+   "fuente": "IGN · SignA",
+   "editor": "Instituto Geográfico Nacional",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 1748,
+   "url": "https://signa.ign.es/",
+   "metodo": "Capas 6 y 7 de 02_redes_transporte, multiPoint desdoblado en puntos"
+  },
+  "cable-ign": {
+   "capa": "cable-ign",
+   "titulo": "Transporte por cable",
+   "fuente": "IGN · SignA",
+   "editor": "Instituto Geográfico Nacional",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 310,
+   "url": "https://signa.ign.es/",
+   "metodo": "Capas 1-3 de 02_redes_transporte (teleférico, telesilla, telesquí)"
+  },
+  "caminos-santiago-ign": {
+   "capa": "caminos-santiago-ign",
+   "titulo": "Caminos de Santiago",
+   "fuente": "IGN · SignA",
+   "editor": "Instituto Geográfico Nacional",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 756,
+   "url": "https://signa.ign.es/",
+   "metodo": "Capa 18 de 02_redes_transporte, con agrupación y longitud"
+  },
   "cimas-ign": {
    "capa": "cimas-ign",
    "titulo": "Cimas y puntos acotados (IGN)",
@@ -1105,6 +1141,18 @@
    "features": 4784,
    "url": "https://signa.ign.es/",
    "metodo": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro"
+  },
+  "ferris-ign": {
+   "capa": "ferris-ign",
+   "titulo": "Líneas de ferri",
+   "fuente": "IGN · SignA",
+   "editor": "Instituto Geográfico Nacional",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 58,
+   "url": "https://signa.ign.es/",
+   "metodo": "Capa 23 de 02_redes_transporte"
   },
   "hospitales-ign": {
    "capa": "hospitales-ign",
@@ -1165,6 +1213,18 @@
    "features": 366,
    "url": "https://mapas.fomento.gob.es/arcgis2/rest/services/Hermes/1_INFRAESTRUCTURA_B%C3%81SICA_/MapServer/929",
    "metodo": "ArcGIS REST, capa 929, un elemento por túnel con sus tubos anidados"
+  },
+  "vias-verdes-ign": {
+   "capa": "vias-verdes-ign",
+   "titulo": "Vías verdes",
+   "fuente": "IGN · SignA",
+   "editor": "Instituto Geográfico Nacional",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 142,
+   "url": "https://signa.ign.es/",
+   "metodo": "Capa 19 de 02_redes_transporte, con firme y longitud"
   }
  },
  "simplificacion": {
@@ -1286,5 +1346,5 @@
    "kb": 7
   }
  },
- "total_capas": 97
+ "total_capas": 102
 }
