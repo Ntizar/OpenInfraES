@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-24T14:36:48",
+ "generado": "2026-11-24T15:10:41",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 84,
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 41,
-  "kb_total": 82938.7
+  "kb_total": 82904.4
  },
  "avisos": {
   "pendiente": [
@@ -104,10 +104,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 42,
-   "bytes": 194514,
+   "bytes": 194511,
    "kb": 190.0,
    "fecha_dato": "20261124",
-   "fecha_descarga": "2026-11-24T14:36:43",
+   "fecha_descarga": "2026-11-24T15:10:33",
    "edad_dias": 0,
    "caducado": false
   },
@@ -428,10 +428,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76149,
+   "bytes": 76152,
    "kb": 74.4,
-   "fecha_dato": "2026-11-24T15:30",
-   "fecha_descarga": "2026-11-24T14:36:48Z",
+   "fecha_dato": "2026-11-24T16:00",
+   "fecha_descarga": "2026-11-24T15:10:40Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -455,10 +455,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 54420,
-   "kb": 53.1,
-   "fecha_dato": "2026-11-24T15:30",
-   "fecha_descarga": "2026-11-24T14:36:48Z",
+   "bytes": 54542,
+   "kb": 53.3,
+   "fecha_dato": "2026-11-24T16:00",
+   "fecha_descarga": "2026-11-24T15:10:40Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -616,9 +616,9 @@
    "ttl_segundos": 300,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 1481,
-   "bytes": 638649,
-   "kb": 623.7,
+   "features": 1408,
+   "bytes": 605484,
+   "kb": 591.3,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -643,9 +643,9 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 1059,
-   "bytes": 231011,
-   "kb": 225.6,
+   "features": 1052,
+   "bytes": 228814,
+   "kb": 223.5,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
