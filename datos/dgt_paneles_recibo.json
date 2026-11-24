@@ -4,29 +4,29 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 831,
+ "features": 892,
  "paneles_localizados": 2537,
- "descargado": "2026-11-24T09:11:33",
+ "descargado": "2026-11-24T09:36:13",
  "mensajes_top": [
   {
-   "texto": "@H @F",
-   "paneles": 81
+   "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
+   "paneles": 113
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 80
+   "paneles": 84
   },
   {
-   "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
-   "paneles": 78
+   "texto": "@H @F",
+   "paneles": 82
   },
   {
    "texto": "CON LLUVIA MODERE VELOCIDAD",
-   "paneles": 34
+   "paneles": 44
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
-   "paneles": 29
+   "paneles": 30
   },
   {
    "texto": "PRECAUCION BANCOS DE NIEBLA",
@@ -41,11 +41,11 @@
    "paneles": 8
   },
   {
-   "texto": "CONTROL DE VELOCIDAD POR RADAR",
-   "paneles": 6
+   "texto": "CONTROL MOVIL DE VELOCIDAD",
+   "paneles": 7
   },
   {
-   "texto": "EN N-232 4 EJES O MAS",
+   "texto": "CONTROL DE VELOCIDAD POR RADAR",
    "paneles": 6
   }
  ]
