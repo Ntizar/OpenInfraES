@@ -1,12 +1,12 @@
 {
- "generado": "2026-11-24T07:36:23",
+ "generado": "2026-11-24T08:37:05",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 82,
  "resumen": {
   "licencia_si": 77,
   "licencia_pendiente": 5,
-  "caducados": 28,
+  "caducados": 27,
   "oficiales": 68,
   "comunitarias": 14,
   "por_jerarquia": {
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 39,
-  "kb_total": 82654.1
+  "kb_total": 82741.7
  },
  "avisos": {
   "pendiente": [
@@ -27,7 +27,6 @@
   ],
   "sin_organismo": [],
   "caducado": [
-   "aemet-zonas",
    "almacenamiento-petrolifero",
    "conducciones-combustible",
    "desaladoras",
@@ -107,10 +106,10 @@
    "features": 22,
    "bytes": 116067,
    "kb": 113.3,
-   "fecha_dato": "20261123",
-   "fecha_descarga": "2026-11-24T07:36:17",
-   "edad_dias": 1,
-   "caducado": true
+   "fecha_dato": "20261124",
+   "fecha_descarga": "2026-11-24T08:36:57",
+   "edad_dias": 0,
+   "caducado": false
   },
   "aeropuertos": {
    "id": "aeropuertos",
@@ -563,9 +562,9 @@
    "ttl_segundos": 300,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 1367,
-   "bytes": 593984,
-   "kb": 580.1,
+   "features": 1579,
+   "bytes": 685323,
+   "kb": 669.3,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -590,9 +589,9 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 845,
-   "bytes": 182338,
-   "kb": 178.1,
+   "features": 887,
+   "bytes": 193429,
+   "kb": 188.9,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -1022,11 +1021,11 @@
    "ttl_segundos": 120,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 496,
-   "bytes": 141597,
-   "kb": 138.3,
-   "fecha_dato": "2026-11-24T07:13:03",
-   "fecha_descarga": "2026-11-24T07:13:03",
+   "features": 452,
+   "bytes": 128918,
+   "kb": 125.9,
+   "fecha_dato": "2026-11-24T08:13:00",
+   "fecha_descarga": "2026-11-24T08:13:01",
    "edad_dias": 0,
    "caducado": false
   },
