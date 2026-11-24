@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-24T22:36:44",
+ "generado": "2026-11-24T22:37:48",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 102,
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 49,
-  "kb_total": 107136.3
+  "kb_total": 107143.2
  },
  "avisos": {
   "pendiente": [
@@ -107,7 +107,7 @@
    "bytes": 217829,
    "kb": 212.7,
    "fecha_dato": "20261124",
-   "fecha_descarga": "2026-11-24T22:36:39",
+   "fecha_descarga": "2026-11-24T22:09:37",
    "edad_dias": 0,
    "caducado": false
   },
@@ -273,8 +273,8 @@
    "edad_dias": 63,
    "caducado": true
   },
-  "aviacion-ligera-ign": {
-   "id": "aviacion-ligera-ign",
+  "aviacion-ligera": {
+   "id": "aviacion-ligera",
    "titulo": "Aviación ligera · aeródromos y helipuertos",
    "organismo": "IGN",
    "oficial": true,
@@ -288,8 +288,8 @@
    },
    "endpoint": "https://signa.ign.es/",
    "modo": "foto",
-   "frecuencia_fuente": "mensual o inferior",
-   "ttl_segundos": 2592000,
+   "frecuencia_fuente": "anual",
+   "ttl_segundos": 31536000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 1748,
@@ -354,8 +354,8 @@
    "edad_dias": 1,
    "caducado": false
   },
-  "caminos-santiago-ign": {
-   "id": "caminos-santiago-ign",
+  "caminos-santiago": {
+   "id": "caminos-santiago",
    "titulo": "Caminos de Santiago",
    "organismo": "IGN",
    "oficial": true,
@@ -369,8 +369,8 @@
    },
    "endpoint": "https://signa.ign.es/",
    "modo": "foto",
-   "frecuencia_fuente": "mensual o inferior",
-   "ttl_segundos": 2592000,
+   "frecuencia_fuente": "anual",
+   "ttl_segundos": 31536000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 756,
@@ -538,8 +538,8 @@
    "features": 52,
    "bytes": null,
    "kb": null,
-   "fecha_dato": "2026-11-24T23:30",
-   "fecha_descarga": "2026-11-24T22:36:44Z",
+   "fecha_dato": "2026-11-24T23:00",
+   "fecha_descarga": "2026-11-24T22:12:07Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -563,10 +563,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76156,
-   "kb": 74.4,
-   "fecha_dato": "2026-11-24T23:30",
-   "fecha_descarga": "2026-11-24T22:36:44Z",
+   "bytes": 76249,
+   "kb": 74.5,
+   "fecha_dato": "2026-11-24T23:00",
+   "fecha_descarga": "2026-11-24T22:12:07Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -590,10 +590,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76156,
-   "kb": 74.4,
-   "fecha_dato": "2026-11-24T23:30",
-   "fecha_descarga": "2026-11-24T22:36:44Z",
+   "bytes": 76249,
+   "kb": 74.5,
+   "fecha_dato": "2026-11-24T23:00",
+   "fecha_descarga": "2026-11-24T22:12:07Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -617,10 +617,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 54399,
+   "bytes": 54383,
    "kb": 53.1,
-   "fecha_dato": "2026-11-24T23:30",
-   "fecha_descarga": "2026-11-24T22:36:44Z",
+   "fecha_dato": "2026-11-24T23:00",
+   "fecha_descarga": "2026-11-24T22:12:07Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -778,9 +778,9 @@
    "ttl_segundos": 300,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 884,
-   "bytes": 389208,
-   "kb": 380.1,
+   "features": 902,
+   "bytes": 395295,
+   "kb": 386.0,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -805,9 +805,9 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 854,
-   "bytes": 187951,
-   "kb": 183.5,
+   "features": 859,
+   "bytes": 188700,
+   "kb": 184.3,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -2784,8 +2784,8 @@
    "edad_dias": null,
    "caducado": false
   },
-  "vias-verdes-ign": {
-   "id": "vias-verdes-ign",
+  "vias-verdes": {
+   "id": "vias-verdes",
    "titulo": "Vías verdes",
    "organismo": "IGN",
    "oficial": true,
@@ -2799,8 +2799,8 @@
    },
    "endpoint": "https://signa.ign.es/",
    "modo": "foto",
-   "frecuencia_fuente": "mensual o inferior",
-   "ttl_segundos": 2592000,
+   "frecuencia_fuente": "anual",
+   "ttl_segundos": 31536000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 142,

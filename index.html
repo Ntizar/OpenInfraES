@@ -601,6 +601,27 @@
     border:1px solid var(--borde-fuerte); border-radius:6px; font-size:18px; cursor:pointer;
     box-shadow:0 6px 22px rgba(0,0,0,.5); }
 
+  /* mapa vacío: la vista por defecto arranca sin capas encendidas (antes eran 8 y el mapa
+     salía saturado). Aquí se dice qué hacer en vez de dejar un mapa mudo. */
+  #vacio { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); z-index:840;
+    display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center;
+    padding:18px 22px; background:rgba(12,18,30,.93); border:1px solid var(--borde);
+    border-radius:10px; box-shadow:0 10px 34px rgba(0,0,0,.45); max-width:min(330px,86vw); }
+  #vacio[hidden] { display:none; }
+  #vacio b { font-size:14px; color:var(--tinta); font-weight:600; }
+  #vacio span { font-size:11.5px; color:var(--suave); line-height:1.45; }
+  #vacio button { margin-top:6px; padding:8px 14px; font:inherit; font-size:11.5px;
+    color:var(--tinta); background:transparent; border:1px solid var(--borde-fuerte);
+    border-radius:6px; cursor:pointer; }
+  #vacio button:hover, #vacio button:focus-visible { border-color:var(--cian); color:var(--cian); }
+
+  /* burbujas de agrupación: el número dentro; sin él, cientos de círculos parecen una trama */
+  .burbuja { background:none; border:0; }
+  .burbuja span { display:flex; align-items:center; justify-content:center; width:100%; height:100%;
+    background:rgba(12,18,30,.82); border:1.5px solid currentColor; border-radius:50%;
+    font-weight:600; line-height:1; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+  .burbuja.tenue { opacity:.45; }
+
   @media (max-width: 820px) {
     html, body { overflow:hidden; }
     /* el ☰ vivía en la esquina del +/− de Leaflet y lo tapaba (el «−» asomaba como una raya
@@ -623,13 +644,23 @@
     #acciones button b { font-size:16px; }
     #capas { padding:8px 4px 8px 10px; }
 
-    /* KPIs: cuatro, en dos columnas. Ninguno se oculta: ahora son cuatro y los cuatro se pinchan. */
-    #kpis { top:58px; left:8px; right:8px; display:grid; grid-template-columns:1fr 1fr; gap:5px; }
-    #kpis .kpi { padding:5px 7px; gap:7px; }
-    #kpis .kpi b { font-size:12.6px; }
-    #kpis .kpi span { font-size:8.2px; white-space:normal; overflow:visible; text-overflow:clip;
-      line-height:1.3; }
+    /* KPIs: antes 2x2, que se comía 110 px de mapa y partía las etiquetas en dos líneas.
+       Ahora una tira que se desliza en horizontal: mismo dato, mitad de alto. */
+    #kpis { top:58px; left:8px; right:8px; display:flex; flex-wrap:nowrap; gap:6px;
+      overflow-x:auto; overflow-y:hidden; scroll-snap-type:x proximity;
+      -webkit-overflow-scrolling:touch; padding-bottom:2px; scrollbar-width:none; }
+    #kpis::-webkit-scrollbar { display:none; }
+    #kpis .kpi { flex:0 0 auto; width:min(46vw,170px); scroll-snap-align:start;
+      padding:6px 9px; gap:6px; }
+    #kpis .kpi i { font-size:13px; }
+    #kpis .kpi b { font-size:13.5px; }
+    #kpis .kpi span { font-size:8.6px; white-space:nowrap; overflow:hidden;
+      text-overflow:ellipsis; line-height:1.35; }
     #kpis .kpi em { display:none; }
+    /* el zoom de Leaflet, debajo de la tira y con dedo: 40 px de lado */
+    .leaflet-top.leaflet-left { top:112px; }
+    .leaflet-touch .leaflet-bar a, .leaflet-bar a { width:40px; height:40px;
+      line-height:40px; font-size:20px; }
 
     /* paneles: a todo el ancho, por encima del pie */
     #panel-dato { top:auto !important; left:8px !important; right:8px !important;
@@ -647,6 +678,8 @@
     #estado .sep { display:none; }
 
     .leaflet-control-scale { margin-bottom:40px !important; margin-right:8px !important; }
+    /* la leyenda manda: con ella abierta, la escala se quita para no pisarla */
+    body:has(#leyenda:not([hidden])) .leaflet-control-scale { display:none; }
     .leaflet-control-attribution { font-size:8.5px !important; }
 
     /* modales: ocupan la pantalla, una sola columna */
@@ -664,15 +697,25 @@
   }
 
   @media (max-width: 420px) {
-    #kpis .kpi span { font-size:7.6px; }
+    #kpis .kpi span { font-size:8px; }
     #estado .der { display:none; }
     #panel-dato { max-height:42vh; }
-    #leyenda { display:none; }   /* en pantallas muy pequeñas estorba más que ayuda */
+    /* la leyenda sí se queda: es lo único que explica los colores. Compacta, no oculta. */
+    #leyenda { display:block; max-height:24vh; font-size:10px; }
+    #vacio { top:44%; padding:14px 16px; }
+    #vacio b { font-size:13px; }
+    #vacio span { font-size:10.5px; }
   }
 </style>
 </head>
 <body>
 <div id="mapa"></div>
+
+<div id="vacio" hidden>
+  <b>Mapa vacío, a propósito</b>
+  <span id="vacio-sub">Elige qué quieres ver</span>
+  <button id="vacio-abrir">Abrir capas</button>
+</div>
 
 <button id="btn-hud" aria-label="Capas y controles" title="Capas y controles">☰</button>
 <div id="hud">
@@ -1315,10 +1358,10 @@ function pintarAvisos() {
 
 /* ---------------- capas ---------------- */
 const CAPAS = [
-  { id:"l400", grupo:"Red eléctrica", label:"Líneas 400 kV", tipo:"linea", on:true, color:"#ff2d55",
+  { id:"l400", grupo:"Red eléctrica", label:"Líneas 400 kV", tipo:"linea", on:false, color:"#ff2d55",
     fichero:"datos/simplificado/lineas_hv.geojson", peso:2.8, opacidad:.96,
     filtro:f => f.properties.voltage === 400000 },
-  { id:"l220", grupo:"Red eléctrica", label:"Líneas 220 kV", tipo:"linea", on:true, color:"#3b82f6",
+  { id:"l220", grupo:"Red eléctrica", label:"Líneas 220 kV", tipo:"linea", on:false, color:"#3b82f6",
     fichero:"datos/simplificado/lineas_hv.geojson", peso:1.6, opacidad:.85, zoomMin:6.2,
     filtro:f => f.properties.voltage === 220000 },
   { id:"subestaciones", grupo:"Red eléctrica", label:"Subestaciones", tipo:"poligono", on:false, color:"#14e0c8",
@@ -1333,7 +1376,7 @@ const CAPAS = [
     radioPorMagnitud:true, escala:{ campo:"installed_capacity_mw", min:0.5, max:2000, unidad:"MW", log:true },
     campos:["name","technology_normalized","installed_capacity_mw","owner","province",
             "municipality","autonomous_region","status"] },
-  { id:"hidro", grupo:"Generación", label:"Hidráulicas", tipo:"punto", on:true, color:"#22d3ee",
+  { id:"hidro", grupo:"Generación", label:"Hidráulicas", tipo:"punto", on:false, color:"#22d3ee",
     fichero:"datos/plantas.geojson", magnitud:"installed_capacity_mw", radioMin:2.6, radioMax:9, opacidad:.62,
     filtro:f => ["hydro","pumped_hydro"].includes(f.properties.technology_normalized) },
   { id:"eolicos", grupo:"Generación", label:"Parques eólicos", tipo:"poligono", on:false,
@@ -1345,7 +1388,7 @@ const CAPAS = [
   { id:"residuos", grupo:"Generación", label:"Residuos radiactivos", tipo:"punto", on:false,
     color:"#f472b6", fichero:"datos/simplificado/residuos-radiactivos.geojson", radio:6,
     siempreIndividual:true, popupTitulo:"nombre" },
-  { id:"nuclear", grupo:"Generación", label:"Nucleares", tipo:"punto", on:true, color:"#c084fc",
+  { id:"nuclear", grupo:"Generación", label:"Nucleares", tipo:"punto", on:false, color:"#c084fc",
     fichero:"datos/oficial/nuclear.geojson", radio:9, siempreIndividual:true,
     // tamaño Y color = potencia del reactor: el mapa informa sin abrir la ficha
     escala:{ campo:"potencia_mw", min:400, max:1100, unidad:"MW" },
@@ -1357,7 +1400,7 @@ const CAPAS = [
     fichero:"datos/plantas.geojson", magnitud:"installed_capacity_mw",
     filtro:f => !["hydro","pumped_hydro","ccgt","fuel_gas"].includes(f.properties.technology_normalized) },
 
-  { id:"gasoductos", grupo:"Gas", label:"Gasoductos", tipo:"linea", on:true, color:"#fbbf24",
+  { id:"gasoductos", grupo:"Gas", label:"Gasoductos", tipo:"linea", on:false, color:"#fbbf24",
     fichero:"datos/simplificado/gasoductos.geojson", peso:1.7, opacidad:.85 },
   { id:"petrolifero", grupo:"Gas", label:"Almacenamiento petrolífero", tipo:"punto", on:false,
     color:"#94a3b8", fichero:"datos/simplificado/almacenamiento-petrolifero.geojson", radio:5,
@@ -1365,14 +1408,14 @@ const CAPAS = [
   { id:"h2red", grupo:"Gas", label:"Red de hidrógeno", tipo:"linea", on:false,
     color:"#a78bfa", fichero:"datos/simplificado/hidrogeno-red.geojson", peso:2.4,
     popupTitulo:"nombre" },
-  { id:"regas", grupo:"Gas", label:"Regasificadoras", tipo:"punto", on:true, color:"#fb923c",
+  { id:"regas", grupo:"Gas", label:"Regasificadoras", tipo:"punto", on:false, color:"#fb923c",
     fichero:"datos/oficial/gas-regasificacion.geojson", radio:7, siempreIndividual:true },
   { id:"gasalm", grupo:"Gas", label:"Almacenamiento", tipo:"punto", on:false, color:"#d97706",
     fichero:"datos/oficial/gas-almacenamiento.geojson", radio:6 },
   { id:"refinerias", grupo:"Gas", label:"Refinerías", tipo:"punto", on:false, color:"#94a3b8",
     fichero:"datos/oficial/refinerias.geojson", radio:6 },
 
-  { id:"embalses", grupo:"Agua", label:"Embalses", tipo:"punto", on:true, color:"#60a5fa",
+  { id:"embalses", grupo:"Agua", label:"Embalses", tipo:"punto", on:false, color:"#60a5fa",
     fichero:"datos/simplificado/agua-embalsada.geojson", radio:2.4, opacidad:.45,
     // capacidad → tamaño y color (log: hay embalses de 1 hm³ y de 3.000)
     escala:{ campo:"capacidad_hm3", min:1, max:3000, unidad:"hm³", log:true },
@@ -1380,7 +1423,7 @@ const CAPAS = [
   { id:"demarcaciones", grupo:"Agua", colorCampo:"color", label:"Demarcaciones hidrográficas", tipo:"poligono", on:false,
     color:"#0ea5e9", fichero:"datos/demarcaciones.geojson", opacidad:.10, peso:1.2, zoomMin:0,
     popupTitulo:"nom_demar", etiqueta:"nom_demar" },
-  { id:"desaladoras", grupo:"Agua", label:"Desaladoras", tipo:"punto", on:true, color:"#2dd4bf",
+  { id:"desaladoras", grupo:"Agua", label:"Desaladoras", tipo:"punto", on:false, color:"#2dd4bf",
     fichero:"datos/oficial/desaladoras.geojson", radio:6, siempreIndividual:true,
     escala:{ campo:"capacidad_hm3_anio", min:10, max:300, unidad:"hm³/año" },
     radioPorMagnitud:true, radioMin:4, radioMax:11, colorPorEscala:true },
@@ -1556,14 +1599,14 @@ const CAPAS = [
     popupTitulo:"nombre", colorCampo:"color", etiquetaCampo:"tipo",
     campos:["nombre","tipo","uso","iata","icao","gestion"] },
   { id:"patrimonio-ign", grupo:"Patrimonio", label:"Patrimonio cultural (IGN)", tipo:"punto", on:false,
-    color:"#f59e0b", fichero:"datos/patrimonio_ign.geojson", radio:4, zoomMin:7,
+    color:"#f59e0b", fichero:"datos/patrimonio_ign.geojson", radio:4, zoomMin:7, zoomDetalle:9,
     popupTitulo:"nombre", colorCampo:"color", etiquetaCampo:"categoria",
     campos:["nombre","categoria","tambien","municipio","provincia"] },
   { id:"hospitales-ign", grupo:"Población", label:"Hospitales (IGN)", tipo:"punto", on:false,
     color:"#ef4444", fichero:"datos/hospitales_ign.geojson", radio:3.4, zoomMin:7,
     popupTitulo:"nombre", leyendaSimple:true },
   { id:"cimas-ign", grupo:"Relieve", label:"Cimas y puntos acotados (IGN)", tipo:"punto", on:false,
-    color:"#fbbf24", fichero:"datos/cimas_ign.geojson", zoomMin:9, radio:2.2, opacidad:.55,
+    color:"#fbbf24", fichero:"datos/cimas_ign.geojson", zoomMin:9, zoomDetalle:10, radio:2.2, opacidad:.55,
     popupTitulo:"nombre", leyendaSimple:true,
     escala:{ campo:"cota_m", min:200, max:3400, unidad:"m" },
     campos:["nombre","cota_m","clase","puerto","municipio","provincia"] },
@@ -3152,7 +3195,11 @@ function celda(z) {
 }
 
 function pasoPuntos(c, z) {
-  return c.siempreIndividual || z >= (c.zoomDetalle || ZOOM_DETALLE) ? null : celda(z);
+  if (c.siempreIndividual || z >= (c.zoomDetalle || ZOOM_DETALLE)) return null;
+  /* En pantalla de móvil caben tres veces menos celdas: con el paso de escritorio, 20.000 puntos
+     se convierten en una alfombra de burbujas que tapa el mapa. */
+  const densa = (datos[c.id]?.length || 0) > 10000 ? 1.5 : 1;
+  return celda(z) * densa * (innerWidth < 640 ? 1.8 : 1);
 }
 
 // En capas pequeñas basta con compensar el radio en el SVG. Las densas
@@ -3246,19 +3293,37 @@ function pintarPuntos(c) {
       return;
     }
     const p = f.properties || {};
-    const m = L.circleMarker([lat, lng], {
-      renderer: c.__renderer,
-      radius: n === 1 ? radioDe(c, p) : Math.min(19, 6 + 3.1 * Math.log2(n + 1)),
-      fillColor: n === 1 ? colorDe(c, p) : c.color,
-      fillOpacity: n === 1 ? (c.opacidad || .78) : .3,
-      color: n === 1 ? "#fff" : c.color, weight: n === 1 ? 1 : 1.6, opacity: n === 1 ? .45 : .95
-    });
-    m.on("click", e => {
-      if (n === 1) abrirFicha(p, c, e.latlng);
-      else {
+    if (n > 1) {
+      /* Burbuja con el número dentro: sin cifra, 416 círculos naranjas parecen una trama y el
+         mapa deja de leerse. Con cifra se entiende de un vistazo que ahí hay 48 cosas. */
+      /* el tamano tambien dice cuanto hay: 11 y 435 no pueden pesar igual */
+      const radio = Math.min(18, 5 + 1.35 * Math.log2(n + 1));
+      const lado = Math.round(radio * 2);
+      const icono = L.divIcon({
+        className: "burbuja",
+        iconSize: [lado, lado], iconAnchor: [lado / 2, lado / 2],
+        html: `<span style="border-color:${c.color};color:${c.color};font-size:${Math.max(8, Math.round(lado * 0.34))}px">${n}</span>`
+      });
+      const m = L.marker([lat, lng], { icon: icono, keyboard: false, pane: c.__panel });
+      m.on("click", e => {
         POPUP.setLatLng(e.latlng).setContent(fichaGrupo(items, c)).openOn(mapa);
         engancharGrupo();
-      }
+        L.DomEvent.stopPropagation(e);
+      });
+      m.addTo(capas[c.id]);
+      if (c.__tenue) m.getElement()?.classList.add("tenue");
+      marcas.set(clave, m);
+      return;
+    }
+    const m = L.circleMarker([lat, lng], {
+      renderer: c.__renderer,
+      radius: radioDe(c, p),
+      fillColor: colorDe(c, p),
+      fillOpacity: (c.opacidad || .78),
+      color: "#fff", weight: 1, opacity: .45
+    });
+    m.on("click", e => {
+      abrirFicha(p, c, e.latlng);
       L.DomEvent.stopPropagation(e);
     });
     m.addTo(capas[c.id]);
@@ -3523,10 +3588,20 @@ mapa.on("moveend", () => {
 });
 
 /* ---------------- estado ---------------- */
+/* el aviso de mapa vacío abre el cajón de capas: el botón que necesita el que llega */
+$("#vacio-abrir")?.addEventListener("click", () => plegarHud(true));
+
 function estado() {
   $("#s-zoom").textContent = mapa.getZoom().toFixed(2).replace(/\.00$/, "");
   const activas = CAPAS.filter(c => document.querySelector(`[data-capa="${c.id}"]`)?.checked);
   $("#s-capas").textContent = activas.length + "/" + CAPAS.length;
+  /* mapa vacío: el aviso solo existe mientras no hay ninguna capa encendida. */
+  const vacio = $("#vacio");
+  if (vacio) {
+    vacio.hidden = activas.length > 0;
+    const sub = $("#vacio-sub");
+    if (sub) sub.textContent = CAPAS.length + " capas disponibles. Elige una y el mapa se llena.";
+  }
   let n = 0; activas.forEach(c => n += conteo[c.id] || 0);
   $("#s-peso").textContent = nf(n) + " objetos";
   $("#sub-hud").textContent = (BASES[sel.value] ? BASES[sel.value][0] : "") + " · " + nf(n) + " objetos";
@@ -4189,6 +4264,11 @@ document.getElementById("salud-cuerpo").addEventListener("click", e => {
   if (chk && !chk.checked) chk.click();
   document.getElementById("velo-salud").hidden = true;
 });
+
+/* arranque: el estado (y con él el aviso de mapa vacío) se pinta cuando ya está todo montado.
+   Antes se refrescaba a media inicialización, así que la primera foto del visor mentía. */
+setTimeout(estado, 200);
+
 </script>
 </body>
 </html>

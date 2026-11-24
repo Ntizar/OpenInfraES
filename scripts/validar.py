@@ -403,6 +403,40 @@ def main():
     if r.returncode != 0:
         error("las cifras de la prosa no cuadran (ejecuta scripts/cifras.py)")
 
+    # 7. contrato de capas: es lo que permite seguir metiendo capas sin romper el visor.
+    #    Cada capa que el visor pinta tiene que tener su GeoJSON y procedencia declarada
+    #    (recibo junto al fichero, recibo de carpeta o entrada en datos/fuentes.json).
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import cifras as _cifras
+    capas = _cifras.leer_array_capas(open(os.path.join(RAIZ, "index.html"), encoding="utf-8").read())
+    fuentes = json.load(open(os.path.join(DATOS, "fuentes.json"), encoding="utf-8")).get("capas", {})
+    ids = [c["id"] for c in capas]
+    repes = sorted({i for i in ids if ids.count(i) > 1})
+    if repes:
+        error("capas repetidas en CAPAS: %s" % ", ".join(repes))
+    sin_fich, sin_fuente, sin_ttl = [], [], []
+    for c in capas:
+        if c.get("on"):
+            error("la capa %s arranca encendida: el visor abre vacio" % c["id"])
+        ruta = os.path.join(RAIZ, c.get("fichero") or "")
+        if not c.get("fichero") or not os.path.exists(ruta):
+            sin_fich.append(c["id"])
+            continue
+        rec = ruta[: -len(".geojson")] + "_recibo.json"
+        carpeta = os.path.dirname(ruta)
+        recibos = [x for x in os.listdir(carpeta) if x.startswith("_recibo")]
+        if not os.path.exists(rec) and not recibos and c["id"] not in fuentes:
+            sin_fuente.append(c["id"])
+        if c["id"] not in fuentes:
+            sin_ttl.append(c["id"])
+    if sin_fich:
+        error("%d capas sin fichero: %s" % (len(sin_fich), ", ".join(sin_fich[:10])))
+    if sin_fuente:
+        error("%d capas sin procedencia: %s" % (len(sin_fuente), ", ".join(sin_fuente[:10])))
+    print("  Contrato capas ....... %d capas · %d grupos · %d sin fichero · %d sin procedencia · %d sin ficha de fuente"
+          % (len(capas), len({c["grupo"] for c in capas}), len(sin_fich), len(sin_fuente),
+             len(sin_ttl)))
+
     print("=" * 58)
     print(" OPENINFRAES · VALIDADOR")
     print("=" * 58)

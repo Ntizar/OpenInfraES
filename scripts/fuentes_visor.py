@@ -579,13 +579,18 @@ def main():
     # `depuradoras_ign` es insumo de `edar_unificar.py`, no una capa: si se listara, el catálogo
     # contaría dos veces las mismas plantas.
     INTERMEDIOS = {"depuradoras_ign", "edar", "irewater_hib_edar"}
+    # El nombre del fichero no siempre da el id de la capa (`vias_verdes_ign` -> `vias-verdes`).
+    # Se declara aquí y no se adivina: si no, la capa sale como «SIN DECLARAR» en Salud.
+    ALIAS_FICHERO = {"vias_verdes_ign": "vias-verdes",
+             "caminos_santiago_ign": "caminos-santiago",
+             "aviacion_ligera_ign": "aviacion-ligera"}
     for fich in sorted(os.listdir(DATOS)):
         if not fich.endswith("_recibo.json"):
             continue
         base = fich[: -len("_recibo.json")]
         if base in INTERMEDIOS:
             continue
-        capa = base.replace("_", "-")
+        capa = ALIAS_FICHERO.get(base, base.replace("_", "-"))
         if capa in fuentes:
             continue
         r = leer(fich, {})

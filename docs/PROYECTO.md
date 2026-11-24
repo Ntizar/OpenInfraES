@@ -20,7 +20,9 @@ El despliegue no depende de nada más: son ficheros estáticos y los datos van a
 
 ## Qué contiene
 
-**53 capas en 9 grupos.** Con las capas de por defecto, 8 capas y 444 objetos cargados al abrir.
+**77 capas en 14 grupos.** El visor abre **vacío**: no descarga nada hasta que enciendes una capa.
+La tabla completa, generada desde el propio array `CAPAS`, está en el
+[README](../README.md#capas-del-visor).
 
 ### Red eléctrica
 | Capa | Registros | Fuente | Licencia |
@@ -38,13 +40,19 @@ instalada por planta.
 Gasoductos (678 tramos), regasificadoras (7), almacenamiento subterráneo (5), refinerías (10).
 
 ### Agua
-Embalses (402, con capacidad y agua embalsada del parte semanal), desaladoras (28), **EDAR (3.034)**,
-**ETAP (1.551)**, **trasvases (11 trazos)**, canales y acequias (10.777), **ríos (260 con caudal en
-vivo)**.
+Embalses (402, con capacidad y agua embalsada del parte semanal), desaladoras (28), **EDAR (4.784,
+fusionadas de OSM, I-ReWater e IGN: una planta por sitio, con capacidad y caudal)**, ETAP (1.551),
+**trasvases (11 trazos)**, canales y acequias (10.777), **ríos (260 con caudal en vivo)**.
 
 ### Transporte
 Carreteras del Estado (1.602), puertos (45), terminales portuarias (440), terminales de aeropuerto
-(102), terminales de mercancías (383), estaciones con GNL/GNC/H₂ (165).
+(102), terminales de mercancías (383), estaciones con GNL/GNC/H₂ (165). Del IGN: **vías verdes
+(142)**, **caminos de Santiago (756)**, **transporte por cable (310)**, **ferris (58)** y
+**aeródromos y helipuertos (1.748)**.
+
+### Patrimonio y relieve
+Patrimonio cultural (**20.116**, fusión a 60 m con prioridad BIC > castillo > parador > museo),
+cimas y puntos acotados (**14.793**), alineaciones montañosas (**4.946**) y hospitales (**884**).
 
 ### Riesgo
 | Capa | Qué da | Fuente |

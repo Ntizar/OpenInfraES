@@ -111,7 +111,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **Agua** | 14 | 17.330 |
 | **Demografía** | 5 | 8.199 |
 | **Transporte** | 20 | 33.502 |
-| **DGT · Tráfico** | 4 | 15.859 |
+| **DGT · Tráfico** | 4 | 15.882 |
 | **Tiempo real** | 3 | 12.040 |
 | **Riesgo** | 3 | 136 |
 | **Medio ambiente** | 4 | 15.503 |
@@ -119,17 +119,26 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **Población** | 1 | 884 |
 | **Relieve** | 2 | 19.739 |
 | **Clima** | 2 | 104 |
-| **Total** | **77** | **158.378** |
+| **Total** | **77** | **158.401** |
 <!-- CIFRAS-GRUPOS:FIN -->
 
 Los objetos se cuentan de los ficheros que usa cada grupo **sin contar dos veces el mismo fichero**
 (400 y 220 kV son dos capas del mismo GeoJSON, y cuatro capas de generación leen `plantas.geojson`).
 **No coinciden con lo que se ve en pantalla**: una capa apagada no ha descargado nada. El catálogo
-completo —74 entradas, incluidas las que todavía no son capa— va en `datos/fuentes.json`.
+completo —102 entradas, incluidas las que todavía no son capa— va en `datos/fuentes.json`.
 
 Los grupos se encienden de un golpe con las **vistas temáticas** de arriba: **Todo · Eléctrico · Gas ·
 Agua · Transporte · DGT · En vivo · Riesgo**. Al elegir una vista se encienden sus capas **y el panel
 se filtra**: solo ves el grupo que toca, con un botón «Ver todas» para volver.
+
+**El visor arranca vacío a propósito.** Antes abría con ocho capas encendidas y el mapa salía
+saturado: líneas, puntos y etiquetas compitiendo. Ahora la primera pantalla es el mapa limpio con un
+aviso que dice cuántas capas hay y un botón para abrir el cajón. Cuesta un clic y se entiende qué se
+está viendo; con el mapa lleno, nada.
+
+**En móvil** (≤ 820 px) el cajón es un panel sólido a pantalla completa, las cifras van en una tira
+horizontal que se desliza —en dos columnas se comían la mitad del mapa—, el zoom tiene botones de
+40 px y la leyenda se queda, compacta, porque es lo único que explica los colores.
 
 ### El mapa como índice de datos
 
@@ -209,6 +218,44 @@ origen oficial y fecha de verificación:
 
 Cada una lleva su fecha en `datos/oficial/_recibo_oficial.json`. El detalle está en
 [`docs/FUENTES.md`](docs/FUENTES.md).
+
+## Patrimonio, relieve y transporte del IGN (SignA)
+
+El IGN publica por servicios REST (`serviciosgis.ign.es`, sin clave) capas que no están en ningún
+otro sitio. Entran por `scripts/ign_patrimonio.py` y `scripts/ign_transporte.py`, los lunes.
+
+| Capa | Objetos | Qué aporta |
+|---|---:|---|
+| Patrimonio cultural | **20.116** | castillos, BIC, paradores, museos, miradores, faros, refugios, patrimonio de la Humanidad |
+| Cimas y puntos acotados | **14.793** | cota, clase, municipio y si son puerto de carretera |
+| Alineaciones montañosas | **4.946** | sierras y sistemas, con su jerarquía |
+| Hospitales | **884** | red hospitalaria con dependencia y camas cuando consta |
+| Vías verdes | **142** | firme, recorrido y longitud |
+| Caminos de Santiago | **756** | tramos con agrupación y longitud |
+| Transporte por cable | **310** | 17 teleféricos, 163 telesillas, 130 telesquís |
+| Líneas de ferri | **58** | travesías |
+| Aeródromos y helipuertos | **1.748** | 298 aeródromos y 1.450 helipuertos, con uso e IATA/ICAO |
+
+**La regla que manda: una chincheta por sitio.** Fusionar cuesta trabajo; duplicar cuesta credibilidad.
+
+- **Patrimonio**: si dos figuras caen a menos de **60 m**, se queda una y la otra pasa a ser un
+  atributo. Prioridad estricta: BIC > Castillo > Parador > Museo > Mirador > Zona arqueológica >
+  Refugio > Conjunto histórico > Patrimonio de la Humanidad > Faro.
+- **Depuradoras**: estaban **tres veces** (OSM, I-ReWater y el IGN), cada una con media verdad. Se
+  cruzan a **150 m** y queda una planta con todo: municipio y provincia del IGN, capacidad, caudal de
+  entrada e índice de impacto de I-ReWater, nombre local de OSM. **8.708 filas → 4.784 plantas
+  únicas**, 2.083 con capacidad y caudal.
+- **Fuera a propósito**: los 588 puertos y las 3.603 estaciones de ferrocarril del IGN, porque se
+  pisan con las capas de Puertos del Estado y Cercanías. Dos capas del mismo puerto no son más
+  datos: son menos.
+
+## Cómo se añade una capa (sin romper nada)
+
+Regla de oro: **fusionar antes que duplicar** y **declarar antes de publicar**. El procedimiento
+completo —siete pasos, trampas de cada fuente y la tabla de errores que ya han costado una tarde—
+está en [`GUIA.md`](GUIA.md#cómo-añadir-una-capa). En corto: script con recibo, fusión por proximidad
+si la entidad ya existe, geometría simplificada, entrada en `CAPAS` con `on:false`, TTL en el catálogo,
+cron con intérprete absoluto y `validar.py` en verde antes del push.
 
 ## La foto completa de OSM (16-11-2026)
 
@@ -354,12 +401,13 @@ hay que atribuir a OpenStreetMap y compartir igual. El **código** (visor, scrip
 
 ## Estado
 
-**Actualizado el 19-11-2026.**
+**Actualizado el 24-11-2026.**
 
 | | |
 |---|---|
-| Capas en el visor | **77** |
+| Capas en el visor | **77** en **14 grupos** |
 | Capas documentadas en `fuentes.json` | **102** |
+| Fusión geoespacial | **4.784 EDAR** únicas desde 8.708 filas de tres fuentes |
 | Organismos citados | **19** — MITECO, MITMA, IGN, REE, DGT, AEMET, CSN, CORES, Enagás, ENRESA, INE, Renfe, Adif, EMSC-CSEM, I-ReWater HUB, OpenStreetMap |
 | Fuentes sin clave | MITECO, IGN, MITMA, Enagás, CORES, CSN, ENRESA, Renfe, Adif, DGT, AEMET, INE, OMIE, ESIOS (19 indicadores) |
 | Fuentes con clave | NAP de transportes (`ApiKey`), ENTSO-E (token), ESIOS (indicadores cerrados) |
@@ -377,7 +425,9 @@ hay que atribuir a OpenStreetMap y compartir igual. El **código** (visor, scrip
 - El NAP de transportes **cataloga** los 86 feeds GTFS-RT pero **no los sirve** (`docs/gtfsrt.md`).
 - REE **no publica generación por unidad** en ENTSO-E: el endpoint existe y responde «no matching data».
 - Los avisos de Meteoalarm no traen geometría; los de AEMET, sí (`docs/aemet.md`).
-- No existe capa oficial abierta de trasvases ni de EDAR/ETAP: se cubren con OSM y se dice.
+- No existe capa oficial abierta de trasvases: se cubre con OSM y se declara el tramo que falta.
+- Las EDAR no las publica nadie completas: se fusionan de OSM, I-ReWater e IGN y cada ficha dice de
+  qué fuente viene cada campo.
 
 ## Para qué se hizo
 
