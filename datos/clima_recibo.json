@@ -3,15 +3,15 @@
  "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
  "url": "https://open-meteo.com/",
  "licencia": "CC BY 4.0",
- "descargado": "2026-11-24T22:12:07Z",
- "actualizado": "2026-11-24T23:00",
+ "descargado": "2026-11-24T22:36:44Z",
+ "actualizado": "2026-11-24T23:30",
  "features": 52,
  "barbas": 242,
  "provincias": 52,
- "temperatura_media": 9.4,
+ "temperatura_media": 9.3,
  "mas_caliente": {
   "provincia": "Las Palmas",
-  "temperatura": 19.2
+  "temperatura": 19.0
  },
  "mas_frio": {
   "provincia": "León",
