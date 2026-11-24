@@ -746,8 +746,9 @@
     <li><b>Energía</b> — red de 400 y 220 kV, 657 recintos de subestación, 7 reactores nucleares,
     678 gasoductos, 7 regasificadoras, 5 almacenamientos, 10 refinerías, eólica y fotovoltaica.</li>
     <li><b>Agua</b> — 402 embalses con capacidad y volumen del parte semanal, 28 desaladoras,
-    3.034 depuradoras, 1.551 potabilizadoras, 11 trazos de trasvase, 10.777 canales y 260 ríos con
-    caudal en vivo, dentro de sus <b>25 demarcaciones hidrográficas</b>.</li>
+    4.784 depuradoras fundidas de tres fuentes (2.083 con capacidad y caudal), 1.551 potabilizadoras,
+    11 trazos de trasvase, 10.777 canales y 260 ríos con caudal en vivo, dentro de sus
+    <b>25 demarcaciones hidrográficas</b>.</li>
     <li><b>Transporte</b> — 1.602 carreteras, 45 puertos, 440 terminales portuarias, 383 nodos de
     mercancías, 405 estaciones de Cercanías y 418 trenes en circulación.</li>
     <li><b>Sistema eléctrico</b> — demanda, mix de generación, emisiones, intercambios internacionales y
@@ -1400,14 +1401,11 @@ const CAPAS = [
   { id:"ine-provincias", grupo:"Demografía", label:"Población por provincia (INE)", tipo:"poligono", on:false,
     color:"#31a354", fichero:"datos/nuts3_es.geojson", zoomMin:6, opacidad:.62,
     peso:1.1, popupTitulo:"nombre", colorCampo:"color", corteVar:"provincias_poblacion" },
-  { id:"irewater-edar", grupo:"Agua", label:"EDAR · agua regenerable", tipo:"punto", on:false,
-    color:"#00897B", fichero:"datos/irewater_hib_edar.geojson", zoomMin:6,
-    popupTitulo:"municipio", radio:2.6,
-    campos:["codigo","municipio","pais","poblacion_servida","qentrada_he","capacidad",
-            "volumen_reutilizable_m3","superficie_pot_regable_ha","demanda_potencial_riego",
-            "indice_impacto_hidrologico"] },
-  { id:"edar", grupo:"Agua", label:"EDAR (depuradoras)", tipo:"punto", on:false, color:"#a3e635",
-    fichero:"datos/edar.geojson", radio:3, opacidad:.45 },
+  { id:"edar", grupo:"Agua", label:"EDAR · depuradoras (IGN + I-ReWater + OSM)", tipo:"punto", on:false,
+    color:"#a3e635", fichero:"datos/edar_unificado.geojson", radio:3.2, zoomMin:7, opacidad:.85,
+    popupTitulo:"nombre", leyendaSimple:true,
+    campos:["nombre","municipio","provincia","capacidad","caudal_entrada","impacto","codigo","fuentes"],
+    nota:"una planta, una chincheta: capacidad, caudal de entrada e impacto dentro" },
   { id:"etap", grupo:"Agua", label:"ETAP (potabilizadoras)", tipo:"punto", on:false, color:"#22d3ee",
     fichero:"datos/etap.geojson", radio:3.2, opacidad:.5 },
   { id:"trasvases", grupo:"Agua", label:"Trasvases", tipo:"linea", on:false, color:"#f472b6",
@@ -1542,9 +1540,6 @@ const CAPAS = [
     color:"#f59e0b", fichero:"datos/patrimonio_ign.geojson", radio:4, zoomMin:7,
     popupTitulo:"nombre", colorCampo:"color", etiquetaCampo:"categoria",
     campos:["nombre","categoria","tambien","municipio","provincia"] },
-  { id:"depuradoras-ign", grupo:"Agua", label:"Depuradoras (EDAR, IGN)", tipo:"punto", on:false,
-    color:"#0ea5e9", fichero:"datos/depuradoras_ign.geojson", radio:3, zoomMin:8,
-    popupTitulo:"nombre", leyendaSimple:true },
   { id:"hospitales-ign", grupo:"Población", label:"Hospitales (IGN)", tipo:"punto", on:false,
     color:"#ef4444", fichero:"datos/hospitales_ign.geojson", radio:3.4, zoomMin:7,
     popupTitulo:"nombre", leyendaSimple:true },

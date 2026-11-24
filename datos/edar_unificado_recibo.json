@@ -1,0 +1,12 @@
+{
+ "titulo": "EDAR · depuradoras unificadas",
+ "fuente": "IGN · I-ReWater · OSM",
+ "editor": "IGN, I-ReWater HUB (Interreg) y OpenStreetMap",
+ "licencia": "CC BY 4.0 + ODbL 1.0 (ver ficha por fuente)",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-24",
+ "metodo": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro",
+ "features": 4784,
+ "con_capacidad": 2083,
+ "kb": 1611.5
+}

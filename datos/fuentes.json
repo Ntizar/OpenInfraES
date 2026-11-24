@@ -304,15 +304,15 @@
   },
   "edar": {
    "capa": "edar",
-   "titulo": "EDAR (depuradoras)",
-   "fuente": "OpenStreetMap",
-   "editor": "colaboradores de OSM",
-   "licencia": "ODbL 1.0",
-   "actualizado": "2026-11-23",
-   "descargado": "2026-11-23",
-   "features": 3040,
-   "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (man_made=*) · 1648 con nombre"
+   "titulo": "EDAR · depuradoras unificadas",
+   "fuente": "IGN · I-ReWater · OSM",
+   "editor": "IGN, I-ReWater HUB (Interreg) y OpenStreetMap",
+   "licencia": "CC BY 4.0 + ODbL 1.0 (ver ficha por fuente)",
+   "actualizado": "2026-11-24",
+   "descargado": "2026-11-24",
+   "features": 4784,
+   "url": "https://signa.ign.es/",
+   "metodo": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro"
   },
   "etap": {
    "capa": "etap",
@@ -1082,17 +1082,17 @@
    "url": "https://open-meteo.com/",
    "metodo": "una llamada por lotes a /v1/forecast (current) y rejilla IDW vectorial propia"
   },
-  "depuradoras-ign": {
-   "capa": "depuradoras-ign",
-   "titulo": "Estaciones depuradoras de aguas residuales (IGN)",
-   "fuente": "IGN · SignA",
-   "editor": "Instituto Geográfico Nacional",
-   "licencia": "CC BY 4.0",
+  "edar-unificado": {
+   "capa": "edar-unificado",
+   "titulo": "EDAR · depuradoras unificadas",
+   "fuente": "IGN · I-ReWater · OSM",
+   "editor": "IGN, I-ReWater HUB (Interreg) y OpenStreetMap",
+   "licencia": "CC BY 4.0 + ODbL 1.0 (ver ficha por fuente)",
    "actualizado": "2026-11-24",
    "descargado": "2026-11-24",
-   "features": 3582,
+   "features": 4784,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 28 de 05_servicios_industria"
+   "metodo": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro"
   },
   "hospitales-ign": {
    "capa": "hospitales-ign",

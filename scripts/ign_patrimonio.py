@@ -194,6 +194,8 @@ def main():
             "fuente": "IGN · SignA",
             "metodo": "Capas 1, 6-13 y 26 de 03_construcciones_otros, fundidas por sitio a 60 m"}))
     if que in ("todo", "servicios"):
+        # Las depuradoras del IGN no van al visor por su cuenta: son la base de ubicación de
+        # `edar_unificar.py`, que las funde con I-ReWater y OSM en una sola capa.
         escribe("depuradoras_ign.geojson", simple("Signa/05_servicios_industria", 28,
                                                  "Depuradoras", "Depuradora"), dict(comun, **{
             "titulo": "Estaciones depuradoras de aguas residuales (IGN)",

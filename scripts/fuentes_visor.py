@@ -576,10 +576,15 @@ def main():
 
     # Estructuras de la RCE: túneles del MITMA y puentes de OSM. Cada fichero trae su propio recibo
     # (`*_recibo.json`) para que la ficha no dependa de una lista escrita a mano.
+    # `depuradoras_ign` es insumo de `edar_unificar.py`, no una capa: si se listara, el catálogo
+    # contaría dos veces las mismas plantas.
+    INTERMEDIOS = {"depuradoras_ign", "edar", "irewater_hib_edar"}
     for fich in sorted(os.listdir(DATOS)):
         if not fich.endswith("_recibo.json"):
             continue
         base = fich[: -len("_recibo.json")]
+        if base in INTERMEDIOS:
+            continue
         capa = base.replace("_", "-")
         if capa in fuentes:
             continue
@@ -593,6 +598,17 @@ def main():
             "actualizado": r.get("actualizado") or r.get("descargado"),
             "descargado": r.get("descargado"),
             "features": r.get("features"),
+            "url": r.get("url"), "metodo": r.get("metodo"),
+        }
+
+    # EDAR: una sola capa con las tres fuentes fundidas; su ficha manda sobre la de OSM a secas.
+    r = leer("edar_unificado_recibo.json", {})
+    if r.get("features") is not None:
+        fuentes["edar"] = {
+            "capa": "edar", "titulo": r.get("titulo") or "EDAR · depuradoras unificadas",
+            "fuente": r.get("fuente"), "editor": r.get("editor"),
+            "licencia": r.get("licencia"), "actualizado": r.get("descargado"),
+            "descargado": r.get("descargado"), "features": r.get("features"),
             "url": r.get("url"), "metodo": r.get("metodo"),
         }
 
