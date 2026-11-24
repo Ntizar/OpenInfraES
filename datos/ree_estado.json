@@ -1,96 +1,96 @@
 {
- "fecha": "2026-11-22",
+ "fecha": "2026-11-23",
  "fuente": "REE apidatos (público, sin clave)",
  "formato": "JSON:API — los valores van en included[]",
  "series": {
   "generacion": [
    {
     "titulo": "Hidráulica",
-    "valor": 68967.1,
+    "valor": 122492.7,
     "tipo": "Renovable",
     "color": "#0090d1"
    },
    {
     "titulo": "Nuclear",
-    "valor": 145733.1,
+    "valor": 145841.9,
     "tipo": "No-Renovable",
     "color": "#464394"
    },
    {
     "titulo": "Carbón",
-    "valor": -108.8,
+    "valor": 2547.2,
     "tipo": "No-Renovable",
     "color": "#993300"
    },
    {
     "titulo": "Motores diésel",
-    "valor": 5867.2,
+    "valor": 6460.8,
     "tipo": "No-Renovable",
     "color": "#8DA69F"
    },
    {
     "titulo": "Turbina de gas",
-    "valor": 649.7,
+    "valor": 1344.4,
     "tipo": "No-Renovable",
     "color": "#BA0F16"
    },
    {
     "titulo": "Turbina de vapor",
-    "valor": 9092.6,
+    "valor": 11157.9,
     "tipo": "No-Renovable",
     "color": "#AF8E00"
    },
    {
     "titulo": "Ciclo combinado",
-    "valor": 93292.3,
+    "valor": 142475.9,
     "tipo": "No-Renovable",
     "color": "#ffcc66"
    },
    {
     "titulo": "Eólica",
-    "valor": 295140.0,
+    "valor": 114776.1,
     "tipo": "Renovable",
     "color": "#6fb114"
    },
    {
     "titulo": "Solar fotovoltaica",
-    "valor": 107530.9,
+    "valor": 149084.3,
     "tipo": "Renovable",
     "color": "#e48500"
    },
    {
     "titulo": "Solar térmica",
-    "valor": 5256.9,
+    "valor": 5787.2,
     "tipo": "Renovable",
     "color": "#ff0000"
    },
    {
     "titulo": "Otras renovables",
-    "valor": 8170.4,
+    "valor": 11968.8,
     "tipo": "Renovable",
     "color": "#9a5cbc"
    },
    {
     "titulo": "Cogeneración",
-    "valor": 23788.0,
+    "valor": 37569.1,
     "tipo": "No-Renovable",
     "color": "#cfa2ca"
    },
    {
     "titulo": "Residuos no renovables",
-    "valor": 2406.4,
+    "valor": 2433.1,
     "tipo": "No-Renovable",
     "color": "#666666"
    },
    {
     "titulo": "Residuos renovables",
-    "valor": 1559.8,
+    "valor": 1504.6,
     "tipo": "Renovable",
     "color": "#a0a0a0"
    },
    {
     "titulo": "Generación total",
-    "valor": 767345.7,
+    "valor": 755444.1,
     "tipo": "total",
     "color": "#2b2e34"
    }
@@ -98,7 +98,7 @@
   "demanda": [
    {
     "titulo": "Demanda",
-    "valor": 598090.4,
+    "valor": 713868.4,
     "tipo": null,
     "color": "#ffea00"
    }
@@ -106,8 +106,8 @@
   "balance": []
  },
  "urls": {
-  "generacion": "https://apidatos.ree.es/es/datos/generacion/estructura-generacion?start_date=2026-11-22T00:00&end_date=2026-11-22T23:59&time_trunc=day",
-  "demanda": "https://apidatos.ree.es/es/datos/demanda/evolucion?start_date=2026-11-22T00:00&end_date=2026-11-22T23:59&time_trunc=day",
-  "balance": "https://apidatos.ree.es/es/datos/balance/balance-electrico?start_date=2026-11-22T00:00&end_date=2026-11-22T23:59&time_trunc=day"
+  "generacion": "https://apidatos.ree.es/es/datos/generacion/estructura-generacion?start_date=2026-11-23T00:00&end_date=2026-11-23T23:59&time_trunc=day",
+  "demanda": "https://apidatos.ree.es/es/datos/demanda/evolucion?start_date=2026-11-23T00:00&end_date=2026-11-23T23:59&time_trunc=day",
+  "balance": "https://apidatos.ree.es/es/datos/balance/balance-electrico?start_date=2026-11-23T00:00&end_date=2026-11-23T23:59&time_trunc=day"
  }
 }
