@@ -6,11 +6,11 @@
  "licencia": "reutilización con atribución",
  "features": 854,
  "paneles_localizados": 2537,
- "descargado": "2026-11-24T22:36:40",
+ "descargado": "2026-11-24T22:41:30",
  "mensajes_top": [
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
-   "paneles": 146
+   "paneles": 145
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
@@ -33,12 +33,12 @@
    "paneles": 31
   },
   {
-   "texto": "MODERE LA VELOCIDAD",
-   "paneles": 30
-  },
-  {
    "texto": "PREVISION NEVADAS · INFORMESE Y PLANIFIQUE SU VIAJE",
    "paneles": 29
+  },
+  {
+   "texto": "MODERE LA VELOCIDAD",
+   "paneles": 27
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
