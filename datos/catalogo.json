@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-24T21:34:45",
+ "generado": "2026-11-24T21:36:49",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 95,
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 46,
-  "kb_total": 96122.2
+  "kb_total": 96119.5
  },
  "avisos": {
   "pendiente": [
@@ -107,7 +107,7 @@
    "bytes": 217832,
    "kb": 212.7,
    "fecha_dato": "20261124",
-   "fecha_descarga": "2026-11-24T21:34:16",
+   "fecha_descarga": "2026-11-24T21:36:45",
    "edad_dias": 0,
    "caducado": false
   },
@@ -431,7 +431,7 @@
    "bytes": null,
    "kb": null,
    "fecha_dato": "2026-11-24T22:30",
-   "fecha_descarga": "2026-11-24T21:34:45Z",
+   "fecha_descarga": "2026-11-24T21:36:49Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -455,10 +455,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76262,
+   "bytes": 76266,
    "kb": 74.5,
    "fecha_dato": "2026-11-24T22:30",
-   "fecha_descarga": "2026-11-24T21:34:45Z",
+   "fecha_descarga": "2026-11-24T21:36:49Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -482,10 +482,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76262,
+   "bytes": 76266,
    "kb": 74.5,
    "fecha_dato": "2026-11-24T22:30",
-   "fecha_descarga": "2026-11-24T21:34:45Z",
+   "fecha_descarga": "2026-11-24T21:36:49Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -509,10 +509,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 54337,
+   "bytes": 54345,
    "kb": 53.1,
    "fecha_dato": "2026-11-24T22:30",
-   "fecha_descarga": "2026-11-24T21:34:45Z",
+   "fecha_descarga": "2026-11-24T21:36:49Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -670,9 +670,9 @@
    "ttl_segundos": 300,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 925,
-   "bytes": 403040,
-   "kb": 393.6,
+   "features": 914,
+   "bytes": 399273,
+   "kb": 389.9,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -697,9 +697,9 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 805,
-   "bytes": 177446,
-   "kb": 173.3,
+   "features": 810,
+   "bytes": 178472,
+   "kb": 174.3,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,

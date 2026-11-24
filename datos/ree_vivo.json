@@ -1,39 +1,39 @@
 {
  "fecha": "2026-11-24",
- "actualizado": "2026-11-24T21:33:57",
+ "actualizado": "2026-11-24T21:36:27",
  "edad_min": 0,
- "hora_comun": "22:20",
+ "hora_comun": "22:25",
  "con_clave": true,
  "fuente": "REE · ESIOS (token)",
  "resolucion": "5 minutos",
  "estado": {
-  "demanda": 34121.0,
-  "demanda_gen": 34573.0,
-  "eolica": 16273.0,
-  "nuclear": 6098.0,
+  "demanda": 33677.0,
+  "demanda_gen": 34068.0,
+  "eolica": 16241.0,
+  "nuclear": 6100.0,
   "carbon": 235.0,
-  "ciclo": 6240.0,
-  "hidro": 4835.0,
-  "solar_fv": 64.0,
+  "ciclo": 5799.0,
+  "hidro": 5035.0,
+  "solar_fv": 65.0,
   "solar_ter": 1.0,
   "termica_renovable": 538.0,
-  "diesel": 283.0,
-  "turbina_gas": 40.0,
+  "diesel": 286.0,
+  "turbina_gas": 39.0,
   "turbina_vapor": 375.0,
   "auxiliar": 0.0,
-  "cogen_residuos": 2032.0,
-  "intercambios": -2869.0,
-  "co2": 0.09,
+  "cogen_residuos": 2034.0,
+  "intercambios": -3126.0,
+  "co2": 0.08,
   "exp_andorra": 0.0,
   "imp_andorra": 19.0,
-  "exp_marruecos": -782.0,
+  "exp_marruecos": -783.0,
   "imp_marruecos": 0.0,
-  "exp_portugal": -286.0,
+  "exp_portugal": -199.0,
   "imp_portugal": 0.0,
-  "exp_francia": -1780.0,
+  "exp_francia": -2123.0,
   "imp_francia": 0.0,
   "bombeo_cons": 0.0,
-  "bombeo_turb": 1037.0
+  "bombeo_turb": 1019.0
  },
  "series": {
   "demanda": {
@@ -41,8 +41,8 @@
    "grupo": "demanda",
    "id": 2037,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": 34121.0,
+   "hora": "22:25",
+   "valor": 33677.0,
    "edad_min": 0,
    "serie": [
     [
@@ -340,8 +340,8 @@
    "grupo": "demanda",
    "id": 10004,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": 34573.0,
+   "hora": "22:25",
+   "valor": 34068.0,
    "edad_min": 0,
    "serie": [
     [
@@ -639,8 +639,8 @@
    "grupo": "generacion",
    "id": 2038,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": 16273.0,
+   "hora": "22:25",
+   "valor": 16241.0,
    "edad_min": 0,
    "serie": [
     [
@@ -938,8 +938,8 @@
    "grupo": "generacion",
    "id": 2039,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": 6098.0,
+   "hora": "22:25",
+   "valor": 6100.0,
    "edad_min": 0,
    "serie": [
     [
@@ -1237,7 +1237,7 @@
    "grupo": "generacion",
    "id": 2040,
    "unidad": "MW",
-   "hora": "22:20",
+   "hora": "22:25",
    "valor": 235.0,
    "edad_min": 0,
    "serie": [
@@ -1536,8 +1536,8 @@
    "grupo": "generacion",
    "id": 2041,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": 6240.0,
+   "hora": "22:25",
+   "valor": 5799.0,
    "edad_min": 0,
    "serie": [
     [
@@ -1835,8 +1835,8 @@
    "grupo": "generacion",
    "id": 2042,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": 4835.0,
+   "hora": "22:25",
+   "valor": 5035.0,
    "edad_min": 0,
    "serie": [
     [
@@ -2134,8 +2134,8 @@
    "grupo": "generacion",
    "id": 2044,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": 64.0,
+   "hora": "22:25",
+   "valor": 65.0,
    "edad_min": 0,
    "serie": [
     [
@@ -2433,7 +2433,7 @@
    "grupo": "generacion",
    "id": 2045,
    "unidad": "MW",
-   "hora": "22:20",
+   "hora": "22:25",
    "valor": 1.0,
    "edad_min": 0,
    "serie": [
@@ -2732,7 +2732,7 @@
    "grupo": "generacion",
    "id": 2046,
    "unidad": "MW",
-   "hora": "22:20",
+   "hora": "22:25",
    "valor": 538.0,
    "edad_min": 0,
    "serie": [
@@ -3031,8 +3031,8 @@
    "grupo": "generacion",
    "id": 2047,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": 283.0,
+   "hora": "22:25",
+   "valor": 286.0,
    "edad_min": 0,
    "serie": [
     [
@@ -3330,8 +3330,8 @@
    "grupo": "generacion",
    "id": 2048,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": 40.0,
+   "hora": "22:25",
+   "valor": 39.0,
    "edad_min": 0,
    "serie": [
     [
@@ -3629,7 +3629,7 @@
    "grupo": "generacion",
    "id": 2049,
    "unidad": "MW",
-   "hora": "22:20",
+   "hora": "22:25",
    "valor": 375.0,
    "edad_min": 0,
    "serie": [
@@ -3928,7 +3928,7 @@
    "grupo": "generacion",
    "id": 2050,
    "unidad": "MW",
-   "hora": "22:20",
+   "hora": "22:25",
    "valor": 0.0,
    "edad_min": 0,
    "serie": [
@@ -4227,8 +4227,8 @@
    "grupo": "generacion",
    "id": 2051,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": 2032.0,
+   "hora": "22:25",
+   "valor": 2034.0,
    "edad_min": 0,
    "serie": [
     [
@@ -4526,8 +4526,8 @@
    "grupo": "intercambios",
    "id": 2043,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": -2869.0,
+   "hora": "22:25",
+   "valor": -3126.0,
    "edad_min": 0,
    "serie": [
     [
@@ -4825,14 +4825,10 @@
    "grupo": "emisiones",
    "id": 10355,
    "unidad": "tCO₂/MW",
-   "hora": "22:20",
-   "valor": 0.09,
+   "hora": "22:25",
+   "valor": 0.08,
    "edad_min": 0,
    "serie": [
-    [
-     "16:25",
-     0.07
-    ],
     [
      "16:30",
      0.07
@@ -5116,6 +5112,10 @@
     [
      "22:20",
      0.09
+    ],
+    [
+     "22:25",
+     0.08
     ]
    ]
   },
@@ -5124,7 +5124,7 @@
    "grupo": "intercambios",
    "id": 2068,
    "unidad": "MW",
-   "hora": "22:20",
+   "hora": "22:25",
    "valor": 0.0,
    "edad_min": 0,
    "serie": [
@@ -5423,7 +5423,7 @@
    "grupo": "intercambios",
    "id": 2073,
    "unidad": "MW",
-   "hora": "22:20",
+   "hora": "22:25",
    "valor": 19.0,
    "edad_min": 0,
    "serie": [
@@ -5722,8 +5722,8 @@
    "grupo": "intercambios",
    "id": 2069,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": -782.0,
+   "hora": "22:25",
+   "valor": -783.0,
    "edad_min": 0,
    "serie": [
     [
@@ -6021,7 +6021,7 @@
    "grupo": "intercambios",
    "id": 2074,
    "unidad": "MW",
-   "hora": "22:20",
+   "hora": "22:25",
    "valor": 0.0,
    "edad_min": 0,
    "serie": [
@@ -6320,8 +6320,8 @@
    "grupo": "intercambios",
    "id": 2070,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": -286.0,
+   "hora": "22:25",
+   "valor": -199.0,
    "edad_min": 0,
    "serie": [
     [
@@ -6619,7 +6619,7 @@
    "grupo": "intercambios",
    "id": 2075,
    "unidad": "MW",
-   "hora": "22:20",
+   "hora": "22:25",
    "valor": 0.0,
    "edad_min": 0,
    "serie": [
@@ -6918,8 +6918,8 @@
    "grupo": "intercambios",
    "id": 2071,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": -1780.0,
+   "hora": "22:25",
+   "valor": -2123.0,
    "edad_min": 0,
    "serie": [
     [
@@ -7217,7 +7217,7 @@
    "grupo": "intercambios",
    "id": 2076,
    "unidad": "MW",
-   "hora": "22:20",
+   "hora": "22:25",
    "valor": 0.0,
    "edad_min": 0,
    "serie": [
@@ -7516,7 +7516,7 @@
    "grupo": "almacenamiento",
    "id": 2078,
    "unidad": "MW",
-   "hora": "22:20",
+   "hora": "22:25",
    "valor": 0.0,
    "edad_min": 0,
    "serie": [
@@ -7815,8 +7815,8 @@
    "grupo": "almacenamiento",
    "id": 2079,
    "unidad": "MW",
-   "hora": "22:20",
-   "valor": 1037.0,
+   "hora": "22:25",
+   "valor": 1019.0,
    "edad_min": 0,
    "serie": [
     [
