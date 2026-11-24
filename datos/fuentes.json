@@ -970,7 +970,7 @@
    "licencia": "reutilización con atribución",
    "actualizado": null,
    "descargado": "2026-11-24",
-   "features": 901,
+   "features": 900,
    "url": "https://nap.dgt.es",
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Paneles DGT DATEX2 v3.7"
   },
@@ -982,7 +982,7 @@
    "licencia": "reutilización con atribución",
    "actualizado": null,
    "descargado": "2026-11-24",
-   "features": 1027,
+   "features": 1028,
    "url": "https://nap.dgt.es",
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Incidencias DGT DATEX2 v3.7"
   },
@@ -1017,7 +1017,7 @@
    "editor": "AEMET · Meteoalerta",
    "licencia": "© AEMET, citar como autora",
    "actualizado": "20261124",
-   "descargado": "2026-11-24T19:18:20",
+   "descargado": "2026-11-24T19:23:02",
    "features": 47,
    "url": "https://www.aemet.es/es/eltiempo/prediccion/avisos",
    "metodo": "tar.gz de GeoJSON de la pagina de avisos (sin clave)"
@@ -1041,7 +1041,7 @@
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
    "actualizado": "2026-11-24T20:15",
-   "descargado": "2026-11-24T19:18:26Z",
+   "descargado": "2026-11-24T19:23:07Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el poligono), paso 15 min"
@@ -1053,7 +1053,7 @@
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
    "actualizado": "2026-11-24T20:15",
-   "descargado": "2026-11-24T19:18:26Z",
+   "descargado": "2026-11-24T19:23:07Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias"

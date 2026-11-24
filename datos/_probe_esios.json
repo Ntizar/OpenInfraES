@@ -1,0 +1,304 @@
+{
+ "token": true,
+ "indicadores": [
+  {
+   "id": 2030,
+   "nombre": "Energía autoconsumida Biogás por CCAA",
+   "corto": "Biogás por CCAA",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": null,
+   "valor": null,
+   "n": 0
+  },
+  {
+   "id": 2031,
+   "nombre": "Energía autoconsumida Biomasa por CCAA",
+   "corto": "Biomasa por CCAA",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": null,
+   "valor": null,
+   "n": 0
+  },
+  {
+   "id": 2032,
+   "nombre": "Energía autoconsumida Océano y geoTérmica por CCAA",
+   "corto": "Océano y geoTérmica por CCAA",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": null,
+   "valor": null,
+   "n": 0
+  },
+  {
+   "id": 2033,
+   "nombre": "Energía autoconsumida Térmica renovable por CCAA",
+   "corto": "Térmica renovable por CCAA",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": null,
+   "valor": null,
+   "n": 0
+  },
+  {
+   "id": 2034,
+   "nombre": "Energía autoconsumida Residuos domésticos y similares por CCAA",
+   "corto": "Residuos domésticos y similares por CCAA",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": null,
+   "valor": null,
+   "n": 0
+  },
+  {
+   "id": 2035,
+   "nombre": "Energía autoconsumida Subproductos minería por CCAA",
+   "corto": "Subproductos minería por CCAA",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": null,
+   "valor": null,
+   "n": 0
+  },
+  {
+   "id": 2036,
+   "nombre": "Energía autoconsumida Residuos varios no renovables por CCAA",
+   "corto": "Residuos varios no renovables por CCAA",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": null,
+   "valor": null,
+   "n": 0
+  },
+  {
+   "id": 2037,
+   "nombre": "Demanda real nacional",
+   "corto": "Demanda real nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 38399.0,
+   "n": 244
+  },
+  {
+   "id": 2038,
+   "nombre": "Generación T.Real eólica nacional",
+   "corto": "Generación T.Real eólica nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 16111.0,
+   "n": 244
+  },
+  {
+   "id": 2039,
+   "nombre": "Generación T.Real nuclear nacional",
+   "corto": "Generación T.Real nuclear nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 6083.0,
+   "n": 244
+  },
+  {
+   "id": 2040,
+   "nombre": "Generación T.Real carbón nacional",
+   "corto": "Generación T.Real carbón nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 235.0,
+   "n": 244
+  },
+  {
+   "id": 2041,
+   "nombre": "Generación T.Real ciclo combinado nacional",
+   "corto": "Generación T.Real ciclo combinado nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 7645.0,
+   "n": 244
+  },
+  {
+   "id": 2042,
+   "nombre": "Generación T.Real hidráulica nacional",
+   "corto": "Generación T.Real hidráulica nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 6577.0,
+   "n": 244
+  },
+  {
+   "id": 2043,
+   "nombre": "Generación T.Real intercambios internacionales nacional",
+   "corto": "Generación T.Real intercambios internacionales nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": -1703.0,
+   "n": 244
+  },
+  {
+   "id": 2044,
+   "nombre": "Generación T.Real solar fotovoltaica nacional",
+   "corto": "Generación T.Real solar fotovoltaica nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 67.0,
+   "n": 244
+  },
+  {
+   "id": 2045,
+   "nombre": "Generación T.Real solar térmica nacional",
+   "corto": "Generación T.Real solar térmica nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 1.0,
+   "n": 244
+  },
+  {
+   "id": 2046,
+   "nombre": "Generación T.Real térmica renovable nacional",
+   "corto": "Generación T.Real térmica renovable nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 520.0,
+   "n": 244
+  },
+  {
+   "id": 2047,
+   "nombre": "Generación T.Real motor diesel nacional",
+   "corto": "Generación T.Real motor diesel nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 319.0,
+   "n": 244
+  },
+  {
+   "id": 2048,
+   "nombre": "Generación T.Real turbina de gas nacional",
+   "corto": "Generación T.Real turbina de gas nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 65.0,
+   "n": 244
+  },
+  {
+   "id": 2049,
+   "nombre": "Generación T.Real turbina de vapor nacional",
+   "corto": "Generación T.Real turbina de vapor nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 415.0,
+   "n": 244
+  },
+  {
+   "id": 2050,
+   "nombre": "Generación T.Real generación auxiliar nacional",
+   "corto": "Generación T.Real generación auxiliar nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 0.0,
+   "n": 244
+  },
+  {
+   "id": 2051,
+   "nombre": "Generación T.Real cogeneración y residuos nacional",
+   "corto": "Generación T.Real cogeneración y residuos nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T20:15:00.000+01:00",
+   "valor": 2047.0,
+   "n": 244
+  },
+  {
+   "id": 2052,
+   "nombre": "Demanda real prevista nacional",
+   "corto": "Demanda real prevista nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T23:55:00.000+01:00",
+   "valor": 28615.0,
+   "n": 288
+  },
+  {
+   "id": 2053,
+   "nombre": "Demanda real programada nacional",
+   "corto": "Demanda real programada nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T23:55:00.000+01:00",
+   "valor": 29046.0,
+   "n": 288
+  },
+  {
+   "id": 2054,
+   "nombre": "Demanda Programada Total nacional",
+   "corto": "Demanda Programada Total nacional",
+   "unidad": null,
+   "magnitud": null,
+   "tipo": null,
+   "ultima": "2026-11-24T23:55:00.000+01:00",
+   "valor": 29046.0,
+   "n": 288
+  },
+  {
+   "id": 2055,
+   "http": 404
+  },
+  {
+   "id": 2056,
+   "http": 404
+  },
+  {
+   "id": 2057,
+   "http": 404
+  },
+  {
+   "id": 2058,
+   "http": 404
+  },
+  {
+   "id": 2059,
+   "http": 404
+  },
+  {
+   "id": 2060,
+   "http": 404
+  }
+ ]
+}
