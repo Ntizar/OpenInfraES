@@ -449,6 +449,10 @@
   #leyenda-x:hover { color:var(--tinta); }
   #leyenda h5 { margin:0 0 6px; padding-right:18px; font-size:10.6px; text-transform:uppercase; letter-spacing:.08em;
     color:var(--suave); font-weight:600; }
+  /* dos bloques (temperatura + viento) pegados se leian como uno: el total del primero
+     parecia el del segundo */
+  #leyenda h5:not(:first-of-type) { margin-top:12px; padding-top:10px;
+                                    border-top:1px solid rgba(255,255,255,.09); }
   #leyenda .ly-nota { font-size:10px; opacity:.72; margin:-2px 0 6px; font-style:italic; }
   #leyenda .ly { display:flex; align-items:center; gap:6px; margin-bottom:2px; }
   #leyenda .ly i { width:13px; height:13px; border-radius:2px; flex:0 0 auto;
