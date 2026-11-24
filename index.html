@@ -575,7 +575,12 @@
     padding:72px 22px 22px 22px !important; }
   #sis, #proyecto, #fuentes { width:min(1180px, 95vw) !important;
     max-height:calc(100vh - 100px) !important; overflow-y:auto !important; }
-  #sis { column-count:2; column-gap:30px; }
+  /* El panel del sistema lleva ahora trece tecnologías del instante y quince del día. Dentro de una
+     caja con altura máxima, `column-count` trocea el contenido hacia la DERECHA en vez de crecer
+     hacia abajo (760 px de ancho y 3.054 de scrollWidth: cuatro columnas de chiste). Aquí crece
+     todo lo que haga falta y el que desplaza es el velo. */
+  #sis { column-count:2; column-gap:30px; max-height:none !important; overflow:visible !important; }
+  #velo2.on { overflow:auto; }
   #sis > .sis-cab, #sis > .sis-sec, #sis > .barra, #sis > .mix-fila, #sis > .nota-pie,
   #sis > .vivo-fila, #sis > .cabecera, #sis > .prev, #sis > .prev-fila { break-inside:avoid; }
   @media (max-width:1100px) {
@@ -2066,7 +2071,10 @@ function panelDemanda() {
     .map(x => [String(x[0]), Number(x[1])]);
   const edad = edadMinutos(v.actualizado);
   const co2 = e.co2 != null ? Number(e.co2) : null;
-  // el saldo se suma con el signo de ESIOS: negativo = España exporta
+  // El saldo real es 2043 (T.Real, el mismo minuto que la demanda y el bombeo). La suma de las
+  // fronteras 2068-2076 es el PROGRAMA P48 y no tiene por qué coincidir: se publica aparte y se
+  // dice que es programa, para que nadie reste una contra otra.
+  const saldoReal = e.intercambios != null ? Number(e.intercambios) : null;
   let saldo = 0;
   const filas = FRONTERAS.map(([k, n]) => {
     const val = Number(e["exp_" + k] || 0) + Number(e["imp_" + k] || 0);
@@ -2087,15 +2095,18 @@ function panelDemanda() {
     kpiTarjeta((neto < 0 ? "−" : "+") + Math.abs(Math.round(neto)).toLocaleString("es-ES") + " MW",
       "bombeo neto · consume " + Math.round(bombeo).toLocaleString("es-ES") +
       " · turbina " + Math.round(turbinado).toLocaleString("es-ES")) +
-    kpiTarjeta((saldo ? (saldo > 0 ? "+" : "−") + Math.abs(saldo).toLocaleString("es-ES") : "0") + " MW", "saldo internacional (suma ESIOS)") +
+    kpiTarjeta(((saldoReal != null ? saldoReal : saldo) ? ((saldoReal != null ? saldoReal : saldo) > 0 ? "+" : "−") +
+      Math.abs(saldoReal != null ? saldoReal : saldo).toLocaleString("es-ES") : "0") + " MW",
+      "saldo internacional real" + (d.hora ? " · " + d.hora : "")) +
     `</div>`;
   if (serie.length > 1) h += chispa(serie, { dec: 0, unidad: "MW" });
-  h += `<h4 class="sec">Intercambios con los vecinos <span>· negativo = España exporta</span></h4>` +
+  h += `<h4 class="sec">Intercambios con los vecinos <span>· programa P48 · negativo = España exporta</span></h4>` +
     `<table><thead><tr><th>frontera</th><th style="text-align:right">saldo</th><th>flujo</th></tr></thead>` +
     `<tbody>${filas}</tbody></table>` +
-    `<p class="nota-kpi">Todo esto sale de la misma fuente, ESIOS·REE, con resolución de 5 minutos y ` +
-    `al mismo instante: demanda, intercambios y bombeo son comparables entre sí. El saldo va con el ` +
-    `signo de ESIOS, el mismo que publica en su panel: negativo = España exporta.</p>`;
+    `<p class="nota-kpi">Todo esto sale de ESIOS·REE, con resolución de 5 minutos. El saldo de arriba es ` +
+    `la medida real (indicador 2043), al mismo minuto que la demanda y el bombeo; la tabla es el ` +
+    `<b>programa</b> por frontera (P48), que es otra cosa y por eso no suma lo mismo. Signo de ESIOS: ` +
+    `negativo = España exporta.</p>`;
   kpiCaja(h);
 }
 
@@ -3707,11 +3718,9 @@ function pintarSis() {
            '<span><b>' + (netoBombeo >= 0 ? "+" : "−") + nf(Math.abs(Math.round(netoBombeo))) +
            ' MW</b><i>bombeo neto · negativo = consume</i></span>' +
            '</div>';
-      if (ints.length) {
-        h += '<div class="nota-pie">Saldo con ' + ints.map(x => x[0] + " " +
-             (x[1] >= 0 ? "+" : "−") + nf(Math.abs(x[1]))).join(" · ") +
-             ' MW, con el signo de ESIOS: negativo = España exporta.</div>';
-      }
+      // El desglose por frontera NO se pinta aquí: esas series (2068-2076) son el programa P48, no
+      // la medida real, y su suma (-2.438 MW) no casa con el saldo real de 2043 (-1.999 MW). Dos
+      // cifras del mismo concepto en la misma tarjeta es exactamente lo que había que quitar.
       if (demAtrasada) {
         h += '<div class="nota-pie">Sin actualizar: ESIOS no devolvió dato fresco (desde el ' +
              '2026-11-23 da 403 sin clave). Último dato bueno: ' +
@@ -3732,7 +3741,7 @@ function pintarSis() {
         h += '<div class="nota-pie">OMIE, mercado mayorista. No es el precio final del ' +
              'consumidor: faltan peajes, cargos e impuestos.</div>';
       }
-      h += '<div class="sis-sec">Generación del día (MWh)</div>';
+      h += '<div class="sis-sec">Generación del último día completo (MWh)</div>';
     }
 
     if (d && d.series && d.series.generacion) {
@@ -3803,9 +3812,10 @@ function pintarSis() {
       h += "</div>";
     }
     $("#sis-barras").innerHTML = h;
-    $("#sis-nota").innerHTML = "<b>En vivo</b>: ESIOS con clave (desde el 23-11-2026 da 403 sin ella), 5 min. " +
+    $("#sis-nota").innerHTML = "<b>En vivo</b>: ESIOS·REE con clave (desde el 23-11-2026 da 403 sin ella), 5 min, " +
+      "todas las series en el mismo minuto. " +
       "<b>Del día</b>: REE apidatos (agregado diario). " +
-      "<b>Mix</b>: ENTSO-E A75, cuartos completados. " +
+      "<b>Mix del día</b>: ENTSO-E A75, cuartos completados. " +
       "<b>Previsión</b>: ESIOS 460 y 541. Por planta requiere ENTSO-E.";
   });
 }
