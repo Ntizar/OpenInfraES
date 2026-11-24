@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-24T16:13:20",
+ "generado": "2026-11-24T16:36:25",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 84,
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 41,
-  "kb_total": 82854.8
+  "kb_total": 82884.4
  },
  "avisos": {
   "pendiente": [
@@ -107,7 +107,7 @@
    "bytes": 194511,
    "kb": 190.0,
    "fecha_dato": "20261124",
-   "fecha_descarga": "2026-11-24T16:11:42",
+   "fecha_descarga": "2026-11-24T16:36:19",
    "edad_dias": 0,
    "caducado": false
   },
@@ -428,10 +428,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76105,
+   "bytes": 76093,
    "kb": 74.3,
-   "fecha_dato": "2026-11-24T16:30",
-   "fecha_descarga": "2026-11-24T15:36:44Z",
+   "fecha_dato": "2026-11-24T17:30",
+   "fecha_descarga": "2026-11-24T16:36:25Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -455,10 +455,10 @@
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 54460,
-   "kb": 53.2,
-   "fecha_dato": "2026-11-24T16:30",
-   "fecha_descarga": "2026-11-24T15:36:44Z",
+   "bytes": 54397,
+   "kb": 53.1,
+   "fecha_dato": "2026-11-24T17:30",
+   "fecha_descarga": "2026-11-24T16:36:25Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -616,9 +616,9 @@
    "ttl_segundos": 300,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 1255,
-   "bytes": 542999,
-   "kb": 530.3,
+   "features": 1326,
+   "bytes": 569596,
+   "kb": 556.2,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
@@ -643,9 +643,9 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-24",
    "crs": "EPSG:4326",
-   "features": 1106,
-   "bytes": 240779,
-   "kb": 235.1,
+   "features": 1123,
+   "bytes": 244673,
+   "kb": 238.9,
    "fecha_dato": "2026-11-24",
    "fecha_descarga": "2026-11-24",
    "edad_dias": 0,
