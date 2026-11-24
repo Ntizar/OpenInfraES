@@ -832,6 +832,24 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+/* ---------------------------------------------------------------------------------------------
+   VISOR DE OPENINFRAES · un solo fichero, sin build, sin framework.
+   El orden de este script ES el orden de dependencias. Si tocas algo, respétalo:
+
+     1. bases y utilidades      IGN(), BASES, nf(), $()            — no dependen de nada
+     2. datos por zoom          celda(), pasoPuntos(), simplifica  — geometría
+     3. ficha y popups          nombreCampo(), abrirFicha()        — pintan atributos
+     4. CAPAS                   el array: 79 capas, 15 grupos      — el inventario, `on:false`
+     5. motor                   ponerCapa(), pintarPuntos(), cargar()  — pinta y cachea
+     6. descargas               fetch con caché de sesión y control de concurrencia
+     7. estado                  barra inferior y punto del botón de capas
+     8. interfaz                buscador, fuentes, salud, enlace, presets
+     9. API en vivo             generación del día por la API de REE
+
+   Invariantes que el validador comprueba o que están medidos: ninguna capa arranca encendida,
+   una chincheta por sitio físico, id de capa == clave en datos/fuentes.json, y los números del
+   README los escribe cifras.py (nunca a mano). Procedimiento: GUIA.md.
+   --------------------------------------------------------------------------------------------- */
 const $ = s => document.querySelector(s);
 const nf = n => (typeof n === "number" ? n.toLocaleString("es-ES", { maximumFractionDigits: 2 }) : n);
 
