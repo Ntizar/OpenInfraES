@@ -486,6 +486,11 @@
   #kpis .kpi.aviso { border-color:rgba(251,191,36,.45); }
   #kpis .kpi.aviso b { color:var(--ambar); }
   #kpis .kpi.bien b { color:#4ade80; }
+  /* rotación: el chip que entra lo hace con un desplazamiento corto; el que sale se sustituye.
+     Quien pide menos movimiento no ve animación, pero ve el dato nuevo igual. */
+  #kpis .kpi.entra { animation:kpiEntra .36s ease both; }
+  @keyframes kpiEntra { from { opacity:0; transform:translateY(-5px); } to { opacity:1; transform:none; } }
+  @media (prefers-reduced-motion:reduce) { #kpis .kpi.entra { animation:none; } }
   @media (max-width:1100px) { #kpis { left:16px; right:16px; } }
   #panel-dato .pd-foto { display:block; margin:0 0 10px; }
   #panel-dato .pd-foto img { width:100%; max-height:210px; object-fit:cover; border-radius:5px;
@@ -664,17 +669,7 @@
   <div id="buscar"><input id="q" type="search" placeholder="Buscar instalación…" autocomplete="off"></div>
   <div id="resultados"></div>
   <div id="vista-aviso"></div>
-  <div id="presets">
-    <button data-preset="todos" title="Encender todo / apagar todo">Todo</button>
-    <button data-preset="Red eléctrica">Eléctrico</button>
-    <button data-preset="Gas">Gas</button>
-    <button data-preset="Agua">Agua</button>
-    <button data-preset="Transporte">Transporte</button>
-    <button data-preset="DGT · Tráfico">DGT</button>
-    <button data-preset="Tiempo real">En vivo</button>
-    <button data-preset="Demografía">Población</button>
-    <button data-preset="Riesgo">Riesgo</button>
-  </div>
+  <div id="presets"></div>
   <div id="capas"></div>
   <div id="opacidad"><label>Datos</label><input id="op" type="range" min="30" max="100" value="100"><b id="opv">100%</b></div>
   <div id="pie"><select id="base"></select></div>
@@ -1498,6 +1493,24 @@ const CAPAS = [
   { id:"dpmt", grupo:"Medio ambiente", label:"Dominio público marítimo-terrestre", tipo:"linea", on:false,
     color:"#f59e0b", fichero:"datos/dpmt.geojson", peso:1.5, opacidad:.85, zoomMin:7,
     popupTitulo:"municipio" },
+  /* --- Clima: lo de AHORA, modelado. No es un parte oficial ni una estación de AEMET: es el
+     modelo ICON/GFS servido por Open-Meteo (CC BY 4.0) en el centroide de cada provincia y un
+     campo de viento interpolado en barbas. Los avisos oficiales son `aemet-zonas`, que es de
+     AEMET; aquí no se avisa de nada, se mira el tiempo que hace. --- */
+  { id:"clima-temperatura", grupo:"Clima", label:"Temperatura ahora (provincia)", tipo:"punto", on:false,
+    color:"#22d3ee", fichero:"datos/clima_provincias.geojson", radio:11, opacidad:.55,
+    siempreIndividual:true, zoomMin:0, colorCampo:"tramo",
+    colores:{"helado":"#c7d2fe", "frío":"#38bdf8", "fresco":"#22d3ee", "templado":"#a3e635",
+             "cálido":"#fbbf24", "caluroso":"#f97316", "sin dato":"#64748b"},
+    popupTitulo:"nombre",
+    campos:["nombre","temperatura","sensacion","tiempo","humedad","lluvia_mm","viento_kmh",
+            "viento_dir","hora","modelo"] },
+  { id:"clima-viento", grupo:"Clima", label:"Viento ahora (campo interpolado)", tipo:"linea", on:false,
+    color:"#7dd3fc", fichero:"datos/clima_viento.geojson", peso:1.5, opacidad:.8, zoomMin:0,
+    colorCampo:"tramo",
+    colores:{"flojo":"#7dd3fc", "moderado":"#38bdf8", "fuerte":"#22d3ee", "muy fuerte":"#fbbf24",
+             "temporal":"#f87171"},
+    campos:["viento_kmh","rumbo","tramo"] },
   /* --- ráster oficial. Solo el PNOA publica teselas en EPSG:3857, que es el CRS del mapa.
      La hidrografía del IDEe y el Catastro solo sirven WMS en 4326/25830: mezclar CRS en
      Leaflet pide el bbox en un sistema y coloca el tile en otro, y salen parches de otra zona. --- */
@@ -1532,6 +1545,32 @@ Object.entries(grupos).forEach(([nombre, lista]) => {
     `<span class="txt">${c.label}</span><span class="n" id="n-${c.id}"></span></label>`).join("");
   panel.appendChild(d);
 });
+
+/* ---------------- vistas de la parte superior ----------------
+   Un botón por GRUPO de capas, generado del propio array. La lista estaba escrita a mano y se
+   quedó corta: «Medio ambiente» existía en el panel y no tenía acceso arriba. Ahora un grupo
+   nuevo (o una capa dentro de él) sale arriba solo, sin tocar el HTML. */
+const ETIQUETA_VISTA = {
+  "Red eléctrica": "Eléctrico", "Generación": "Generación", "Gas": "Gas", "Agua": "Agua",
+  "Demografía": "Población", "Transporte": "Transporte", "DGT · Tráfico": "DGT",
+  "Tiempo real": "En vivo", "Riesgo": "Riesgo", "Medio ambiente": "Medio ambiente",
+  "Clima": "Clima"
+};
+const cajaPresets = $("#presets");
+if (cajaPresets) {
+  const bTodo = document.createElement("button");
+  bTodo.dataset.preset = "todos";
+  bTodo.title = "Encender todo / apagar todo";
+  bTodo.textContent = "Todo";
+  cajaPresets.appendChild(bTodo);
+  Object.entries(grupos).forEach(([nombre, lista]) => {
+    const b = document.createElement("button");
+    b.dataset.preset = nombre;
+    b.title = lista.length + " capas · " + nombre;
+    b.textContent = ETIQUETA_VISTA[nombre] || nombre;
+    cajaPresets.appendChild(b);
+  });
+}
 
 const sel = $("#base");
 Object.entries(BASES).forEach(([k, v]) => {
@@ -1577,12 +1616,14 @@ function bloqueEstimacion(p) {
 
 
 
-/* ---------------- barra de KPIs ----------------
-   CUATRO cifras, y las cuatro se pinchan. La regla que se paga cara: un chip no mezcla
-   ventanas temporales. Antes convivian "432 GWh hoy" (acumulado hasta las 15:00), "eolica 17 %"
-   (cuota de ese acumulado) y "36.497 MW" (un instante de las 15:25), y al lado del panel de REE
-   —que publica el dia completo— parecia que los datos se contradicen. No se contradecian: eran
-   tres ventanas distintas con la misma tipografia. Ahora cada etiqueta dice desde y hasta cuando. */
+/* ---------------- barra de indicadores ----------------
+   CUATRO cifras, las cuatro se pinchan y las cuatro ROTAN. Sigue en pie la regla que se pagó
+   cara: un chip no mezcla ventanas temporales (cada etiqueta dice de cuándo a cuándo). La nueva:
+   UN CHIP = UN DOMINIO. Antes había demanda, generación y precio —tres de electricidad— más una
+   de estado: el visor parecía un tablero de REE aunque dentro tenga agua, clima, trenes y sismos.
+   Ahora el pool tiene 6 dominios y en pantalla nunca hay dos del mismo; cada 18 s sale un dominio
+   que no esté visible y entra otro. Con la pestaña oculta, el ratón encima o un panel abierto no
+   rota, porque nadie lo está mirando. */
 function chipKPI(icono, valor, etiqueta, clase, panel, nota) {
   return `<button type="button" class="kpi ${clase || ""}" data-panel="${panel}"><i>${icono}</i>` +
          `<div><b>${valor}${nota ? "<u>" + nota + "</u>" : ""}</b><span>${etiqueta}</span></div>` +
@@ -1611,49 +1652,294 @@ function claseEdad(m) { return m == null ? "" : m > 180 ? "alerta" : m > 45 ? "a
 const nf1 = n => (typeof n === "number" && isFinite(n))
   ? n.toLocaleString("es-ES", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : n;
 
-function pintarKPIs() {
-  const barra = document.getElementById("kpis");
-  if (!barra) return;
-  const v = VER_DATOS;
-  const pedidos = [
-    fetch("datos/entsoe_mix.json?v=" + v).then(r => r.json()).catch(() => null),
-    fetch("datos/omie_precio.json?v=" + v).then(r => r.json()).catch(() => null),
-    fetch("datos/ree_vivo.json?v=" + v).then(r => r.json()).catch(() => null),
-    fetch("datos/aemet_zonas.geojson?v=" + v).then(r => r.json()).catch(() => null),
-    fetch("datos/catalogo.json?v=" + v).then(r => r.json()).catch(() => null)
-  ];
-  Promise.all(pedidos).then(([mix, omie, vivo, aemet, cat]) => {
-    window.__KPI = { mix, omie, vivo, aemet, cat };
-    let h = "";
-    // 1 · instante: demanda real de REE (5 min)
-    const d = vivo && vivo.series && vivo.series.demanda;
-    if (d && d.valor) {
-      const edad = edadMinutos(vivo.actualizado);
-      const nota = edad == null ? "" : edad < 1 ? "ahora" : textoEdad(edad).replace("hace ", "");
-      h += chipKPI("◉", Math.round(Number(d.valor)).toLocaleString("es-ES"),
-        "MW de demanda · " + (d.hora || "—"), claseEdad(edad), "demanda", nota);
-    }
-    // 2 · acumulado del dia EN CURSO, con la ventana que trae la fuente (no es el dia completo)
-    if (mix && mix.total_mwh) {
-      const cuartos = Number(mix.cuartos_cubiertos || 0);
-      const vent = ventanaMix(mix);
-      h += chipKPI("⚡", nf(Math.round(mix.total_mwh / 1000)) + " GWh",
-        "generado " + vent.ini + "–" + vent.fin, "", "mix", cuartos + "/96");
-    }
-    // 3 · dia completo: la subasta diaria de OMIE ya trae los 96 cuartos
-    if (omie && omie.media != null) {
-      h += chipKPI("€", nf1(Number(omie.media)), "€/MWh media del día", "", "precio");
-    }
-    // 4 · lo que puede estar mal: licencias, frescura y avisos previstos
-    const pend = capasUnicas(cat && cat.capas).filter(c => (c.v.licencia || {}).estado === "pendiente").length;
-    const aem = contarAemet(aemet);
-    if (cat && cat.capas) {
-      h += chipKPI("⚖", pend, (pend === 1 ? "capa sin licencia" : "capas sin licencia") +
-        " · " + aem.zonas + " zonas AEMET", pend ? "aviso" : "bien", "estado");
-    }
-    barra.innerHTML = h;
-  });
+/* Renovables con el criterio de REE: se quedan fuera los residuos (no renovables), el bombeo
+   (consume más de lo que produce) y el almacenamiento. La lista es la que publica ENTSO-E. */
+const RENOVABLES = ["Eólica terrestre", "Eólica marina", "Hidro embalse", "Hidro fluyente",
+                    "Solar fotovoltaica", "Solar térmica", "Biomasa", "Geotérmica", "Marina",
+                    "Otras renovables"];
+
+let KPI_POOL = [], KPI_VISIBLES = [], KPI_PAUSA = false;
+
+const numOK = n => typeof n === "number" && isFinite(n);
+const esNum = v => v !== null && v !== undefined && v !== "" && isFinite(Number(v));
+
+/* El pool. Cada indicador declara su dominio, su ventana temporal y de dónde sale; el panel
+   genérico (panelIndicador) se construye con esos datos, así que un indicador nuevo no necesita
+   ni una línea de HTML. Si un dato falta, el indicador no existe: no hay ceros inventados. */
+function indicadores(D) {
+  const out = [];
+  const vivo = D.vivo || {}, mix = D.mix || {}, omie = D.omie || {},
+        agr = D.agr || {}, cat = D.cat || {}, aem = D.aemet || {}, prov = D.prov || {};
+  const anade = x => { if (x && x.valor !== null && x.valor !== undefined && x.valor !== "") out.push(x); };
+  const edadTxt = iso => {
+    const e = edadMinutos(iso);
+    return e == null ? "" : e < 1 ? "ahora" : textoEdad(e).replace("hace ", "");
+  };
+
+  /* ── electricidad ───────────────────────────────────────────────────────── */
+  const dem = (vivo.series || {}).demanda;
+  if (dem && esNum(dem.valor)) {
+    const e = edadMinutos(vivo.actualizado);
+    anade({ id: "demanda", dominio: "energia", panel: "demanda", icono: "◉",
+      valor: Math.round(Number(dem.valor)).toLocaleString("es-ES"),
+      etiqueta: "MW de demanda · " + (dem.hora || "—"), nota: edadTxt(vivo.actualizado),
+      clase: claseEdad(e), ventana: "instante · lectura de las " + (dem.hora || "—") + " (resolución 5 min)",
+      detalle: [["Demanda real nacional", nf(Math.round(Number(dem.valor))) + " MW"],
+                ["Hora de la lectura", dem.hora || "—"]],
+      fuente: "REE · ESIOS" });
+  }
+  if (mix.total_mwh) {
+    const cuartos = Number(mix.cuartos_cubiertos || 0), vent = ventanaMix(mix);
+    anade({ id: "mix", dominio: "energia", panel: "mix", icono: "⚡",
+      valor: nf(Math.round(mix.total_mwh / 1000)) + " GWh",
+      etiqueta: "generado " + vent.ini + "–" + vent.fin, nota: cuartos + "/96",
+      ventana: "acumulado del día EN CURSO hasta las " + vent.fin + " (" + cuartos + " de 96 cuartos)",
+      detalle: [["Energía generada", nf(Math.round(mix.total_mwh)) + " MWh"],
+                ["Ventana cubierta", vent.ini + "–" + vent.fin],
+                ["Cuartos publicados", cuartos + " de 96"]],
+      fuente: "ENTSO-E · A75 (15 min)" });
+  }
+  const renov = (mix.tecnologias || []).filter(t => RENOVABLES.indexOf(t.nombre) !== -1);
+  if (renov.length && mix.total_mwh) {
+    const mwh = renov.reduce((a, t) => a + Number(t.mwh || 0), 0);
+    anade({ id: "renovables", dominio: "energia", icono: "♻",
+      valor: Math.round(100 * mwh / Number(mix.total_mwh)) + " %",
+      etiqueta: "renovable del día generado",
+      ventana: "cuota sobre el acumulado hasta las " + (ventanaMix(mix).fin) + " · sin residuos ni bombeo",
+      detalle: renov.sort((a, b) => b.pct - a.pct).slice(0, 5)
+        .map(t => [t.nombre, nf1(Number(t.pct)) + " %"]),
+      fuente: "ENTSO-E · A75" });
+  }
+  if (omie.media != null) {
+    anade({ id: "precio", dominio: "energia", panel: "precio", icono: "€",
+      valor: nf1(Number(omie.media)), etiqueta: "€/MWh media del día",
+      nota: "mín " + nf1(Number(omie.min)) + " · máx " + nf1(Number(omie.max)),
+      ventana: "día completo · subasta diaria de " + (omie.fecha || "hoy") + " (96 cuartos)",
+      detalle: [["Media", nf1(Number(omie.media)) + " €/MWh"],
+                ["Mínima", nf1(Number(omie.min)) + " €/MWh a las " + (omie.hora_min || "—")],
+                ["Máxima", nf1(Number(omie.max)) + " €/MWh a las " + (omie.hora_max || "—")]],
+      fuente: "OMIE · mercado diario" });
+  }
+
+  /* ── agua ───────────────────────────────────────────────────────────────── */
+  if (agr.agua && numOK(Number(agr.agua.pct))) {
+    const a = agr.agua, fecha = (a.fecha || "").slice(5).split("-").reverse().join("/");
+    anade({ id: "agua", dominio: "agua", icono: "💧",
+      valor: nf1(Number(a.pct)) + " %", etiqueta: "agua embalsada · " + nf(a.n) + " embalses",
+      nota: fecha ? "parte " + fecha : "",
+      ventana: "foto del parte hidrológico" + (a.fecha ? " de " + fecha : ""),
+      detalle: [["Embalsado", nf(a.embalsada_hm3) + " hm³"],
+                ["Capacidad total", nf(a.capacidad_hm3) + " hm³"],
+                ["Embalses con dato", nf(a.n)]],
+      fuente: a.fuente || "MITECO" });
+  }
+
+  /* ── clima ──────────────────────────────────────────────────────────────── */
+  if (agr.clima && numOK(Number(agr.clima.temperatura_media))) {
+    const c = agr.clima, cal = c.mas_caliente || {}, fri = c.mas_frio || {};
+    anade({ id: "clima", dominio: "clima", icono: "🌡",
+      valor: nf1(Number(c.temperatura_media)) + " °C", etiqueta: "media ahora · " + (c.provincias || 52) + " provincias",
+      nota: cal.provincia ? cal.provincia + " " + nf1(cal.temperatura) + "°" : "",
+      ventana: "instante · modelo de las " + String(c.actualizado || "").slice(11, 16) +
+               " (no es estación oficial)",
+      detalle: [["Media de las provincias", nf1(Number(c.temperatura_media)) + " °C"],
+                ["Más cálida", (cal.provincia || "—") + " · " + nf1(cal.temperatura) + " °C"],
+                ["Más fría", (fri.provincia || "—") + " · " + nf1(fri.temperatura) + " °C"]],
+      fuente: "Open-Meteo · ICON/GFS (CC BY 4.0)" });
+  }
+  const feats = prov.features || [];
+  if (feats.length) {
+    const conLluvia = feats.filter(f => Number((f.properties || {}).lluvia_mm) > 0).length;
+    const vientos = feats.map(f => Number((f.properties || {}).viento_kmh)).filter(isFinite);
+    const vmax = vientos.length ? Math.max.apply(null, vientos) : null;
+    const racha = vmax == null ? null : feats.find(f => Number((f.properties || {}).viento_kmh) === vmax);
+    anade({ id: "lluvia", dominio: "clima", icono: "☔",
+      valor: conLluvia + (conLluvia === 1 ? " provincia" : " provincias"),
+      etiqueta: "con lluvia ahora mismo",
+      nota: vmax == null ? "" : "viento máx " + Math.round(vmax) + " km/h",
+      ventana: "instante · 52 capitales de provincia modeladas",
+      detalle: [["Provincias con lluvia", conLluvia + " de " + feats.length],
+                ["Viento máximo", vmax == null ? "—" : Math.round(vmax) + " km/h · " +
+                  ((racha && racha.properties.nombre) || "—")]],
+      fuente: "Open-Meteo · ICON/GFS (CC BY 4.0)" });
+  }
+
+  /* ── riesgo ─────────────────────────────────────────────────────────────── */
+  const aemC = contarAemet(aem);
+  if (aemC.zonas) {
+    const activos = aemC.activos;
+    anade({ id: "avisos", dominio: "riesgo", icono: "⚠",
+      valor: activos, etiqueta: "avisos AEMET vigentes · " + aemC.zonas + " zonas",
+      clase: activos ? "aviso" : "bien",
+      ventana: "avisos en vigor en este instante (AEMET, Meteoalerta)",
+      detalle: [["Avisos vigentes", activos], ["Zonas con aviso", aemC.zonas],
+                ["Avisos en el parte", aemC.total]],
+      fuente: "AEMET · Meteoalerta" });
+  }
+  if (agr.sismos) {
+    anade({ id: "sismos", dominio: "riesgo", icono: "◬",
+      valor: nf(agr.sismos.n), etiqueta: "sismos en 7 días",
+      nota: "máx " + nf1(Number(agr.sismos.max)) + " M",
+      ventana: "ventana de los últimos " + (agr.sismos.dias || 7) + " días (acumulativa)",
+      detalle: [["Sismos registrados", nf(agr.sismos.n)],
+                ["Mayor magnitud", nf1(Number(agr.sismos.max)) + " M"]],
+      fuente: agr.sismos.fuente || "EMSC-CSEM" });
+  }
+
+  /* ── transporte ─────────────────────────────────────────────────────────── */
+  if (agr.trenes) {
+    anade({ id: "trenes", dominio: "transporte", icono: "🚆",
+      valor: nf(agr.trenes.vehiculos), etiqueta: "trenes en circulación ahora",
+      ventana: "instante · posiciones GTFS-Realtime",
+      detalle: [["Vehículos con posición", nf(agr.trenes.vehiculos)],
+                ["Operadores", (agr.trenes.operadores || []).join(", ") || "—"]],
+      fuente: agr.trenes.fuente || "GTFS-Realtime" });
+  }
+  if (agr.trafico) {
+    anade({ id: "trafico", dominio: "transporte", icono: "⛔",
+      valor: nf(agr.trafico.activas), etiqueta: "incidencias activas en carretera",
+      ventana: "instante · DATEX II de la DGT",
+      detalle: [["Incidencias activas", nf(agr.trafico.activas)],
+                ["Registros en la capa", nf(agr.trafico.incidencias)]],
+      fuente: agr.trafico.fuente || "DGT" });
+  }
+  if (agr.carburantes) {
+    const c = agr.carburantes;
+    anade({ id: "carburante", dominio: "transporte", icono: "⛽",
+      valor: nf1(Number(c.gasoleo_mediana)) + " €", etiqueta: "gasóleo A · mediana de hoy",
+      nota: nf(c.n) + " surtidores",
+      ventana: "foto del día · precios comunicados al MITECO",
+      detalle: [["Mediana", nf1(Number(c.gasoleo_mediana)) + " €/l"],
+                ["Media", c.gasoleo_medio.toFixed(3) + " €/l"],
+                ["Mínima / máxima", nf1(Number(c.gasoleo_min)) + " – " + nf1(Number(c.gasoleo_max)) + " €/l"],
+                ["Surtidores", nf(c.n)]],
+      fuente: c.fuente || "MITECO" });
+  }
+
+  /* ── medio ambiente / datos ─────────────────────────────────────────────── */
+  const capas = capasUnicas(cat.capas);
+  if (capas.length) {
+    const pend = capas.filter(c => (c.v.licencia || {}).estado === "pendiente").length;
+    anade({ id: "licencias", dominio: "datos", panel: "estado", icono: "⚖",
+      valor: pend, etiqueta: pend === 1 ? "capa sin licencia evaluada" : "capas sin licencia evaluada",
+      clase: pend ? "aviso" : "bien",
+      ventana: "estado del catálogo a día de hoy",
+      detalle: [["Capas distintas", capas.length],
+                ["Sin licencia evaluada", pend]],
+      fuente: "catálogo propio (datos/catalogo.json)" });
+    const objetos = capas.reduce((a, c) => a + (Number(c.v.features) || 0), 0);
+    anade({ id: "objetos", dominio: "datos", icono: "◫",
+      valor: nf(objetos), etiqueta: "objetos descargados en " + capas.length + " capas",
+      ventana: "suma de las features del catálogo, hoy",
+      detalle: [["Objetos", nf(objetos)], ["Capas", capas.length]],
+      fuente: "catálogo propio" });
+  }
+  return out;
 }
+
+function barajar(a) {
+  const b = a.slice();
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const t = b[i]; b[i] = b[j]; b[j] = t;
+  }
+  return b;
+}
+
+/* Reparte n chips entre dominios distintos. Con 6 dominios y 4 huecos siempre sobra variedad:
+   eso es lo que impide que vuelvan a salir tres de electricidad. */
+function reparteIndicadores(pool, n) {
+  const porDom = {};
+  pool.forEach(x => { (porDom[x.dominio] = porDom[x.dominio] || []).push(x); });
+  const out = [];
+  barajar(Object.keys(porDom)).forEach(d => {
+    if (out.length < n) out.push(barajar(porDom[d])[0]);
+  });
+  if (out.length < n) {
+    barajar(pool).forEach(x => {
+      if (out.length < n && !out.some(y => y.id === x.id)) out.push(x);
+    });
+  }
+  return out;
+}
+
+function nodoKPI(x, entrar) {
+  const caja = document.createElement("div");
+  caja.innerHTML = chipKPI(x.icono, x.valor, x.etiqueta, x.clase, x.id, x.nota);
+  const nodo = caja.firstElementChild;
+  if (entrar) nodo.classList.add("entra");
+  return nodo;
+}
+
+function pintarBarraKPIs() {
+  const barra = document.getElementById("kpis");
+  if (!barra || !KPI_VISIBLES.length) return;
+  barra.innerHTML = "";
+  KPI_VISIBLES.forEach(x => barra.appendChild(nodoKPI(x, false)));
+}
+
+/* Rota UN chip por un dominio que no esté en pantalla. Si ya están los seis, cambia un chip
+   por otro indicador (sin repetir el que se va). Nunca rompe la regla de un dominio por hueco. */
+function rotarKPI() {
+  if (KPI_PAUSA || document.hidden) return;
+  if (KPI_VISIBLES.length < 2 || KPI_POOL.length < 5) return;
+  const barra = document.getElementById("kpis");
+  if (!barra || document.getElementById("velo-salud").hidden === false) return;   // panel abierto
+  const presentes = KPI_VISIBLES.map(x => x.dominio);
+  const fuera = KPI_POOL.filter(x => presentes.indexOf(x.dominio) === -1 &&
+                                     !KPI_VISIBLES.some(y => y.id === x.id));
+  let nuevo, i;
+  if (fuera.length) {
+    nuevo = fuera[Math.floor(Math.random() * fuera.length)];
+    i = Math.floor(Math.random() * KPI_VISIBLES.length);
+  } else {
+    const otros = KPI_POOL.filter(x => !KPI_VISIBLES.some(y => y.id === x.id));
+    if (!otros.length) return;
+    nuevo = otros[Math.floor(Math.random() * otros.length)];
+    i = KPI_VISIBLES.findIndex(x => x.dominio === nuevo.dominio);
+    if (i < 0) i = Math.floor(Math.random() * KPI_VISIBLES.length);
+  }
+  const viejo = barra.children[i];
+  KPI_VISIBLES[i] = nuevo;
+  const nodo = nodoKPI(nuevo, true);
+  if (viejo) barra.replaceChild(nodo, viejo); else barra.appendChild(nodo);
+}
+
+function pintarKPIs() {
+  if (!document.getElementById("kpis")) return;
+  const v = VER_DATOS;
+  const pide = f => fetch("datos/" + f + "?v=" + v).then(r => r.json()).catch(() => null);
+  Promise.all([pide("entsoe_mix.json"), pide("omie_precio.json"), pide("ree_vivo.json"),
+               pide("aemet_zonas.geojson"), pide("catalogo.json"), pide("agregados.json"),
+               pide("clima_recibo.json"), pide("clima_provincias.geojson")])
+    .then(([mix, omie, vivo, aemet, cat, agr, clima, prov]) => {
+      window.__KPI = { mix, omie, vivo, aemet, cat, agr, clima, prov };
+      const pool = indicadores(window.__KPI);
+      if (!pool.length) return;
+      KPI_POOL = pool;
+      /* Al refrescar los datos (cada 5 min) se conservan los chips que ya estaban: la barra no
+         se baraja sola delante del visitante; solo rota cuando toca rotar. */
+      let siguientes = KPI_VISIBLES
+        .map(x => pool.filter(y => y.id === x.id)[0])
+        .filter(Boolean);
+      if (siguientes.length < 4) {
+        const libres = pool.filter(x => !siguientes.some(y => y.dominio === x.dominio));
+        siguientes = siguientes.concat(reparteIndicadores(libres, 4 - siguientes.length));
+      }
+      KPI_VISIBLES = siguientes.slice(0, 4);
+      pintarBarraKPIs();
+    });
+}
+
+const barraKPI = document.getElementById("kpis");
+if (barraKPI) {
+  const pausa = v => { KPI_PAUSA = v; };
+  barraKPI.addEventListener("mouseenter", () => pausa(true));
+  barraKPI.addEventListener("mouseleave", () => pausa(false));
+  barraKPI.addEventListener("focusin", () => pausa(true));
+  barraKPI.addEventListener("focusout", () => pausa(false));
+}
+setInterval(rotarKPI, 18000);
 
 /* ---------------- paneles de los KPIs ----------------
    Un chip que no se puede pinchar es un adorno. Cada panel enseña el dato completo, de donde
@@ -1943,6 +2229,27 @@ function panelKPI(tipo) {
   if (tipo === "mix") return panelMix();
   if (tipo === "precio") return panelPrecio();
   if (tipo === "estado") return panelEstado();
+  const x = KPI_POOL.filter(y => y.id === tipo)[0];
+  if (x) panelIndicador(x);
+}
+
+/* Panel de un indicador del pool que no tiene panel propio: el chip ya declara dominio, ventana
+   y fuente, así que la ficha se construye con eso. Un chip sin panel no se pinta (el click del
+   contenedor busca data-panel y si no hay indicador, no abre nada). */
+function panelIndicador(x) {
+  const corto = x.etiqueta.split(" · ")[0];
+  const titulo = corto.charAt(0).toUpperCase() + corto.slice(1);
+  let h = `<h3>${x.icono} ${titulo}</h3>` +
+          `<div class="sb">${x.ventana || "sin ventana declarada"}</div>` +
+          `<div class="resumen">${kpiTarjeta(x.valor, x.etiqueta, x.clase)}</div>`;
+  if (x.detalle && x.detalle.length) {
+    h += `<table><tbody>` + x.detalle.map(f =>
+      `<tr><th>${f[0]}</th><td class="n">${f[1]}</td></tr>`).join("") + `</tbody></table>`;
+  }
+  h += `<p class="nota-kpi">Fuente: <b>${x.fuente || "—"}</b>. ` +
+       `Esta cifra rota en la barra de arriba: un chip por dominio, para que el visor no parezca ` +
+       `solo un tablero eléctrico.</p>`;
+  kpiCaja(h);
 }
 
 
@@ -2138,6 +2445,10 @@ const ETIQUETA = {
   Provincia:"Provincia", municipality:"Municipio", autonomous_region:"Comunidad", status:"Estado",
   cod_ine:"Código INE", nuts:"Código NUTS", poblacion:"Población", superficie_km2:"Superficie (km²)",
   magnitud:"Magnitud", profundidad_km:"Profundidad (km)", lugar:"Lugar", hora:"Hora", region:"Región",
+  /* clima: la unidad va EN la etiqueta, que es lo que impide leer "18" y no saber de qué */
+  temperatura:"Temperatura (°C)", sensacion:"Sensación (°C)", humedad:"Humedad (%)",
+  lluvia_mm:"Lluvia (mm/h)", viento_kmh:"Viento (km/h)", viento_dir:"Dirección del viento (°)",
+  rumbo:"Rumbo de la barba (°)", tiempo:"Estado del cielo", modelo:"Modelo", tramo:"Tramo",
   mensaje:"Mensaje del panel", carretera:"Carretera", km:"Kilómetro", nivel:"Nivel",
   potencia_max_kw:"Potencia máx. (kW)", conectores:"Conectores", direccion:"Dirección",
   titular:"Titular", tipo:"Tipo", categoria:"Categoría", uso:"Uso", estado_registro:"Estado",
@@ -2215,6 +2526,7 @@ const VALORES = {
   // DATEX · tráfico anómalo (la DGT añade códigos nuevos sin avisar: si aparece uno sin traducir,
   // el validador lo canta y el refresco NO se congela — el gate estricto es validar.yml)
   heavyTraffic: "Tráfico denso", queue: "Cola", stationaryTraffic: "Retención",
+  slowVehicle: "Vehículo lento", keepToTheLeft: "Obligación de circular por la izquierda",
   longTermRoadworks: "Obras de larga duración",
   // DATEX · carril
   allLanesCompleteCarriageway: "Calzada completa", rightLane: "Carril derecho",
@@ -2295,6 +2607,8 @@ const METRICAS = [
   ["capacidad_hm3_anio", "Capacidad", "hm³/año"], ["potencia_max_kw", "Potencia", "kW"],
   ["gasoleo_a", "Gasóleo A", "€/l"], ["magnitud", "Magnitud", "M"], ["km", "Distancia", "km"],
   ["poblacion_municipio", "Población del municipio", "hab"],
+  ["temperatura", "Temperatura", "°C"], ["viento_kmh", "Viento", "km/h"],
+  ["humedad", "Humedad", "%"],
 ];
 const numES = v => (typeof v === "number"
   ? v.toLocaleString("es-ES", { maximumFractionDigits: Math.abs(v) >= 100 ? 0 : 2 })

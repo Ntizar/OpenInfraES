@@ -525,6 +525,27 @@ def main():
                        "oficiales del padrón (INE, tabla 29005 en CSV, columna Municipios = código + nombre)"),
         }
 
+    # --- Clima: Open-Meteo (ICON/GFS), sin clave y con licencia CC BY 4.0 ---
+    r = leer("clima_recibo.json", {})
+    if r:
+        for capa, titulo, met in (
+            ("clima-temperatura", "Temperatura ahora (provincia)",
+             "modelo ICON/GFS por centroide de provincia (nuts3_es.geojson), paso 15 min"),
+            ("clima-viento", "Viento ahora (campo interpolado)",
+             "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; "
+             "rejilla aparte para Canarias"),
+        ):
+            fuentes[capa] = {
+                "capa": capa, "titulo": titulo,
+                "fuente": "Open-Meteo", "editor": r.get("editor") or "Open-Meteo",
+                "licencia": r.get("licencia") or "CC BY 4.0",
+                "actualizado": r.get("actualizado") or None,
+                "descargado": r.get("descargado"),
+                "features": r.get("features"),
+                "url": r.get("url") or "https://open-meteo.com/",
+                "metodo": met,
+            }
+
     sim = leer("simplificado/_recibo.json", {})
     simpl = {os.path.basename(c["id"]): c for c in sim.get("capas", [])}
 

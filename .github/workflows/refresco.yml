@@ -60,7 +60,7 @@ jobs:
         # anotacion de aviso en la ejecucion.
         continue-on-error: true
         run: |
-          for s in "ree_vivo.py" "omie.py" "entsoe.py --mix" "aemet_geo.py" "dgt_rt.py --incidencias" "dgt_rt.py --paneles" "ree_estado.py" "esios_prevision.py"; do
+          for s in "ree_vivo.py" "omie.py" "entsoe.py --mix" "aemet_geo.py" "dgt_rt.py --incidencias" "dgt_rt.py --paneles" "ree_estado.py" "esios_prevision.py" "clima.py"; do
             echo "=== $s ==="
             rc=0
             salida=$(python scripts/$s 2>&1) || rc=$?
@@ -75,6 +75,9 @@ jobs:
       - name: Catalogo y cifras
         continue-on-error: true
         run: |
+          # los agregados de la barra de KPIs se cuentan DESPUES de que las capas vivas se hayan
+          # refrescado: si no, la cifra de arriba va un ciclo por detras de su fuente
+          python scripts/agregados.py || true
           python scripts/fuentes_visor.py || true
           python scripts/catalogo.py || true
           python scripts/cifras.py || true

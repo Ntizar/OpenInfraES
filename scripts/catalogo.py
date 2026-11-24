@@ -35,6 +35,8 @@ ORGANISMO = {
     "INE · Eurostat GISCO": "INE / Eurostat", "INE · Cifras Oficiales del Padrón": "INE",
     "Visor Hermes — MITMA": "MITMA", "Renfe": "Renfe", "OMIE": "OMIE", "Adif": "Adif", "Adif · IDEADIF": "Adif", "IGME": "IGME", "EMODnet": "EMODnet",
     "Ministerio de Transportes (ArcGIS REST)": "MITMA",
+    # Open-Meteo no produce el dato: agrega los modelos ICON (DWD) y GFS (NOAA). Jerarquía 2.
+    "Open-Meteo": "Open-Meteo",
 }
 
 # --- licencia en tres estados (P3) ---
@@ -69,6 +71,8 @@ LICENCIA = {
     "OMIE": ("pendiente", "Sin cláusula de reutilización identificada para los datos publicados",
              "https://www.omie.es/es/aviso-legal"),
     "IGME": ("si", "Reutilización Ley 37/2007", "https://www.igme.es"),
+    "Open-Meteo": ("si", "CC BY 4.0 · atribuir a Open-Meteo y al modelo (ICON/GFS)",
+                   "https://open-meteo.com/en/license"),
     "EMODnet": ("si", "CC BY 4.0", "https://emodnet.ec.europa.eu/en/legal-notice"),
     "Adif": ("si", "CC BY 4.0 según ficha de datos.gob.es",
              "https://datos.gob.es/es/catalogo/e0dat0002-wfs-de-la-red-de-transporte-ferroviario-de-adif"),
@@ -82,6 +86,8 @@ TTL = {
     "embalses": (604800, "semanal", "foto"),
     "omie_precio": (3600, "cada subasta (≈13:00)", "vivo"),
     "ree_vivo": (300, "5 minutos", "vivo"),
+    "clima-temperatura": (900, "15 minutos (modelo)", "vivo"),
+    "clima-viento": (900, "15 minutos (modelo)", "vivo"),
     "entsoe_mix": (900, "15 minutos", "vivo"),
     "esios_prevision": (21600, "6 horas", "vivo"),
     "aemet_avisos": (3600, "cada hora", "vivo"),
@@ -123,7 +129,7 @@ JERARQUIA = {
     "INE": 1, "INE / Eurostat": 1, "MITECO": 1, "REE": 1, "Adif": 1, "DGT": 1,
     "AEMET": 1, "IGN": 1, "CSN": 1, "ENRESA": 1, "CORES": 1, "Enagás": 1,
     "I-ReWater HUB": 1, "OMIE": 1, "Renfe": 1, "EMSC-CSEM": 2,
-    "MITMA": 2, "EMODnet": 2, "IGME": 1, "OpenStreetMap": 3,
+    "MITMA": 2, "EMODnet": 2, "IGME": 1, "OpenStreetMap": 3, "Open-Meteo": 2,
 }
 ETIQUETA_JERARQUIA = {1: "organismo productor", 2: "organismo agregador", 3: "fuente comunitaria"}
 
