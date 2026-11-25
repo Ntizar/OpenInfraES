@@ -344,6 +344,19 @@
   #capas .txt { cursor:pointer; }
   #capas .txt:hover { color:var(--cian); }
   #capas .grupo-t { cursor:pointer; }
+  /* Filtro de capas y acordeon: con 101 capas la lista abierta no se usa en movil. */
+  #buscar-capa { display:flex; align-items:center; gap:6px; padding:0 12px 8px 15px; }
+  #buscar-capa input { flex:1; min-width:0; background:var(--panel2, #0c1016); border:1px solid var(--borde);
+    color:var(--texto, #e6edf3); font:inherit; font-size:11px; padding:4px 7px; border-radius:4px; }
+  #buscar-capa input::placeholder { color:var(--tenue, #94a3b3); }
+  #buscar-capa input:focus { outline:none; border-color:var(--cian, #22d3ee); }
+  #buscar-capa #qc-n { font-family:var(--mono); font-size:9px; color:var(--tenue, #94a3b3); }
+  #capas .chev { display:inline-block; width:10px; font-size:9px; color:var(--tenue, #94a3b3);
+    transition:transform .15s ease; }
+  #capas .grupo.cerrado .chev { transform:rotate(-90deg); }
+  #capas .grupo.cerrado .fila { display:none; }
+  #capas .grupo-t .cuenta { margin-left:auto; font-family:var(--mono); font-size:8.6px;
+    color:var(--tenue, #94a3b3); }
 
   #info-der .dist { margin:4px 0 2px; }
   #info-der .dl { display:flex; align-items:center; gap:6px; margin-bottom:3px; font-size:10.8px; }
@@ -732,6 +745,7 @@
   <div id="resultados"></div>
   <div id="vista-aviso"></div>
   <div id="presets"></div>
+  <div id="buscar-capa"><input id="qc" type="search" placeholder="Filtrar capas…" autocomplete="off"><b id="qc-n"></b></div>
   <div id="capas"></div>
   <div id="filtro-capa" hidden></div>
   <div id="opacidad"><label>Datos</label><input id="op" type="range" min="30" max="100" value="100"><b id="opv">100%</b></div>
@@ -1910,17 +1924,54 @@ L.control.scale({ position: "bottomright", metric: true, imperial: false, maxWid
 
 
 const panel = $("#capas");
+/* Con 17 grupos y 101 capas, una lista abierta son 120 líneas de scroll: en un móvil eso no se
+   usa, se abandona. Cada grupo nace CERRADO (salvo los que traen capas encendidas) y se abre con
+   el chevron; el nombre sigue abriendo la ficha del grupo, que es otra cosa. */
 Object.entries(grupos).forEach(([nombre, lista]) => {
   const d = document.createElement("div");
   d.className = "grupo";
   d.dataset.grupo = nombre;
-  d.innerHTML = '<div class="grupo-t">' + nombre + "</div>" + lista.map(c =>
+  const activas = lista.filter(c => c.on).length;
+  const hayActivas = CAPAS.some(c => c.on);
+  // Si hay capas encendidas, se abre su grupo; si no, el primero. Nunca todos cerrados: un panel
+  // en blanco parece roto.
+  const esPrimero = panel.querySelectorAll(".grupo").length === 0;
+  if (hayActivas ? !activas : !esPrimero) d.classList.add("cerrado");
+  d.innerHTML = '<div class="grupo-t"><span class="chev">▾</span>' + nombre +
+    '<span class="cuenta">' + lista.length + '</span></div>' + lista.map(c =>
     `<label class="fila" data-fila="${c.id}"><input type="checkbox" data-capa="${c.id}" ${c.on ? "checked" : ""}>` +
     `<span class="muestra ${c.tipo === "poligono" ? "pol" : ""}" style="background:${c.color};` +
     `${c.tipo === "poligono" ? "border-color:" + c.color : ""}"></span>` +
     `<span class="txt">${c.label}</span><span class="n" id="n-${c.id}"></span></label>`).join("");
+  d.querySelector(".chev").addEventListener("click", ev => {
+    ev.stopPropagation();                 // que no abra la ficha del grupo
+    d.classList.toggle("cerrado");
+  });
   panel.appendChild(d);
 });
+
+/* Filtro de capas: escribe y ves solo las que coinciden. Si buscas, los grupos se abren solos
+   (si no, filtrarías dentro de grupos cerrados y parecería que no hay resultados). */
+const qc = $("#qc"), qcN = $("#qc-n");
+if (qc) {
+  qc.addEventListener("input", () => {
+    const t = qc.value.trim().toLowerCase();
+    let visibles = 0;
+    panel.querySelectorAll(".grupo").forEach(g => {
+      let dentro = 0;
+      g.querySelectorAll(".fila").forEach(f => {
+        const casa = !t || f.textContent.toLowerCase().includes(t);
+        f.style.display = casa ? "" : "none";
+        if (casa) dentro++;
+      });
+      g.style.display = dentro ? "" : "none";
+      if (t) g.classList.toggle("cerrado", !dentro);
+      else if (!dentro) g.classList.add("cerrado");
+      visibles += dentro;
+    });
+    if (qcN) qcN.textContent = t ? visibles : "";
+  });
+}
 
 /* ---------------- vistas de la parte superior ----------------
    Un botón por GRUPO de capas, generado del propio array. La lista estaba escrita a mano y se
@@ -4778,7 +4829,7 @@ document.querySelectorAll("#capas .grupo").forEach(g => {
   const titulo = g.querySelector(".grupo-t");
   const lista = [...g.querySelectorAll("[data-capa]")].map(i => i.dataset.capa);
   const capasGrupo = CAPAS.filter(c => lista.includes(c.id));
-  if (titulo) titulo.addEventListener("click", () => abrirInfoGrupo(titulo.textContent, capasGrupo));
+  if (titulo) titulo.addEventListener("click", () => abrirInfoGrupo(g.dataset.grupo, capasGrupo));
   g.querySelectorAll(".fila").forEach(fila => {
     const txt = fila.querySelector(".txt");
     if (txt) txt.addEventListener("click", ev => { ev.preventDefault(); abrirInfoCapa(fila.dataset.fila); });
