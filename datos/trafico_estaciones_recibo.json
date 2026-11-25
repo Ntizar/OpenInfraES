@@ -1,0 +1,33 @@
+{
+ "fichero": "datos/trafico_estaciones.geojson",
+ "features": 1074,
+ "fuente": "Cabildo de Tenerife · Servicio Técnico de Carreteras y Movilidad (2025) y Generalitat de Catalunya · Servei Català de Trànsit (2022)",
+ "url": "https://datos.tenerife.es/ckan/dataset/1717bda1-6b7b-43e0-be4e-e3ed060b8b97/resource/c3fe76ac-d91c-46cf-a765-46c3a741c6a9/download/intensidad-media-diaria-de-trafico-2025.csv · https://analisi.transparenciacatalunya.cat/resource/xsvx-ym46.geojson",
+ "licencia": "CC BY 4.0 (Tenerife) · Reutilización con atribución (Cataluña)",
+ "descargado": "2026-11-25T11:43:25Z",
+ "actualizado": "2022-12-31",
+ "fecha_dato": "Canarias 2025 · Cataluña 2022",
+ "metodo": "Tenerife: CSV de IMD 2025 cruzado por estacion_id con el GeoJSON de estaciones del mismo portal. Cataluña: Socrata xsvx-ym46 filtrado a 2022, punto desde latitud/longitud.",
+ "campos": "ccaa, provincia, anio, red, fuente, carretera, tipo, estacion, imd, pesados_pct",
+ "detalle": {
+  "Canarias": {
+   "features": 330,
+   "anios": [
+    2025
+   ],
+   "fuentes": [
+    "Cabildo de Tenerife"
+   ]
+  },
+  "Cataluña": {
+   "features": 744,
+   "anios": [
+    2022
+   ],
+   "fuentes": [
+    "Generalitat · SCT"
+   ]
+  }
+ },
+ "nota": "Canarias solo tiene Tenerife: Gran Canaria y el Gobierno de Canarias no publican aforos vectoriales. Baleares no publica nada vectorial (solo un PDF con el mapa de Mallorca). En Cataluña el dato es de 2022 y por estación: la Generalitat no da IMD por tramo en abierto."
+}

@@ -101,7 +101,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 
 ## Capas del visor
 
-**98 capas en 17 grupos temáticos**, con carga bajo demanda: nada se descarga hasta que lo enciendes.
+**99 capas en 17 grupos temáticos**, con carga bajo demanda: nada se descarga hasta que lo enciendes.
 
 <!-- CIFRAS-GRUPOS:INICIO (lo reescribe scripts/cifras.py) -->
 | Grupo | Capas | Objetos |
@@ -111,9 +111,9 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **Gas** | 6 | 843 |
 | **Agua** | 15 | 17.753 |
 | **Demografía** | 6 | 45.668 |
-| **Transporte** | 22 | 39.860 |
+| **Transporte** | 23 | 42.252 |
 | **DGT · Tráfico** | 4 | 16.809 |
-| **Tiempo real** | 3 | 12.223 |
+| **Tiempo real** | 3 | 12.243 |
 | **Riesgo** | 3 | 122 |
 | **Medio ambiente** | 4 | 16.130 |
 | **Patrimonio** | 1 | 20.116 |
@@ -123,7 +123,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **Equipamientos** | 2 | 3.540 |
 | **Relieve** | 2 | 19.739 |
 | **Clima** | 2 | 104 |
-| **Total** | **98** | **317.050** |
+| **Total** | **99** | **319.462** |
 <!-- CIFRAS-GRUPOS:FIN -->
 
 Los objetos se cuentan de los ficheros que usa cada grupo **sin contar dos veces el mismo fichero**
@@ -410,9 +410,9 @@ hay que atribuir a OpenStreetMap y compartir igual. El **código** (visor, scrip
 | | |
 |---|---|
 | Capas en el visor | **77** en **14 grupos** |
-| Capas documentadas en `fuentes.json` | **123** |
+| Capas documentadas en `fuentes.json` | **124** |
 | Fusión geoespacial | **4.784 EDAR** únicas desde 8.708 filas de tres fuentes |
-| Organismos citados | **19** — MITECO, MITMA, IGN, REE, DGT, AEMET, CSN, CORES, Enagás, ENRESA, INE, Renfe, Adif, EMSC-CSEM, I-ReWater HUB, OpenStreetMap |
+| Organismos citados | **20** — MITECO, MITMA, IGN, REE, DGT, AEMET, CSN, CORES, Enagás, ENRESA, INE, Renfe, Adif, EMSC-CSEM, I-ReWater HUB, OpenStreetMap |
 | Fuentes sin clave | MITECO, IGN, MITMA, Enagás, CORES, CSN, ENRESA, Renfe, Adif, DGT, AEMET, INE, OMIE, ESIOS (19 indicadores) |
 | Fuentes con clave | NAP de transportes (`ApiKey`), ENTSO-E (token), ESIOS (indicadores cerrados) |
 

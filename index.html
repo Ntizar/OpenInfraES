@@ -1451,7 +1451,9 @@ const CAPAS = [
     color:"#0ea5e9", fichero:"datos/municipios.geojson", opacidad:.34, peso:1.1, zoomMin:7,
     paleta:"secuencial",
     popupTitulo:"nombre", colorCampo:"color", corteVar:"municipios_poblacion",
-    campos:["cod_ine","poblacion","anio_poblacion","area_km2","provincia"] },
+    campos:["cod_ine","poblacion","anio_poblacion","area_km2","provincia"],
+    etiquetas:{cod_ine:"Código INE", poblacion:"Población", anio_poblacion:"Año del padrón",
+               area_km2:"Superficie (km²)", provincia:"Código de provincia"} },
   { id:"nucleos", grupo:"Demografía", label:"Núcleos de población (IGN)", tipo:"punto", on:false,
     color:"#a855f7", fichero:"datos/nucleos.geojson", radio:2.2, zoomMin:9, ocultaHasta:9,
     popupTitulo:"nombre", campos:["municipio","provincia","poblacion","hombres","mujeres"],
@@ -1488,10 +1490,10 @@ const CAPAS = [
 
   { id:"carreteras", grupo:"Transporte", label:"Carreteras del Estado", tipo:"linea", on:false, color:"#64748b",
     fichero:"datos/hermes/carreteras.geojson", peso:1.1, opacidad:.6, zoomMin:7.5 },
-  { id:"trafico-ccaa", grupo:"Transporte", label:"IMD de tráfico por comunidades · estatal 2021 + CV 2025 + AR 2022", tipo:"linea", on:false,
+  { id:"trafico-ccaa", grupo:"Transporte", label:"IMD de tráfico por comunidades · red estatal y autonómica", tipo:"linea", on:false,
     color:"#f97316", fichero:"datos/trafico_ccaa.geojson", peso:2.6, opacidad:.9, zoomMin:6.5,
     popupTitulo:"carretera", colorCampo:"color", filtroCampo:{campo:"ccaa", etiqueta:"Comunidad"},
-    nota:"IMD en vehículos/día · el año de cada tramo va en su ficha",
+    nota:"IMD en vehículos/día · cada tramo lleva su año y su fuente en la ficha",
     rampa:[{color:"#22c55e",etiqueta:"menos de 2.000"},{color:"#84cc16",etiqueta:"2.000 – 5.000"},
            {color:"#eab308",etiqueta:"5.000 – 10.000"},{color:"#f97316",etiqueta:"10.000 – 25.000"},
            {color:"#ef4444",etiqueta:"25.000 – 50.000"},{color:"#7f1d1d",etiqueta:"50.000 o más"}],
@@ -1501,6 +1503,17 @@ const CAPAS = [
                tipo:"Tipo de vía", titular:"Titular",
                pk_inicio:"PK inicio", pk_fin:"PK fin", km:"Longitud (km)", imd:"IMD (veh/día)",
                pesados_pct:"Pesados (%)"} },
+  { id:"trafico-estaciones", grupo:"Transporte", label:"Aforos por estación · Tenerife 2025 · Cataluña 2022", tipo:"punto", on:false,
+    color:"#ef4444", fichero:"datos/trafico_estaciones.geojson", radio:3, zoomMin:7, ocultaHasta:7,
+    popupTitulo:"carretera", colorCampo:"color", filtroCampo:{campo:"ccaa", etiqueta:"Comunidad"},
+    nota:"IMD en vehículos/día, por estación de aforo",
+    rampa:[{color:"#22c55e",etiqueta:"menos de 2.000"},{color:"#84cc16",etiqueta:"2.000 – 5.000"},
+           {color:"#eab308",etiqueta:"5.000 – 10.000"},{color:"#f97316",etiqueta:"10.000 – 25.000"},
+           {color:"#ef4444",etiqueta:"25.000 – 50.000"},{color:"#7f1d1d",etiqueta:"50.000 o más"}],
+    campos:["ccaa","provincia","anio","red","fuente","estacion","tipo","imd","pesados_pct"],
+    etiquetas:{ccaa:"Comunidad", provincia:"Isla o provincia", anio:"Año del aforo", red:"Red",
+               fuente:"Fuente del dato", estacion:"Estación", tipo:"Tramo",
+               imd:"IMD · veh/día", pesados_pct:"% de pesados"} },
   { id:"puertos", grupo:"Transporte", label:"Puertos interés general", tipo:"punto", on:false, color:"#38bdf8",
     fichero:"datos/hermes/puertos-interes-general.geojson", radio:8 },
   { id:"faros", grupo:"Transporte", label:"Faros y señales marítimas (IGN)", tipo:"punto", on:false,
@@ -2818,7 +2831,7 @@ const ETIQUETA = {
   provincia_municipio: "Provincia del municipio", cod_demar: "Código de demarcación",
   demarcacion_oficial: "Demarcación (nombre oficial)",
   poblacion_fuente: "Fuente de la población", provincia_nombre: "Provincia",
-  provincia: "Código de provincia",
+  provincia: "Provincia", provincia_codigo: "Código de provincia",
   paraje: "Paraje", municipio: "Núcleo municipal", exacta: "Exacta", aproximada: "Aproximada",
   geo_precision: "Precisión de la coordenada", indice_impacto_hidrologico: "Índice de impacto",
   desde: "Desde", hasta: "Hasta", carretera: "Carretera",
@@ -2835,6 +2848,9 @@ const ETIQUETA = {
   mensaje:"Mensaje del panel", carretera:"Carretera", km:"Kilómetro", nivel:"Nivel",
   potencia_max_kw:"Potencia máx. (kW)", conectores:"Conectores", direccion:"Dirección",
   titular:"Titular", tipo:"Tipo", categoria:"Categoría", uso:"Uso", estado_registro:"Estado",
+  // tráfico: la unidad va en la etiqueta, que un 8.683 sin más no dice nada
+  ccaa:"Comunidad", anio:"Año del dato", red:"Red", fuente:"Fuente del dato",
+  estacion:"Estación de aforo", imd:"IMD · vehículos/día", pesados_pct:"% de pesados",
   densidad:"Densidad (hab/km²)", paro_pct:"Tasa de paro", superficie_km2:"Superficie (km²)",
   poblacion:"Población", nuts:"Código NUTS", tecnologia_ree:"Tecnología (REE)",
   // aeródromos (OurAirports) y alertas de desastre (GDACS)
@@ -2854,8 +2870,11 @@ const ETIQUETA = {
   tipo_linea:"Tipo de línea", referencia:"Referencia del deslinde"
 };
 
-function nombreCampo(k) {
-  return ETIQUETA[k] || k.replace(/_/g, " ").replace(/\w/g, m => m.toUpperCase());
+function nombreCampo(k, c) {
+  // Lo que declara la capa gana al diccionario global: `etiquetas` llevaba 100 capas escrito
+  // para nada, y es donde una capa sabe que su `km` es un punto kilometrico y no una distancia.
+  if (c && c.etiquetas && c.etiquetas[k]) return c.etiquetas[k];
+  return ETIQUETA[k] || k.replace(/_/g, " ").replace(/\b\w/g, m => m.toUpperCase());
 }
 
 /* Códigos de estado del registro: al usuario le dicen algo, al leerlos crudos no.

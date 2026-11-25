@@ -1,14 +1,14 @@
 {
  "fichero": "datos/trafico_ccaa.geojson",
- "features": 6080,
+ "features": 7398,
  "fuente": "Red del Estado (MITMA, 2021) + redes autonómicas de Comunitat Valenciana (GVA · ICV, 2025) y Aragón (DGA, 2022)",
  "editor": "MITMA · DGC / GVA · Institut Cartogràfic Valencià / Gobierno de Aragón",
  "url": "https://services1.arcgis.com/nCKYwcSONQTkPA4K/arcgis/rest/services/Mapa_de_tráfico_de_la_DGC_2021/FeatureServer/0 · https://terramapas.icv.gva.es/0902_Aforos · https://idearagon.aragon.es/servicios/rest/services/CARRETERAS/AFOROS_ARAGON_GENERICO/MapServer",
  "licencia": "Reutilización con atribución (Ley 37/2007) · MITMA, GVA y DGA",
- "descargado": "2026-11-25T11:29:10Z",
+ "descargado": "2026-11-25T11:44:46Z",
  "actualizado": "2021-12-31",
- "fecha_dato": "Estatal 2021 · Aragón 2022 · Comunitat Valenciana 2025",
- "cobertura": "13 comunidades y ciudades autónomas con dato; red autonómica propia en Aragón, Comunitat Valenciana",
+ "fecha_dato": "Estatal 2021 · Aragón 2022 · Comunitat Valenciana 2025 · Navarra 2025",
+ "cobertura": "15 comunidades y ciudades autónomas con dato; red autonómica propia en Aragón, Comunitat Valenciana, Navarra",
  "metodo": "Estatal: trafico_imd.geojson (MITMA 2021, simplificado) con la provincia traducida a comunidad. CV: WFS 2.0 ms:Aforos2025 en GML (posList lat/lon). AR: query f=json sobre AFOROS_ARAGON_GENERICO/1 (DGA 2022). Redondeo a 4 decimales y un vértice cada ~50 m.",
  "detalle": {
   "Andalucía": {
@@ -146,13 +146,26 @@
    ]
   },
   "Navarra": {
-   "features": 6,
+   "features": 657,
    "anios": [
-    2021
+    2021,
+    2024,
+    2025
    ],
-   "km": 39.0,
+   "km": 5323.9,
    "redes": [
+    "Autonómica",
     "Estatal"
+   ]
+  },
+  "País Vasco": {
+   "features": 667,
+   "anios": [
+    2025
+   ],
+   "km": 1545.0,
+   "redes": [
+    "Foral"
    ]
   },
   "Principado de Asturias": {

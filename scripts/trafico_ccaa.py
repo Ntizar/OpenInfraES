@@ -260,8 +260,119 @@ def aragon():
     return salida
 
 
+def pide(url, intentos=3):
+    for i in range(intentos):
+        try:
+            return urllib.request.urlopen(
+                urllib.request.Request(url, headers={"User-Agent": UA}), timeout=120).read()
+        except Exception:
+            if i == intentos - 1:
+                raise
+            import time
+            time.sleep(2 + 3 * i)
+
+
+def _tramos(geometrias, props, km_fijo=None):
+    """Convierte las geometrias de una consulta en features con el esquema comun del visor.
+
+    `km_fijo` sirve cuando la fuente ya publica la longitud y es mas fiable que medirla.
+    """
+    salida = []
+    for crudo in geometrias:
+        crudo = [x for x in crudo if len(x) >= 2]
+        if len(crudo) < 2:
+            continue
+        km = km_fijo if km_fijo else largo_km([crudo])
+        partes = [x for x in (limpia(t) for t in [crudo]) if len(x) >= 2]
+        if not partes:
+            continue
+        p = dict(props)
+        p["km"] = round(km, 3) if km else None
+        p["color"] = color(p.get("imd"))
+        geom = ({"type": "LineString", "coordinates": partes[0]} if len(partes) == 1
+                else {"type": "MultiLineString", "coordinates": partes})
+        salida.append({"type": "Feature", "geometry": geom, "properties": p})
+    return salida
+
+
+# ---------------------------------------------------------------- Navarra (WFS IDENA)
+NAVARRA = ("https://idena.navarra.es/ogc/wfs?service=WFS&version=2.0.0&request=GetFeature"
+           "&typeNames=IDENA:INFRAE_Lin_AforoTrafico_DT&srsName=EPSG:4326&count=2000"
+           "&outputFormat=application/json")
+
+
+def navarra():
+    d = json.loads(pide(NAVARRA))
+    salida = []
+    for f in d.get("features") or []:
+        a, g = f.get("properties") or {}, f.get("geometry") or {}
+        if not g.get("coordinates"):
+            continue
+        coords = g["coordinates"] if g.get("type", "").startswith("Multi") else [g["coordinates"]]
+        imd, pesado = entero(a.get("IMDTOTAL")), entero(a.get("IMDPESADOS"))
+        salida += _tramos(coords, {
+            "ccaa": "Navarra", "provincia": "Navarra",
+            "anio": entero(str(a.get("FECHADATE") or "")[:4]) or 2024,
+            "red": "Autonómica", "fuente": "Gobierno de Navarra",
+            "carretera": (a.get("CARRETERA") or "").strip() or None,
+            "tipo": a.get("TIPO"), "titular": "Gobierno de Navarra",
+            "estacion": a.get("ESTACION"),
+            "pk_inicio": a.get("PKORIGEN"), "pk_fin": a.get("PKFINAL"),
+            "imd": imd,
+            "pesados_pct": round(100.0 * pesado / imd) if (pesado is not None and imd) else None})
+    print("  Navarra: %d tramos" % len(salida))
+    return salida
+
+
+# ---------------------------------------------------------------- Bizkaia (ArcGIS DFB)
+BIZKAIA = "https://geo.bizkaia.eus/arcgisserver/rest/services/Garraioa_Transporte/GHCN/MapServer"
+
+
+def bizkaia():
+    # La capa de tramos solo trae el codigo de estacion; el nombre de la via esta en la de
+    # puntos, asi que se cruzan por CODIGO_ESTACION.
+    carreteras = {}
+    try:
+        d = json.loads(pide(BIZKAIA + "/29/query?where=1%3D1&outFields=CODIGO_ESTACION,CODCARRE"
+                            "&returnGeometry=false&f=json&resultRecordCount=2000"))
+        for f in d.get("features") or []:
+            a = f.get("attributes") or {}
+            if a.get("CODIGO_ESTACION"):
+                carreteras[str(a["CODIGO_ESTACION"]).strip()] = (a.get("CODCARRE") or "").strip()
+    except Exception as e:
+        print("  Bizkaia: sin nombres de via (%s)" % str(e)[:50])
+    salida, offset = [], 0
+    while True:
+        u = (BIZKAIA + "/127/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326"
+             "&f=geojson&resultRecordCount=1000&resultOffset=" + str(offset))
+        d = json.loads(pide(u))
+        lote = d.get("features") or []
+        for f in lote:
+            a, g = f.get("properties") or {}, f.get("geometry") or {}
+            if not g.get("coordinates"):
+                continue
+            coords = g["coordinates"] if g.get("type", "").startswith("Multi") else [g["coordinates"]]
+            largo = a.get("Shape.STLength()") or 0
+            cod = str(a.get("CODIGO_ESTACION") or "").strip()
+            salida += _tramos(coords, {
+                "ccaa": "País Vasco", "provincia": "Bizkaia",
+                "anio": entero(a.get("ANIO")), "red": "Foral",
+                "fuente": "Diputación Foral de Bizkaia",
+                "carretera": carreteras.get(cod) or None,
+                "tipo": None, "titular": "Diputación Foral de Bizkaia",
+                "estacion": cod,
+                "pk_inicio": None, "pk_fin": None,
+                "imd": entero(a.get("IMD")),
+                "pesados_pct": a.get("PESA_M_P")}, km_fijo=largo / 1000.0 if largo else None)
+        if len(lote) < 1000:
+            break
+        offset += 1000
+    print("  Bizkaia: %d tramos" % len(salida))
+    return salida
+
+
 def main():
-    features = nacional() + valencia() + aragon()
+    features = nacional() + valencia() + aragon() + navarra() + bizkaia()
     if len(features) < 800:
         raise SystemExit("solo %d tramos: no se publica" % len(features))
     ahora = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -281,8 +392,11 @@ def main():
         e["redes"].add(x.get("red"))
         e["fuentes"].add(x.get("fuente"))
     anios = {a for v in por_ccaa.values() for a in v["anios"]}
-    propias = sorted(c for c, v in por_ccaa.items() if "Autonómica" in v["redes"])
-    con_dato = {c: v for c, v in por_ccaa.items() if v["features"] >= 20}
+    # "propia" = la comunidad publica su propia red (autonomica, foral o insular); el resto solo
+    # tiene lo que le pasa el Estado.
+    propias = sorted(c for c, v in por_ccaa.items()
+                     if v["redes"] & {"Autonómica", "Foral", "Insular"})
+    con_dato = {c: v for c, v in por_ccaa.items() if v["features"]}
     rec = {"fichero": "datos/trafico_ccaa.geojson", "features": len(features),
            "fuente": "Red del Estado (MITMA, 2021) + redes autonómicas de Comunitat Valenciana "
                      "(GVA · ICV, 2025) y Aragón (DGA, 2022)",
@@ -299,7 +413,7 @@ def main():
            "actualizado": "%d-12-31" % min(anios),
            "fecha_dato": "Estatal 2021 · %s" % " · ".join(
                "%s %d" % (c, max(por_ccaa[c]["anios"])) for c in propias),
-           "cobertura": "%d comunidades y ciudades autónomas con dato; red autonómica propia en %s"
+           "cobertura": "%d comunidades y ciudades autónomas con dato; red propia (no estatal) en %s"
                         % (len(con_dato), ", ".join(propias)),
            "metodo": "Estatal: trafico_imd.geojson (MITMA 2021, simplificado) con la provincia "
                      "traducida a comunidad. CV: WFS 2.0 ms:Aforos2025 en GML (posList lat/lon). "

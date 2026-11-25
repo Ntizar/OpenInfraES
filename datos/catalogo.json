@@ -1,21 +1,21 @@
 {
- "generado": "2026-11-25T11:30:57",
+ "generado": "2026-11-25T11:49:03",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 123,
+ "total": 124,
  "resumen": {
   "licencia_si": 118,
-  "licencia_pendiente": 5,
-  "caducados": 28,
+  "licencia_pendiente": 6,
+  "caducados": 29,
   "oficiales": 109,
-  "comunitarias": 14,
+  "comunitarias": 15,
   "por_jerarquia": {
    "1": 85,
    "2": 24,
-   "3": 14
+   "3": 15
   },
-  "descargables_ligeros": 61,
-  "kb_total": 154413.8
+  "descargables_ligeros": 62,
+  "kb_total": 156857.8
  },
  "avisos": {
   "pendiente": [
@@ -23,7 +23,8 @@
    "generacion-electrica-provincia",
    "gtfsrt",
    "interelec",
-   "plantas"
+   "plantas",
+   "trafico-estaciones"
   ],
   "sin_organismo": [],
   "caducado": [
@@ -54,7 +55,8 @@
    "residuos-radiactivos",
    "solares",
    "subestaciones",
-   "trafico-ccaa"
+   "trafico-ccaa",
+   "trafico-estaciones"
   ]
  },
  "capas": {
@@ -945,7 +947,7 @@
    "bytes": null,
    "kb": null,
    "fecha_dato": "2026-11-25T12:30",
-   "fecha_descarga": "2026-11-25T11:30:57Z",
+   "fecha_descarga": "2026-11-25T11:42:09Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -969,10 +971,10 @@
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76119,
+   "bytes": 76117,
    "kb": 74.3,
    "fecha_dato": "2026-11-25T12:30",
-   "fecha_descarga": "2026-11-25T11:30:57Z",
+   "fecha_descarga": "2026-11-25T11:42:09Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -996,10 +998,10 @@
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76119,
+   "bytes": 76117,
    "kb": 74.3,
    "fecha_dato": "2026-11-25T12:30",
-   "fecha_descarga": "2026-11-25T11:30:57Z",
+   "fecha_descarga": "2026-11-25T11:42:09Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1023,10 +1025,10 @@
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 54412,
+   "bytes": 54408,
    "kb": 53.1,
    "fecha_dato": "2026-11-25T12:30",
-   "fecha_descarga": "2026-11-25T11:30:57Z",
+   "fecha_descarga": "2026-11-25T11:42:09Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1778,11 +1780,11 @@
    "ttl_segundos": 120,
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
-   "features": 375,
-   "bytes": 107105,
-   "kb": 104.6,
-   "fecha_dato": "2026-11-25T10:42:13",
-   "fecha_descarga": "2026-11-25T10:42:06",
+   "features": 395,
+   "bytes": 112658,
+   "kb": 110.0,
+   "fecha_dato": "2026-11-25T11:42:13",
+   "fecha_descarga": "2026-11-25T11:42:08",
    "edad_dias": 0,
    "caducado": false
   },
@@ -3273,7 +3275,7 @@
   },
   "trafico-ccaa": {
    "id": "trafico-ccaa",
-   "titulo": "IMD de tráfico por comunidades · estatal 2021 + CV 2025 + AR 2022",
+   "titulo": "IMD de tráfico por comunidades · red estatal y autonómica",
    "organismo": "MITMA",
    "oficial": true,
    "jerarquia": 2,
@@ -3290,12 +3292,39 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
-   "features": 6080,
-   "bytes": 4980954,
-   "kb": 4864.2,
+   "features": 7398,
+   "bytes": 7111611,
+   "kb": 6944.9,
    "fecha_dato": "2021-12-31",
-   "fecha_descarga": "2026-11-25T11:29:10Z",
+   "fecha_descarga": "2026-11-25T11:44:46Z",
    "edad_dias": 1790,
+   "caducado": true
+  },
+  "trafico-estaciones": {
+   "id": "trafico-estaciones",
+   "titulo": "Aforos por estación · Tenerife 2025 · Cataluña 2022",
+   "organismo": "Cabildo de Tenerife · Servicio Técnico de Carreteras y Movilidad (2025) y Generalitat de Catalunya · Servei Català de Trànsit (2022)",
+   "oficial": false,
+   "jerarquia": 3,
+   "jerarquia_txt": "fuente comunitaria",
+   "producto": "Tenerife: CSV de IMD 2025 cruzado por estacion_id con el GeoJSON de estaciones del mismo portal. Cataluña: Socrata xsvx-ym46 filtrado a 2022, punto desde latitud/longitud.",
+   "licencia": {
+    "estado": "pendiente",
+    "nombre": "sin evaluar",
+    "url_terminos": ""
+   },
+   "endpoint": "https://datos.tenerife.es/ckan/dataset/1717bda1-6b7b-43e0-be4e-e3ed060b8b97/resource/c3fe76ac-d91c-46cf-a765-46c3a741c6a9/download/intensidad-media-diaria-de-trafico-2025.csv · https://analisi.transparenciacatalunya.cat/resource/xsvx-ym46.geojson",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual o inferior",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-25",
+   "crs": "EPSG:4326",
+   "features": 1074,
+   "bytes": 366535,
+   "kb": 357.9,
+   "fecha_dato": "2022-12-31",
+   "fecha_descarga": "2026-11-25T11:43:25Z",
+   "edad_dias": 1425,
    "caducado": true
   },
   "trasvases": {
