@@ -4,9 +4,9 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 1082,
+ "features": 1073,
  "paneles_localizados": 2537,
- "descargado": "2026-11-25T08:52:07",
+ "descargado": "2026-11-25T09:17:51",
  "mensajes_top": [
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
@@ -22,23 +22,23 @@
   },
   {
    "texto": "@H @F",
-   "paneles": 70
+   "paneles": 71
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD",
-   "paneles": 58
+   "paneles": 60
   },
   {
    "texto": "PREVISION NEVADAS · INFORMESE Y PLANIFIQUE SU VIAJE",
    "paneles": 33
   },
   {
-   "texto": "MODERE LA VELOCIDAD",
-   "paneles": 25
+   "texto": "SOL BAJO MODERE VELOCIDAD",
+   "paneles": 21
   },
   {
-   "texto": "SOL BAJO MODERE VELOCIDAD",
-   "paneles": 22
+   "texto": "MODERE LA VELOCIDAD",
+   "paneles": 19
   },
   {
    "texto": "MODERE VELOCIDAD",
