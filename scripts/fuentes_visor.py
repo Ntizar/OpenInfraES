@@ -7,9 +7,28 @@ Overpass y el recibo de simplificacion. El visor pinta esta tabla en el panel 'F
 import datetime
 import json
 import os
+import re
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATOS = os.path.join(RAIZ, "datos")
+
+
+def etiquetas_del_visor():
+    """id -> label de CAPAS en index.html. El título de la ficha sale del mismo sitio que la
+    leyenda: si la capa no declara su título en el recibo, no se inventa otro."""
+    html = open(os.path.join(RAIZ, "index.html"), encoding="utf-8").read()
+    ini = html.index("const CAPAS = [")
+    fin = html.index("];", ini)
+    bloque = html[ini:fin]
+    salida = {}
+    for m in re.finditer(r'id:"([a-z0-9\-_]+)"', bloque):
+        et = re.search(r'label:"([^"]+)"', bloque[m.end():m.end() + 400])
+        if et:
+            salida[m.group(1)] = et.group(1)
+    return salida
+
+
+ETIQUETAS = etiquetas_del_visor()
 HOY = datetime.date.today().isoformat()
 
 # cada capa, a su organismo oficial. Sin agregadores.
@@ -597,7 +616,7 @@ def main():
         if not (r.get("fuente") and r.get("licencia") and r.get("features") is not None):
             continue
         fuentes[capa] = {
-            "capa": capa, "titulo": r.get("titulo") or capa,
+            "capa": capa, "titulo": r.get("titulo") or ETIQUETAS.get(capa) or capa,
             "fuente": r.get("fuente"), "editor": r.get("editor") or r.get("fuente"),
             "licencia": r.get("licencia"),
             "actualizado": r.get("actualizado") or r.get("descargado"),

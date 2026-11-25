@@ -1,21 +1,21 @@
 {
- "generado": "2026-11-25T10:17:40",
+ "generado": "2026-11-25T10:18:56",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 122,
+ "total": 123,
  "resumen": {
-  "licencia_si": 117,
+  "licencia_si": 118,
   "licencia_pendiente": 5,
   "caducados": 27,
-  "oficiales": 108,
+  "oficiales": 109,
   "comunitarias": 14,
   "por_jerarquia": {
    "1": 85,
-   "2": 23,
+   "2": 24,
    "3": 14
   },
   "descargables_ligeros": 61,
-  "kb_total": 149590.6
+  "kb_total": 151277.2
  },
  "avisos": {
   "pendiente": [
@@ -1517,7 +1517,7 @@
   },
   "faros": {
    "id": "faros",
-   "titulo": "faros",
+   "titulo": "Faros y señales marítimas (IGN)",
    "organismo": "IGN",
    "oficial": true,
    "jerarquia": 1,
@@ -2408,7 +2408,7 @@
   },
   "nucleos": {
    "id": "nucleos",
-   "titulo": "nucleos",
+   "titulo": "Núcleos de población (IGN)",
    "organismo": "IGN",
    "oficial": true,
    "jerarquia": 1,
@@ -3267,6 +3267,33 @@
    "kb": 1515.0,
    "fecha_dato": "2026-11-25",
    "fecha_descarga": "2026-11-25",
+   "edad_dias": 0,
+   "caducado": false
+  },
+  "trafico-imd": {
+   "id": "trafico-imd",
+   "titulo": "Intensidad de tráfico · IMD por tramo (MITMA)",
+   "organismo": "MITMA",
+   "oficial": true,
+   "jerarquia": 2,
+   "jerarquia_txt": "organismo agregador",
+   "producto": "query f=geojson sobre Mapa2019web/MapServer/2 (Tramos), paginado de 1000 en 1000, simplificado a 0,0015° y redondeado a 4 decimales",
+   "licencia": {
+    "estado": "si",
+    "nombre": "Ley 37/2007 · NAP",
+    "url_terminos": "https://nap.transportes.gob.es"
+   },
+   "endpoint": "https://mapas.fomento.gob.es/arcgis/rest/services/MapaTrafico/Mapa2019web/MapServer/2",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual o inferior",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-25",
+   "crs": "EPSG:4326",
+   "features": 4896,
+   "bytes": 1727045,
+   "kb": 1686.6,
+   "fecha_dato": "2026-11-25T10:17:34Z",
+   "fecha_descarga": "2026-11-25T10:17:34Z",
    "edad_dias": 0,
    "caducado": false
   },

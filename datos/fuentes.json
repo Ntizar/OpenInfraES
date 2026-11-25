@@ -1336,7 +1336,7 @@
   },
   "faros": {
    "capa": "faros",
-   "titulo": "faros",
+   "titulo": "Faros y señales marítimas (IGN)",
    "fuente": "IGN · SignA (SCNE)",
    "editor": "Instituto Geográfico Nacional (SCNE)",
    "licencia": "CC BY 4.0 · © Instituto Geográfico Nacional de España",
@@ -1360,7 +1360,7 @@
   },
   "nucleos": {
    "capa": "nucleos",
-   "titulo": "nucleos",
+   "titulo": "Núcleos de población (IGN)",
    "fuente": "IGN · SignA (SCNE)",
    "editor": "Instituto Geográfico Nacional (SCNE)",
    "licencia": "CC BY 4.0 · © Instituto Geográfico Nacional de España",
@@ -1441,6 +1441,18 @@
    "features": 4946,
    "url": "https://signa.ign.es/",
    "metodo": "Capa 4 de 07_orografia_paisaje"
+  },
+  "trafico-imd": {
+   "capa": "trafico-imd",
+   "titulo": "Intensidad de tráfico · IMD por tramo (MITMA)",
+   "fuente": "MITMA · Mapa de Tráfico (IMD por tramo)",
+   "editor": "Ministerio de Transportes y Movilidad Sostenible",
+   "licencia": "Reutilización Ley 37/2007 con atribución (© MITMA)",
+   "actualizado": "2026-11-25T10:17:34Z",
+   "descargado": "2026-11-25T10:17:34Z",
+   "features": 4896,
+   "url": "https://mapas.fomento.gob.es/arcgis/rest/services/MapaTrafico/Mapa2019web/MapServer/2",
+   "metodo": "query f=geojson sobre Mapa2019web/MapServer/2 (Tramos), paginado de 1000 en 1000, simplificado a 0,0015° y redondeado a 4 decimales"
   },
   "tuneles-rce": {
    "capa": "tuneles-rce",
@@ -1586,5 +1598,5 @@
    "kb": 7
   }
  },
- "total_capas": 122
+ "total_capas": 123
 }

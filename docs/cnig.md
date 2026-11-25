@@ -90,7 +90,23 @@ capa vectorial en un visor de 3,9 GB de RAM. Bases topográficas BTN25/BTN100/BC
 SignA a otra escala con mucho más peso. Mapas provinciales/autonómicos y documentación antigua: no
 son datos.
 
-## 6. Cómo se vuelve a comprobar
+## 6. El tráfico: qué publica cada uno (medido)
+
+La DGT **no publica intensidades**. Su catálogo del NAP (`nap.dgt.es/es/dataset`) tiene 21
+conjuntos: incidencias (DATEX II y LOD), cámaras, paneles (localizaciones y tiempo real), radares
+fijos, ZBE, límites, INVIVE, tramos de riesgo para motos, recarga eléctrica, TEFIVA, señalización
+de Valencia y Gipuzkoa, e incidencias del País Vasco, Cataluña y Madrid. «Mapa de Tráfico» y «Mapa
+de Movilidad» son **aplicaciones** (enlaces a `etraffic.dgt.es`), no datos. Su API CKAN responde
+401/403 sin clave.
+
+La IMD oficial es del **MITMA** (Mapa de Tráfico). En `mapas.fomento.gob.es` hay servicios por año
+—`MapaTrafico/Mapa2015web` … `Mapa2019web`— con `Tramos` (IMD total, ligero y pesado, PK, longitud)
+y `Estaciones`. **2020 y 2021 están publicados pero vacíos**: el último año con datos es 2019.
+
+De ahí sale la capa `trafico-imd`: 4.896 tramos, 26.437 km, IMD mediana 8.683 veh/día y máxima
+180.615. La fecha del dato (2019) se declara en la ficha; no se disfraza de actual.
+
+## 7. Cómo se vuelve a comprobar
 
 ```bash
 python3 ~/.hermes/cache/scratch/cnig/barrido_cnig.py    # 125 fichas → series.json (1 min)

@@ -1,0 +1,15 @@
+{
+ "fichero": "datos/trafico_imd.geojson",
+ "features": 4896,
+ "fuente": "MITMA · Mapa de Tráfico (IMD por tramo)",
+ "editor": "Ministerio de Transportes y Movilidad Sostenible",
+ "url": "https://mapas.fomento.gob.es/arcgis/rest/services/MapaTrafico/Mapa2019web/MapServer/2",
+ "licencia": "Reutilización Ley 37/2007 con atribución (© MITMA)",
+ "descargado": "2026-11-25T10:17:34Z",
+ "fecha_dato": "2019 (año del aforo)",
+ "metodo": "query f=geojson sobre Mapa2019web/MapServer/2 (Tramos), paginado de 1000 en 1000, simplificado a 0,0015° y redondeado a 4 decimales",
+ "km_aforados": 26437.1,
+ "imd_mediana": 8683,
+ "imd_maxima": 180615,
+ "nota": "La DGT no publica intensidades en abierto (su NAP tiene incidencias, cámaras, paneles, radares y ZBE). El Mapa de Tráfico del MITMA es el dato oficial de IMD; en este servicio el último año con datos es 2019: las capas de 2020 y 2021 están publicadas pero vacías."
+}

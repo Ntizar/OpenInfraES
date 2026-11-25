@@ -1473,6 +1473,12 @@ const CAPAS = [
 
   { id:"carreteras", grupo:"Transporte", label:"Carreteras del Estado", tipo:"linea", on:false, color:"#64748b",
     fichero:"datos/hermes/carreteras.geojson", peso:1.1, opacidad:.6, zoomMin:7.5 },
+  { id:"trafico-imd", grupo:"Transporte", label:"Intensidad de tráfico · IMD por tramo (MITMA)", tipo:"linea", on:false,
+    color:"#ef4444", fichero:"datos/trafico_imd.geojson", peso:2.6, opacidad:.85, zoomMin:6.5,
+    popupTitulo:"carretera", colorCampo:"color",
+    campos:["tipo","pk_inicio","pk_fin","km","imd","imd_ligero","imd_pesado","provincia"],
+    etiquetas:{tipo:"Tipo de vía", pk_inicio:"PK inicio", pk_fin:"PK fin", km:"Longitud (km)",
+               imd:"IMD (veh/día)", imd_ligero:"Ligeros/día", imd_pesado:"Pesados/día"} },
   { id:"puertos", grupo:"Transporte", label:"Puertos interés general", tipo:"punto", on:false, color:"#38bdf8",
     fichero:"datos/hermes/puertos-interes-general.geojson", radio:8 },
   { id:"faros", grupo:"Transporte", label:"Faros y señales marítimas (IGN)", tipo:"punto", on:false,
