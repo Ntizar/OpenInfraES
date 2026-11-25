@@ -742,7 +742,7 @@
    "licencia": "abierta con atribución",
    "actualizado": "2026-11-18",
    "descargado": "2026-11-25",
-   "features": 74,
+   "features": 76,
    "url": "https://www.seismicportal.eu/fdsnws/event/1/query",
    "metodo": "FDSN query con bbox de Espana"
   },
@@ -970,7 +970,7 @@
    "licencia": "reutilización con atribución",
    "actualizado": null,
    "descargado": "2026-11-25",
-   "features": 879,
+   "features": 921,
    "url": "https://nap.dgt.es",
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Paneles DGT DATEX2 v3.7"
   },
@@ -982,7 +982,7 @@
    "licencia": "reutilización con atribución",
    "actualizado": null,
    "descargado": "2026-11-25",
-   "features": 780,
+   "features": 769,
    "url": "https://nap.dgt.es",
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Incidencias DGT DATEX2 v3.7"
   },
@@ -1004,9 +1004,9 @@
    "fuente": "Operadores (Renfe)",
    "editor": "GTFS-Realtime",
    "licencia": "condiciones del editor",
-   "actualizado": "2026-11-25T04:12:15",
-   "descargado": "2026-11-25T04:12:06",
-   "features": 147,
+   "actualizado": "2026-11-25T05:12:13",
+   "descargado": "2026-11-25T05:12:06",
+   "features": 381,
    "url": "https://gtfsrt.renfe.com/vehicle_positions.pb",
    "metodo": "protobuf GTFS-RT, refresco continuo"
   },
@@ -1017,7 +1017,7 @@
    "editor": "AEMET · Meteoalerta",
    "licencia": "© AEMET, citar como autora",
    "actualizado": "20261124",
-   "descargado": "2026-11-25T04:36:13",
+   "descargado": "2026-11-25T05:36:23",
    "features": 47,
    "url": "https://www.aemet.es/es/eltiempo/prediccion/avisos",
    "metodo": "tar.gz de GeoJSON de la pagina de avisos (sin clave)"
@@ -1040,8 +1040,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-25T05:30",
-   "descargado": "2026-11-25T04:36:20Z",
+   "actualizado": "2026-11-25T06:30",
+   "descargado": "2026-11-25T05:36:29Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el poligono), paso 15 min"
@@ -1052,8 +1052,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-25T05:30",
-   "descargado": "2026-11-25T04:36:20Z",
+   "actualizado": "2026-11-25T06:30",
+   "descargado": "2026-11-25T05:36:29Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias"
@@ -1124,8 +1124,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-25T05:30",
-   "descargado": "2026-11-25T04:36:20Z",
+   "actualizado": "2026-11-25T06:30",
+   "descargado": "2026-11-25T05:36:29Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el polígono), paso 15 min"
@@ -1136,8 +1136,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-25T05:30",
-   "descargado": "2026-11-25T04:36:20Z",
+   "actualizado": "2026-11-25T06:30",
+   "descargado": "2026-11-25T05:36:29Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "una llamada por lotes a /v1/forecast (current) y rejilla IDW vectorial propia"

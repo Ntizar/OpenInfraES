@@ -4,29 +4,25 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 879,
+ "features": 921,
  "paneles_localizados": 2537,
- "descargado": "2026-11-25T04:36:15",
+ "descargado": "2026-11-25T05:36:25",
  "mensajes_top": [
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
    "paneles": 167
   },
   {
-   "texto": "@H @F",
-   "paneles": 92
+   "texto": "MODERE LA VELOCIDAD",
+   "paneles": 125
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 87
+   "paneles": 92
   },
   {
-   "texto": "MODERE LA VELOCIDAD",
-   "paneles": 59
-  },
-  {
-   "texto": "CON LLUVIA MODERE VELOCIDAD",
-   "paneles": 50
+   "texto": "@H @F",
+   "paneles": 86
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD",
@@ -34,15 +30,19 @@
   },
   {
    "texto": "PREVISION NEVADAS · INFORMESE Y PLANIFIQUE SU VIAJE",
-   "paneles": 26
-  },
-  {
-   "texto": "PRECAUCION BANCOS DE NIEBLA",
-   "paneles": 14
+   "paneles": 28
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
    "paneles": 11
+  },
+  {
+   "texto": "MAQUINAS EN TRATAMIENTO INVERNAL",
+   "paneles": 8
+  },
+  {
+   "texto": "PRECAUCION BANCOS DE NIEBLA",
+   "paneles": 7
   },
   {
    "texto": "CARRIL IZQUIERDO BUS-VAO · CARRIL ESQUERRE BUS-VAO",
