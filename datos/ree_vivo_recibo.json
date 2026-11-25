@@ -2,171 +2,171 @@
  "fuente": "REE · ESIOS",
  "url": "https://api.esios.ree.es/indicators",
  "fecha": "2026-11-25",
- "descargado": "2026-11-25T11:30:33",
+ "descargado": "2026-11-25T11:50:11",
  "indicadores_ok": 27,
  "indicadores_probados": 27,
  "series": {
   "demanda": {
    "id": 2037,
    "puntos": 72,
-   "ultimo": 37771.0,
-   "hora": "12:15"
+   "ultimo": 38010.0,
+   "hora": "12:35"
   },
   "demanda_gen": {
    "id": 10004,
    "puntos": 72,
-   "ultimo": 51316.0,
-   "hora": "12:15"
+   "ultimo": 51561.0,
+   "hora": "12:35"
   },
   "eolica": {
    "id": 2038,
    "puntos": 72,
-   "ultimo": 16924.0,
-   "hora": "12:15"
+   "ultimo": 16839.0,
+   "hora": "12:35"
   },
   "nuclear": {
    "id": 2039,
    "puntos": 72,
-   "ultimo": 6101.0,
-   "hora": "12:15"
+   "ultimo": 6098.0,
+   "hora": "12:35"
   },
   "carbon": {
    "id": 2040,
    "puntos": 72,
    "ultimo": 169.0,
-   "hora": "12:15"
+   "hora": "12:35"
   },
   "ciclo": {
    "id": 2041,
    "puntos": 72,
-   "ultimo": 2222.0,
-   "hora": "12:15"
+   "ultimo": 2233.0,
+   "hora": "12:35"
   },
   "hidro": {
    "id": 2042,
    "puntos": 72,
-   "ultimo": -1975.0,
-   "hora": "12:15"
+   "ultimo": -1743.0,
+   "hora": "12:35"
   },
   "solar_fv": {
    "id": 2044,
    "puntos": 72,
-   "ultimo": 17670.0,
-   "hora": "12:15"
+   "ultimo": 17712.0,
+   "hora": "12:35"
   },
   "solar_ter": {
    "id": 2045,
    "puntos": 72,
-   "ultimo": 20.0,
-   "hora": "12:15"
+   "ultimo": 33.0,
+   "hora": "12:35"
   },
   "termica_renovable": {
    "id": 2046,
    "puntos": 72,
-   "ultimo": 364.0,
-   "hora": "12:15"
+   "ultimo": 365.0,
+   "hora": "12:35"
   },
   "diesel": {
    "id": 2047,
    "puntos": 72,
-   "ultimo": 252.0,
-   "hora": "12:15"
+   "ultimo": 248.0,
+   "hora": "12:35"
   },
   "turbina_gas": {
    "id": 2048,
    "puntos": 72,
-   "ultimo": 67.0,
-   "hora": "12:15"
+   "ultimo": 61.0,
+   "hora": "12:35"
   },
   "turbina_vapor": {
    "id": 2049,
    "puntos": 72,
    "ultimo": 502.0,
-   "hora": "12:15"
+   "hora": "12:35"
   },
   "auxiliar": {
    "id": 2050,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "12:15"
+   "hora": "12:35"
   },
   "cogen_residuos": {
    "id": 2051,
    "puntos": 72,
-   "ultimo": 1229.0,
-   "hora": "12:15"
+   "ultimo": 1228.0,
+   "hora": "12:35"
   },
   "intercambios": {
    "id": 2043,
    "puntos": 72,
-   "ultimo": -5687.0,
-   "hora": "12:15"
+   "ultimo": -5701.0,
+   "hora": "12:35"
   },
   "co2": {
    "id": 10355,
    "puntos": 72,
    "ultimo": 0.03,
-   "hora": "12:15"
+   "hora": "12:35"
   },
   "exp_andorra": {
    "id": 2068,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "12:15"
+   "hora": "12:35"
   },
   "imp_andorra": {
    "id": 2073,
    "puntos": 72,
    "ultimo": 24.0,
-   "hora": "12:15"
+   "hora": "12:35"
   },
   "exp_marruecos": {
    "id": 2069,
    "puntos": 72,
-   "ultimo": -729.0,
-   "hora": "12:15"
+   "ultimo": -649.0,
+   "hora": "12:35"
   },
   "imp_marruecos": {
    "id": 2074,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "12:15"
+   "hora": "12:35"
   },
   "exp_portugal": {
    "id": 2070,
    "puntos": 72,
-   "ultimo": -3907.0,
-   "hora": "12:15"
+   "ultimo": -3914.0,
+   "hora": "12:35"
   },
   "imp_portugal": {
    "id": 2075,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "12:15"
+   "hora": "12:35"
   },
   "exp_francia": {
    "id": 2071,
    "puntos": 72,
-   "ultimo": -1005.0,
-   "hora": "12:15"
+   "ultimo": -1073.0,
+   "hora": "12:35"
   },
   "imp_francia": {
    "id": 2076,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "12:15"
+   "hora": "12:35"
   },
   "bombeo_cons": {
    "id": 2078,
    "puntos": 72,
-   "ultimo": -3335.0,
-   "hora": "12:15"
+   "ultimo": -3306.0,
+   "hora": "12:35"
   },
   "bombeo_turb": {
    "id": 2079,
    "puntos": 72,
    "ultimo": 0.0,
-   "hora": "12:15"
+   "hora": "12:35"
   }
  },
  "fallos": []
