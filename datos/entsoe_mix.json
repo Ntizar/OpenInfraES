@@ -9,7 +9,7 @@
  "puntos_enviados": 389,
  "cuartos_cubiertos": 42,
  "hora_ultimo": "11:15",
- "edad_min": 36,
+ "edad_min": 40,
  "series": 21,
  "total_mwh": 336958.0,
  "consumo_total_mwh": 17373.0,
@@ -270,7 +270,7 @@
    "mw_medio": 0.0
   }
  ],
- "descargado": "2026-11-25T10:51:37",
+ "descargado": "2026-11-25T10:55:22",
  "unidad": "MWh (MW del cuarto x 0,25 h; series comprimidas rellenadas hasta el siguiente punto)",
  "capacidad_tecnologia_mw": {
   "cogeneration": 7164.4,
