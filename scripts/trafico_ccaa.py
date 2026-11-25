@@ -77,6 +77,66 @@ def limpia(coords, dec=4, paso=0.0005):
     return out
 
 
+# ---------------------------------------------------------------- provincia -> comunidad
+# La capa nacional trae `provincia`; para filtrar por comunidad hace falta este mapa. Se
+# escriben las dos formas oficiales donde las hay (Alicante/Alacant) porque el dato viene asi.
+PROVINCIA_A_CCAA = {
+    "Almería": "Andalucía", "Cádiz": "Andalucía", "Córdoba": "Andalucía", "Granada": "Andalucía",
+    "Huelva": "Andalucía", "Jaén": "Andalucía", "Málaga": "Andalucía", "Sevilla": "Andalucía",
+    "Huesca": "Aragón", "Teruel": "Aragón", "Zaragoza": "Aragón",
+    "Asturias": "Principado de Asturias",
+    "Illes Balears": "Illes Balears", "Baleares": "Illes Balears",
+    "Las Palmas": "Canarias", "Santa Cruz de Tenerife": "Canarias",
+    "Cantabria": "Cantabria",
+    "Ávila": "Castilla y León", "Burgos": "Castilla y León", "León": "Castilla y León",
+    "Palencia": "Castilla y León", "Salamanca": "Castilla y León", "Segovia": "Castilla y León",
+    "Soria": "Castilla y León", "Valladolid": "Castilla y León", "Zamora": "Castilla y León",
+    "Albacete": "Castilla-La Mancha", "Ciudad Real": "Castilla-La Mancha",
+    "Cuenca": "Castilla-La Mancha", "Guadalajara": "Castilla-La Mancha", "Toledo": "Castilla-La Mancha",
+    "Barcelona": "Cataluña", "Girona": "Cataluña", "Lleida": "Cataluña", "Tarragona": "Cataluña",
+    "Alicante/Alacant": "Comunitat Valenciana", "Castellón/Castelló": "Comunitat Valenciana",
+    "Valencia/València": "Comunitat Valenciana",
+    "Badajoz": "Extremadura", "Cáceres": "Extremadura",
+    "A Coruña": "Galicia", "Lugo": "Galicia", "Ourense": "Galicia", "Pontevedra": "Galicia",
+    "La Rioja": "La Rioja", "Madrid": "Comunidad de Madrid", "Murcia": "Región de Murcia",
+    "Navarra": "Navarra",
+    "Araba/Álava": "País Vasco", "Gipuzkoa": "País Vasco", "Bizkaia": "País Vasco",
+    "Ceuta": "Ceuta", "Melilla": "Melilla",
+}
+
+
+def ccaa_de(provincia):
+    p = (provincia or "").strip()
+    return PROVINCIA_A_CCAA.get(p, p or "Sin provincia")
+
+
+# ---------------------------------------------------------------- red del Estado (MITMA 2021)
+# Ya esta descargada por trafico_imd.py: aqui solo se etiqueta con su comunidad para que el
+# selector del visor la pueda filtrar. Es lo que da cobertura en las 17 comunidades y las dos
+# ciudades autonomas; en Pais Vasco, Navarra, Baleares y Canarias apenas hay red del Estado.
+def nacional():
+    with open(os.path.join(DEST, "trafico_imd.geojson"), encoding="utf-8") as fh:
+        gj = json.load(fh)
+    salida = []
+    for f in gj.get("features") or []:
+        a, g = f.get("properties") or {}, f.get("geometry")
+        if not g:
+            continue
+        imd = entero(a.get("imd"))
+        pesado = entero(a.get("imd_pesado"))
+        salida.append({"type": "Feature", "geometry": g, "properties": {
+            "ccaa": ccaa_de(a.get("provincia")), "anio": a.get("anio") or 2021,
+            "red": "Estatal", "fuente": "MITMA",
+            "carretera": a.get("carretera"), "tipo": a.get("tipo"),
+            "titular": a.get("titular") or "Estatal",
+            "pk_inicio": a.get("pk_inicio"), "pk_fin": a.get("pk_fin"),
+            "km": a.get("km"), "imd": imd,
+            "pesados_pct": round(100.0 * pesado / imd) if (pesado is not None and imd) else None,
+            "color": a.get("color") or color(imd)}})
+    print("  Estatal MITMA: %d" % len(salida))
+    return salida
+
+
 # ---------------------------------------------------------------- Comunitat Valenciana (WFS)
 CV = "https://terramapas.icv.gva.es/0902_Aforos"
 CV_ANIO = 2025
@@ -127,6 +187,7 @@ def valencia():
                 imd = entero(props.get("imd"))
                 salida.append({"type": "Feature", "geometry": geom, "properties": {
                     "ccaa": "Comunitat Valenciana", "anio": CV_ANIO,
+                    "red": "Autonómica", "fuente": "GVA",
                     "carretera": props.get("carretera") or None,
                     "tipo": props.get("tipo_calzada") or None,
                     "titular": props.get("titular") or None,
@@ -144,7 +205,7 @@ def valencia():
 # ---------------------------------------------------------------- Aragón (ArcGIS REST)
 AR = ("https://idearagon.aragon.es/servicios/rest/services/CARRETERAS/"
       "AFOROS_ARAGON_GENERICO/MapServer")
-AR_CAPAS = ((1, "DGA", 2022), (5, "MITMA", 2021))
+AR_CAPAS = ((1, "DGA", 2022),)   # el MITMA de Aragon ya llega por la capa nacional
 
 
 def aragon():
@@ -182,6 +243,7 @@ def aragon():
                     pct = round(100.0 * entero(a.get("IMD_PESADO")) / imd)
                 salida.append({"type": "Feature", "geometry": geom, "properties": {
                     "ccaa": "Aragón", "anio": anio,
+                    "red": "Autonómica" if red == "DGA" else "Estatal", "fuente": red,
                     "carretera": (a.get("CTRA") or a.get("CARRETERA") or "").strip() or None,
                     "tipo": (a.get("DESCRIPCIO") or a.get("TIPO") or None),
                     "titular": red,
@@ -199,39 +261,57 @@ def aragon():
 
 
 def main():
-    features = valencia() + aragon()
+    features = nacional() + valencia() + aragon()
     if len(features) < 800:
-        raise SystemExit("solo %d tramos autonómicos: no se publica" % len(features))
+        raise SystemExit("solo %d tramos: no se publica" % len(features))
     ahora = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     with open(os.path.join(DEST, "trafico_ccaa.geojson"), "w", encoding="utf-8") as fh:
         json.dump({"type": "FeatureCollection", "generado": ahora,
-                   "fuente": "Redes autonómicas de carreteras (GVA, DGA)", "features": features},
-                  fh, ensure_ascii=False, separators=(",", ":"))
+                   "fuente": "Red del Estado (MITMA 2021) y redes autonómicas (GVA 2025, DGA 2022)",
+                   "features": features}, fh, ensure_ascii=False, separators=(",", ":"))
     por_ccaa = {}
     for f in features:
-        c = f["properties"]["ccaa"]
-        e = por_ccaa.setdefault(c, {"features": 0, "anios": set(), "km": 0.0})
+        x = f["properties"]
+        e = por_ccaa.setdefault(x["ccaa"], {"features": 0, "anios": set(), "km": 0.0,
+                                            "redes": set(), "fuentes": set()})
         e["features"] += 1
-        e["anios"].add(f["properties"]["anio"])
-        e["km"] += f["properties"]["km"] or 0
+        if x.get("anio"):
+            e["anios"].add(int(x["anio"]))
+        e["km"] += x.get("km") or 0
+        e["redes"].add(x.get("red"))
+        e["fuentes"].add(x.get("fuente"))
+    anios = {a for v in por_ccaa.values() for a in v["anios"]}
+    propias = sorted(c for c, v in por_ccaa.items() if "Autonómica" in v["redes"])
+    con_dato = {c: v for c, v in por_ccaa.items() if v["features"] >= 20}
     rec = {"fichero": "datos/trafico_ccaa.geojson", "features": len(features),
-           "fuente": "Comunitat Valenciana (GVA · ICV) y Aragón (DGA)",
-           "editor": "GVA · Institut Cartogràfic Valencià / Gobierno de Aragón · IDEARAGON",
-           "url": "https://terramapas.icv.gva.es/0902_Aforos · "
+           "fuente": "Red del Estado (MITMA, 2021) + redes autonómicas de Comunitat Valenciana "
+                     "(GVA · ICV, 2025) y Aragón (DGA, 2022)",
+           "editor": "MITMA · DGC / GVA · Institut Cartogràfic Valencià / Gobierno de Aragón",
+           "url": "https://services1.arcgis.com/nCKYwcSONQTkPA4K/arcgis/rest/services/"
+                  "Mapa_de_tráfico_de_la_DGC_2021/FeatureServer/0 · "
+                  "https://terramapas.icv.gva.es/0902_Aforos · "
                   "https://idearagon.aragon.es/servicios/rest/services/CARRETERAS/"
                   "AFOROS_ARAGON_GENERICO/MapServer",
-           "licencia": "Reutilización con atribución (Ley 37/2007) · GVA y DGA",
+           "licencia": "Reutilización con atribución (Ley 37/2007) · MITMA, GVA y DGA",
            "descargado": ahora,
-           "actualizado": "%d-12-31" % max(max(v["anios"]) for v in por_ccaa.values()),
-           "fecha_dato": ", ".join("%s %s" % (c, "-".join(sorted(str(a) for a in v["anios"])))
-                                   for c, v in por_ccaa.items()),
-           "metodo": "CV: WFS 2.0 ms:Aforos2025 en GML (posList lat/lon). AR: query f=geojson "
-                     "sobre AFOROS_ARAGON_GENERICO/1 (DGA 2022) y /5 (MITMA 2021). "
-                     "Simplificado a 0,0015° y redondeado a 4 decimales.",
-           "detalle": {c: {"features": v["features"], "anios": sorted(str(a) for a in v["anios"]),
-                           "km": round(v["km"], 1)} for c, v in por_ccaa.items()},
-           "nota": "Continuación de trafico-imd (MITMA 2021): aquí manda la comunidad, y el año "
-                   "va por feature para no mezclar 2025 con 2022 sin avisar."}
+           # La ficha del catalogo no debe vender frescura que no hay: la base estatal es de
+           # 2021 y solo dos comunidades van por delante. El año de cada tramo va en el popup.
+           "actualizado": "%d-12-31" % min(anios),
+           "fecha_dato": "Estatal 2021 · %s" % " · ".join(
+               "%s %d" % (c, max(por_ccaa[c]["anios"])) for c in propias),
+           "cobertura": "%d comunidades y ciudades autónomas con dato; red autonómica propia en %s"
+                        % (len(con_dato), ", ".join(propias)),
+           "metodo": "Estatal: trafico_imd.geojson (MITMA 2021, simplificado) con la provincia "
+                     "traducida a comunidad. CV: WFS 2.0 ms:Aforos2025 en GML (posList lat/lon). "
+                     "AR: query f=json sobre AFOROS_ARAGON_GENERICO/1 (DGA 2022). Redondeo a 4 "
+                     "decimales y un vértice cada ~50 m.",
+           "detalle": {c: {"features": v["features"], "anios": sorted(v["anios"]),
+                           "km": round(v["km"], 1), "redes": sorted(x for x in v["redes"] if x)}
+                       for c, v in sorted(por_ccaa.items())},
+           "nota": "El año va por tramo porque no hay un dato nacional posterior a 2021: cada "
+                   "comunidad se queda con el suyo y el popup lo dice. País Vasco, Navarra, "
+                   "Baleares y Canarias apenas tienen red del Estado (está transferida), así que "
+                   "ahí solo aparecen los pocos tramos estatales que quedan."}
     with open(os.path.join(DEST, "trafico_ccaa_recibo.json"), "w", encoding="utf-8") as fh:
         json.dump(rec, fh, ensure_ascii=False, indent=1)
     print("trafico_ccaa: %d tramos · %s" % (len(features), rec["fecha_dato"]))

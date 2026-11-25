@@ -1,21 +1,21 @@
 {
- "generado": "2026-11-25T11:15:35",
+ "generado": "2026-11-25T11:29:25",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 124,
+ "total": 123,
  "resumen": {
   "licencia_si": 118,
-  "licencia_pendiente": 6,
-  "caducados": 29,
+  "licencia_pendiente": 5,
+  "caducados": 28,
   "oficiales": 109,
-  "comunitarias": 15,
+  "comunitarias": 14,
   "por_jerarquia": {
    "1": 85,
    "2": 24,
-   "3": 15
+   "3": 14
   },
   "descargables_ligeros": 61,
-  "kb_total": 154795.6
+  "kb_total": 154415.3
  },
  "avisos": {
   "pendiente": [
@@ -23,8 +23,7 @@
    "generacion-electrica-provincia",
    "gtfsrt",
    "interelec",
-   "plantas",
-   "trafico-ccaa"
+   "plantas"
   ],
   "sin_organismo": [],
   "caducado": [
@@ -55,8 +54,7 @@
    "residuos-radiactivos",
    "solares",
    "subestaciones",
-   "trafico-ccaa",
-   "trafico-imd"
+   "trafico-ccaa"
   ]
  },
  "capas": {
@@ -3275,55 +3273,28 @@
   },
   "trafico-ccaa": {
    "id": "trafico-ccaa",
-   "titulo": "Tráfico por comunidades · IMD (CV 2025 · AR 2022)",
-   "organismo": "Comunitat Valenciana (GVA · ICV) y Aragón (DGA)",
-   "oficial": false,
-   "jerarquia": 3,
-   "jerarquia_txt": "fuente comunitaria",
-   "producto": "CV: WFS 2.0 ms:Aforos2025 en GML (posList lat/lon). AR: query f=geojson sobre AFOROS_ARAGON_GENERICO/1 (DGA 2022) y /5 (MITMA 2021). Simplificado a 0,0015° y redondeado a 4 decimales.",
-   "licencia": {
-    "estado": "pendiente",
-    "nombre": "sin evaluar",
-    "url_terminos": ""
-   },
-   "endpoint": "https://terramapas.icv.gva.es/0902_Aforos · https://idearagon.aragon.es/servicios/rest/services/CARRETERAS/AFOROS_ARAGON_GENERICO/MapServer",
-   "modo": "foto",
-   "frecuencia_fuente": "mensual o inferior",
-   "ttl_segundos": 2592000,
-   "ultima_verificacion": "2026-11-25",
-   "crs": "EPSG:4326",
-   "features": 1539,
-   "bytes": 3569491,
-   "kb": 3485.8,
-   "fecha_dato": "2025-12-31",
-   "fecha_descarga": "2026-11-25T10:53:47Z",
-   "edad_dias": 329,
-   "caducado": true
-  },
-  "trafico-imd": {
-   "id": "trafico-imd",
-   "titulo": "Intensidad de tráfico · IMD 2021 por tramo (MITMA)",
+   "titulo": "IMD de tráfico por comunidades · estatal 2021 + CV 2025 + AR 2022",
    "organismo": "MITMA",
    "oficial": true,
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
-   "producto": "query f=geojson sobre Tramos2021 del FeatureServer de la DGC, paginado de 1000 en 1000, simplificado a 0,0015° y redondeado a 4 decimales",
+   "producto": "Estatal: trafico_imd.geojson (MITMA 2021, simplificado) con la provincia traducida a comunidad. CV: WFS 2.0 ms:Aforos2025 en GML (posList lat/lon). AR: query f=json sobre AFOROS_ARAGON_GENERICO/1 (DGA 2022). Redondeo a 4 decimales y un vértice cada ~50 m.",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
     "url_terminos": "https://nap.transportes.gob.es"
    },
-   "endpoint": "https://services1.arcgis.com/nCKYwcSONQTkPA4K/arcgis/rest/services/Mapa_de_tr%C3%A1fico_de_la_DGC_2021/FeatureServer/2",
+   "endpoint": "https://services1.arcgis.com/nCKYwcSONQTkPA4K/arcgis/rest/services/Mapa_de_tráfico_de_la_DGC_2021/FeatureServer/0 · https://terramapas.icv.gva.es/0902_Aforos · https://idearagon.aragon.es/servicios/rest/services/CARRETERAS/AFOROS_ARAGON_GENERICO/MapServer",
    "modo": "foto",
    "frecuencia_fuente": "mensual o inferior",
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
-   "features": 4921,
-   "bytes": 1800948,
-   "kb": 1758.7,
+   "features": 6080,
+   "bytes": 4980954,
+   "kb": 4864.2,
    "fecha_dato": "2021-12-31",
-   "fecha_descarga": "2026-11-25T10:27:29Z",
+   "fecha_descarga": "2026-11-25T11:29:10Z",
    "edad_dias": 1790,
    "caducado": true
   },
