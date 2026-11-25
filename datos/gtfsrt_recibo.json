@@ -1,13 +1,13 @@
 {
  "fuente": "GTFS-Realtime (protobuf)",
- "descargado": "2026-11-25T10:42:06",
+ "descargado": "2026-11-25T11:42:08",
  "feeds": {
   "renfe": {
    "operador": "Renfe",
    "url": "https://gtfsrt.renfe.com/vehicle_positions.pb",
-   "vehiculos": 375,
-   "lineas": 30,
-   "timestamp_feed": "2026-11-25T10:42:13+00:00"
+   "vehiculos": 395,
+   "lineas": 28,
+   "timestamp_feed": "2026-11-25T11:42:13+00:00"
   }
  }
 }
