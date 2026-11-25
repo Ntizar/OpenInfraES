@@ -51,21 +51,33 @@ def pide(url, timeout=180):
 
 
 def capa(servicio, lid, tam=2000):
-    """Descarga una capa entera paginando: el IGN corta en 2.000 y marca exceededTransferLimit."""
-    salida, offset = [], 0
-    while True:
-        q = urllib.parse.urlencode({"where": "1=1", "outFields": "*", "outSR": "4326",
-                                    "f": "geojson", "resultOffset": offset,
-                                    "resultRecordCount": tam})
-        d = pide("%s/%s/MapServer/%d/query?%s" % (BASE, servicio, lid, q))
-        fs = d.get("features") or []
-        salida.extend(fs)
-        if not d.get("exceededTransferLimit") or not fs:
-            break
-        offset += len(fs)
-        if offset > 400000:
-            break
-    return salida
+    """Descarga una capa entera.
+
+    El servicio corta en 2.000 y marca `exceededTransferLimit`, pero **no respeta bien
+    `resultOffset`**: en esta capa devolvía 3.571 filas para 2.688 reales (solape silencioso), y
+    esos duplicados viajaban al GeoJSON. Se pide el volcado entero de una vez y, si aun así corta,
+    se pagina por tandas de `OBJECTID`, nunca por offset.
+    """
+    base = "%s/%s/MapServer/%d/query?" % (BASE, servicio, lid)
+    d = pide(base + urllib.parse.urlencode({"where": "1=1", "outFields": "*", "outSR": "4326",
+                                            "f": "geojson", "resultRecordCount": 10000}))
+    fs = d.get("features") or []
+    vistos = {(f.get("properties") or {}).get("OBJECTID") for f in fs}
+    if d.get("exceededTransferLimit"):
+        ids = (pide(base + urllib.parse.urlencode({"where": "1=1", "returnIdsOnly": "true",
+                                                   "f": "json"})) or {}).get("objectIds") or []
+        for i in range(0, len(ids), 200):
+            lote = ids[i:i + 200]
+            dd = pide(base + urllib.parse.urlencode({
+                "where": "OBJECTID IN (%s)" % ",".join(str(x) for x in lote),
+                "outFields": "*", "outSR": "4326", "f": "geojson"}))
+            for f in dd.get("features") or []:
+                oid = (f.get("properties") or {}).get("OBJECTID")
+                if oid in vistos:
+                    continue
+                vistos.add(oid)
+                fs.append(f)
+    return fs
 
 
 def limpia(s):
@@ -184,6 +196,15 @@ def escribe(nombre, feats, meta):
     print("%-28s %6d  %7.1f KB" % (nombre, len(feats), kb), flush=True)
 
 
+SERVICIOS = "Signa/05_servicios_industria"
+
+# Sanidad: el IGN separa los hospitales (capa 1) del resto de centros sanitarios (capa 2) y de las
+# residencias de mayores (capa 3). Hospitales y centros van en UNA capa con el tipo como atributo y
+# fundidos a 60 m: un hospital y su centro de especialidades son la misma chincheta. Las residencias
+# son otro uso —dónde vive alguien, no dónde te atienden— y van en su propia capa.
+SANIDAD = [(1, "Hospital", 1, "#ef4444"), (2, "Centro sanitario", 2, "#f472b6")]
+
+
 def relieve():
     """Cimas acotadas y alineaciones montañosas: la altitud es el dato que las hace útiles."""
     cimas = []
@@ -216,6 +237,68 @@ def relieve():
     return cimas, sierras
 
 
+def sanidad():
+    """Hospitales y otros centros sanitarios en una sola capa, con el tipo como atributo."""
+    crudos, vistos = [], set()
+    for lid, categoria, prioridad, color in SANIDAD:
+        for f in capa(SERVICIOS, lid):
+            if not f.get("geometry") or f["geometry"].get("type") != "Point":
+                continue
+            p = f.get("properties") or {}
+            k = (categoria, limpia(p.get("nombre")),
+                 round(f["geometry"]["coordinates"][0], 4), round(f["geometry"]["coordinates"][1], 4))
+            if k in vistos:            # la misma fila repetida en el volcado
+                continue
+            vistos.add(k)
+            f["properties"] = {
+                "nombre": limpia(p.get("nombre")), "categoria": categoria, "prioridad": prioridad,
+                "tipo": categoria, "color": color,
+                "municipio": limpia(p.get("municipio")), "provincia": limpia(p.get("provincia")),
+                "fuente": "IGN · SignA",
+            }
+            f["geometry"]["coordinates"] = [round(f["geometry"]["coordinates"][0], 5),
+                                            round(f["geometry"]["coordinates"][1], 5)]
+            crudos.append(f)
+        print("  %-30s %6d" % (categoria, len(crudos)), flush=True)
+    return una_por_sitio(crudos)
+
+
+def residencias():
+    feats = []
+    for f in capa(SERVICIOS, 3):
+        if not f.get("geometry") or f["geometry"].get("type") != "Point":
+            continue
+        p = f.get("properties") or {}
+        f["properties"] = {
+            "nombre": limpia(p.get("nombre")), "tipo": "Residencia de mayores",
+            "municipio": limpia(p.get("municipio")), "provincia": limpia(p.get("provincia")),
+            "fuente": "IGN · SignA",
+        }
+        f["geometry"]["coordinates"] = [round(f["geometry"]["coordinates"][0], 5),
+                                        round(f["geometry"]["coordinates"][1], 5)]
+        feats.append(f)
+    return feats
+
+
+def depositos():
+    """Depósitos de agua del IGN: 423 puntos con estado y tipo, no solo la chincheta."""
+    feats = []
+    for f in capa(SERVICIOS, 27):
+        if not f.get("geometry") or f["geometry"].get("type") != "Point":
+            continue
+        p = f.get("properties") or {}
+        f["properties"] = {
+            "nombre": limpia(p.get("nombre")), "tipo": limpia(p.get("Tipo")),
+            "estado": limpia(p.get("Estado")),
+            "municipio": limpia(p.get("municipio")), "provincia": limpia(p.get("provincia")),
+            "fuente": "IGN · SignA",
+        }
+        f["geometry"]["coordinates"] = [round(f["geometry"]["coordinates"][0], 5),
+                                        round(f["geometry"]["coordinates"][1], 5)]
+        feats.append(f)
+    return feats
+
+
 def main():
     que = (sys.argv[1] if len(sys.argv) > 1 else "todo").lower()
     comun = {"editor": "Instituto Geográfico Nacional", "licencia": "CC BY 4.0",
@@ -228,14 +311,22 @@ def main():
     if que in ("todo", "servicios"):
         # Las depuradoras del IGN no van al visor por su cuenta: son la base de ubicación de
         # `edar_unificar.py`, que las funde con I-ReWater y OSM en una sola capa.
-        escribe("depuradoras_ign.geojson", simple("Signa/05_servicios_industria", 28,
+        escribe("depuradoras_ign.geojson", simple(SERVICIOS, 28,
                                                  "Depuradoras", "Depuradora"), dict(comun, **{
             "titulo": "Estaciones depuradoras de aguas residuales (IGN)",
             "fuente": "IGN · SignA", "metodo": "Capa 28 de 05_servicios_industria"}))
-        escribe("hospitales_ign.geojson", simple("Signa/05_servicios_industria", 1,
-                                                "Hospitales", "Hospital"), dict(comun, **{
-            "titulo": "Hospitales (IGN)",
-            "fuente": "IGN · SignA", "metodo": "Capa 1 de 05_servicios_industria"}))
+        escribe("sanidad_ign.geojson", sanidad(), dict(comun, **{
+            "titulo": "Sanidad · hospitales y centros sanitarios (IGN)",
+            "fuente": "IGN · SignA",
+            "metodo": "Capas 1 y 2 de 05_servicios_industria, fundidas por sitio a 60 m; "
+                      "una chincheta por recinto"}))
+        escribe("residencias_ign.geojson", residencias(), dict(comun, **{
+            "titulo": "Residencias de mayores (IGN)",
+            "fuente": "IGN · SignA", "metodo": "Capa 3 de 05_servicios_industria"}))
+        escribe("depositos_ign.geojson", depositos(), dict(comun, **{
+            "titulo": "Depósitos de agua (IGN)",
+            "fuente": "IGN · SignA",
+            "metodo": "Capa 27 de 05_servicios_industria, con estado y tipo del registro"}))
 
 
     if que in ("todo", "relieve"):

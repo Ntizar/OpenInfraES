@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-24",
+ "titulo": "Depósitos de agua (IGN)",
+ "fuente": "IGN · SignA",
+ "metodo": "Capa 27 de 05_servicios_industria, con estado y tipo del registro",
+ "features": 423,
+ "kb": 108.7,
+ "fichero": "depositos_ign.geojson"
+}

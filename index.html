@@ -1606,9 +1606,23 @@ const CAPAS = [
     color:"#f59e0b", fichero:"datos/patrimonio_ign.geojson", radio:4, zoomMin:7, zoomDetalle:9,
     popupTitulo:"nombre", colorCampo:"color", etiquetaCampo:"categoria",
     campos:["nombre","categoria","tambien","municipio","provincia"] },
-  { id:"hospitales-ign", grupo:"Sanidad", label:"Hospitales (IGN)", tipo:"punto", on:false,
-    color:"#ef4444", fichero:"datos/hospitales_ign.geojson", radio:3.4, zoomMin:7,
-    popupTitulo:"nombre", leyendaSimple:true },
+  /* Sanidad: el IGN publica hospitales y «otros centros sanitarios» por separado, pero un hospital
+     y su centro de especialidades son el mismo recinto. Van en UNA capa con el tipo como atributo,
+     fundidas por sitio a 60 m. Las residencias de mayores son otro uso: capa aparte. */
+  { id:"sanidad-ign", grupo:"Sanidad", label:"Sanidad · hospitales y centros (IGN)", tipo:"punto", on:false,
+    color:"#ef4444", colorCampo:"color", etiquetaCampo:"tipo", fichero:"datos/sanidad_ign.geojson",
+    radio:3.2, zoomMin:7, zoomDetalle:9, popupTitulo:"nombre",
+    campos:["tipo","municipio","provincia"],
+    etiquetas:{municipio:"Municipio", provincia:"Provincia"} },
+  { id:"residencias-ign", grupo:"Sanidad", label:"Residencias de mayores (IGN)", tipo:"punto", on:false,
+    color:"#a78bfa", fichero:"datos/residencias_ign.geojson", radio:3, zoomMin:8, zoomDetalle:10,
+    popupTitulo:"nombre", leyendaSimple:true,
+    campos:["municipio","provincia"], etiquetas:{municipio:"Municipio", provincia:"Provincia"} },
+  { id:"depositos-ign", grupo:"Agua", label:"Depósitos de agua (IGN)", tipo:"punto", on:false,
+    color:"#0ea5e9", fichero:"datos/depositos_ign.geojson", radio:3.2, zoomMin:8, zoomDetalle:10,
+    popupTitulo:"nombre", leyendaSimple:true,
+    campos:["tipo","estado","municipio","provincia"],
+    etiquetas:{estado:"Estado", municipio:"Municipio", provincia:"Provincia"} },
   /* Equipamientos: el IGN publica campings, albergues, áreas de autocaravanas, balnearios, parques
      temáticos, circuitos y estaciones de esquí. Ocho capas serían ocho chinchetas del mismo tipo de
      sitio: van dos, con el tipo como atributo y su color en el dato. */
@@ -2466,9 +2480,11 @@ function singleColor(c) {
   if (!c.color) return null;
   const feats = datos[c.id];
   if (!feats || !feats.length) return null;
+  const punto = c.tipo === "punto";   // una capa de puntos no se cuenta en «trazos»
   return "<h5>" + (c.label || c.id) + "</h5>" +
     '<div class="ly"><i style="background:' + c.color +
-    ';height:3px;border-radius:2px"></i><span>' + (c.nota || "trazos") + "</span>" +
+    (punto ? ";width:3px;height:3px;border-radius:50%" : ";height:3px;border-radius:2px") +
+    '"></i><span>' + (c.nota || (punto ? "puntos" : "trazos")) + "</span>" +
     "<b>" + nf(feats.length) + "</b></div>";
 }
 
@@ -4082,19 +4098,30 @@ document.querySelectorAll("[data-preset]").forEach(btn => {
     const p = btn.dataset.preset;
     // "Todo" es un interruptor segun el estado del propio boton, no segun los checkboxes
     const yaActivo = btn.classList.contains("on");
-    document.querySelectorAll("[data-preset]").forEach(b => b.classList.toggle("on", b === btn && !(p === "todos" && yaActivo)));
+    // Un grupo tambien es interruptor, pero mirando sus capas: si ya estan todas puestas, volver a
+    // pulsarlo DESCOLOCA el grupo (las apaga). Antes solo encendia y no habia vuelta atras.
+    const delGrupo = CAPAS.filter(c => c.grupo === p);
+    const yaPuestas = p !== "todos" && delGrupo.length > 0 && delGrupo.every(c => {
+      const chk = document.querySelector('[data-capa="' + c.id + '"]');
+      return !!chk && chk.checked;
+    });
+    const apagar = p !== "todos" && yaPuestas;
+    document.querySelectorAll("[data-preset]").forEach(b =>
+      b.classList.toggle("on", b === btn && !(p === "todos" && yaActivo) && !apagar));
     const SOLO_PRESET = {};   // sin restricciones: la vista enciende el grupo entero
     // La vista tambien FILTRA el panel: con 46 capas, encender sin ocultar deja el mismo muro.
     document.querySelectorAll("#capas .grupo").forEach(g => {
-      const ver = (p === "todos") || g.dataset.grupo === p;
+      const ver = apagar || (p === "todos") || g.dataset.grupo === p;
       g.style.display = ver ? "" : "none";
     });
-    pintarAvisoVista(p);
+    pintarAvisoVista(apagar ? "todos" : p);
     CAPAS.forEach(c => {
       // "Todo" es un interruptor: si ya estan todas, las apaga
       let on;
       if (p === "todos") {
         on = !yaActivo;
+      } else if (apagar) {
+        on = false;
       } else {
         on = SOLO_PRESET[p] ? SOLO_PRESET[p].has(c.id) : (c.grupo === p);
       }

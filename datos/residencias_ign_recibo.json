@@ -3,10 +3,10 @@
  "licencia": "CC BY 4.0",
  "url": "https://signa.ign.es/",
  "descargado": "2026-11-24",
- "titulo": "Hospitales (IGN)",
+ "titulo": "Residencias de mayores (IGN)",
  "fuente": "IGN · SignA",
- "metodo": "Capa 1 de 05_servicios_industria",
- "features": 884,
- "kb": 200.7,
- "fichero": "hospitales_ign.geojson"
+ "metodo": "Capa 3 de 05_servicios_industria",
+ "features": 420,
+ "kb": 104.5,
+ "fichero": "residencias_ign.geojson"
 }

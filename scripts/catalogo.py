@@ -105,7 +105,9 @@ TTL = {
     "puentes-rce": (2592000, "mensual", "foto"),
     # Patrimonio y equipamientos del IGN: cambian con las declaraciones y las obras, no a diario.
     "patrimonio-ign": (2592000, "mensual", "foto"),
-    "hospitales-ign": (2592000, "mensual", "foto"),
+    "sanidad-ign": (2592000, "mensual", "foto"),
+    "residencias-ign": (2592000, "mensual", "foto"),
+    "depositos-ign": (2592000, "mensual", "foto"),
     "alojamiento-ign": (31536000, "anual", "foto"),
     "ocio-ign": (31536000, "anual", "foto"),
     "cimas-ign": (31536000, "anual", "foto"),
