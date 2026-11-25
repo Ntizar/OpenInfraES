@@ -130,7 +130,7 @@ partida— está en [`docs/DATOS.md`](docs/DATOS.md).
 
 ## Capas del visor
 
-**100 capas en 17 grupos temáticos**, con carga bajo demanda: nada se descarga hasta que lo enciendes.
+**101 capas en 17 grupos temáticos**, con carga bajo demanda: nada se descarga hasta que lo enciendes.
 
 <!-- CIFRAS-GRUPOS:INICIO (lo reescribe scripts/cifras.py) -->
 | Grupo | Capas | Objetos |
@@ -143,7 +143,7 @@ partida— está en [`docs/DATOS.md`](docs/DATOS.md).
 | **Transporte** | 23 | 42.252 |
 | **DGT · Tráfico** | 4 | 15.743 |
 | **Tiempo real** | 3 | 12.092 |
-| **Riesgo** | 4 | 10.055 |
+| **Riesgo** | 5 | 10.256 |
 | **Medio ambiente** | 4 | 16.130 |
 | **Patrimonio** | 1 | 20.116 |
 | **Sanidad** | 2 | 3.951 |
@@ -152,13 +152,13 @@ partida— está en [`docs/DATOS.md`](docs/DATOS.md).
 | **Equipamientos** | 2 | 3.540 |
 | **Relieve** | 2 | 19.739 |
 | **Clima** | 2 | 104 |
-| **Total** | **100** | **328.178** |
+| **Total** | **101** | **328.379** |
 <!-- CIFRAS-GRUPOS:FIN -->
 
 Los objetos se cuentan de los ficheros que usa cada grupo **sin contar dos veces el mismo fichero**
 (400 y 220 kV son dos capas del mismo GeoJSON, y cuatro capas de generación leen `plantas.geojson`).
 **No coinciden con lo que se ve en pantalla**: una capa apagada no ha descargado nada. El catálogo
-completo —125 entradas, incluidas las que todavía no son capa— va en `datos/fuentes.json`.
+completo —126 entradas, incluidas las que todavía no son capa— va en `datos/fuentes.json`.
 
 Los grupos se encienden de un golpe con las **vistas temáticas** de arriba: **Todo · Eléctrico · Gas ·
 Agua · Transporte · DGT · En vivo · Riesgo**. Al elegir una vista se encienden sus capas **y el panel
@@ -441,11 +441,11 @@ hay que atribuir a OpenStreetMap y compartir igual. El **código** (visor, scrip
 
 | | |
 |---|---|
-| Capas en el visor | **100** |
+| Capas en el visor | **101** |
 | Grupos temáticos | **17** |
-| Capas documentadas en `fuentes.json` | **125** |
+| Capas documentadas en `fuentes.json` | **126** |
 | Fusión geoespacial | **4.784 EDAR** únicas desde 8.708 filas de tres fuentes |
-| Organismos citados | **21** — MITECO, MITMA, IGN, REE, DGT, AEMET, CSN, CORES, Enagás, ENRESA, INE, Renfe, Adif, EMSC-CSEM, I-ReWater HUB, OpenStreetMap |
+| Organismos citados | **22** — MITECO, MITMA, IGN, REE, DGT, AEMET, CSN, CORES, Enagás, ENRESA, INE, Renfe, Adif, EMSC-CSEM, I-ReWater HUB, OpenStreetMap |
 | Fuentes sin clave | MITECO, IGN, MITMA, Enagás, CORES, CSN, ENRESA, Renfe, Adif, DGT, AEMET, INE, OMIE, ESIOS (19 indicadores) |
 | Fuentes con clave | NAP de transportes (`ApiKey`), ENTSO-E (token), ESIOS (indicadores cerrados) |
 

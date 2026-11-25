@@ -1671,6 +1671,14 @@ const CAPAS = [
     borde:"propio", popupTitulo:"municipio", campos:["fecha","hectareas","provincia","clase"],
     etiquetas:{fecha:"Fecha del incendio", hectareas:"Superficie quemada (ha)",
       clase:"Cobertura del suelo", actualizado:"Última revisión EFFIS"} },
+  /* --- IGME · QAFI v4: no es lo que ya ha temblado (eso son los sismos), es por dónde puede
+     temblar. 201 trazas con tasa de deslizamiento estimada y fiabilidad de la traza dibujada.
+     Licencia CC BY-SA 4.0 (compartir igual): se declara tal cual en el panel de fuentes. --- */
+  { id:"fallas-qafi", grupo:"Riesgo", label:"Fallas activas (QAFI · IGME)", tipo:"linea", on:false,
+    color:"#a855f7", fichero:"datos/fallas_qafi.geojson", peso:2.2, opacidad:.95,
+    campos:["nombre","tasa","actividad","precision"],
+    etiquetas:{tasa:"Tasa de deslizamiento", precision:"Fiabilidad de la traza",
+      id_qafi:"Código QAFI"} },
   /* --- MITECO · OGC API Features (datos de alto valor). Una sola API oficial para las tres:
      GeoJSON nativo, sin clave y con CORS. La ficha del objeto enseña solo los campos que se
      leen; el original trae 45 columnas y ninguna pantalla aguanta eso. --- */

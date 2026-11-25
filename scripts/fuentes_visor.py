@@ -58,6 +58,8 @@ OFICIAL = {
                 "https://www.ree.es", "registro RAIPEE cruzado con ELECTRA"),
     "incendios-effis": ("Copernicus EMS · EFFIS", "https://effis.jrc.ec.europa.eu",
                         "perímetro quemado MODIS (WFS), histórico por incendio con fecha y hectáreas"),
+    "fallas-qafi": ("IGME · QAFI", "https://info.igme.es/qafi/",
+                    "QAFI v4 fallas del Cuaternario (ArcGIS REST /query, GeoJSON directo)"),
 }
 
 HERMES = {
@@ -207,6 +209,7 @@ ORIGEN = {
     # No lo publica un organismo: es una base mantenida por una comunidad
     "aeropuertos": ("comunidad", "OurAirports · base comunitaria, no oficial"),
     "trasvases": ("osm", "Trazado propio sobre OpenStreetMap"),
+    "fallas-qafi": ("api", "QAFI v4 · servicio REST del IGME"),
 }
 
 

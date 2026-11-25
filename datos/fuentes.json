@@ -1690,6 +1690,22 @@
    "origen_txt": "Otro mapa",
    "origen_detalle": "Mapa SignA (IGN)"
   },
+  "fallas-qafi": {
+   "capa": "fallas-qafi",
+   "titulo": "Fallas activas del Cuaternario (QAFI v4)",
+   "fuente": "IGME · QAFI",
+   "editor": "IGME-CSIC · Quaternary Active Faults Database of Iberia (QAFI v4)",
+   "licencia": "CC BY-SA 4.0 · compartir igual (atribuir a IGME-CSIC / QAFI)",
+   "actualizado": "2026-11-25T21:52:28Z",
+   "descargado": "2026-11-25T21:52:28Z",
+   "features": 201,
+   "fecha_dato": null,
+   "url": "https://mapas.igme.es/gis/rest/services/BasesDatos/IGME_QAFI_v4/MapServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson",
+   "metodo": "GeoJSON directo del MapServer (f=geojson). Sin WFS en el IGME: el WFSServer devuelve 400. Códigos numéricos traducidos con QAFI_v4_Guide.pdf",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "QAFI v4 · servicio REST del IGME"
+  },
   "faros": {
    "capa": "faros",
    "titulo": "Faros y señales marítimas (IGN)",
@@ -2034,5 +2050,5 @@
    "kb": 7
   }
  },
- "total_capas": 125
+ "total_capas": 126
 }

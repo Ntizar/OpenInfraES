@@ -33,7 +33,7 @@ ORGANISMO = {
     "OpenStreetMap (red)": "OpenStreetMap", "OpenStreetMap": "OpenStreetMap",
     "I-ReWater HUB (Interreg)": "I-ReWater HUB", "I-ReWater HUB (Interreg) + INE": "I-ReWater HUB",
     "INE · Eurostat GISCO": "INE / Eurostat", "INE · Cifras Oficiales del Padrón": "INE",
-    "Visor Hermes — MITMA": "MITMA",    "Renfe": "Renfe", "OMIE": "OMIE", "Adif": "Adif", "Adif · IDEADIF": "Adif", "IGME": "IGME", "EMODnet": "EMODnet",
+    "Visor Hermes — MITMA": "MITMA",    "Renfe": "Renfe", "OMIE": "OMIE", "Adif": "Adif", "Adif · IDEADIF": "Adif",     "IGME · QAFI": "IGME · QAFI", "IGME": "IGME", "EMODnet": "EMODnet",
     "Copernicus EMS · EFFIS": "Copernicus EMS", "Copernicus EMS": "Copernicus EMS",
     "EFFIS · Copernicus Emergency Management Service": "Copernicus EMS",
     "Ministerio de Transportes (ArcGIS REST)": "MITMA",
@@ -66,21 +66,28 @@ LICENCIA = {
     "INE": ("si", "Datos abiertos INE con cita", "https://www.ine.es/aviso_legal"),
     "INE / Eurostat": ("si", "INE con cita · Eurostat CC BY 4.0",
                        "https://ec.europa.eu/eurostat/web/main/legal-notice"),
-    # PENDIENTES: la auditoría cita el texto y no encuentra cláusula que permita redistribuir
-    "REE": ("pendiente", "Aviso legal REE §5: uso informativo no comercial; el resto exige "
-                         "autorización escrita. Condiciones de apidatos no localizadas",
+    # REE: el aviso legal §5 tolera publicar en web propia «con fines informativos y no
+    # comerciales», pero prohíbe expresamente la reutilización. No es licencia abierta: es un
+    # permiso restringido. Se declara «no» para que quede claro que no se puede reutilizar.
+    "REE": ("no", "Aviso legal REE §5: uso informativo no comercial permitido; reproducción, "
+                   "reutilización y difusión prohibidas sin autorización escrita",
             "https://www.ree.es/es/aviso-legal"),
     "OMIE": ("pendiente", "Sin cláusula de reutilización identificada para los datos publicados",
              "https://www.omie.es/es/aviso-legal"),
     "IGME": ("si", "Reutilización Ley 37/2007", "https://www.igme.es"),
+    # QAFI v4 va con CC BY-SA 4.0, no con la reutilización genérica del IGME: compartir igual.
+    "IGME · QAFI": ("si", "CC BY-SA 4.0 · compartir igual (atribuir a IGME-CSIC / QAFI)",
+                    "https://info.igme.es/qafi/Disclaimer.aspx"),
     "Open-Meteo": ("si", "CC BY 4.0 · atribuir a Open-Meteo y al modelo (ICON/GFS)",
                    "https://open-meteo.com/en/license"),
     "EMODnet": ("si", "CC BY 4.0", "https://emodnet.ec.europa.eu/en/legal-notice"),
     "Adif": ("si", "CC BY 4.0 según ficha de datos.gob.es",
              "https://datos.gob.es/es/catalogo/e0dat0002-wfs-de-la-red-de-transporte-ferroviario-de-adif"),
-    "Renfe": ("pendiente", "GTFS-RT sin condiciones localizadas (los conjuntos de data.renfe.com "
-                           "de estaciones sí son CC BY 4.0)",
-              "https://data.renfe.com"),
+    # Verificado por la API CKAN de data.renfe.com: el conjunto 'ubicacion-vehiculos' declara
+    # license_id CC-BY-4.0 y su recurso es exactamente gtfsrt.renfe.com/vehicle_positions.pb.
+    # El aviso legal de renfe.com/viajeros NO rige este feed: va por el portal de datos.
+    "Renfe": ("si", "CC BY 4.0 (feed vehicle_positions de data.renfe.com; citar «Origen: Renfe Operadora»)",
+              "https://data.renfe.com/dataset/ubicacion-vehiculos"),
     # Copernicus: política de datos abiertos del programa (Reg. UE 2021/696), atribución obligatoria.
     "Copernicus EMS": ("si", "Copernicus: reutilización libre con atribución (© Unión Europea, "
                              "Copernicus EMS · EFFIS)",
@@ -158,6 +165,8 @@ TTL = {
     # EFFIS revisa el histórico con retraso: lo que caduca no es la fecha del incendio (un incendio
     # de 2019 sigue siendo cierto), es el snapshot. A los 90 días sin volver a pedirlo, se declara.
     "incendios-effis": (7776000, "trimestral", "foto"),
+    # QAFI se revisa por versiones (v4), no por meses: una falla no cambia de tasa cada trimestre.
+    "fallas-qafi": (31536000, "anual (por versión)", "foto"),
     "rios-mtn": (7776000, "trimestral", "foto"),
     "presas": (7776000, "trimestral", "foto"),
 }
@@ -178,7 +187,7 @@ JERARQUIA = {
     "AEMET": 1, "IGN": 1, "CSN": 1, "ENRESA": 1, "CORES": 1, "Enagás": 1,
     "I-ReWater HUB": 1, "OMIE": 1, "Renfe": 1, "EMSC-CSEM": 2,
     "Copernicus EMS": 1,
-    "MITMA": 2, "EMODnet": 2, "IGME": 1, "OpenStreetMap": 3, "Open-Meteo": 2,
+    "MITMA": 2, "EMODnet": 2, "IGME · QAFI": 1, "IGME": 1, "OpenStreetMap": 3, "Open-Meteo": 2,
 }
 ETIQUETA_JERARQUIA = {1: "organismo productor", 2: "organismo agregador", 3: "fuente comunitaria"}
 
@@ -246,6 +255,15 @@ def normaliza_organismo(bruto):
     return bruto
 
 
+LICENCIA_POR_CAPA = {
+    # La fuente es un compuesto de dos administraciones con licencias propias; resolverlo por
+    # organismo no sirve porque el string cambia cada año (lleva el año del dato dentro).
+    "trafico-estaciones": ("si", "Cabildo de Tenerife CC0/CC-BY · Generalitat de Catalunya "
+                                 "(llicència oberta d'ús d'informació)",
+                           "https://datos.tenerife.es/es/terminos-de-uso"),
+}
+
+
 def main():
     ruta = os.path.join(DATOS, "fuentes.json")
     if not os.path.exists(ruta):
@@ -254,12 +272,12 @@ def main():
     capas = crudo.get("capas", {})
 
     catalogo = {}
-    avisos = {"pendiente": [], "sin_organismo": [], "caducado": []}
+    avisos = {"pendiente": [], "sin_organismo": [], "caducado": [], "vetada": []}
     hoy = datetime.date.today()
 
     for cid, f in sorted(capas.items()):
         organismo = normaliza_organismo(f.get("fuente"))
-        estado_lic, nombre_lic, url_lic = LICENCIA.get(
+        estado_lic, nombre_lic, url_lic = LICENCIA_POR_CAPA.get(cid) or LICENCIA.get(
             organismo, ("pendiente", "sin evaluar", ""))
         ttl, frecuencia, modo = TTL.get(cid, TTL_DEFECTO)
 
@@ -319,6 +337,8 @@ def main():
 
         if estado_lic == "pendiente":
             avisos["pendiente"].append(cid)
+        if estado_lic == "no":
+            avisos["vetada"].append(cid)
         if organismo == "sin declarar":
             avisos["sin_organismo"].append(cid)
         if caducado:
@@ -333,6 +353,7 @@ def main():
         "resumen": {
             "licencia_si": sum(1 for c in catalogo.values() if c["licencia"]["estado"] == "si"),
             "licencia_pendiente": len(avisos["pendiente"]),
+            "licencia_vetada": len(avisos["vetada"]),
             "caducados": len(avisos["caducado"]),
             "oficiales": sum(1 for c in catalogo.values() if c["oficial"]),
             "comunitarias": sum(1 for c in catalogo.values() if not c["oficial"]),
@@ -351,8 +372,12 @@ def main():
     print("  catálogo: %d capas" % len(catalogo))
     print("   oficiales: %d · comunitarias: %d" % (
         salida["resumen"]["oficiales"], salida["resumen"]["comunitarias"]))
-    print("   licencia evaluada: %d · pendiente: %d · caducadas: %d" % (
-        salida["resumen"]["licencia_si"], len(avisos["pendiente"]), len(avisos["caducado"])))
+    print("   licencia abierta: %d · vetada: %d · pendiente: %d · caducadas: %d" % (
+        salida["resumen"]["licencia_si"], salida["resumen"]["licencia_vetada"],
+        len(avisos["pendiente"]), len(avisos["caducado"])))
+    if avisos["vetada"]:
+        print("   LICENCIA RESTRINGIDA (uso informativo; no redistribuir): %s"
+              % ", ".join(avisos["vetada"]))
     if avisos["pendiente"]:
         print("   PENDIENTE DE LICENCIA: %s" % ", ".join(avisos["pendiente"]))
     if avisos["caducado"]:

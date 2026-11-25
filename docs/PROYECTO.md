@@ -20,7 +20,7 @@ El despliegue no depende de nada más: son ficheros estáticos y los datos van a
 
 ## Qué contiene
 
-**100 capas en 17 grupos.** El visor abre **vacío**: no descarga nada hasta que enciendes una capa.
+**101 capas en 17 grupos.** El visor abre **vacío**: no descarga nada hasta que enciendes una capa.
 La tabla completa, generada desde el propio array `CAPAS`, está en el
 [README](../README.md#capas-del-visor).
 

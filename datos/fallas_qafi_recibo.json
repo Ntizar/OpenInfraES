@@ -1,0 +1,23 @@
+{
+ "capa": "fallas-qafi",
+ "titulo": "Fallas activas del Cuaternario (QAFI v4)",
+ "fuente": "IGME · QAFI",
+ "editor": "IGME-CSIC · Quaternary Active Faults Database of Iberia (QAFI v4)",
+ "producto": "Trazas de falla con actividad cuaternaria aceptada (201), ArcGIS REST /query",
+ "url": "https://mapas.igme.es/gis/rest/services/BasesDatos/IGME_QAFI_v4/MapServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson",
+ "licencia": "CC BY-SA 4.0 · compartir igual (atribuir a IGME-CSIC / QAFI)",
+ "url_terminos": "https://info.igme.es/qafi/Disclaimer.aspx",
+ "crs": "EPSG:4326 (servicio en 4258 ETRS89, convertido por outSR)",
+ "features": 201,
+ "sin_nombre": 0,
+ "por_tasa": {
+  "< 0,2 mm/año": 102,
+  "≥ 0,5 mm/año": 19,
+  "0,2–0,5 mm/año": 38,
+  "sin dato": 42
+ },
+ "descargado": "2026-11-25T21:52:28Z",
+ "metodo": "GeoJSON directo del MapServer (f=geojson). Sin WFS en el IGME: el WFSServer devuelve 400. Códigos numéricos traducidos con QAFI_v4_Guide.pdf",
+ "fuera": "MapServer/1 (108 en debate) y MapServer/2 (6 descartadas) no se incluyen",
+ "fichero": "fallas_qafi.geojson"
+}
