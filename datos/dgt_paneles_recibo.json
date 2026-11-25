@@ -4,32 +4,28 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 703,
+ "features": 609,
  "paneles_localizados": 2538,
- "descargado": "2026-11-25T19:13:13",
+ "descargado": "2026-11-25T20:15:50",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 89
+   "paneles": 93
   },
   {
    "texto": "@H @F",
-   "paneles": 82
-  },
-  {
-   "texto": "CONTROL MOVIL DE VELOCIDAD",
-   "paneles": 41
+   "paneles": 84
   },
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD",
    "paneles": 22
   },
   {
-   "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
-   "paneles": 15
+   "texto": "MODERE VELOCIDAD",
+   "paneles": 14
   },
   {
-   "texto": "MODERE VELOCIDAD",
+   "texto": "MONREPOS",
    "paneles": 14
   },
   {
@@ -37,16 +33,20 @@
    "paneles": 12
   },
   {
-   "texto": "MONREPOS",
-   "paneles": 12
-  },
-  {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
    "paneles": 10
   },
   {
-   "texto": "MAQUINAS EN TRATAMIENTO INVERNAL",
-   "paneles": 9
+   "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
+   "paneles": 10
+  },
+  {
+   "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
+   "paneles": 8
+  },
+  {
+   "texto": "CARRIL IZQUIERDO BUS-VAO · CARRIL ESQUERRE BUS-VAO",
+   "paneles": 7
   }
  ]
 }
