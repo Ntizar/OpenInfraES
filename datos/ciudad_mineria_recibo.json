@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-25",
+ "fuente": "IGN · SignA",
+ "titulo": "Explotaciones mineras (IGN)",
+ "metodo": "Capas 30 y 31 de 05_servicios_industria, con tipo y sustancia",
+ "features": 1490,
+ "kb": 442.2,
+ "fichero": "ciudad_mineria.geojson"
+}

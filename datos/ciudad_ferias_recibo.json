@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-25",
+ "fuente": "IGN · SignA",
+ "titulo": "Recintos de ferias y congresos (IGN)",
+ "metodo": "Capa 46 de 05_servicios_industria, contorno simplificado a ~13 m",
+ "features": 210,
+ "kb": 77.6,
+ "fichero": "ciudad_ferias.geojson"
+}

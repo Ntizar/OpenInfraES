@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-25",
+ "titulo": "Cementerios (IGN)",
+ "fuente": "IGN · SignA",
+ "metodo": "Capa 22 de 05_servicios_industria, dedupe a 30 m",
+ "features": 19242,
+ "kb": 5623.1,
+ "fichero": "ciudad_cementerios.geojson"
+}

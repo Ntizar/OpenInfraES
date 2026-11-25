@@ -66,8 +66,10 @@ def capa(servicio, lid, tam=2000):
     if d.get("exceededTransferLimit"):
         ids = (pide(base + urllib.parse.urlencode({"where": "1=1", "returnIdsOnly": "true",
                                                    "f": "json"})) or {}).get("objectIds") or []
-        for i in range(0, len(ids), 200):
-            lote = ids[i:i + 200]
+        # Tandas de 400: con 200, una capa de 18.000 filas son 92 viajes y el semanal se va a diez
+        # minutos esperando. Con 400 son 46 y la URL sigue corta (los IDs son de 1 a 6 cifras).
+        for n, i in enumerate(range(0, len(ids), 400)):
+            lote = ids[i:i + 400]
             dd = pide(base + urllib.parse.urlencode({
                 "where": "OBJECTID IN (%s)" % ",".join(str(x) for x in lote),
                 "outFields": "*", "outSR": "4326", "f": "geojson"}))
@@ -77,6 +79,9 @@ def capa(servicio, lid, tam=2000):
                     continue
                 vistos.add(oid)
                 fs.append(f)
+            if n % 10 == 9:
+                print("    capa %d: %d/%d ids · %d filas" % (lid, min(i + 400, len(ids)), len(ids), len(fs)),
+                      flush=True)
     return fs
 
 

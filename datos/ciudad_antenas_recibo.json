@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-25",
+ "fuente": "IGN · SignA",
+ "titulo": "Antenas de telecomunicaciones (IGN)",
+ "metodo": "Capa 25 de 05_servicios_industria; el IGN no publica nombre ni operador, varias filas por mástil fundidas a 25 m",
+ "features": 16361,
+ "kb": 3780.3,
+ "fichero": "ciudad_antenas.geojson"
+}

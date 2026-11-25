@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-25",
+ "titulo": "Aparcamientos (IGN)",
+ "fuente": "IGN · SignA",
+ "metodo": "Capa 19 de 05_servicios_industria, una chincheta por recinto a 30 m",
+ "features": 12679,
+ "kb": 3058.8,
+ "fichero": "ciudad_aparcamientos.geojson"
+}

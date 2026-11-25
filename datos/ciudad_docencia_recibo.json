@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-25",
+ "titulo": "Docencia · universidades y centros (IGN)",
+ "fuente": "IGN · SignA",
+ "metodo": "Capas 5-8 de 05_servicios_industria, con el tipo como atributo y dedupe a 30 m",
+ "features": 33232,
+ "kb": 9412.2,
+ "fichero": "ciudad_docencia.geojson"
+}

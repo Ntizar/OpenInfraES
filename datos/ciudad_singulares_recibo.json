@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-25",
+ "fuente": "IGN · SignA",
+ "titulo": "Centros penitenciarios y observatorios (IGN)",
+ "metodo": "Capas 23 y 24 de 05_servicios_industria",
+ "features": 134,
+ "kb": 38.4,
+ "fichero": "ciudad_singulares.geojson"
+}

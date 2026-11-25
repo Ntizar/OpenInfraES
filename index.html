@@ -1304,7 +1304,8 @@ function abrirInfoCapa(id) {
   if (f.url) h += `<div class="nota"><a href="${f.url}" target="_blank" rel="noopener">fuente oficial ↗</a></div>`;
   h += bloqueResumen(id);
   h += `<div class="nota">${c.tipo === "punto" ? "Puntos" : c.tipo === "linea" ? "Líneas" : "Polígonos"}` +
-       `${c.zoomMin ? " · aparece desde zoom " + c.zoomMin : ""}. ` +
+       `${c.ocultaHasta ? " · se dibuja a partir de zoom " + c.ocultaHasta
+                        : c.zoomMin ? " · aparece desde zoom " + c.zoomMin : ""}. ` +
        `Toca el nombre de otra capa para comparar.</div>`;
   document.getElementById("info-der-cuerpo").innerHTML = h;
   INFO_DER.classList.add("on");
@@ -1623,6 +1624,71 @@ const CAPAS = [
     popupTitulo:"nombre", leyendaSimple:true,
     campos:["tipo","estado","municipio","provincia"],
     etiquetas:{estado:"Estado", municipio:"Municipio", provincia:"Provincia"} },
+  /* Ciudad y servicios: equipamientos del IGN que solo se leen de cerca. A escala nacional son una
+     alfombra de chinchetas, así que nacen con zoomMin de ciudad y el visor los enseña como
+     burbujas contadas hasta que te acercas. Fuera dos capas del mismo servicio porque repetirían
+     algo mejor que ya está: estaciones de servicio (está `carburantes`, con precio) y recarga
+     eléctrica (está `dgt-electrolineras`, con potencia). Hidrocarburos tampoco: sus 499 puntos son
+     vértices de gasoducto, no instalaciones. */
+  { id:"ciudad-aparcamientos", grupo:"Ciudad", label:"Aparcamientos (IGN)", tipo:"punto", on:false,
+    color:"#60a5fa", fichero:"datos/ciudad_aparcamientos.geojson", radio:3, zoomMin:12, ocultaHasta:12, zoomDetalle:14,
+    popupTitulo:"nombre", leyendaSimple:true,
+    campos:["municipio","provincia"], etiquetas:{municipio:"Municipio", provincia:"Provincia"} },
+  { id:"ciudad-cementerios", grupo:"Ciudad", label:"Cementerios (IGN)", tipo:"punto", on:false,
+    color:"#a3a3a3", fichero:"datos/ciudad_cementerios.geojson", radio:3, zoomMin:11, ocultaHasta:11, zoomDetalle:13,
+    popupTitulo:"nombre", leyendaSimple:true,
+    campos:["municipio","provincia","bic"], etiquetas:{municipio:"Municipio", provincia:"Provincia", bic:"Figura de protección"} },
+  { id:"ciudad-zonas-verdes", grupo:"Ciudad", label:"Zonas verdes (IGN)", tipo:"poligono", on:false,
+    color:"#22c55e", fichero:"datos/ciudad_zonas-verdes.geojson", opacidad:.24, peso:1,
+    zoomMin:12, ocultaHasta:12, popupTitulo:"nombre", leyendaSimple:true,
+    campos:["superficie_m2"], etiquetas:{superficie_m2:"Superficie (m²)"}, nota:"recintos" },
+  { id:"ciudad-deportivas", grupo:"Ciudad", label:"Instalaciones deportivas (IGN)", tipo:"poligono", on:false,
+    color:"#f97316", fichero:"datos/ciudad_deportivas.geojson", opacidad:.3, peso:1,
+    zoomMin:12, ocultaHasta:12, popupTitulo:"nombre", leyendaSimple:true,
+    campos:["superficie_m2"], etiquetas:{superficie_m2:"Superficie (m²)"}, nota:"recintos" },
+  { id:"ciudad-comercio", grupo:"Ciudad", label:"Centros comerciales (IGN)", tipo:"poligono", on:false,
+    color:"#fb923c", fichero:"datos/ciudad_comercio.geojson", opacidad:.34, peso:1,
+    zoomMin:10, ocultaHasta:10, popupTitulo:"nombre", leyendaSimple:true,
+    campos:["superficie_m2"], etiquetas:{superficie_m2:"Superficie (m²)"}, nota:"recintos" },
+  { id:"ciudad-ferias", grupo:"Ciudad", label:"Ferias y congresos (IGN)", tipo:"poligono", on:false,
+    color:"#f472b6", fichero:"datos/ciudad_ferias.geojson", opacidad:.34, peso:1,
+    zoomMin:10, ocultaHasta:10, popupTitulo:"nombre", leyendaSimple:true,
+    campos:["superficie_m2"], etiquetas:{superficie_m2:"Superficie (m²)"}, nota:"recintos" },
+  { id:"ciudad-recreo", grupo:"Ciudad", label:"Áreas recreativas y de descanso (IGN)", tipo:"punto", on:false,
+    color:"#22c55e", colorCampo:"color", etiquetaCampo:"tipo",
+    fichero:"datos/ciudad_recreo.geojson", radio:3.2, zoomMin:9, ocultaHasta:9, zoomDetalle:12,
+    popupTitulo:"nombre", campos:["tipo","municipio","provincia"],
+    etiquetas:{municipio:"Municipio", provincia:"Provincia"} },
+  { id:"ciudad-docencia", grupo:"Servicios", label:"Docencia · universidades y centros (IGN)", tipo:"punto", on:false,
+    color:"#60a5fa", colorCampo:"color", etiquetaCampo:"tipo",
+    fichero:"datos/ciudad_docencia.geojson", radio:2.8, zoomMin:12, ocultaHasta:12, zoomDetalle:14,
+    popupTitulo:"nombre", campos:["tipo","municipio","provincia"],
+    etiquetas:{municipio:"Municipio", provincia:"Provincia"} },
+  { id:"ciudad-antenas", grupo:"Servicios", label:"Antenas de telecomunicaciones (IGN)", tipo:"punto", on:false,
+    color:"#94a3b8", fichero:"datos/ciudad_antenas.geojson", radio:2.4, zoomMin:12, ocultaHasta:12, zoomDetalle:14,
+    tituloFijo:"Antena", leyendaSimple:true,
+    nota:"el IGN no publica nombre ni operador" },
+  { id:"ciudad-mineria", grupo:"Servicios", label:"Explotaciones mineras (IGN)", tipo:"punto", on:false,
+    color:"#a16207", colorCampo:"color", etiquetaCampo:"tipo",
+    fichero:"datos/ciudad_mineria.geojson", radio:3.4, zoomMin:9, ocultaHasta:9, zoomDetalle:12,
+    popupTitulo:"nombre", campos:["tipo","sustancia","municipio","provincia"],
+    etiquetas:{sustancia:"Sustancia", municipio:"Municipio", provincia:"Provincia"} },
+  { id:"ciudad-singulares", grupo:"Servicios", label:"Centros penitenciarios y observatorios (IGN)", tipo:"punto", on:false,
+    color:"#64748b", colorCampo:"color", etiquetaCampo:"tipo",
+    fichero:"datos/ciudad_singulares.geojson", radio:4, zoomMin:7, ocultaHasta:7, zoomDetalle:11,
+    popupTitulo:"nombre", campos:["tipo"] },
+  { id:"ciudad-logistica", grupo:"Servicios", label:"Centros logísticos (IGN)", tipo:"poligono", on:false,
+    color:"#eab308", fichero:"datos/ciudad_logistica.geojson", opacidad:.32, peso:1,
+    zoomMin:9, ocultaHasta:9, popupTitulo:"nombre", leyendaSimple:true,
+    campos:["superficie_m2"], etiquetas:{superficie_m2:"Superficie (m²)"}, nota:"recintos" },
+  { id:"ciudad-ciencia", grupo:"Servicios", label:"Parques científicos (IGN)", tipo:"poligono", on:false,
+    color:"#8b5cf6", fichero:"datos/ciudad_ciencia.geojson", opacidad:.32, peso:1,
+    zoomMin:9, ocultaHasta:9, popupTitulo:"nombre", leyendaSimple:true,
+    campos:["superficie_m2"], etiquetas:{superficie_m2:"Superficie (m²)"}, nota:"recintos" },
+  { id:"ciudad-acuicultura", grupo:"Servicios", label:"Acuicultura (IGN)", tipo:"poligono", on:false,
+    color:"#06b6d4", fichero:"datos/ciudad_acuicultura.geojson", opacidad:.32, peso:1,
+    zoomMin:9, ocultaHasta:9, popupTitulo:"nombre", leyendaSimple:true,
+    campos:["superficie_m2"], etiquetas:{superficie_m2:"Superficie (m²)"}, nota:"recintos" },
   /* Equipamientos: el IGN publica campings, albergues, áreas de autocaravanas, balnearios, parques
      temáticos, circuitos y estaciones de esquí. Ocho capas serían ocho chinchetas del mismo tipo de
      sitio: van dos, con el tipo como atributo y su color en el dato. */
@@ -1736,7 +1802,8 @@ const ETIQUETA_VISTA = {
   "Red eléctrica": "Eléctrico", "Generación": "Generación", "Gas": "Gas", "Agua": "Agua",
   "Demografía": "Población", "Transporte": "Transporte", "DGT · Tráfico": "DGT",
   "Tiempo real": "En vivo", "Riesgo": "Riesgo", "Medio ambiente": "Medio ambiente",
-  "Clima": "Clima", "Patrimonio": "Patrimonio", "Relieve": "Relieve", "Sanidad": "Sanidad", "Equipamientos": "Equipamientos"
+  "Clima": "Clima", "Patrimonio": "Patrimonio", "Relieve": "Relieve", "Sanidad": "Sanidad",
+  "Equipamientos": "Equipamientos", "Ciudad": "Ciudad", "Servicios": "Servicios"
 };
 const cajaPresets = $("#presets");
 if (cajaPresets) {
@@ -3535,8 +3602,9 @@ function ponerCapa(id, on, silencioso) {
     cargar(c);
     if (c.tipo === "punto") pintarPuntos(c);
     atenuarCapa(c);
-    // siempre al mapa, en cualquier zoom: por debajo de su zoomMin se atenua, no se esconde
-    capas[id].addTo(mapa);
+    // siempre al mapa, en cualquier zoom: por debajo de su zoomMin se atenua, no se esconde.
+    // Excepción: `ocultaHasta` (detalle urbano) sí la deja fuera hasta que te acercas.
+    if (!c.ocultaHasta || mapa.getZoom() >= c.ocultaHasta) capas[id].addTo(mapa);
     if (c.colorCampo || c.colorPorEscala) { ULTIMA_CON_COLOR = id; window.__leyendaOff = false; }
   } else {
     mapa.removeLayer(capas[id]);
@@ -3621,8 +3689,21 @@ function prepararZoomPuntos(z, continuo = false) {
 }
 mapa.on("zoomanim", e => prepararZoomPuntos(e.zoom));
 mapa.on("zoom", e => { if (e.pinch || e.flyTo) prepararZoomPuntos(mapa.getZoom(), true); });
+/* Detalle urbano: 20.000 polígonos atenuados a escala nacional son 20.000 caminos SVG que Leaflet
+   redibuja en cada arrastre. Con `ocultaHasta` la capa sale del mapa hasta que el zoom llega, y
+   vuelve al acercarse sin tocar el checkbox (sigue encendida, simplemente no se dibuja). */
+function aplicarOcultoZoom(c) {
+  if (!c.ocultaHasta || !capas[c.id]) return;
+  const chk = document.querySelector('[data-capa="' + c.id + '"]');
+  if (!chk || !chk.checked) return;
+  const dentro = mapa.getZoom() >= c.ocultaHasta;
+  const esta = mapa.hasLayer(capas[c.id]);
+  if (dentro && !esta) mapa.addLayer(capas[c.id]);
+  else if (!dentro && esta) mapa.removeLayer(capas[c.id]);
+}
 mapa.on("moveend", () => {
   CAPAS.forEach(c => {
+    aplicarOcultoZoom(c);
     if (!mapa.hasLayer(capas[c.id])) return;
     if (c.tipo === "punto") pintarPuntos(c);
     atenuarCapa(c);

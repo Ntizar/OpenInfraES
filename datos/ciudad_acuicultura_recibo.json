@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-25",
+ "fuente": "IGN · SignA",
+ "titulo": "Instalaciones de acuicultura (IGN)",
+ "metodo": "Capa 41 de 05_servicios_industria, contorno simplificado a ~13 m",
+ "features": 285,
+ "kb": 98.7,
+ "fichero": "ciudad_acuicultura.geojson"
+}

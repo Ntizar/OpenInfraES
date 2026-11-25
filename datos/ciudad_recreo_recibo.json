@@ -1,0 +1,12 @@
+{
+ "editor": "Instituto Geográfico Nacional",
+ "licencia": "CC BY 4.0",
+ "url": "https://signa.ign.es/",
+ "descargado": "2026-11-25",
+ "titulo": "Áreas recreativas y de descanso (IGN)",
+ "fuente": "IGN · SignA",
+ "metodo": "Capas 20 y 21 de 05_servicios_industria, con el tipo como atributo",
+ "features": 915,
+ "kb": 246.2,
+ "fichero": "ciudad_recreo.geojson"
+}
