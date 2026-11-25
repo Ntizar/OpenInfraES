@@ -1025,9 +1025,56 @@ const mapa = L.map("mapa", {
 }).setView([40.1, -3.7], 6.6);
 
 // Al soltar el mapa se recalcula qué se ve en las capas grandes (ver recortar()).
+/* El repintado va en COLA, no en un bucle cerrado: con las 99 capas encendidas, un cambio de
+   nivel de zoom reconstruía todas en el mismo tick y el mapa se quedaba congelado entre uno y
+   cuatro segundos. La cola pinta lo que quepa en ~8 ms por fotograma —el mapa sigue respondiendo
+   mientras termina— y ordena por tamaño, que es lo que el usuario nota primero. */
+const COLA_PINTADO = [];
+let COLA_ACTIVA = false;
+
+function encolarPintado() {
+  COLA_PINTADO.length = 0;
+  const z = mapa.getZoom(), vista = mapa.getBounds();
+  const vp = vista.pad(0.3);
+  const clave = [vp.getWest(), vp.getSouth(), vp.getEast(), vp.getNorth()]
+    .map(x => x.toFixed(3)).join(",");
+  for (const c of CAPAS) {
+    if (!capas[c.id] || !mapa.hasLayer(capas[c.id])) continue;
+    // Sólo se encola lo que de verdad cambia: si el zoom y la vista no movieron el paso, la capa
+    // se queda como está y la cola no se llena de trabajo inútil (99 capas → 3 o 4 reales).
+    if (c.tipo === "punto") {
+      if (c.__paso === pasoPuntos(c, z) && c.__zoom === z &&
+          c.__vista && c.__vista.contains(vista)) continue;
+    } else if (c.__claveVista === clave) continue;
+    COLA_PINTADO.push(c);
+  }
+  COLA_PINTADO.sort((a, b) => (datos[b.id]?.length || 0) - (datos[a.id]?.length || 0));
+  if (!COLA_ACTIVA) { COLA_ACTIVA = true; setTimeout(procesarCola, 0); }
+}
+
+function procesarCola() {
+  const t0 = performance.now();
+  while (COLA_PINTADO.length && performance.now() - t0 < 8) {
+    const c = COLA_PINTADO.shift();
+    if (!mapa.hasLayer(capas[c.id])) continue;
+    try {
+      if (c.tipo === "punto") pintarPuntos(c);
+      else if (c.__dibujo) recortar(c);
+      atenuarCapa(c);
+      c.__panel?.classList.remove("cambiando");
+    } catch (e) { console.warn("repintado:", c.id, e.message); }
+  }
+  /* `setTimeout` y no `requestAnimationFrame`: rAF se pausa cuando la pestaña no está visible
+     (o en headless) y la cola se quedaba congelada con 99 capas dentro — medido: 87 s sin
+     avanzar. Con temporizador la cola termina siempre, esté o no la pestaña en primer plano. */
+  if (COLA_PINTADO.length) setTimeout(procesarCola, 0);
+  else COLA_ACTIVA = false;
+}
+
 mapa.on("moveend", () => {
   for (const c of CAPAS) {
-    if (c.__dibujo && mapa.hasLayer(capas[c.id])) recortar(c);
+    // Detalle urbano: entra o sale según el zoom (barato, va antes que la cola).
+    aplicarOcultoZoom(c);
     // Capa partida: al mover el mapa, si asoma una provincia que aun no esta, se pide.
     // `c.__encendida` y no `hasLayer`: con `ocultaHasta` la capa esta encendida pero fuera del
     // mapa, y sus trozos tienen que llegar igualmente en cuanto se cruza el zoom.
@@ -1038,6 +1085,7 @@ mapa.on("moveend", () => {
       if (faltan.length) cargarPartes(c, faltan);
     }
   }
+  encolarPintado();
 });
 
 // Leaflet 1.9.4 usa _moveStart/_move/_moveEnd para el pellizco nativo.
@@ -1403,7 +1451,7 @@ const CAPAS = [
 
   { id:"plantas", grupo:"Generación", label:"Todas las plantas (con potencia)", tipo:"punto", on:false,
     color:"#94a3b8", fichero:"datos/plantas.geojson", zoomMin:8, radio:4.5,
-    siempreIndividual:true, popupTitulo:"name", colorCampo:"color_tec", etiquetaCampo:"technology_normalized",
+    siempreIndividual:true, zoomDetalle:8, popupTitulo:"name", colorCampo:"color_tec", etiquetaCampo:"technology_normalized",
     radioPorMagnitud:true, escala:{ campo:"installed_capacity_mw", min:0.5, max:2000, unidad:"MW", log:true },
     campos:["name","technology_normalized","installed_capacity_mw","owner","province",
             "municipality","autonomous_region","status"] },
@@ -3375,7 +3423,11 @@ function celda(z) {
 }
 
 function pasoPuntos(c, z) {
-  if (c.siempreIndividual || z >= (c.zoomDetalle || ZOOM_DETALLE)) return null;
+  /* `siempreIndividual` sólo manda si la capa no fija `zoomDetalle`: con las dos cosas, el zoom
+     decide. Plantas es el caso: 5.593 puntos sueltos a zoom de país son una masa ilegible (y
+     5.593 nodos SVG que Leaflet reproyecta en cada arrastre); por debajo de 8 se agrupan en
+     burbujas y a partir de 8 cada planta se ve con su radio. */
+  if (c.zoomDetalle ? z >= c.zoomDetalle : c.siempreIndividual) return null;
   /* En pantalla de móvil caben tres veces menos celdas: con el paso de escritorio, 20.000 puntos
      se convierten en una alfombra de burbujas que tapa el mapa. */
   const densa = (datos[c.id]?.length || 0) > 10000 ? 1.5 : 1;
@@ -3453,7 +3505,11 @@ function pintarPuntos(c) {
   }
   const vista = mapa.getBounds();
   const mismoNivel = c.__paso === paso;
-  if (mismoNivel && c.__vista.contains(vista)) return;
+  /* La caché incluye el ZOOM, no solo el paso: con `siempreIndividual` el paso es siempre null,
+     así que al acercarse la vista nueva quedaba «contenida» en la anterior y no se repintaba
+     nunca — a zoom de ciudad seguían dibujados los puntos de toda España, y Leaflet los
+     reproyectaba en cada arrastre. */
+  if (mismoNivel && c.__zoom === z && c.__vista && c.__vista.contains(vista)) return;
   if (!individual && !mismoNivel) {
     const celdas = new Map();
     for (const f of feats) {
@@ -3464,20 +3520,31 @@ function pintarPuntos(c) {
       if (!celdas.has(k)) celdas.set(k, []);
       celdas.get(k).push(f);
     }
-    c.__grupos = Array.from(celdas.values(), items => ({
-      items,
-      lat: items.reduce((a, f) => a + f.geometry.coordinates[1], 0) / items.length,
-      lng: items.reduce((a, f) => a + f.geometry.coordinates[0], 0) / items.length
-    }));
+    // Centroide con `puntoDe`: los nucleos del IGN son MultiPoint y leer `coordinates[1]`
+    // directo daba NaN en todas las burbujas de esas capas.
+    c.__grupos = Array.from(celdas.values(), items => {
+      let slat = 0, slng = 0, n = 0;
+      for (const f of items) {
+        const p = puntoDe(f.geometry);
+        if (!p) continue;
+        slng += p[0]; slat += p[1]; n++;
+      }
+      return { items, lat: slat / (n || 1), lng: slng / (n || 1) };
+    });
   }
 
   c.__paso = paso;
+  c.__zoom = z;
   c.__vista = vista.pad(0.25);
   if (z < c.zoomMin) c.__tenue = undefined;
   const anteriores = c.__marcas || new Map();
   const marcas = new Map();
+  /* Filtro por vista con cuatro comparaciones numéricas en vez de `LatLngBounds.contains([lat,lng])`:
+     eso creaba un array y llamaba a un método por cada uno de los ~250.000 puntos de las capas de
+     puntos en cada cambio de zoom. */
+  const vb = c.__vista, vS = vb.getSouth(), vN = vb.getNorth(), vO = vb.getWest(), vE = vb.getEast();
   function mostrar(f, lat, lng, items) {
-    if (!c.__vista.contains([lat, lng])) return;
+    if (!(lat >= vS && lat <= vN && lng >= vO && lng <= vE)) return;
     const n = items ? items.length : 1;
     const clave = n === 1 ? f : items;
     if (anteriores.has(clave)) {
@@ -3556,7 +3623,11 @@ function pintarPuntos(c) {
 //   1. las capas grandes se dibujan en un <canvas>, no en SVG (un nodo en vez de miles)
 //   2. al mover el mapa solo se redibuja lo que cae en la vista (con margen)
 // Las capas pequeñas no se tocan: en SVG se ven mejor y su coste es nulo.
-const RECORTE_MIN = 1200;
+/* Recorte por vista a partir de este número de objetos. Antes eran 1.200 y las capas
+   medianas (500–1.000 objetos: presas, canales, tramos de ADIF, espacios protegidos...) se
+   dibujaban ENTERAS en cada vista: sumadas eran 10.000 nodos SVG enseñando cuatro calles.
+   Calcular la caja de 100.000 objetos cuesta ~90 ms una sola vez; dibujarlos cuesta mucho más. */
+const RECORTE_MIN = 120;
 
 function cajaDe(g) {
   let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
@@ -3591,8 +3662,29 @@ function recortar(c) {
     const k = f.__caja || (f.__caja = cajaDe(f.geometry));
     if (k[2] >= o && k[0] <= e && k[3] >= s && k[1] <= n) dentro.push(f);
   }
-  if (!dentro.length) return;              // vista sin nada de esta capa: se deja lo anterior
   c.__claveVista = clave;
+  /* Vista sin nada de esta capa: se VACÍA. Antes se dejaba lo anterior «por si acaso», y al
+     acercarse a una ciudad las capas nacionales seguían con miles de caminos dibujados fuera
+     de pantalla que Leaflet reproyectaba en cada arrastre. */
+  if (!dentro.length) { c.__dibujo.clearLayers(); elementos[c.id] = []; return; }
+  dibujarVector(c, dentro);
+}
+
+/* Primera pintura de una capa vectorial: recorta ya, sin esperar al primer `moveend`.
+   Antes se dibujaba el fichero entero — 8.000 municipios o 11.000 polígonos verdes para
+   enseñar cuatro calles — y el recorte llegaba un movimiento después. */
+function pintarVector(c, feats) {
+  if (!feats || feats.length <= RECORTE_MIN) { dibujarVector(c, feats || []); return; }
+  const v = mapa.getBounds().pad(0.3);
+  const o = v.getWest(), s = v.getSouth(), e = v.getEast(), n = v.getNorth();
+  const dentro = [];
+  for (const f of feats) {
+    const k = f.__caja || (f.__caja = cajaDe(f.geometry));
+    if (k[2] >= o && k[0] <= e && k[3] >= s && k[1] <= n) dentro.push(f);
+  }
+  c.__claveVista = [o, s, e, n].map(x => x.toFixed(3)).join(",");
+  // `dibujarVector` se encarga de quitar el grupo anterior; con `dentro` vacío deja uno vacío
+  // montado, que es lo que `recortar` necesita para volver a pintar al mover el mapa.
   dibujarVector(c, dentro);
 }
 
@@ -3721,6 +3813,32 @@ function aplicarFiltro() {
    la vista, de cuatro en cuatro, pintando en cuanto llega el primero y completando al mover. */
 const PARTES_A_LA_VEZ = 4;
 
+/* ------------------------- turnos de descarga -------------------------
+   Encender las 99 capas lanzaba 250 peticiones en el mismo tick: el navegador parseaba varios
+   megas de GeoJSON a la vez y el mapa dejaba de responder durante la carga (medido: >16 s con el
+   hilo principal a pleno). Seis descargas simultáneas bastan para saturar una conexión normal y
+   dejan respirar al hilo entre parseo y parseo. */
+const DESCARGAS_MAX = 6;
+let DESCARGAS_ACTIVAS = 0;
+const COLA_DESCARGAS = [];
+
+function conTurno(fn) {
+  return new Promise((resolve, reject) => {
+    const correr = () => {
+      DESCARGAS_ACTIVAS++;
+      Promise.resolve().then(fn)
+        .then(resolve, reject)
+        .finally(() => {
+          DESCARGAS_ACTIVAS--;
+          const siguiente = COLA_DESCARGAS.shift();
+          if (siguiente) siguiente();
+        });
+    };
+    if (DESCARGAS_ACTIVAS < DESCARGAS_MAX) correr();
+    else COLA_DESCARGAS.push(correr);
+  });
+}
+
 function partesEnVista(c, caja) {
   const o = caja.getWest(), s = caja.getSouth(), e = caja.getEast(), n = caja.getNorth();
   return (c.__idx.partes || []).filter(p => {
@@ -3731,8 +3849,9 @@ function partesEnVista(c, caja) {
 
 function pedirParte(c, p) {
   if (c.__pedidas[p.slug]) return c.__pedidas[p.slug];
-  c.__pedidas[p.slug] = fetch(c.carpeta + "/" + p.fichero + "?v=" + VER_DATOS)
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  c.__pedidas[p.slug] = conTurno(() =>
+    fetch(c.carpeta + "/" + p.fichero + "?v=" + VER_DATOS)
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }))
     .then(gj => gj.features || [])
     .catch(e => { console.warn("trozo no disponible:", c.id, p.fichero, e.message); return []; });
   return c.__pedidas[p.slug];
@@ -3772,7 +3891,7 @@ function dibujarPartes(c) {
   datos[c.id] = sub;
   conteo[c.id] = sub.length;
   if (c.tipo === "punto") pintarPuntos(c);
-  else dibujarVector(c, sub);
+  else pintarVector(c, sub);
   const el = document.getElementById("n-" + c.id);
   if (el) el.textContent = nf(sub.length);
   if (c.colorCampo || c.colorPorEscala || c.leyendaSimple) actualizarLeyenda();
@@ -3783,9 +3902,11 @@ async function cargarPartesAlEntrar(c) {
   const rot = document.getElementById("n-" + c.id);
   if (rot) rot.innerHTML = '<i class="spin"></i>';
   try {
-    const r = await fetch(c.carpeta + "/index.json?v=" + VER_DATOS);
-    if (!r.ok) throw new Error(r.status);
-    c.__idx = await r.json();
+    c.__idx = await conTurno(async () => {
+      const r = await fetch(c.carpeta + "/index.json?v=" + VER_DATOS);
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    });
   } catch (e) {
     console.warn("capa partida sin indice:", c.id, e.message);
     if (rot) rot.textContent = "—";
@@ -3886,8 +4007,9 @@ function cargar(c) {
   if (c.carpeta) { cargarPartesAlEntrar(c); return; }
   const rot = document.getElementById("n-" + c.id);
   if (rot) rot.innerHTML = '<i class="spin"></i>';
-  fetch(c.fichero + (c.fichero.includes("?") ? "&" : "?") + "v=" + VER_DATOS)
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  conTurno(() =>
+    fetch(c.fichero + (c.fichero.includes("?") ? "&" : "?") + "v=" + VER_DATOS)
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }))
     .then(gj => {
       const feats = c.filtro ? gj.features.filter(c.filtro) : gj.features;
       conteo[c.id] = feats.length;
@@ -3902,7 +4024,7 @@ function cargar(c) {
       if (c.colorCampo) actualizarLeyenda();
       if (c.tipo === "punto") { pintarPuntos(c); }
       else {
-        dibujarVector(c, feats);
+        pintarVector(c, feats);
       }
       atenuarCapa(c);
       estado();
@@ -4031,18 +4153,19 @@ function aplicarOcultoZoom(c) {
   if (!chk || !chk.checked) return;
   const dentro = mapa.getZoom() >= c.ocultaHasta;
   const esta = mapa.hasLayer(capas[c.id]);
-  if (dentro && !esta) mapa.addLayer(capas[c.id]);
+  /* Al entrar por zoom se recorta ANTES de añadir: si no, la capa aparecía con los 20.000
+     objetos del fichero entero y el recorte llegaba en el siguiente movimiento. Ese era el
+     tirón de dos segundos al acercarse a una ciudad. */
+  if (dentro && !esta) {
+    c.__claveVista = null;
+    if (c.tipo === "punto") pintarPuntos(c);
+    else if (c.__dibujo || datos[c.id]) pintarVector(c, datos[c.id] || []);
+    mapa.addLayer(capas[c.id]);
+  }
   else if (!dentro && esta) mapa.removeLayer(capas[c.id]);
 }
-mapa.on("moveend", () => {
-  CAPAS.forEach(c => {
-    aplicarOcultoZoom(c);
-    if (!mapa.hasLayer(capas[c.id])) return;
-    if (c.tipo === "punto") pintarPuntos(c);
-    atenuarCapa(c);
-    c.__panel?.classList.remove("cambiando");
-  });
-});
+/* (El repintado por moveend vive arriba, en la cola: aquí sólo queda el detalle urbano, que
+   ya se aplica desde el único handler.) */
 
 /* ---------------- estado ---------------- */
 function estado() {
