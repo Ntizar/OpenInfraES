@@ -4,37 +4,37 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 826,
+ "features": 816,
  "paneles_localizados": 2538,
- "descargado": "2026-11-25T16:20:53",
+ "descargado": "2026-11-25T17:13:49",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 84
+   "paneles": 86
   },
   {
    "texto": "MODERE VELOCIDAD · MODERE VELOCITAT",
-   "paneles": 84
-  },
-  {
-   "texto": "@H @F",
    "paneles": 77
   },
   {
-   "texto": "SOL BAJO MODERE VELOCIDAD",
-   "paneles": 29
+   "texto": "@H @F",
+   "paneles": 73
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD",
-   "paneles": 20
+   "paneles": 41
   },
   {
    "texto": "MODERE VELOCIDAD",
-   "paneles": 19
+   "paneles": 20
   },
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD",
    "paneles": 16
+  },
+  {
+   "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
+   "paneles": 13
   },
   {
    "texto": "PEGUERA 7m ANDRATX 12m P.ANDRATX 16m",
@@ -45,8 +45,8 @@
    "paneles": 12
   },
   {
-   "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
-   "paneles": 12
+   "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
+   "paneles": 8
   }
  ]
 }
