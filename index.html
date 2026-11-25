@@ -3605,6 +3605,7 @@ function aplicarFiltro() {
   const sub = FILTRO.valor === "*" ? c.__feats
     : c.__feats.filter(f => String((f.properties || {})[campo]) === FILTRO.valor);
   dibujarVector(c, sub);
+  datos[c.id] = sub;      // `datos` es lo que se ve: la leyenda y el panel cuentan eso, no el total
   conteo[c.id] = sub.length;
   const el = document.getElementById("n-" + c.id);
   if (el) el.textContent = nf(sub.length);
