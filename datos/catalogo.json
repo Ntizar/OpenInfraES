@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-25T21:16:20",
+ "generado": "2026-11-25T21:45:51",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 125,
@@ -15,7 +15,7 @@
    "3": 15
   },
   "descargables_ligeros": 62,
-  "kb_total": 183308.3
+  "kb_total": 183259.2
  },
  "avisos": {
   "pendiente": [
@@ -68,6 +68,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Trazado oficial de tramos (1.178 tramos, 604.913 vertices). El WFS de IDEADIF responde 403 (Akamai); se parte del GeoJSON ya descargado y se simplifica con Douglas-Peucker a 40 m",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 según ficha de datos.gob.es",
@@ -95,6 +98,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "tar.gz de GeoJSON de la pagina de avisos (sin clave)",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Fichero descargado del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -122,6 +128,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "CSV global de aeródromos, filtro iso_country=ES; los cerrados se descartan",
+   "origen": "comunidad",
+   "origen_txt": "Base comunitaria",
+   "origen_detalle": "OurAirports · base comunitaria, no oficial",
    "licencia": {
     "estado": "si",
     "nombre": "Dominio público",
@@ -149,6 +158,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "OGC API Features, coleccion agua:Estaciones_Aforos",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -176,6 +188,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Overpass API (man_made=*) · 579 con nombre",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
@@ -203,6 +218,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Boletín Hidrológico, parte semanal",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Boletín Hidrológico del MITECO (parte semanal)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -230,6 +248,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "RSS público acumulativo, bbox de España, ventana de 120 días",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Servicio público de la Comisión Europea · atribución",
@@ -257,6 +278,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Almacenamiento de productos petrolíferos",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de CORES (descarga)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -284,6 +308,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capas 15, 16, 24, 25 y 17 de 03_construcciones_otros; una capa con el tipo como atributo",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -311,6 +338,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capas 6 y 7 de 02_redes_transporte, multiPoint desdoblado en puntos",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -338,6 +368,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capas 1-3 de 02_redes_transporte (teleférico, telesilla, telesquí)",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -365,6 +398,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "OGC API Features, coleccion evaluacionambiental:ca_red_estaciones",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -392,6 +428,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 18 de 02_redes_transporte, con agrupación y longitud",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -419,6 +458,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Overpass API (man_made=*) · resto: canales de riego, acequias y aducciones",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
@@ -446,6 +488,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "OGC API Features, coleccion agua:canales, simplificado a ~22 m",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -473,6 +518,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "GET al JSON de estaciones terrestres; coma decimal",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -500,6 +548,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -527,6 +578,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 1 de 07_orografia_paisaje con cota, clase y municipio",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -554,6 +608,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 41 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -581,6 +638,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 25 de 05_servicios_industria; el IGN no publica nombre ni operador, varias filas por mástil fundidas a 25 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -608,6 +668,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 19 de 05_servicios_industria, una chincheta por recinto a 30 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -635,6 +698,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 22 de 05_servicios_industria, dedupe a 30 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -662,6 +728,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 45 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -689,6 +758,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 47 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -716,6 +788,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 50 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -743,6 +818,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capas 5-8 de 05_servicios_industria, con el tipo como atributo y dedupe a 30 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -770,6 +848,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 46 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -797,6 +878,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 44 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -824,6 +908,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capas 30 y 31 de 05_servicios_industria, con tipo y sustancia",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -851,6 +938,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capas 20 y 21 de 05_servicios_industria, con el tipo como atributo",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -878,6 +968,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capas 23 y 24 de 05_servicios_industria",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -905,6 +998,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 48 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -932,6 +1028,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "una llamada por lotes a /v1/forecast (current) y rejilla IDW vectorial propia",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · atribuir a Open-Meteo y al modelo (ICON/GFS)",
@@ -946,8 +1045,8 @@
    "features": 52,
    "bytes": null,
    "kb": null,
-   "fecha_dato": "2026-11-25T22:15",
-   "fecha_descarga": "2026-11-25T21:16:20Z",
+   "fecha_dato": "2026-11-25T22:30",
+   "fecha_descarga": "2026-11-25T21:42:09Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -959,6 +1058,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el polígono), paso 15 min",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Interpolación IDW sobre Open-Meteo",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · atribuir a Open-Meteo y al modelo (ICON/GFS)",
@@ -971,10 +1073,10 @@
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76263,
+   "bytes": 76246,
    "kb": 74.5,
-   "fecha_dato": "2026-11-25T22:15",
-   "fecha_descarga": "2026-11-25T21:16:20Z",
+   "fecha_dato": "2026-11-25T22:30",
+   "fecha_descarga": "2026-11-25T21:42:09Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -986,6 +1088,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el poligono), paso 15 min",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Interpolación IDW sobre Open-Meteo",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · atribuir a Open-Meteo y al modelo (ICON/GFS)",
@@ -998,10 +1103,10 @@
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76263,
+   "bytes": 76246,
    "kb": 74.5,
-   "fecha_dato": "2026-11-25T22:15",
-   "fecha_descarga": "2026-11-25T21:16:20Z",
+   "fecha_dato": "2026-11-25T22:30",
+   "fecha_descarga": "2026-11-25T21:42:09Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1013,6 +1118,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · atribuir a Open-Meteo y al modelo (ICON/GFS)",
@@ -1025,10 +1133,10 @@
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 54286,
+   "bytes": 54302,
    "kb": 53.0,
-   "fecha_dato": "2026-11-25T22:15",
-   "fecha_descarga": "2026-11-25T21:16:20Z",
+   "fecha_dato": "2026-11-25T22:30",
+   "fecha_descarga": "2026-11-25T21:42:09Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1040,6 +1148,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Conducciones de gas",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones de Enagás (descarga)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -1067,6 +1178,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "query ArcGIS REST, maxAllowableOffset 0.0005",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -1094,6 +1208,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 27 de 05_servicios_industria, con estado y tipo del registro",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -1121,6 +1238,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Instalaciones de desalación",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones declaradas por MITECO/Acuamed",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -1148,6 +1268,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "DATEX II v3 (XML) del NAP de Tráfico · Cámaras DGT DATEX2 v3.7",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -1175,6 +1298,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "DATEX II v3 (XML) del NAP de Tráfico · Puntos de recarga eléctrica para vehículos",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -1202,6 +1328,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "DATEX II v3 (XML) del NAP de Tráfico · Incidencias DGT DATEX2 v3.7",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -1229,6 +1358,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "DATEX II v3 (XML) del NAP de Tráfico · Paneles DGT DATEX2 v3.7",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -1256,6 +1388,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "OGC API Features, coleccion costas:dominio_publico_maritimo_terrestre, simplificado a ~22 m",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -1283,6 +1418,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -1310,6 +1448,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -1337,6 +1478,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Interconexiones del sistema eléctrico",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de REE (descarga)",
    "licencia": {
     "estado": "pendiente",
     "nombre": "Aviso legal REE §5: uso informativo no comercial; el resto exige autorización escrita. Condiciones de apidatos no localizadas",
@@ -1364,6 +1508,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Boletín Hidrológico, parte semanal",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Boletín Hidrológico del MITECO (parte semanal)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -1391,6 +1538,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Registro de instalaciones de producción",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de instalaciones de producción (MITECO)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -1418,6 +1568,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "query ArcGIS REST f=geojson, parques nacionales/naturales/otros, simplificado a ~110 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -1445,6 +1598,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "GTFS de Renfe Cercanías, tabla stops.txt",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "GTFS-ZIP del NAP (fichero)",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -1472,6 +1628,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "Hermes/7__COMBUSTIBLES_ALTERNATIVOS/457 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -1499,6 +1658,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Overpass API (man_made=*) · 994 con nombre",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
@@ -1526,6 +1688,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "query f=geojson sobre Signa/03_construcciones_otros/11, redondeo a 5 decimales",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -1553,6 +1718,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 23 de 02_redes_transporte",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -1580,6 +1748,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Almacenamientos subterráneos",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones de Enagás (descarga)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -1607,6 +1778,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Interconexiones internacionales",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones de Enagás (descarga)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -1634,6 +1808,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Plantas de regasificación declaradas",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones de Enagás (descarga)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -1661,6 +1838,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Almacenamientos subterráneos",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones de Enagás (descarga)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -1688,6 +1868,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Overpass API (power=line, pipeline, plant) · subconjunto: technology_normalized in (ccgt, fuel_gas)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
@@ -1715,6 +1898,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Overpass API (power=line, pipeline, plant)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
@@ -1742,6 +1928,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Reparto provincial de generación",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
    "licencia": {
     "estado": "pendiente",
     "nombre": "Aviso legal REE §5: uso informativo no comercial; el resto exige autorización escrita. Condiciones de apidatos no localizadas",
@@ -1769,6 +1958,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "protobuf GTFS-RT, refresco continuo",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "pendiente",
     "nombre": "GTFS-RT sin condiciones localizadas (los conjuntos de data.renfe.com de estaciones sí son CC BY 4.0)",
@@ -1780,11 +1972,11 @@
    "ttl_segundos": 120,
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
-   "features": 422,
-   "bytes": 120284,
-   "kb": 117.5,
-   "fecha_dato": "2026-11-25T19:42:10",
-   "fecha_descarga": "2026-11-25T19:42:06",
+   "features": 244,
+   "bytes": 69759,
+   "kb": 68.1,
+   "fecha_dato": "2026-11-25T21:42:10",
+   "fecha_descarga": "2026-11-25T21:42:08",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1796,6 +1988,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Proyectos de Interés Común (PCI)",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Proyectos PCI del MITECO (fichero)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -1823,6 +2018,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Red de hidrógeno (PCI)",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Proyectos PCI del MITECO (fichero)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -1850,6 +2048,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Overpass API (power=line, pipeline, plant)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
@@ -1877,6 +2078,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Proyectos de Interés Común (PCI)",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Proyectos PCI del MITECO (fichero)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -1904,6 +2108,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Red de hidrógeno (PCI)",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Proyectos PCI del MITECO (fichero)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -1931,6 +2138,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "WFS 1.1.0 GML paginado por startIndex (el servidor no admite GeoJSON) → anillo exterior, redondeo a 4 decimales, decimado a 250 vértices",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Copernicus: reutilización libre con atribución (© Unión Europea, Copernicus EMS · EFFIS)",
@@ -1958,6 +2168,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "padrón del INE cruzado por cod_ine con polígonos NUTS de Eurostat",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
    "licencia": {
     "estado": "si",
     "nombre": "INE con cita · Eurostat CC BY 4.0",
@@ -1985,6 +2198,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "población / superficie del polígono",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado desde tablas del INE",
    "licencia": {
     "estado": "si",
     "nombre": "INE con cita · Eurostat CC BY 4.0",
@@ -2012,6 +2228,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "padrón del INE cruzado por cod_ine con polígonos NUTS de Eurostat",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
    "licencia": {
     "estado": "si",
     "nombre": "INE con cita · Eurostat CC BY 4.0",
@@ -2039,6 +2258,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "padrón del INE cruzado por cod_ine con polígonos NUTS de Eurostat",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
    "licencia": {
     "estado": "si",
     "nombre": "INE con cita · Eurostat CC BY 4.0",
@@ -2066,6 +2288,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Interconexiones del sistema eléctrico",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de REE (descarga)",
    "licencia": {
     "estado": "pendiente",
     "nombre": "Aviso legal REE §5: uso informativo no comercial; el resto exige autorización escrita. Condiciones de apidatos no localizadas",
@@ -2093,6 +2318,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "Hermes/0__TERMINALES_INTERMODALES/1 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -2120,6 +2348,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "vector tiles MVT z8, deduplicado por id",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "I-ReWater Hub · API de datos",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0",
@@ -2147,6 +2378,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "vector tiles MVT z6 + padrón del INE (tabla 2852/2853)",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "I-ReWater Hub · API de datos",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0",
@@ -2174,6 +2408,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Overpass API (power=line, pipeline, plant)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
@@ -2201,6 +2438,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Overpass API (power=line, pipeline, plant)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
@@ -2228,6 +2468,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "OGC API Features, coleccion agua:estado_masas_aguasub_2027_global, simplificado a ~220 m",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -2255,6 +2498,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "polígonos LAU 1M de Eurostat GISCO cruzados POR CÓDIGO INE (LAU_ID) con las cifras oficiales del padrón (INE, tabla 29005 en CSV, columna Municipios = código + nombre)",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
    "licencia": {
     "estado": "si",
     "nombre": "INE con cita · Eurostat CC BY 4.0",
@@ -2282,6 +2528,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "GTFS-ZIP del NAP; cabecera `ApiKey`",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Fichero descargado del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -2309,6 +2558,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "GTFS-ZIP del NAP; cabecera `ApiKey`",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Fichero descargado del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -2336,6 +2588,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "GTFS-ZIP del NAP; cabecera `ApiKey`",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Fichero descargado del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -2363,6 +2618,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "GTFS-ZIP del NAP; cabecera `ApiKey`",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Fichero descargado del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -2390,6 +2648,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "GTFS-ZIP del NAP; cabecera `ApiKey`",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Fichero descargado del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -2417,6 +2678,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Centrales y reactores autorizados",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro del CSN (descarga)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0",
@@ -2444,6 +2708,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "query f=geojson sobre Signa/01_unidades_administrativas/12, paginado de 1000 en 1000, redondeo a 5 decimales",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -2471,6 +2738,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capas 20, 18 y 14 de 03_construcciones_otros",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -2498,6 +2768,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Registro de instalaciones de producción",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de instalaciones de producción (MITECO)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -2525,6 +2798,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capas 1, 6-13 y 26 de 03_construcciones_otros, fundidas por sitio a 60 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -2552,6 +2828,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Almacenamiento de productos petrolíferos",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de CORES (descarga)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -2579,6 +2858,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "Hermes/0__AEROPUERTOS/2 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -2606,6 +2888,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "registro RAIPEE cruzado con ELECTRA",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
    "licencia": {
     "estado": "pendiente",
     "nombre": "Aviso legal REE §5: uso informativo no comercial; el resto exige autorización escrita. Condiciones de apidatos no localizadas",
@@ -2633,6 +2918,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Registro de instalaciones de producción",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de instalaciones de producción (MITECO)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -2660,6 +2948,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "query ArcGIS REST f=geojson sobre Hidrografia/0 (solo el muro)",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -2687,6 +2978,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Overpass `bridge` sobre vías A-/AP-/N-, calzadas fundidas por proximidad de 45 m",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
@@ -2714,6 +3008,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "Hermes/0__PUERTOS/1 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -2741,6 +3038,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "Hermes/0__PUERTOS/1 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -2768,6 +3068,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "BTN Continua: subestaciones (recintos) y tendido 220/400 kV",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "BTN del IGN · descarga directa",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -2795,6 +3098,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "query ArcGIS REST f=geojson sobre Espacios_Protegidos/5 y /6",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -2822,6 +3128,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Refinerías del sistema petrolífero",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de CORES (descarga)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -2849,6 +3158,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Plantas de regasificación declaradas",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones de Enagás (descarga)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -2876,6 +3188,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 3 de 05_servicios_industria",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -2903,6 +3218,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Instalaciones de gestión de residuos",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de ENRESA (descarga)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -2930,6 +3248,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Instalaciones de gestión de residuos",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de ENRESA (descarga)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007",
@@ -2957,6 +3278,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Overpass API (power=line, pipeline, plant) · subconjunto: resto de tecnologias",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
@@ -2984,6 +3308,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Overpass API (man_made=*) · 14263 tramos agrupados, mínimo 12 km; caudal por Open-Meteo Flood (GloFAS)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
@@ -3011,6 +3338,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "query ArcGIS REST f=geojson sobre Hidrografia/3, tramos de más de 15 km",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -3038,6 +3368,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capas 1 y 2 de 05_servicios_industria, fundidas por sitio a 60 m; una chincheta por recinto",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -3065,6 +3398,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 4 de 07_orografia_paisaje",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -3092,6 +3428,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "FDSN query con bbox de Espana",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0",
@@ -3103,9 +3442,9 @@
    "ttl_segundos": 604800,
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
-   "features": 80,
-   "bytes": 26696,
-   "kb": 26.1,
+   "features": 81,
+   "bytes": 27011,
+   "kb": 26.4,
    "fecha_dato": "2026-11-25",
    "fecha_descarga": "2026-11-25",
    "edad_dias": 0,
@@ -3119,6 +3458,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Registro de instalaciones de producción",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de instalaciones de producción (MITECO)",
    "licencia": {
     "estado": "si",
     "nombre": "Reutilización Ley 37/2007 con atribución",
@@ -3146,6 +3488,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "BTN Continua: subestaciones (recintos) y tendido 220/400 kV",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "BTN del IGN · descarga directa",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",
@@ -3173,6 +3518,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "Hermes/0__AEROPUERTOS/1 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -3200,6 +3548,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "Hermes/0__AEROPUERTOS/1 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -3227,6 +3578,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "Hermes/0__TERMINALES_INTERMODALES/1 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -3254,6 +3608,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "Hermes/0__PUERTOS/3 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -3281,6 +3638,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "Hermes/0__PUERTOS/3 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -3308,6 +3668,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "Estatal: trafico_imd.geojson (MITMA 2021, simplificado) con la provincia traducida a comunidad. CV: WFS 2.0 ms:Aforos2025 en GML (posList lat/lon). AR: query f=json sobre AFOROS_ARAGON_GENERICO/1 (DGA 2022). Redondeo a 4 decimales y un vértice cada ~50 m.",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -3335,6 +3698,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Tenerife: CSV de IMD 2025 cruzado por estacion_id con el GeoJSON de estaciones del mismo portal. Cataluña: Socrata xsvx-ym46 filtrado a 2022, punto desde latitud/longitud.",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "CSV del Cabildo de Tenerife, cruzado por PK",
    "licencia": {
     "estado": "pendiente",
     "nombre": "sin evaluar",
@@ -3362,6 +3728,9 @@
    "jerarquia": 3,
    "jerarquia_txt": "fuente comunitaria",
    "producto": "Overpass API (man_made=*) · 12 tramos unidos en 5 trazos de 3 trasvases (scripts/unir_trasvases_v2.py, tolerancia 66 m)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "Trazado propio sobre OpenStreetMap",
    "licencia": {
     "estado": "si",
     "nombre": "ODbL 1.0 · comparte igual en bases derivadas",
@@ -3389,6 +3758,9 @@
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
    "producto": "ArcGIS REST, capa 929, un elemento por túnel con sus tubos anidados",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
@@ -3416,6 +3788,9 @@
    "jerarquia": 1,
    "jerarquia_txt": "organismo productor",
    "producto": "Capa 19 de 02_redes_transporte, con firme y longitud",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)",
    "licencia": {
     "estado": "si",
     "nombre": "CC BY 4.0 · © scne.es",

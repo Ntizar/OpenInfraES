@@ -126,6 +126,90 @@ ALIAS = {
 }
 
 
+def clasificar_origen(v):
+    """De dónde salió el dato: no es lo mismo una API documentada que un CSV, un PDF o las capas
+    de un visor ajeno. Se declara porque el lector tiene derecho a saber si el número lo publicó
+    el organismo por API o lo sacamos de un mapa que alguien dibujó.
+
+    Se clasifica por la URL y por el método del recibo, que son datos del propio fichero: no se
+    adivina por el nombre de la capa. Lo que no encaja se queda en «sin» (sin declarar) antes que
+    inventarlo.
+    """
+    url = (v.get("url") or "").lower()
+    met = (v.get("metodo") or "").lower()
+
+    if "overpass" in url or "openstreetmap" in url or "overpass" in met:
+        return "osm", "OpenStreetMap (Overpass API)"
+    if "visorhermes" in url or "visor hermes" in met:
+        return "visor", "Mapa Visor Hermes (MITMA)"
+    if "signa.ign.es" in url:
+        return "visor", "Mapa SignA (IGN)"
+    if "pdf" in met or url.endswith(".pdf"):
+        return "pdf", "Documento PDF del organismo"
+    if any(k in met for k in ("cruzad", "fundid", "agrupad", "idw", "reparto provincial")) \
+            or "cruzados por" in met:
+        return "elaborado", "Elaborado en OpenInfraES cruzando fuentes"
+    if any(k in url for k in ("arcgis/rest", "/wfs", "ogc/features", "geoserver")) \
+            or any(k in met for k in ("arcgis rest", "ogc api", "wfs", "fdsn", "datex", "rss",
+                                      "open-meteo", "protobuf", "gtfs-rt", "get al json")):
+        return "api", "Servicio web del organismo"
+    if any(k in met for k in ("csv", "tar.gz", "gtfs-zip", "shapefile", "shp", "descarga directa",
+                             "fichero")) or any(k in url for k in (".csv", ".zip", ".geojson")):
+        return "fichero", "Fichero descargado del organismo"
+    return "sin", "Sin declarar"
+
+
+ORIGEN_TXT = {"api": "API", "visor": "Otro mapa", "pdf": "PDF", "fichero": "Fichero",
+              "osm": "OSM", "comunidad": "Base comunitaria", "elaborado": "Elaborado",
+              "sin": "Sin declarar"}
+
+# Las que la regla no acierta, declaradas una a una. La prueba está en `cadenas.py` (de dónde
+# llega cada una) o en el recibo de la capa; no se rellena por parecido con el nombre.
+ORIGEN = {
+    # Registros administrativos del organismo, descargados como catálogo/fichero
+    "parques-eolicos": ("fichero", "Registro de instalaciones de producción (MITECO)"),
+    "plantas-solares": ("fichero", "Registro de instalaciones de producción (MITECO)"),
+    "eolicos": ("fichero", "Registro de instalaciones de producción (MITECO)"),
+    "solares": ("fichero", "Registro de instalaciones de producción (MITECO)"),
+    "hidrogeno-produccion": ("fichero", "Proyectos PCI del MITECO (fichero)"),
+    "hidrogeno-red": ("fichero", "Proyectos PCI del MITECO (fichero)"),
+    "h2red": ("fichero", "Proyectos PCI del MITECO (fichero)"),
+    "h2": ("fichero", "Proyectos PCI del MITECO (fichero)"),
+    "desaladoras": ("fichero", "Instalaciones declaradas por MITECO/Acuamed"),
+    "agua-embalsada": ("fichero", "Boletín Hidrológico del MITECO (parte semanal)"),
+    "embalses": ("fichero", "Boletín Hidrológico del MITECO (parte semanal)"),
+    "electricidad-interconexiones": ("fichero", "Registro de REE (descarga)"),
+    "interelec": ("fichero", "Registro de REE (descarga)"),
+    "gas-regasificacion": ("fichero", "Instalaciones de Enagás (descarga)"),
+    "gas-almacenamiento": ("fichero", "Instalaciones de Enagás (descarga)"),
+    "gas-interconexiones": ("fichero", "Instalaciones de Enagás (descarga)"),
+    "conducciones-combustible": ("fichero", "Instalaciones de Enagás (descarga)"),
+    "regas": ("fichero", "Instalaciones de Enagás (descarga)"),
+    "gasalm": ("fichero", "Instalaciones de Enagás (descarga)"),
+    "refinerias": ("fichero", "Registro de CORES (descarga)"),
+    "almacenamiento-petrolifero": ("fichero", "Registro de CORES (descarga)"),
+    "petrolifero": ("fichero", "Registro de CORES (descarga)"),
+    "nuclear": ("fichero", "Registro del CSN (descarga)"),
+    "residuos-radiactivos": ("fichero", "Registro de ENRESA (descarga)"),
+    "residuos": ("fichero", "Registro de ENRESA (descarga)"),
+    # Base Topográfica Nacional del IGN, descarga directa (no es el visor SignA)
+    "red-electrica": ("fichero", "BTN del IGN · descarga directa"),
+    "subestaciones": ("fichero", "BTN del IGN · descarga directa"),
+    # Portal de datos con API propia
+    "irewater-edar": ("api", "I-ReWater Hub · API de datos"),
+    "irewater-nuts2": ("api", "I-ReWater Hub · API de datos"),
+    "estaciones-cercanias": ("fichero", "GTFS-ZIP del NAP (fichero)"),
+    # Agregados calculados por nosotros
+    "ine-densidad": ("elaborado", "Elaborado desde tablas del INE"),
+    "clima-temperatura": ("elaborado", "Interpolación IDW sobre Open-Meteo"),
+    "clima-provincias": ("elaborado", "Interpolación IDW sobre Open-Meteo"),
+    "trafico-estaciones": ("fichero", "CSV del Cabildo de Tenerife, cruzado por PK"),
+    # No lo publica un organismo: es una base mantenida por una comunidad
+    "aeropuertos": ("comunidad", "OurAirports · base comunitaria, no oficial"),
+    "trasvases": ("osm", "Trazado propio sobre OpenStreetMap"),
+}
+
+
 def main():
     fuentes = {}
     oficial = leer("oficial/_recibo_oficial.json", {})
@@ -638,6 +722,17 @@ def main():
             "descargado": r.get("descargado"), "features": r.get("features"),
             "url": r.get("url"), "metodo": r.get("metodo"),
         }
+
+    # Origen del dato para TODAS las capas, en el mismo sitio y con la misma regla: si un dato
+    # sale de un PDF, de las capas de un visor ajeno o de un CSV descargado, se dice aquí.
+    for k, v in fuentes.items():
+        if k in ORIGEN:
+            clave, texto = ORIGEN[k]
+        else:
+            clave, texto = clasificar_origen(v)
+        v["origen"] = clave
+        v["origen_txt"] = ORIGEN_TXT[clave]
+        v["origen_detalle"] = texto
 
     sim = leer("simplificado/_recibo.json", {})
     simpl = {os.path.basename(c["id"]): c for c in sim.get("capas", [])}

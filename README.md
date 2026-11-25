@@ -142,8 +142,8 @@ partida— está en [`docs/DATOS.md`](docs/DATOS.md).
 | **Demografía** | 6 | 45.668 |
 | **Transporte** | 23 | 42.252 |
 | **DGT · Tráfico** | 4 | 15.743 |
-| **Tiempo real** | 3 | 12.270 |
-| **Riesgo** | 4 | 10.054 |
+| **Tiempo real** | 3 | 12.092 |
+| **Riesgo** | 4 | 10.055 |
 | **Medio ambiente** | 4 | 16.130 |
 | **Patrimonio** | 1 | 20.116 |
 | **Sanidad** | 2 | 3.951 |
@@ -152,7 +152,7 @@ partida— está en [`docs/DATOS.md`](docs/DATOS.md).
 | **Equipamientos** | 2 | 3.540 |
 | **Relieve** | 2 | 19.739 |
 | **Clima** | 2 | 104 |
-| **Total** | **100** | **328.355** |
+| **Total** | **100** | **328.178** |
 <!-- CIFRAS-GRUPOS:FIN -->
 
 Los objetos se cuentan de los ficheros que usa cada grupo **sin contar dos veces el mismo fichero**

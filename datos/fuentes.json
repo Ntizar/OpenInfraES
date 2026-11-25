@@ -12,7 +12,10 @@
    "descargado": "2026-11-25",
    "features": 1382,
    "url": "https://www.miteco.gob.es",
-   "metodo": "Registro de instalaciones de producción"
+   "metodo": "Registro de instalaciones de producción",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de instalaciones de producción (MITECO)"
   },
   "plantas-solares": {
    "capa": "plantas-solares",
@@ -24,7 +27,10 @@
    "descargado": "2026-11-25",
    "features": 1330,
    "url": "https://www.miteco.gob.es",
-   "metodo": "Registro de instalaciones de producción"
+   "metodo": "Registro de instalaciones de producción",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de instalaciones de producción (MITECO)"
   },
   "gas-regasificacion": {
    "capa": "gas-regasificacion",
@@ -36,7 +42,10 @@
    "descargado": "2026-11-25",
    "features": 7,
    "url": "https://www.enagas.es",
-   "metodo": "Plantas de regasificación declaradas"
+   "metodo": "Plantas de regasificación declaradas",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones de Enagás (descarga)"
   },
   "gas-almacenamiento": {
    "capa": "gas-almacenamiento",
@@ -48,7 +57,10 @@
    "descargado": "2026-11-25",
    "features": 5,
    "url": "https://www.enagas.es",
-   "metodo": "Almacenamientos subterráneos"
+   "metodo": "Almacenamientos subterráneos",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones de Enagás (descarga)"
   },
   "gas-interconexiones": {
    "capa": "gas-interconexiones",
@@ -60,7 +72,10 @@
    "descargado": "2026-11-25",
    "features": 6,
    "url": "https://www.enagas.es",
-   "metodo": "Interconexiones internacionales"
+   "metodo": "Interconexiones internacionales",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones de Enagás (descarga)"
   },
   "refinerias": {
    "capa": "refinerias",
@@ -72,7 +87,10 @@
    "descargado": "2026-11-25",
    "features": 10,
    "url": "https://www.cores.es",
-   "metodo": "Refinerías del sistema petrolífero"
+   "metodo": "Refinerías del sistema petrolífero",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de CORES (descarga)"
   },
   "almacenamiento-petrolifero": {
    "capa": "almacenamiento-petrolifero",
@@ -84,7 +102,10 @@
    "descargado": "2026-11-25",
    "features": 133,
    "url": "https://www.cores.es",
-   "metodo": "Almacenamiento de productos petrolíferos"
+   "metodo": "Almacenamiento de productos petrolíferos",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de CORES (descarga)"
   },
   "nuclear": {
    "capa": "nuclear",
@@ -96,7 +117,10 @@
    "descargado": "2026-11-25",
    "features": 7,
    "url": "https://www.csn.es",
-   "metodo": "Centrales y reactores autorizados"
+   "metodo": "Centrales y reactores autorizados",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro del CSN (descarga)"
   },
   "residuos-radiactivos": {
    "capa": "residuos-radiactivos",
@@ -108,7 +132,10 @@
    "descargado": "2026-11-25",
    "features": 14,
    "url": "https://www.enresa.es",
-   "metodo": "Instalaciones de gestión de residuos"
+   "metodo": "Instalaciones de gestión de residuos",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de ENRESA (descarga)"
   },
   "electricidad-interconexiones": {
    "capa": "electricidad-interconexiones",
@@ -120,7 +147,10 @@
    "descargado": "2026-11-25",
    "features": 5,
    "url": "https://www.ree.es",
-   "metodo": "Interconexiones del sistema eléctrico"
+   "metodo": "Interconexiones del sistema eléctrico",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de REE (descarga)"
   },
   "red-electrica": {
    "capa": "red-electrica",
@@ -132,7 +162,10 @@
    "descargado": "2026-11-25",
    "features": 659,
    "url": "https://www.ign.es",
-   "metodo": "BTN Continua: subestaciones (recintos) y tendido 220/400 kV"
+   "metodo": "BTN Continua: subestaciones (recintos) y tendido 220/400 kV",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "BTN del IGN · descarga directa"
   },
   "conducciones-combustible": {
    "capa": "conducciones-combustible",
@@ -144,7 +177,10 @@
    "descargado": "2026-11-25",
    "features": 2,
    "url": "https://www.enagas.es",
-   "metodo": "Conducciones de gas"
+   "metodo": "Conducciones de gas",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones de Enagás (descarga)"
   },
   "generacion-electrica-provincia": {
    "capa": "generacion-electrica-provincia",
@@ -156,7 +192,10 @@
    "descargado": "2026-11-25",
    "features": 52,
    "url": "https://www.ree.es",
-   "metodo": "Reparto provincial de generación"
+   "metodo": "Reparto provincial de generación",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
   },
   "hidrogeno-produccion": {
    "capa": "hidrogeno-produccion",
@@ -168,7 +207,10 @@
    "descargado": "2026-11-25",
    "features": 7,
    "url": "https://www.miteco.gob.es",
-   "metodo": "Proyectos de Interés Común (PCI)"
+   "metodo": "Proyectos de Interés Común (PCI)",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Proyectos PCI del MITECO (fichero)"
   },
   "agua-embalsada": {
    "capa": "agua-embalsada",
@@ -180,7 +222,10 @@
    "descargado": "2026-11-25",
    "features": 402,
    "url": "https://www.miteco.gob.es",
-   "metodo": "Boletín Hidrológico, parte semanal"
+   "metodo": "Boletín Hidrológico, parte semanal",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Boletín Hidrológico del MITECO (parte semanal)"
   },
   "desaladoras": {
    "capa": "desaladoras",
@@ -192,7 +237,10 @@
    "descargado": "2026-11-25",
    "features": 28,
    "url": "https://www.miteco.gob.es",
-   "metodo": "Instalaciones de desalación"
+   "metodo": "Instalaciones de desalación",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones declaradas por MITECO/Acuamed"
   },
   "hidrogeno-red": {
    "capa": "hidrogeno-red",
@@ -204,7 +252,10 @@
    "descargado": "2026-11-25",
    "features": 10,
    "url": "https://www.miteco.gob.es",
-   "metodo": "Red de hidrógeno (PCI)"
+   "metodo": "Red de hidrógeno (PCI)",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Proyectos PCI del MITECO (fichero)"
   },
   "puertos-interes-general": {
    "capa": "puertos-interes-general",
@@ -216,7 +267,10 @@
    "descargado": "2026-11-25",
    "features": 45,
    "url": "https://mapas.fomento.gob.es/VisorHermes/",
-   "metodo": "Hermes/0__PUERTOS/1 — query ArcGIS REST, paginado de 500 en 500"
+   "metodo": "Hermes/0__PUERTOS/1 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)"
   },
   "terminales-portuarias": {
    "capa": "terminales-portuarias",
@@ -228,7 +282,10 @@
    "descargado": "2026-11-25",
    "features": 440,
    "url": "https://mapas.fomento.gob.es/VisorHermes/",
-   "metodo": "Hermes/0__PUERTOS/3 — query ArcGIS REST, paginado de 500 en 500"
+   "metodo": "Hermes/0__PUERTOS/3 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)"
   },
   "terminales-aeropuerto": {
    "capa": "terminales-aeropuerto",
@@ -240,7 +297,10 @@
    "descargado": "2026-11-25",
    "features": 102,
    "url": "https://mapas.fomento.gob.es/VisorHermes/",
-   "metodo": "Hermes/0__AEROPUERTOS/1 — query ArcGIS REST, paginado de 500 en 500"
+   "metodo": "Hermes/0__AEROPUERTOS/1 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)"
   },
   "pistas-aeropuerto": {
    "capa": "pistas-aeropuerto",
@@ -252,7 +312,10 @@
    "descargado": "2026-11-25",
    "features": 56,
    "url": "https://mapas.fomento.gob.es/VisorHermes/",
-   "metodo": "Hermes/0__AEROPUERTOS/2 — query ArcGIS REST, paginado de 500 en 500"
+   "metodo": "Hermes/0__AEROPUERTOS/2 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)"
   },
   "terminales-mercancias": {
    "capa": "terminales-mercancias",
@@ -264,7 +327,10 @@
    "descargado": "2026-11-25",
    "features": 383,
    "url": "https://mapas.fomento.gob.es/VisorHermes/",
-   "metodo": "Hermes/0__TERMINALES_INTERMODALES/1 — query ArcGIS REST, paginado de 500 en 500"
+   "metodo": "Hermes/0__TERMINALES_INTERMODALES/1 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)"
   },
   "estaciones-gas": {
    "capa": "estaciones-gas",
@@ -276,7 +342,10 @@
    "descargado": "2026-11-25",
    "features": 11485,
    "url": "https://mapas.fomento.gob.es/VisorHermes/",
-   "metodo": "Hermes/7__COMBUSTIBLES_ALTERNATIVOS/457 — query ArcGIS REST, paginado de 500 en 500"
+   "metodo": "Hermes/7__COMBUSTIBLES_ALTERNATIVOS/457 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)"
   },
   "irewater-edar": {
    "capa": "irewater-edar",
@@ -288,7 +357,10 @@
    "descargado": "2026-11-25",
    "features": 2086,
    "url": "https://i-rewater-hub.com",
-   "metodo": "vector tiles MVT z8, deduplicado por id"
+   "metodo": "vector tiles MVT z8, deduplicado por id",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "I-ReWater Hub · API de datos"
   },
   "irewater-nuts2": {
    "capa": "irewater-nuts2",
@@ -300,7 +372,10 @@
    "descargado": "2026-11-25",
    "features": 16,
    "url": "https://i-rewater-hub.com",
-   "metodo": "vector tiles MVT z6 + padrón del INE (tabla 2852/2853)"
+   "metodo": "vector tiles MVT z6 + padrón del INE (tabla 2852/2853)",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "I-ReWater Hub · API de datos"
   },
   "edar": {
    "capa": "edar",
@@ -312,7 +387,10 @@
    "descargado": "2026-11-24",
    "features": 4784,
    "url": "https://signa.ign.es/",
-   "metodo": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro"
+   "metodo": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "etap": {
    "capa": "etap",
@@ -324,7 +402,10 @@
    "descargado": "2026-11-23",
    "features": 1552,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (man_made=*) · 994 con nombre"
+   "metodo": "Overpass API (man_made=*) · 994 con nombre",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)"
   },
   "agua-conducciones": {
    "capa": "agua-conducciones",
@@ -336,7 +417,10 @@
    "descargado": "2026-11-23",
    "features": 2829,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (man_made=*) · 579 con nombre"
+   "metodo": "Overpass API (man_made=*) · 579 con nombre",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)"
   },
   "carreteras": {
    "capa": "carreteras",
@@ -348,7 +432,10 @@
    "descargado": "2026-11-25",
    "features": 1602,
    "url": "https://mapas.fomento.gob.es/VisorHermes/",
-   "metodo": "query ArcGIS REST, paginado de 500 en 500"
+   "metodo": "query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)"
   },
   "puertos": {
    "capa": "puertos",
@@ -360,7 +447,10 @@
    "descargado": "2026-11-25",
    "features": 45,
    "url": "https://mapas.fomento.gob.es/VisorHermes/",
-   "metodo": "Hermes/0__PUERTOS/1 — query ArcGIS REST, paginado de 500 en 500"
+   "metodo": "Hermes/0__PUERTOS/1 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)"
   },
   "terminales-puerto": {
    "capa": "terminales-puerto",
@@ -372,7 +462,10 @@
    "descargado": "2026-11-25",
    "features": 440,
    "url": "https://mapas.fomento.gob.es/VisorHermes/",
-   "metodo": "Hermes/0__PUERTOS/3 — query ArcGIS REST, paginado de 500 en 500"
+   "metodo": "Hermes/0__PUERTOS/3 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)"
   },
   "terminales-aero": {
    "capa": "terminales-aero",
@@ -384,7 +477,10 @@
    "descargado": "2026-11-25",
    "features": 102,
    "url": "https://mapas.fomento.gob.es/VisorHermes/",
-   "metodo": "Hermes/0__AEROPUERTOS/1 — query ArcGIS REST, paginado de 500 en 500"
+   "metodo": "Hermes/0__AEROPUERTOS/1 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)"
   },
   "intermodales": {
    "capa": "intermodales",
@@ -396,7 +492,10 @@
    "descargado": "2026-11-25",
    "features": 383,
    "url": "https://mapas.fomento.gob.es/VisorHermes/",
-   "metodo": "Hermes/0__TERMINALES_INTERMODALES/1 — query ArcGIS REST, paginado de 500 en 500"
+   "metodo": "Hermes/0__TERMINALES_INTERMODALES/1 — query ArcGIS REST, paginado de 500 en 500",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa Visor Hermes (MITMA)"
   },
   "plantas": {
    "capa": "plantas",
@@ -408,7 +507,10 @@
    "descargado": "2026-11-25",
    "features": 5797,
    "url": "https://www.ree.es",
-   "metodo": "registro RAIPEE cruzado con ELECTRA"
+   "metodo": "registro RAIPEE cruzado con ELECTRA",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
   },
   "estaciones-cercanias": {
    "capa": "estaciones-cercanias",
@@ -420,7 +522,10 @@
    "descargado": "2026-11-25",
    "features": 405,
    "url": "https://nap.transportes.gob.es",
-   "metodo": "GTFS de Renfe Cercanías, tabla stops.txt"
+   "metodo": "GTFS de Renfe Cercanías, tabla stops.txt",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "GTFS-ZIP del NAP (fichero)"
   },
   "ine-provincias": {
    "capa": "ine-provincias",
@@ -432,7 +537,10 @@
    "descargado": "2026-11-25",
    "features": 52,
    "url": "https://www.ine.es/jaxiT3/Tabla.htm?t=2852",
-   "metodo": "padrón del INE cruzado por cod_ine con polígonos NUTS de Eurostat"
+   "metodo": "padrón del INE cruzado por cod_ine con polígonos NUTS de Eurostat",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
   },
   "ine-ccaa": {
    "capa": "ine-ccaa",
@@ -444,7 +552,10 @@
    "descargado": "2026-11-25",
    "features": 19,
    "url": "https://www.ine.es/jaxiT3/Tabla.htm?t=2852",
-   "metodo": "padrón del INE cruzado por cod_ine con polígonos NUTS de Eurostat"
+   "metodo": "padrón del INE cruzado por cod_ine con polígonos NUTS de Eurostat",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
   },
   "ine-densidad": {
    "capa": "ine-densidad",
@@ -456,7 +567,10 @@
    "descargado": "2026-11-25",
    "features": 52,
    "url": "https://www.ine.es/jaxiT3/Tabla.htm?t=14506",
-   "metodo": "población / superficie del polígono"
+   "metodo": "población / superficie del polígono",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado desde tablas del INE"
   },
   "ine-paro": {
    "capa": "ine-paro",
@@ -468,7 +582,10 @@
    "descargado": "2026-11-25",
    "features": 19,
    "url": "https://www.ine.es/jaxiT3/Tabla.htm?t=14506",
-   "metodo": "padrón del INE cruzado por cod_ine con polígonos NUTS de Eurostat"
+   "metodo": "padrón del INE cruzado por cod_ine con polígonos NUTS de Eurostat",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
   },
   "l400": {
    "capa": "l400",
@@ -480,7 +597,10 @@
    "descargado": "2026-11-25",
    "features": null,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (power=line, pipeline, plant)"
+   "metodo": "Overpass API (power=line, pipeline, plant)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)"
   },
   "l220": {
    "capa": "l220",
@@ -492,7 +612,10 @@
    "descargado": "2026-11-25",
    "features": null,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (power=line, pipeline, plant)"
+   "metodo": "Overpass API (power=line, pipeline, plant)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)"
   },
   "gasoductos": {
    "capa": "gasoductos",
@@ -504,7 +627,10 @@
    "descargado": "2026-11-25",
    "features": null,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (power=line, pipeline, plant)"
+   "metodo": "Overpass API (power=line, pipeline, plant)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)"
   },
   "hidro": {
    "capa": "hidro",
@@ -516,7 +642,10 @@
    "descargado": "2026-11-25",
    "features": null,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (power=line, pipeline, plant)"
+   "metodo": "Overpass API (power=line, pipeline, plant)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)"
   },
   "subestaciones": {
    "capa": "subestaciones",
@@ -528,7 +657,10 @@
    "descargado": "2026-11-25",
    "features": 659,
    "url": "https://www.ign.es",
-   "metodo": "BTN Continua: subestaciones (recintos) y tendido 220/400 kV"
+   "metodo": "BTN Continua: subestaciones (recintos) y tendido 220/400 kV",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "BTN del IGN · descarga directa"
   },
   "eolicos": {
    "capa": "eolicos",
@@ -540,7 +672,10 @@
    "descargado": "2026-11-25",
    "features": 1382,
    "url": "https://www.miteco.gob.es",
-   "metodo": "Registro de instalaciones de producción"
+   "metodo": "Registro de instalaciones de producción",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de instalaciones de producción (MITECO)"
   },
   "solares": {
    "capa": "solares",
@@ -552,7 +687,10 @@
    "descargado": "2026-11-25",
    "features": 1330,
    "url": "https://www.miteco.gob.es",
-   "metodo": "Registro de instalaciones de producción"
+   "metodo": "Registro de instalaciones de producción",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de instalaciones de producción (MITECO)"
   },
   "residuos": {
    "capa": "residuos",
@@ -564,7 +702,10 @@
    "descargado": "2026-11-25",
    "features": 14,
    "url": "https://www.enresa.es",
-   "metodo": "Instalaciones de gestión de residuos"
+   "metodo": "Instalaciones de gestión de residuos",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de ENRESA (descarga)"
   },
   "petrolifero": {
    "capa": "petrolifero",
@@ -576,7 +717,10 @@
    "descargado": "2026-11-25",
    "features": 133,
    "url": "https://www.cores.es",
-   "metodo": "Almacenamiento de productos petrolíferos"
+   "metodo": "Almacenamiento de productos petrolíferos",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de CORES (descarga)"
   },
   "h2red": {
    "capa": "h2red",
@@ -588,7 +732,10 @@
    "descargado": "2026-11-25",
    "features": 10,
    "url": "https://www.miteco.gob.es",
-   "metodo": "Red de hidrógeno (PCI)"
+   "metodo": "Red de hidrógeno (PCI)",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Proyectos PCI del MITECO (fichero)"
   },
   "interelec": {
    "capa": "interelec",
@@ -600,7 +747,10 @@
    "descargado": "2026-11-25",
    "features": 5,
    "url": "https://www.ree.es",
-   "metodo": "Interconexiones del sistema eléctrico"
+   "metodo": "Interconexiones del sistema eléctrico",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Registro de REE (descarga)"
   },
   "regas": {
    "capa": "regas",
@@ -612,7 +762,10 @@
    "descargado": "2026-11-25",
    "features": 7,
    "url": "https://www.enagas.es",
-   "metodo": "Plantas de regasificación declaradas"
+   "metodo": "Plantas de regasificación declaradas",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones de Enagás (descarga)"
   },
   "gasalm": {
    "capa": "gasalm",
@@ -624,7 +777,10 @@
    "descargado": "2026-11-25",
    "features": 5,
    "url": "https://www.enagas.es",
-   "metodo": "Almacenamientos subterráneos"
+   "metodo": "Almacenamientos subterráneos",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Instalaciones de Enagás (descarga)"
   },
   "embalses": {
    "capa": "embalses",
@@ -636,7 +792,10 @@
    "descargado": "2026-11-25",
    "features": 402,
    "url": "https://www.miteco.gob.es",
-   "metodo": "Boletín Hidrológico, parte semanal"
+   "metodo": "Boletín Hidrológico, parte semanal",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Boletín Hidrológico del MITECO (parte semanal)"
   },
   "h2": {
    "capa": "h2",
@@ -648,7 +807,10 @@
    "descargado": "2026-11-25",
    "features": 7,
    "url": "https://www.miteco.gob.es",
-   "metodo": "Proyectos de Interés Común (PCI)"
+   "metodo": "Proyectos de Interés Común (PCI)",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Proyectos PCI del MITECO (fichero)"
   },
   "gasgen": {
    "capa": "gasgen",
@@ -660,7 +822,10 @@
    "descargado": "2026-11-25",
    "features": null,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (power=line, pipeline, plant) · subconjunto: technology_normalized in (ccgt, fuel_gas)"
+   "metodo": "Overpass API (power=line, pipeline, plant) · subconjunto: technology_normalized in (ccgt, fuel_gas)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)"
   },
   "resto": {
    "capa": "resto",
@@ -672,7 +837,10 @@
    "descargado": "2026-11-25",
    "features": null,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (power=line, pipeline, plant) · subconjunto: resto de tecnologias"
+   "metodo": "Overpass API (power=line, pipeline, plant) · subconjunto: resto de tecnologias",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)"
   },
   "trasvases": {
    "capa": "trasvases",
@@ -684,7 +852,10 @@
    "descargado": "2026-11-25",
    "features": 3,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (man_made=*) · 12 tramos unidos en 5 trazos de 3 trasvases (scripts/unir_trasvases_v2.py, tolerancia 66 m)"
+   "metodo": "Overpass API (man_made=*) · 12 tramos unidos en 5 trazos de 3 trasvases (scripts/unir_trasvases_v2.py, tolerancia 66 m)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "Trazado propio sobre OpenStreetMap"
   },
   "canales": {
    "capa": "canales",
@@ -696,7 +867,10 @@
    "descargado": "2026-11-25",
    "features": 2813,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (man_made=*) · resto: canales de riego, acequias y aducciones"
+   "metodo": "Overpass API (man_made=*) · resto: canales de riego, acequias y aducciones",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)"
   },
   "rios": {
    "capa": "rios",
@@ -708,7 +882,10 @@
    "descargado": "2026-11-25",
    "features": 260,
    "url": "https://www.openstreetmap.org",
-   "metodo": "Overpass API (man_made=*) · 14263 tramos agrupados, mínimo 12 km; caudal por Open-Meteo Flood (GloFAS)"
+   "metodo": "Overpass API (man_made=*) · 14263 tramos agrupados, mínimo 12 km; caudal por Open-Meteo Flood (GloFAS)",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)"
   },
   "carburantes": {
    "capa": "carburantes",
@@ -720,7 +897,10 @@
    "descargado": "2026-11-25",
    "features": 11443,
    "url": "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/",
-   "metodo": "GET al JSON de estaciones terrestres; coma decimal"
+   "metodo": "GET al JSON de estaciones terrestres; coma decimal",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "demarcaciones": {
    "capa": "demarcaciones",
@@ -732,7 +912,10 @@
    "descargado": "2026-11-25",
    "features": 25,
    "url": "https://sig.miteco.gob.es/arcgis/rest/services/25830/aguaHidroDemarcaciones",
-   "metodo": "query ArcGIS REST, maxAllowableOffset 0.0005"
+   "metodo": "query ArcGIS REST, maxAllowableOffset 0.0005",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "sismos": {
    "capa": "sismos",
@@ -742,9 +925,12 @@
    "licencia": "abierta con atribución",
    "actualizado": "2026-11-18",
    "descargado": "2026-11-25",
-   "features": 80,
+   "features": 81,
    "url": "https://www.seismicportal.eu/fdsnws/event/1/query",
-   "metodo": "FDSN query con bbox de Espana"
+   "metodo": "FDSN query con bbox de Espana",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "aeropuertos": {
    "capa": "aeropuertos",
@@ -756,7 +942,10 @@
    "descargado": "2026-11-25",
    "features": 553,
    "url": "https://ourairports.com/data/",
-   "metodo": "CSV global de aeródromos, filtro iso_country=ES; los cerrados se descartan"
+   "metodo": "CSV global de aeródromos, filtro iso_country=ES; los cerrados se descartan",
+   "origen": "comunidad",
+   "origen_txt": "Base comunitaria",
+   "origen_detalle": "OurAirports · base comunitaria, no oficial"
   },
   "alertas-gdacs": {
    "capa": "alertas-gdacs",
@@ -768,7 +957,10 @@
    "descargado": "2026-11-25",
    "features": 1,
    "url": "https://www.gdacs.org/xml/rss.xml",
-   "metodo": "RSS público acumulativo, bbox de España, ventana de 120 días"
+   "metodo": "RSS público acumulativo, bbox de España, ventana de 120 días",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "aforos": {
    "capa": "aforos",
@@ -780,7 +972,10 @@
    "descargado": "2026-11-23",
    "features": 2191,
    "url": "https://gis.miteco.gob.es/geoserver/ogc/features/v1/collections/agua%3AEstaciones_Aforos",
-   "metodo": "OGC API Features, coleccion agua:Estaciones_Aforos"
+   "metodo": "OGC API Features, coleccion agua:Estaciones_Aforos",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "canales-miteco": {
    "capa": "canales-miteco",
@@ -792,7 +987,10 @@
    "descargado": "2026-11-23",
    "features": 792,
    "url": "https://gis.miteco.gob.es/geoserver/ogc/features/v1/collections/agua%3Acanales",
-   "metodo": "OGC API Features, coleccion agua:canales, simplificado a ~22 m"
+   "metodo": "OGC API Features, coleccion agua:canales, simplificado a ~22 m",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "calidad-aire-estaciones": {
    "capa": "calidad-aire-estaciones",
@@ -804,7 +1002,10 @@
    "descargado": "2026-11-23",
    "features": 783,
    "url": "https://gis.miteco.gob.es/geoserver/ogc/features/v1/collections/evaluacionambiental%3Aca_red_estaciones",
-   "metodo": "OGC API Features, coleccion evaluacionambiental:ca_red_estaciones"
+   "metodo": "OGC API Features, coleccion evaluacionambiental:ca_red_estaciones",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "masas-subterraneas": {
    "capa": "masas-subterraneas",
@@ -816,7 +1017,10 @@
    "descargado": "2026-11-23",
    "features": 804,
    "url": "https://gis.miteco.gob.es/geoserver/ogc/features/v1/collections/agua%3Aestado_masas_aguasub_2027_global",
-   "metodo": "OGC API Features, coleccion agua:estado_masas_aguasub_2027_global, simplificado a ~220 m"
+   "metodo": "OGC API Features, coleccion agua:estado_masas_aguasub_2027_global, simplificado a ~220 m",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "dpmt": {
    "capa": "dpmt",
@@ -828,7 +1032,10 @@
    "descargado": "2026-11-23",
    "features": 12684,
    "url": "https://gis.miteco.gob.es/geoserver/ogc/features/v1/collections/costas%3Adominio_publico_maritimo_terrestre",
-   "metodo": "OGC API Features, coleccion costas:dominio_publico_maritimo_terrestre, simplificado a ~22 m"
+   "metodo": "OGC API Features, coleccion costas:dominio_publico_maritimo_terrestre, simplificado a ~22 m",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "espacios-protegidos": {
    "capa": "espacios-protegidos",
@@ -840,7 +1047,10 @@
    "descargado": "2026-11-25",
    "features": 873,
    "url": "https://signa.ign.es/signa/",
-   "metodo": "query ArcGIS REST f=geojson, parques nacionales/naturales/otros, simplificado a ~110 m"
+   "metodo": "query ArcGIS REST f=geojson, parques nacionales/naturales/otros, simplificado a ~110 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "red-natura": {
    "capa": "red-natura",
@@ -852,7 +1062,10 @@
    "descargado": "2026-11-25",
    "features": 1790,
    "url": "https://signa.ign.es/signa/",
-   "metodo": "query ArcGIS REST f=geojson sobre Espacios_Protegidos/5 y /6"
+   "metodo": "query ArcGIS REST f=geojson sobre Espacios_Protegidos/5 y /6",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "rios-mtn": {
    "capa": "rios-mtn",
@@ -864,7 +1077,10 @@
    "descargado": "2026-11-25",
    "features": 2597,
    "url": "https://signa.ign.es/signa/",
-   "metodo": "query ArcGIS REST f=geojson sobre Hidrografia/3, tramos de más de 15 km"
+   "metodo": "query ArcGIS REST f=geojson sobre Hidrografia/3, tramos de más de 15 km",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "presas": {
    "capa": "presas",
@@ -876,7 +1092,10 @@
    "descargado": "2026-11-25",
    "features": 1072,
    "url": "https://signa.ign.es/signa/",
-   "metodo": "query ArcGIS REST f=geojson sobre Hidrografia/0 (solo el muro)"
+   "metodo": "query ArcGIS REST f=geojson sobre Hidrografia/0 (solo el muro)",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "nap-metro": {
    "capa": "nap-metro",
@@ -888,7 +1107,10 @@
    "descargado": "2026-11-25",
    "features": 1050,
    "url": "https://nap.transportes.gob.es/api",
-   "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`"
+   "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Fichero descargado del organismo"
   },
   "nap-cercanias": {
    "capa": "nap-cercanias",
@@ -900,7 +1122,10 @@
    "descargado": "2026-11-25",
    "features": 1167,
    "url": "https://nap.transportes.gob.es/api",
-   "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`"
+   "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Fichero descargado del organismo"
   },
   "nap-ave": {
    "capa": "nap-ave",
@@ -912,7 +1137,10 @@
    "descargado": "2026-11-25",
    "features": 1006,
    "url": "https://nap.transportes.gob.es/api",
-   "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`"
+   "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Fichero descargado del organismo"
   },
   "nap-lineas-metro": {
    "capa": "nap-lineas-metro",
@@ -924,7 +1152,10 @@
    "descargado": "2026-11-25",
    "features": 30,
    "url": "https://nap.transportes.gob.es/api",
-   "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`"
+   "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Fichero descargado del organismo"
   },
   "nap-lineas-cercanias": {
    "capa": "nap-lineas-cercanias",
@@ -936,7 +1167,10 @@
    "descargado": "2026-11-25",
    "features": 135,
    "url": "https://nap.transportes.gob.es/api",
-   "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`"
+   "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Fichero descargado del organismo"
   },
   "adif-tramos": {
    "capa": "adif-tramos",
@@ -948,7 +1182,10 @@
    "descargado": "2026-11-25",
    "features": 1178,
    "url": "https://ideadif.adif.es",
-   "metodo": "Trazado oficial de tramos (1.178 tramos, 604.913 vertices). El WFS de IDEADIF responde 403 (Akamai); se parte del GeoJSON ya descargado y se simplifica con Douglas-Peucker a 40 m"
+   "metodo": "Trazado oficial de tramos (1.178 tramos, 604.913 vertices). El WFS de IDEADIF responde 403 (Akamai); se parte del GeoJSON ya descargado y se simplifica con Douglas-Peucker a 40 m",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "dgt-camaras": {
    "capa": "dgt-camaras",
@@ -960,7 +1197,10 @@
    "descargado": "2026-11-25",
    "features": 1977,
    "url": "https://nap.dgt.es",
-   "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Cámaras DGT DATEX2 v3.7"
+   "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Cámaras DGT DATEX2 v3.7",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "dgt-paneles": {
    "capa": "dgt-paneles",
@@ -972,7 +1212,10 @@
    "descargado": "2026-11-25",
    "features": 609,
    "url": "https://nap.dgt.es",
-   "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Paneles DGT DATEX2 v3.7"
+   "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Paneles DGT DATEX2 v3.7",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "dgt-incidencias": {
    "capa": "dgt-incidencias",
@@ -984,7 +1227,10 @@
    "descargado": "2026-11-25",
    "features": 1013,
    "url": "https://nap.dgt.es",
-   "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Incidencias DGT DATEX2 v3.7"
+   "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Incidencias DGT DATEX2 v3.7",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "dgt-electrolineras": {
    "capa": "dgt-electrolineras",
@@ -996,7 +1242,10 @@
    "descargado": "2026-11-25",
    "features": 12144,
    "url": "https://nap.dgt.es",
-   "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Puntos de recarga eléctrica para vehículos"
+   "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Puntos de recarga eléctrica para vehículos",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "gtfsrt": {
    "capa": "gtfsrt",
@@ -1004,11 +1253,14 @@
    "fuente": "Operadores (Renfe)",
    "editor": "GTFS-Realtime",
    "licencia": "condiciones del editor",
-   "actualizado": "2026-11-25T19:42:10",
-   "descargado": "2026-11-25T19:42:06",
-   "features": 422,
+   "actualizado": "2026-11-25T21:42:10",
+   "descargado": "2026-11-25T21:42:08",
+   "features": 244,
    "url": "https://gtfsrt.renfe.com/vehicle_positions.pb",
-   "metodo": "protobuf GTFS-RT, refresco continuo"
+   "metodo": "protobuf GTFS-RT, refresco continuo",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "aemet-zonas": {
    "capa": "aemet-zonas",
@@ -1020,7 +1272,10 @@
    "descargado": "2026-11-25T21:16:14",
    "features": 21,
    "url": "https://www.aemet.es/es/eltiempo/prediccion/avisos",
-   "metodo": "tar.gz de GeoJSON de la pagina de avisos (sin clave)"
+   "metodo": "tar.gz de GeoJSON de la pagina de avisos (sin clave)",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "Fichero descargado del organismo"
   },
   "municipios": {
    "capa": "municipios",
@@ -1032,7 +1287,10 @@
    "descargado": "2026-11-20",
    "features": 8128,
    "url": "https://www.ine.es",
-   "metodo": "polígonos LAU 1M de Eurostat GISCO cruzados POR CÓDIGO INE (LAU_ID) con las cifras oficiales del padrón (INE, tabla 29005 en CSV, columna Municipios = código + nombre)"
+   "metodo": "polígonos LAU 1M de Eurostat GISCO cruzados POR CÓDIGO INE (LAU_ID) con las cifras oficiales del padrón (INE, tabla 29005 en CSV, columna Municipios = código + nombre)",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
   },
   "clima-temperatura": {
    "capa": "clima-temperatura",
@@ -1040,11 +1298,14 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-25T22:15",
-   "descargado": "2026-11-25T21:16:20Z",
+   "actualizado": "2026-11-25T22:30",
+   "descargado": "2026-11-25T21:42:09Z",
    "features": 52,
    "url": "https://open-meteo.com/",
-   "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el poligono), paso 15 min"
+   "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el poligono), paso 15 min",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Interpolación IDW sobre Open-Meteo"
   },
   "clima-viento": {
    "capa": "clima-viento",
@@ -1052,11 +1313,14 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-25T22:15",
-   "descargado": "2026-11-25T21:16:20Z",
+   "actualizado": "2026-11-25T22:30",
+   "descargado": "2026-11-25T21:42:09Z",
    "features": 52,
    "url": "https://open-meteo.com/",
-   "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias"
+   "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
   },
   "alojamiento-ign": {
    "capa": "alojamiento-ign",
@@ -1069,7 +1333,10 @@
    "features": 2703,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capas 15, 16, 24, 25 y 17 de 03_construcciones_otros; una capa con el tipo como atributo"
+   "metodo": "Capas 15, 16, 24, 25 y 17 de 03_construcciones_otros; una capa con el tipo como atributo",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "aviacion-ligera": {
    "capa": "aviacion-ligera",
@@ -1082,7 +1349,10 @@
    "features": 1748,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capas 6 y 7 de 02_redes_transporte, multiPoint desdoblado en puntos"
+   "metodo": "Capas 6 y 7 de 02_redes_transporte, multiPoint desdoblado en puntos",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "cable-ign": {
    "capa": "cable-ign",
@@ -1095,7 +1365,10 @@
    "features": 310,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capas 1-3 de 02_redes_transporte (teleférico, telesilla, telesquí)"
+   "metodo": "Capas 1-3 de 02_redes_transporte (teleférico, telesilla, telesquí)",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "caminos-santiago": {
    "capa": "caminos-santiago",
@@ -1108,7 +1381,10 @@
    "features": 756,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 18 de 02_redes_transporte, con agrupación y longitud"
+   "metodo": "Capa 18 de 02_redes_transporte, con agrupación y longitud",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "cimas-ign": {
    "capa": "cimas-ign",
@@ -1121,7 +1397,10 @@
    "features": 14793,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 1 de 07_orografia_paisaje con cota, clase y municipio"
+   "metodo": "Capa 1 de 07_orografia_paisaje con cota, clase y municipio",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-acuicultura": {
    "capa": "ciudad-acuicultura",
@@ -1134,7 +1413,10 @@
    "features": 285,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 41 de 05_servicios_industria, contorno simplificado a ~13 m"
+   "metodo": "Capa 41 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-antenas": {
    "capa": "ciudad-antenas",
@@ -1147,7 +1429,10 @@
    "features": 16361,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 25 de 05_servicios_industria; el IGN no publica nombre ni operador, varias filas por mástil fundidas a 25 m"
+   "metodo": "Capa 25 de 05_servicios_industria; el IGN no publica nombre ni operador, varias filas por mástil fundidas a 25 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-aparcamientos": {
    "capa": "ciudad-aparcamientos",
@@ -1160,7 +1445,10 @@
    "features": 12679,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 19 de 05_servicios_industria, una chincheta por recinto a 30 m"
+   "metodo": "Capa 19 de 05_servicios_industria, una chincheta por recinto a 30 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-cementerios": {
    "capa": "ciudad-cementerios",
@@ -1173,7 +1461,10 @@
    "features": 19242,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 22 de 05_servicios_industria, dedupe a 30 m"
+   "metodo": "Capa 22 de 05_servicios_industria, dedupe a 30 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-ciencia": {
    "capa": "ciudad-ciencia",
@@ -1186,7 +1477,10 @@
    "features": 75,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 45 de 05_servicios_industria, contorno simplificado a ~13 m"
+   "metodo": "Capa 45 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-comercio": {
    "capa": "ciudad-comercio",
@@ -1199,7 +1493,10 @@
    "features": 125,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 47 de 05_servicios_industria, contorno simplificado a ~13 m"
+   "metodo": "Capa 47 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-deportivas": {
    "capa": "ciudad-deportivas",
@@ -1212,7 +1509,10 @@
    "features": 9804,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 50 de 05_servicios_industria, contorno simplificado a ~13 m"
+   "metodo": "Capa 50 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-docencia": {
    "capa": "ciudad-docencia",
@@ -1225,7 +1525,10 @@
    "features": 33232,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capas 5-8 de 05_servicios_industria, con el tipo como atributo y dedupe a 30 m"
+   "metodo": "Capas 5-8 de 05_servicios_industria, con el tipo como atributo y dedupe a 30 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-ferias": {
    "capa": "ciudad-ferias",
@@ -1238,7 +1541,10 @@
    "features": 210,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 46 de 05_servicios_industria, contorno simplificado a ~13 m"
+   "metodo": "Capa 46 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-logistica": {
    "capa": "ciudad-logistica",
@@ -1251,7 +1557,10 @@
    "features": 41,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 44 de 05_servicios_industria, contorno simplificado a ~13 m"
+   "metodo": "Capa 44 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-mineria": {
    "capa": "ciudad-mineria",
@@ -1264,7 +1573,10 @@
    "features": 1490,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capas 30 y 31 de 05_servicios_industria, con tipo y sustancia"
+   "metodo": "Capas 30 y 31 de 05_servicios_industria, con tipo y sustancia",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-recreo": {
    "capa": "ciudad-recreo",
@@ -1277,7 +1589,10 @@
    "features": 915,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capas 20 y 21 de 05_servicios_industria, con el tipo como atributo"
+   "metodo": "Capas 20 y 21 de 05_servicios_industria, con el tipo como atributo",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-singulares": {
    "capa": "ciudad-singulares",
@@ -1290,7 +1605,10 @@
    "features": 134,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capas 23 y 24 de 05_servicios_industria"
+   "metodo": "Capas 23 y 24 de 05_servicios_industria",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ciudad-zonas-verdes": {
    "capa": "ciudad-zonas-verdes",
@@ -1303,7 +1621,10 @@
    "features": 11476,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 48 de 05_servicios_industria, contorno simplificado a ~13 m"
+   "metodo": "Capa 48 de 05_servicios_industria, contorno simplificado a ~13 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "clima-provincias": {
    "capa": "clima-provincias",
@@ -1311,12 +1632,15 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-25T22:15",
-   "descargado": "2026-11-25T21:16:20Z",
+   "actualizado": "2026-11-25T22:30",
+   "descargado": "2026-11-25T21:42:09Z",
    "features": 52,
    "fecha_dato": null,
    "url": "https://open-meteo.com/",
-   "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el polígono), paso 15 min"
+   "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el polígono), paso 15 min",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Interpolación IDW sobre Open-Meteo"
   },
   "clima": {
    "capa": "clima",
@@ -1324,12 +1648,15 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-25T22:15",
-   "descargado": "2026-11-25T21:16:20Z",
+   "actualizado": "2026-11-25T22:30",
+   "descargado": "2026-11-25T21:42:09Z",
    "features": 52,
    "fecha_dato": null,
    "url": "https://open-meteo.com/",
-   "metodo": "una llamada por lotes a /v1/forecast (current) y rejilla IDW vectorial propia"
+   "metodo": "una llamada por lotes a /v1/forecast (current) y rejilla IDW vectorial propia",
+   "origen": "elaborado",
+   "origen_txt": "Elaborado",
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
   },
   "depositos-ign": {
    "capa": "depositos-ign",
@@ -1342,7 +1669,10 @@
    "features": 423,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 27 de 05_servicios_industria, con estado y tipo del registro"
+   "metodo": "Capa 27 de 05_servicios_industria, con estado y tipo del registro",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "edar-unificado": {
    "capa": "edar-unificado",
@@ -1355,7 +1685,10 @@
    "features": 4784,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro"
+   "metodo": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "faros": {
    "capa": "faros",
@@ -1368,7 +1701,10 @@
    "features": 278,
    "fecha_dato": null,
    "url": "https://signa.ign.es/signa/",
-   "metodo": "query f=geojson sobre Signa/03_construcciones_otros/11, redondeo a 5 decimales"
+   "metodo": "query f=geojson sobre Signa/03_construcciones_otros/11, redondeo a 5 decimales",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ferris-ign": {
    "capa": "ferris-ign",
@@ -1381,7 +1717,10 @@
    "features": 58,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 23 de 02_redes_transporte"
+   "metodo": "Capa 23 de 02_redes_transporte",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "incendios-effis": {
    "capa": "incendios-effis",
@@ -1394,7 +1733,10 @@
    "features": 9952,
    "fecha_dato": null,
    "url": "https://maps.effis.emergency.copernicus.eu/effis?service=WFS&version=1.1.0&request=GetFeature&typeName=ms:modis.ba.poly&bbox=-18.5,27.5,4.6,44.0",
-   "metodo": "WFS 1.1.0 GML paginado por startIndex (el servidor no admite GeoJSON) → anillo exterior, redondeo a 4 decimales, decimado a 250 vértices"
+   "metodo": "WFS 1.1.0 GML paginado por startIndex (el servidor no admite GeoJSON) → anillo exterior, redondeo a 4 decimales, decimado a 250 vértices",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "nucleos": {
    "capa": "nucleos",
@@ -1407,7 +1749,10 @@
    "features": 37469,
    "fecha_dato": null,
    "url": "https://signa.ign.es/signa/",
-   "metodo": "query f=geojson sobre Signa/01_unidades_administrativas/12, paginado de 1000 en 1000, redondeo a 5 decimales"
+   "metodo": "query f=geojson sobre Signa/01_unidades_administrativas/12, paginado de 1000 en 1000, redondeo a 5 decimales",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "ocio-ign": {
    "capa": "ocio-ign",
@@ -1420,7 +1765,10 @@
    "features": 837,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capas 20, 18 y 14 de 03_construcciones_otros"
+   "metodo": "Capas 20, 18 y 14 de 03_construcciones_otros",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "patrimonio-ign": {
    "capa": "patrimonio-ign",
@@ -1433,7 +1781,10 @@
    "features": 20116,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capas 1, 6-13 y 26 de 03_construcciones_otros, fundidas por sitio a 60 m"
+   "metodo": "Capas 1, 6-13 y 26 de 03_construcciones_otros, fundidas por sitio a 60 m",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "puentes-rce": {
    "capa": "puentes-rce",
@@ -1446,7 +1797,10 @@
    "features": 10946,
    "fecha_dato": null,
    "url": "https://overpass-api.de/",
-   "metodo": "Overpass `bridge` sobre vías A-/AP-/N-, calzadas fundidas por proximidad de 45 m"
+   "metodo": "Overpass `bridge` sobre vías A-/AP-/N-, calzadas fundidas por proximidad de 45 m",
+   "origen": "osm",
+   "origen_txt": "OSM",
+   "origen_detalle": "OpenStreetMap (Overpass API)"
   },
   "residencias-ign": {
    "capa": "residencias-ign",
@@ -1459,7 +1813,10 @@
    "features": 420,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 3 de 05_servicios_industria"
+   "metodo": "Capa 3 de 05_servicios_industria",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "sanidad-ign": {
    "capa": "sanidad-ign",
@@ -1472,7 +1829,10 @@
    "features": 3531,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capas 1 y 2 de 05_servicios_industria, fundidas por sitio a 60 m; una chincheta por recinto"
+   "metodo": "Capas 1 y 2 de 05_servicios_industria, fundidas por sitio a 60 m; una chincheta por recinto",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "sierras-ign": {
    "capa": "sierras-ign",
@@ -1485,7 +1845,10 @@
    "features": 4946,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 4 de 07_orografia_paisaje"
+   "metodo": "Capa 4 de 07_orografia_paisaje",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   },
   "trafico-ccaa": {
    "capa": "trafico-ccaa",
@@ -1498,7 +1861,10 @@
    "features": 7398,
    "fecha_dato": "Estatal 2021 · Aragón 2022 · Comunitat Valenciana 2025 · Navarra 2025",
    "url": "https://services1.arcgis.com/nCKYwcSONQTkPA4K/arcgis/rest/services/Mapa_de_tráfico_de_la_DGC_2021/FeatureServer/0 · https://terramapas.icv.gva.es/0902_Aforos · https://idearagon.aragon.es/servicios/rest/services/CARRETERAS/AFOROS_ARAGON_GENERICO/MapServer",
-   "metodo": "Estatal: trafico_imd.geojson (MITMA 2021, simplificado) con la provincia traducida a comunidad. CV: WFS 2.0 ms:Aforos2025 en GML (posList lat/lon). AR: query f=json sobre AFOROS_ARAGON_GENERICO/1 (DGA 2022). Redondeo a 4 decimales y un vértice cada ~50 m."
+   "metodo": "Estatal: trafico_imd.geojson (MITMA 2021, simplificado) con la provincia traducida a comunidad. CV: WFS 2.0 ms:Aforos2025 en GML (posList lat/lon). AR: query f=json sobre AFOROS_ARAGON_GENERICO/1 (DGA 2022). Redondeo a 4 decimales y un vértice cada ~50 m.",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "trafico-estaciones": {
    "capa": "trafico-estaciones",
@@ -1511,7 +1877,10 @@
    "features": 1074,
    "fecha_dato": "Canarias 2025 · Cataluña 2022",
    "url": "https://datos.tenerife.es/ckan/dataset/1717bda1-6b7b-43e0-be4e-e3ed060b8b97/resource/c3fe76ac-d91c-46cf-a765-46c3a741c6a9/download/intensidad-media-diaria-de-trafico-2025.csv · https://analisi.transparenciacatalunya.cat/resource/xsvx-ym46.geojson",
-   "metodo": "Tenerife: CSV de IMD 2025 cruzado por estacion_id con el GeoJSON de estaciones del mismo portal. Cataluña: Socrata xsvx-ym46 filtrado a 2022, punto desde latitud/longitud."
+   "metodo": "Tenerife: CSV de IMD 2025 cruzado por estacion_id con el GeoJSON de estaciones del mismo portal. Cataluña: Socrata xsvx-ym46 filtrado a 2022, punto desde latitud/longitud.",
+   "origen": "fichero",
+   "origen_txt": "Fichero",
+   "origen_detalle": "CSV del Cabildo de Tenerife, cruzado por PK"
   },
   "tuneles-rce": {
    "capa": "tuneles-rce",
@@ -1524,7 +1893,10 @@
    "features": 366,
    "fecha_dato": null,
    "url": "https://mapas.fomento.gob.es/arcgis2/rest/services/Hermes/1_INFRAESTRUCTURA_B%C3%81SICA_/MapServer/929",
-   "metodo": "ArcGIS REST, capa 929, un elemento por túnel con sus tubos anidados"
+   "metodo": "ArcGIS REST, capa 929, un elemento por túnel con sus tubos anidados",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo"
   },
   "vias-verdes": {
    "capa": "vias-verdes",
@@ -1537,7 +1909,10 @@
    "features": 142,
    "fecha_dato": null,
    "url": "https://signa.ign.es/",
-   "metodo": "Capa 19 de 02_redes_transporte, con firme y longitud"
+   "metodo": "Capa 19 de 02_redes_transporte, con firme y longitud",
+   "origen": "visor",
+   "origen_txt": "Otro mapa",
+   "origen_detalle": "Mapa SignA (IGN)"
   }
  },
  "simplificacion": {

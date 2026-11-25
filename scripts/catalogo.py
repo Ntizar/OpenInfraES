@@ -293,6 +293,10 @@ def main():
             "jerarquia": nivel,
             "jerarquia_txt": ETIQUETA_JERARQUIA[nivel],
             "producto": f.get("metodo") or "",
+            # De dónde salió de verdad: API, PDF, otro mapa, fichero, OSM o elaborado aquí.
+            "origen": f.get("origen") or "sin",
+            "origen_txt": f.get("origen_txt") or "Sin declarar",
+            "origen_detalle": f.get("origen_detalle") or "",
             "licencia": {
                 "estado": estado_lic,
                 "nombre": nombre_lic,

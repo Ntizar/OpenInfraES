@@ -753,7 +753,7 @@
   <button class="cerrar" id="cerrar-fuentes">×</button>
   <h2>De dónde sale cada dato</h2>
   <div class="nota" id="fuentes-nota">Cargando…</div>
-  <table><thead><tr><th>Capa</th><th>Fuente</th><th>Actualizado</th><th>Licencia</th><th class="c">Registros</th></tr></thead>
+  <table><thead><tr><th>Capa</th><th>Fuente</th><th>Origen del dato</th><th>Actualizado</th><th>Licencia</th><th class="c">Registros</th></tr></thead>
   <tbody id="fuentes-tabla"></tbody></table>
 </div></div>
 
@@ -3227,6 +3227,9 @@ function abrirPanelDato(p, c, latlng) {
       : `<span class="pd-fuente">${f.fuente}</span>`;
     pie += `<span>${enlace}</span>`;
     if (f.licencia) pie += `<span class="pd-fuente">${String(f.licencia).slice(0, 46)}</span>`;
+    // De dónde salió el dato: API, PDF, otro mapa, fichero u OSM. Va en la ficha, no enterrado.
+    if (f.origen_txt) pie += `<span class="pd-fuente">origen: ${f.origen_txt}` +
+      (f.origen_detalle ? ` · ${f.origen_detalle}` : "") + `</span>`;
     if (f.actualizado || f.descargado)
       pie += `<span class="pd-fuente">dato: ${f.actualizado || f.descargado}</span>`;
   }
@@ -4277,6 +4280,7 @@ function pintarFuentes() {
       <td><b>${f.organismo || f.fuente || "—"}</b>${
         (f.publica_via && !String(f.organismo || "").includes(String(f.publica_via)))
           ? `<br><span class="lic">vía ${String(f.publica_via).slice(0, 30)}</span>` : ""}</td>
+      <td><b>${f.origen_txt || "—"}</b><br><span class="lic">${f.origen_detalle || ""}</span></td>
       <td>${act}</td>
       <td><span class="lic">${f.licencia || "—"}</span></td>
       <td class="c">${n ? n.toLocaleString("es-ES") : "—"}</td></tr>`;
@@ -4292,10 +4296,12 @@ function pintarFuentes() {
       const cd = f.cadena || {};
       const fila = document.createElement("tr");
       fila.className = "det";
-      fila.innerHTML = "<td colspan='5'><div class='cadena'>" +
+      fila.innerHTML = "<td colspan='6'><div class='cadena'>" +
         "<b>Produce el dato:</b> " + (cd.productor || "—") + "<br>" +
         "<b>Lo publica:</b> " + (cd.publica || "—") + "<br>" +
         "<b>Lo descarga:</b> " + (cd.consume || "—") + "<br>" +
+        "<b>Cómo llega:</b> " + (f.origen_detalle || f.metodo || "—") +
+        (f.metodo && f.origen_detalle ? " · " + f.metodo : "") + "<br>" +
         "<span class='fl'>Fecha del dato:</span> " + (f.fecha_dato || "no la declara") +
         " · <span class='fl'>publicación:</span> " + (f.fecha_publicacion || "—") +
         " · <span class='fl'>descarga:</span> " + (f.fecha_descarga || "—") +
