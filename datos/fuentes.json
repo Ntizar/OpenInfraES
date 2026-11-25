@@ -1444,15 +1444,15 @@
   },
   "trafico-imd": {
    "capa": "trafico-imd",
-   "titulo": "Intensidad de tráfico · IMD por tramo (MITMA)",
-   "fuente": "MITMA · Mapa de Tráfico (IMD por tramo)",
-   "editor": "Ministerio de Transportes y Movilidad Sostenible",
+   "titulo": "Intensidad de tráfico · IMD 2021 por tramo (MITMA)",
+   "fuente": "MITMA · DGC · Mapa de Tráfico 2021 (IMD por tramo)",
+   "editor": "Ministerio de Transportes y Movilidad Sostenible · Dirección General de Carreteras",
    "licencia": "Reutilización Ley 37/2007 con atribución (© MITMA)",
-   "actualizado": "2026-11-25T10:17:34Z",
-   "descargado": "2026-11-25T10:17:34Z",
-   "features": 4896,
-   "url": "https://mapas.fomento.gob.es/arcgis/rest/services/MapaTrafico/Mapa2019web/MapServer/2",
-   "metodo": "query f=geojson sobre Mapa2019web/MapServer/2 (Tramos), paginado de 1000 en 1000, simplificado a 0,0015° y redondeado a 4 decimales"
+   "actualizado": "2021-12-31",
+   "descargado": "2026-11-25T10:27:29Z",
+   "features": 4921,
+   "url": "https://services1.arcgis.com/nCKYwcSONQTkPA4K/arcgis/rest/services/Mapa_de_tr%C3%A1fico_de_la_DGC_2021/FeatureServer/2",
+   "metodo": "query f=geojson sobre Tramos2021 del FeatureServer de la DGC, paginado de 1000 en 1000, simplificado a 0,0015° y redondeado a 4 decimales"
   },
   "tuneles-rce": {
    "capa": "tuneles-rce",

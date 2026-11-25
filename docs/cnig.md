@@ -99,12 +99,21 @@ de Valencia y Gipuzkoa, e incidencias del País Vasco, Cataluña y Madrid. «Map
 de Movilidad» son **aplicaciones** (enlaces a `etraffic.dgt.es`), no datos. Su API CKAN responde
 401/403 sin clave.
 
-La IMD oficial es del **MITMA** (Mapa de Tráfico). En `mapas.fomento.gob.es` hay servicios por año
-—`MapaTrafico/Mapa2015web` … `Mapa2019web`— con `Tramos` (IMD total, ligero y pesado, PK, longitud)
-y `Estaciones`. **2020 y 2021 están publicados pero vacíos**: el último año con datos es 2019.
+La IMD oficial es del **MITMA** (Mapa de Tráfico de la DGC). En `mapas.fomento.gob.es` hay
+servicios por año —`MapaTrafico/Mapa2015web` … `Mapa2019web`— con `Tramos` (IMD total, ligero y
+pesado, PK, longitud) y `Estaciones`; **2020 y 2021 están publicados pero vacíos**. El año más
+nuevo con datos nacionales está en un FeatureServer público de la DGC alojado en Esri:
+`services1.arcgis.com/nCKYwcSONQTkPA4K/arcgis/rest/services/Mapa_de_tráfico_de_la_DGC_2021`,
+capas `Estaciones2021` (3.651) y `Tramos2021` (4.921, campos en minúscula: `imd_total`, `longitud`).
 
-De ahí sale la capa `trafico-imd`: 4.896 tramos, 26.437 km, IMD mediana 8.683 veh/día y máxima
-180.615. La fecha del dato (2019) se declara en la ficha; no se disfraza de actual.
+De ahí sale la capa `trafico-imd` (2021): 4.921 tramos, 26.459 km, IMD mediana 7.672 veh/día y
+máxima 184.006. La fecha del dato va en la ficha y en el popup; no se disfraza de actual. La IMD
+es una media anual y se publica con años de retraso: para tráfico fresco solo hay feeds
+autonómicos (Madrid actualiza a 2026; Comunitat Valenciana llega a 2025) y las incidencias de la
+DGT, que ya están en el visor.
+
+Búsqueda útil: `https://www.arcgis.com/sharing/rest/search?q="intensidad media diaria"&f=json` —
+encontró el FeatureServer de 2021 en un minuto; el catálogo de datos.gob.es y el NAP no lo tienen.
 
 ## 7. Cómo se vuelve a comprobar
 

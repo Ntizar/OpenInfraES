@@ -1,12 +1,12 @@
 {
- "generado": "2026-11-25T10:20:27",
+ "generado": "2026-11-25T10:28:21",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 123,
  "resumen": {
   "licencia_si": 118,
   "licencia_pendiente": 5,
-  "caducados": 27,
+  "caducados": 28,
   "oficiales": 109,
   "comunitarias": 14,
   "por_jerarquia": {
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 61,
-  "kb_total": 151280.5
+  "kb_total": 151352.6
  },
  "avisos": {
   "pendiente": [
@@ -53,7 +53,8 @@
    "residuos",
    "residuos-radiactivos",
    "solares",
-   "subestaciones"
+   "subestaciones",
+   "trafico-imd"
   ]
  },
  "capas": {
@@ -3272,30 +3273,30 @@
   },
   "trafico-imd": {
    "id": "trafico-imd",
-   "titulo": "Intensidad de tráfico · IMD por tramo (MITMA)",
+   "titulo": "Intensidad de tráfico · IMD 2021 por tramo (MITMA)",
    "organismo": "MITMA",
    "oficial": true,
    "jerarquia": 2,
    "jerarquia_txt": "organismo agregador",
-   "producto": "query f=geojson sobre Mapa2019web/MapServer/2 (Tramos), paginado de 1000 en 1000, simplificado a 0,0015° y redondeado a 4 decimales",
+   "producto": "query f=geojson sobre Tramos2021 del FeatureServer de la DGC, paginado de 1000 en 1000, simplificado a 0,0015° y redondeado a 4 decimales",
    "licencia": {
     "estado": "si",
     "nombre": "Ley 37/2007 · NAP",
     "url_terminos": "https://nap.transportes.gob.es"
    },
-   "endpoint": "https://mapas.fomento.gob.es/arcgis/rest/services/MapaTrafico/Mapa2019web/MapServer/2",
+   "endpoint": "https://services1.arcgis.com/nCKYwcSONQTkPA4K/arcgis/rest/services/Mapa_de_tr%C3%A1fico_de_la_DGC_2021/FeatureServer/2",
    "modo": "foto",
    "frecuencia_fuente": "mensual o inferior",
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
-   "features": 4896,
-   "bytes": 1727045,
-   "kb": 1686.6,
-   "fecha_dato": "2026-11-25T10:17:34Z",
-   "fecha_descarga": "2026-11-25T10:17:34Z",
-   "edad_dias": 0,
-   "caducado": false
+   "features": 4921,
+   "bytes": 1800948,
+   "kb": 1758.7,
+   "fecha_dato": "2021-12-31",
+   "fecha_descarga": "2026-11-25T10:27:29Z",
+   "edad_dias": 1790,
+   "caducado": true
   },
   "trasvases": {
    "id": "trasvases",

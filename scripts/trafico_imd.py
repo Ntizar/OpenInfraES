@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 """Intensidad media diaria (IMD) por tramo de la Red del Estado -> datos/trafico_imd.geojson.
 
-Fuente: Mapa de Tráfico del MITMA (servicio ArcGIS del visor oficial). La DGT no publica
-intensidades en abierto: su catálogo (NAP) tiene incidencias, cámaras, paneles, radares y ZBE,
-pero ningún conjunto de aforos. El último año servido con datos en este servicio es 2019;
-los servicios de 2020 y 2021 están publicados pero vacíos.
+Fuente: Mapa de Tráfico de la Dirección General de Carreteras (MITMA). La DGT no publica
+intensidades: ni en su catálogo del NAP (incidencias, cámaras, paneles, radares, ZBE, INVIVE) ni
+en la API de su propio visor (`etrafficWEB/api/cache/getCamaras|getFilteredData|getPMVs`), que
+solo sirve cámaras, incidencias y paneles. El servicio propio del MITMA
+(mapas.fomento.gob.es/MapaTrafico) se quedó en 2019: 2020 y 2021 están publicados pero vacíos.
+El más nuevo con datos es el FeatureServer de la DGC de 2021.
 """
 import datetime
 import json
@@ -16,19 +18,28 @@ import urllib.request
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEST = os.path.join(RAIZ, "datos")
-BASE = ("https://mapas.fomento.gob.es/arcgis/rest/services/MapaTrafico/Mapa2019web"
-        "/MapServer/2")
+SERVICIO = ("https://services1.arcgis.com/nCKYwcSONQTkPA4K/arcgis/rest/services/"
+            "Mapa_de_tr%C3%A1fico_de_la_DGC_2021/FeatureServer")
+BASE = SERVICIO + "/2"  # Tramos2021
 UA = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
       "Chrome/126.0 Safari/537.36")
-ANIO = 2019
-FUENTE = "MITMA · Mapa de Tráfico (IMD por tramo)"
+ANIO = 2021
+FUENTE = "MITMA · DGC · Mapa de Tráfico %d (IMD por tramo)" % ANIO
 LICENCIA = "Reutilización Ley 37/2007 con atribución (© MITMA)"
-CAMPOS = "Nombre,Tipo_de_ca,Pk_inicio,Pk_fin,Longitud,IMD_total,IMD_ligero,IMD_pesado,Provincia"
+CAMPOS = ("carretera,tipo,provincia,pk_inicio,pk_fin,longitud,"
+          "imd_total,imd_ligero,imd_pesado")
 PAGINA = 1000
 
 # tramos de IMD (vehículos/día): el color es el dato, no decoración
 ESCALONES = ((2000, "#22c55e"), (5000, "#84cc16"), (10000, "#eab308"),
              (25000, "#f97316"), (50000, "#ef4444"))
+
+
+def entero(v):
+    try:
+        return int(v) if v is not None else None
+    except (TypeError, ValueError):
+        return None
 
 
 def color(imd):
@@ -39,7 +50,7 @@ def color(imd):
 
 
 def pide(offset, intentos=3):
-    params = {"where": "1=1", "outFields": CAMPOS, "returnGeometry": "true", "outSR": "4326",
+    params = {"where": "1=1", "outFields": CAMPOS, "returnGeometry": "true", "outSR": 4326,
               "f": "geojson", "resultOffset": offset, "resultRecordCount": PAGINA,
               "maxAllowableOffset": 0.0015}
     url = "%s/query?%s" % (BASE, urllib.parse.urlencode(params))
@@ -86,21 +97,18 @@ def main():
                 geom = {"type": "MultiLineString", "coordinates": partes}
             else:
                 continue
-            imd = a.get("IMD_total")
-            try:
-                imd = int(imd) if imd is not None else None
-            except (TypeError, ValueError):
-                imd = None
+            imd = entero(a.get("imd_total"))
             features.append({"type": "Feature", "geometry": geom, "properties": {
-                "carretera": (a.get("Nombre") or "").strip(),
-                "tipo": (a.get("Tipo_de_ca") or "").strip(),
-                "pk_inicio": a.get("Pk_inicio"),
-                "pk_fin": a.get("Pk_fin"),
-                "km": round(float(a.get("Longitud") or 0), 2),
+                "carretera": (a.get("carretera") or "").strip(),
+                "tipo": (a.get("tipo") or "").strip(),
+                "pk_inicio": a.get("pk_inicio"),
+                "pk_fin": a.get("pk_fin"),
+                "km": round(float(a.get("longitud") or 0), 2),
                 "imd": imd,
-                "imd_ligero": a.get("IMD_ligero"),
-                "imd_pesado": a.get("IMD_pesado"),
-                "provincia": (a.get("Provincia") or "").strip().title() or None,
+                "imd_ligero": entero(a.get("imd_ligero")),
+                "imd_pesado": entero(a.get("imd_pesado")),
+                "provincia": (a.get("provincia") or "").strip().title() or None,
+                "anio": ANIO,
                 "color": color(imd or 0),
             }})
         print("  %d tramos" % len(features))
@@ -121,19 +129,21 @@ def main():
     km = sum(f["properties"]["km"] for f in features)
     rec = {
         "fichero": "datos/trafico_imd.geojson", "features": len(features), "fuente": FUENTE,
-        "editor": "Ministerio de Transportes y Movilidad Sostenible",
-        "url": "https://mapas.fomento.gob.es/arcgis/rest/services/MapaTrafico/"
-               "Mapa2019web/MapServer/2",
-        "licencia": LICENCIA, "descargado": ahora, "fecha_dato": "%d (año del aforo)" % ANIO,
-        "metodo": "query f=geojson sobre Mapa2019web/MapServer/2 (Tramos), paginado de 1000 en "
-                  "1000, simplificado a 0,0015° y redondeado a 4 decimales",
+        "editor": "Ministerio de Transportes y Movilidad Sostenible · Dirección General "
+                  "de Carreteras",
+        "url": BASE, "licencia": LICENCIA, "descargado": ahora, "fecha_dato": "%d" % ANIO,
+        "actualizado": "%d-12-31" % ANIO,
+        "metodo": "query f=geojson sobre Tramos2021 del FeatureServer de la DGC, paginado de "
+                  "1000 en 1000, simplificado a 0,0015° y redondeado a 4 decimales",
         "km_aforados": round(km, 1),
         "imd_mediana": imds[len(imds) // 2] if imds else None,
         "imd_maxima": imds[-1] if imds else None,
-        "nota": "La DGT no publica intensidades en abierto (su NAP tiene incidencias, cámaras, "
-                "paneles, radares y ZBE). El Mapa de Tráfico del MITMA es el dato oficial de "
-                "IMD; en este servicio el último año con datos es 2019: las capas de 2020 y 2021 "
-                "están publicadas pero vacías.",
+        "nota": "La IMD es una media anual: el MITMA la publica con años de retraso. La DGT no "
+                "publica intensidades en abierto: su NAP trae incidencias, cámaras, paneles, "
+                "radares y ZBE, y la API de su visor solo sirve getCamaras/getFilteredData/"
+                "getPMVs. El servicio propio del MITMA (mapas.fomento.gob.es/MapaTrafico) se "
+                "quedó en 2019; 2020 y 2021 están publicados y vacíos. Este FeatureServer de la "
+                "DGC, de 2021, es el año más nuevo con datos nacionales.",
     }
     with open(os.path.join(DEST, "trafico_imd_recibo.json"), "w", encoding="utf-8") as fh:
         json.dump(rec, fh, ensure_ascii=False, indent=1)
