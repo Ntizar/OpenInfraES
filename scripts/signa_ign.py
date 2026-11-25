@@ -68,7 +68,7 @@ def categoria(texto, por_defecto=""):
     return "Otro espacio protegido" if t == "Otros" else t
 
 
-def redondea(geom, dec=3):
+def redondea(geom, dec=3, conservar=False):
     """Redondea y quita puntos repetidos: a 3 decimales (~110 m) la forma no cambia."""
     tipo = geom.get("type")
     if tipo == "Point":
@@ -103,6 +103,19 @@ def redondea(geom, dec=3):
                     if pts[0] != pts[-1]:
                         pts.append(pts[0])
                     nuevos.append(pts)
+                elif conservar:
+                    # Un monumento natural de 200 m se colapsa al redondear y se perdían 96 de
+                    # 302. Se conserva el anillo fino: mejor un polígono de 11 m que una ficha
+                    # que no existe en el mapa.
+                    fino = []
+                    for c in anillo:
+                        q = [round(c[0], 6), round(c[1], 6)]
+                        if not fino or fino[-1] != q:
+                            fino.append(q)
+                    if len(fino) >= 3:
+                        if fino[0] != fino[-1]:
+                            fino.append(fino[0])
+                        nuevos.append(fino)
             if nuevos:
                 limpios.append(nuevos)
         if not limpios:
@@ -112,7 +125,8 @@ def redondea(geom, dec=3):
     return geom
 
 
-def descarga(servicio, capa, campos, where="1=1", offset=0.002, cat_fija=None):
+def descarga(servicio, capa, campos, where="1=1", offset=0.002, cat_fija=None, dec=3,
+             conservar=False):
     """Trae una capa completa, paginando, con las propiedades normalizadas."""
     total, desplazamiento, feats = None, 0, []
     while True:
@@ -128,7 +142,7 @@ def descarga(servicio, capa, campos, where="1=1", offset=0.002, cat_fija=None):
             geom = f.get("geometry")
             if not geom:
                 continue
-            geom = redondea(geom)
+            geom = redondea(geom, dec, conservar)
             if not geom:
                 continue
             a = f.get("properties") or {}
@@ -138,6 +152,14 @@ def descarga(servicio, capa, campos, where="1=1", offset=0.002, cat_fija=None):
             }
             if a.get("superficie_ha") is not None:
                 props["superficie_ha"] = round(float(a["superficie_ha"]), 1)
+            elif a.get("superficie") is not None:  # geoparques: el campo se llama `superficie`
+                props["superficie_ha"] = round(float(a["superficie"]), 1)
+            # Provincia / comunidad: el servicio antiguo no las daba y son media ficha del popup.
+            for k in ("provincia", "ccaa"):
+                # el IGN rellena «Entidad no asociada a ninguna provincia» en las áreas marinas:
+                # eso no es un dato, es un hueco
+                if a.get(k) and not str(a[k]).startswith("Entidad no asociada"):
+                    props[k] = a[k]
             if a.get("longitud_km") is not None:
                 props["longitud_km"] = round(float(a["longitud_km"]), 1)
             if a.get("cod_rio"):
@@ -193,10 +215,55 @@ def main():
         print("  esp. protegidos capa %d: %d" % (capa, len(feats)))
     if not enp:
         raise SystemExit("sin espacios protegidos: el servicio no devolvio nada, no se publica")
+
+    # 1b · Cinco figuras que `Espacios_Protegidos` NO publica y `06_espacios_protegidos` sí:
+    #      paisajes protegidos, monumentos naturales, reservas naturales, áreas marinas y
+    #      geoparques. Medido antes de meterlas (25/11/2026): 632 features y solape por nombre
+    #      de solo 5 — paisajes que ya venían como «Otro espacio protegido». Esos NO se
+    #      duplican: se reclasifican con su figura. Y todas traen `provincia`, que la ficha no
+    #      tenía.
+    ya = {(f["properties"].get("nombre") or "").strip().lower(): f for f in enp}
+    anadidas, reclasificadas = 0, 0
+    # `offset` alto + `dec` bajo = fichero pequeño. La excepción es Monumento natural: son
+    # polígonos de dos manzanas y el servicio los devuelve degenerados al simplificar (96 de
+    # 302 se perdían). Ahí se pide la geometría entera y se redondea en local conservando el
+    # anillo fino.
+    for capa, figura, campos, offset, dec, conservar in (
+            (5, "Paisaje protegido", ["nombre", "provincia", "superficie_ha"], 0.0015, 3, True),
+            (6, "Monumento natural", ["nombre", "provincia", "superficie_ha"], 0, 3, True),
+            (7, "Reserva natural", ["nombre", "provincia", "superficie_ha"], 0.0015, 3, True),
+            (8, "Área marina protegida", ["nombre", "provincia", "superficie_ha"], 0.0015, 3, True),
+            (14, "Geoparque", ["nombre", "ccaa", "superficie"], 0.0015, 3, True)):
+        feats, _ = descarga("06_espacios_protegidos", capa, campos, offset=offset, cat_fija=figura,
+                            dec=dec, conservar=conservar)
+        if figura == "Geoparque":
+            # el IGN los nombra por la provincia («Granada»): sin el prefijo la ficha no se entiende
+            for f in feats:
+                if not f["properties"]["nombre"].lower().startswith("geoparque"):
+                    f["properties"]["nombre"] = "Geoparque de " + f["properties"]["nombre"]
+        for f in feats:
+            clave = (f["properties"].get("nombre") or "").strip().lower()
+            previo = ya.get(clave)
+            if previo is not None:
+                if previo["properties"].get("categoria") == "Otro espacio protegido":
+                    previo["properties"]["categoria"] = figura
+                    for k in ("provincia", "ccaa"):
+                        if f["properties"].get(k):
+                            previo["properties"][k] = f["properties"][k]
+                    reclasificadas += 1
+                continue
+            ya[clave] = f
+            enp.append(f)
+            anadidas += 1
+        print("  %-22s capa %2d: %d" % (figura, capa, len(feats)))
+    print("  figuras nuevas: %d · reclasificadas: %d" % (anadidas, reclasificadas))
+
     escribe("espacios_protegidos", enp, {"superficie_ha": round(sum(
-        f["properties"].get("superficie_ha") or 0 for f in enp), 0)},
-        "query f=geojson sobre Espacios_Protegidos/1,2,3 con maxAllowableOffset y "
-        "redondeo a 3 decimales")
+        f["properties"].get("superficie_ha") or 0 for f in enp), 0),
+        "figuras_nuevas": anadidas, "figuras_reclasificadas": reclasificadas},
+        "query f=geojson sobre Espacios_Protegidos/1,2,3 (parques y otros) y sobre "
+        "06_espacios_protegidos/5,6,7,8,14 (paisajes, monumentos, reservas, áreas marinas y "
+        "geoparques), con maxAllowableOffset y redondeo a 3 decimales")
 
     # 2 · Red Natura 2000: LIC + ZEPA
     natura = []

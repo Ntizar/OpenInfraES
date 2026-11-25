@@ -1,16 +1,23 @@
 {
  "fichero": "datos/espacios_protegidos.geojson",
- "features": 246,
+ "features": 873,
  "fuente": "IGN · SignA (SCNE)",
  "editor": "Instituto Geográfico Nacional (SCNE)",
  "url": "https://signa.ign.es/signa/",
  "licencia": "CC BY 4.0 · © Instituto Geográfico Nacional de España",
- "descargado": "2026-11-24T19:02:58Z",
- "metodo": "query f=geojson sobre Espacios_Protegidos/1,2,3 con maxAllowableOffset y redondeo a 3 decimales",
+ "descargado": "2026-11-25T09:28:12Z",
+ "metodo": "query f=geojson sobre Espacios_Protegidos/1,2,3 (parques y otros) y sobre 06_espacios_protegidos/5,6,7,8,14 (paisajes, monumentos, reservas, áreas marinas y geoparques), con maxAllowableOffset y redondeo a 3 decimales",
  "categorias": {
+  "Monumento natural": 302,
+  "Reserva natural": 243,
   "Parque natural": 132,
-  "Otro espacio protegido": 95,
-  "Parque nacional": 19
+  "Otro espacio protegido": 90,
+  "Paisaje protegido": 67,
+  "Parque nacional": 19,
+  "Geoparque": 18,
+  "Área marina protegida": 2
  },
- "superficie_ha": 488352.0
+ "superficie_ha": 5856019.0,
+ "figuras_nuevas": 627,
+ "figuras_reclasificadas": 5
 }

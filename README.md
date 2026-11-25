@@ -96,6 +96,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | [`GUIA.md`](GUIA.md) | reglas de trabajo: cómo añadir una capa, sin editar a mano, sin inventar |
 | `docs/aemet.md` · `docs/dgt.md` · `docs/gtfsrt.md` · `docs/nap.md` | el detalle de cada fuente difícil |
 | `docs/ine.md` · `docs/irewater.md` · `docs/precio.md` · `docs/produccion.md` | demografía, agua, mercado y generación |
+| [`docs/cnig.md`](docs/cnig.md) | **Centro de Descargas del CNIG**: las 125 series medidas, qué tenemos ya, qué falta y por qué no se scrapea |
 | `docs/normalizacion.md` · `docs/wms.md` | provincias por código oficial y por qué el ráster va por WMTS |
 
 ## Capas del visor
@@ -114,7 +115,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **DGT · Tráfico** | 4 | 16.852 |
 | **Tiempo real** | 3 | 12.273 |
 | **Riesgo** | 3 | 125 |
-| **Medio ambiente** | 4 | 15.503 |
+| **Medio ambiente** | 4 | 16.130 |
 | **Patrimonio** | 1 | 20.116 |
 | **Sanidad** | 2 | 3.951 |
 | **Ciudad** | 7 | 54.451 |
@@ -122,7 +123,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 | **Equipamientos** | 2 | 3.540 |
 | **Relieve** | 2 | 19.739 |
 | **Clima** | 2 | 104 |
-| **Total** | **95** | **272.692** |
+| **Total** | **95** | **273.319** |
 <!-- CIFRAS-GRUPOS:FIN -->
 
 Los objetos se cuentan de los ficheros que usa cada grupo **sin contar dos veces el mismo fichero**

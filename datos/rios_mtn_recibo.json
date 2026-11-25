@@ -5,7 +5,7 @@
  "editor": "Instituto Geográfico Nacional (SCNE)",
  "url": "https://signa.ign.es/signa/",
  "licencia": "CC BY 4.0 · © Instituto Geográfico Nacional de España",
- "descargado": "2026-11-24T19:03:27Z",
+ "descargado": "2026-11-25T09:28:43Z",
  "metodo": "query f=geojson sobre Hidrografia/3 con where=longitud_km>15",
  "longitud_km": 73683.0
 }

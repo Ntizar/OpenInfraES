@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-25T09:17:56",
+ "generado": "2026-11-25T09:30:02",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 120,
@@ -14,8 +14,8 @@
    "2": 23,
    "3": 14
   },
-  "descargables_ligeros": 61,
-  "kb_total": 139920.5
+  "descargables_ligeros": 60,
+  "kb_total": 140808.4
  },
  "avisos": {
   "pendiente": [
@@ -1426,12 +1426,12 @@
    "ttl_segundos": 7776000,
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
-   "features": 246,
-   "bytes": 490594,
-   "kb": 479.1,
-   "fecha_dato": "2026-11-24T19:02:58Z",
-   "fecha_descarga": "2026-11-24",
-   "edad_dias": 1,
+   "features": 873,
+   "bytes": 1399832,
+   "kb": 1367.0,
+   "fecha_dato": "2026-11-25T09:28:12Z",
+   "fecha_descarga": "2026-11-25",
+   "edad_dias": 0,
    "caducado": false
   },
   "estaciones-cercanias": {
@@ -2590,9 +2590,9 @@
    "features": 1072,
    "bytes": 161631,
    "kb": 157.8,
-   "fecha_dato": "2026-11-24T19:03:28Z",
-   "fecha_descarga": "2026-11-24",
-   "edad_dias": 1,
+   "fecha_dato": "2026-11-25T09:28:44Z",
+   "fecha_descarga": "2026-11-25",
+   "edad_dias": 0,
    "caducado": false
   },
   "puentes-rce": {
@@ -2725,9 +2725,9 @@
    "features": 1790,
    "bytes": 1854949,
    "kb": 1811.5,
-   "fecha_dato": "2026-11-24T19:03:20Z",
-   "fecha_descarga": "2026-11-24",
-   "edad_dias": 1,
+   "fecha_dato": "2026-11-25T09:28:37Z",
+   "fecha_descarga": "2026-11-25",
+   "edad_dias": 0,
    "caducado": false
   },
   "refinerias": {
@@ -2941,9 +2941,9 @@
    "features": 2597,
    "bytes": 1013346,
    "kb": 989.6,
-   "fecha_dato": "2026-11-24T19:03:27Z",
-   "fecha_descarga": "2026-11-24",
-   "edad_dias": 1,
+   "fecha_dato": "2026-11-25T09:28:43Z",
+   "fecha_descarga": "2026-11-25",
+   "edad_dias": 0,
    "caducado": false
   },
   "sanidad-ign": {
