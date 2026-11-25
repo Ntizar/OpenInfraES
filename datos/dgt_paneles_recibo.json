@@ -4,9 +4,9 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 633,
+ "features": 672,
  "paneles_localizados": 2538,
- "descargado": "2026-11-25T22:15:22",
+ "descargado": "2026-11-25T23:14:54",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
@@ -18,7 +18,7 @@
   },
   {
    "texto": "MAQUINAS EN TRATAMIENTO INVERNAL",
-   "paneles": 23
+   "paneles": 46
   },
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD",
@@ -30,15 +30,15 @@
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
-   "paneles": 14
+   "paneles": 13
+  },
+  {
+   "texto": "PREVISION NEVADAS · PLANIFIQUE SU VIAJE",
+   "paneles": 12
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
    "paneles": 10
-  },
-  {
-   "texto": "CARRIL IZQUIERDO BUS-VAO · CARRIL ESQUERRE BUS-VAO",
-   "paneles": 7
   },
   {
    "texto": "CONTROL DE VELOCIDAD POR RADAR · CONTROL DE VELOCIDADE POR RADAR",
