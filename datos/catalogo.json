@@ -1,21 +1,21 @@
 {
- "generado": "2026-11-25T09:44:16",
+ "generado": "2026-11-25T10:06:33",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 121,
+ "total": 122,
  "resumen": {
-  "licencia_si": 116,
+  "licencia_si": 117,
   "licencia_pendiente": 5,
   "caducados": 27,
-  "oficiales": 107,
+  "oficiales": 108,
   "comunitarias": 14,
   "por_jerarquia": {
-   "1": 84,
+   "1": 85,
    "2": 23,
    "3": 14
   },
-  "descargables_ligeros": 60,
-  "kb_total": 149501.7
+  "descargables_ligeros": 61,
+  "kb_total": 149554.0
  },
  "avisos": {
   "pendiente": [
@@ -1513,6 +1513,33 @@
    "fecha_dato": "2026-11-23",
    "fecha_descarga": "2026-11-23",
    "edad_dias": 2,
+   "caducado": false
+  },
+  "faros": {
+   "id": "faros",
+   "titulo": "faros",
+   "organismo": "IGN",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "query f=geojson sobre Signa/03_construcciones_otros/11, redondeo a 5 decimales",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · © scne.es",
+    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
+   },
+   "endpoint": "https://signa.ign.es/signa/",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual o inferior",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-25",
+   "crs": "EPSG:4326",
+   "features": 278,
+   "bytes": 53582,
+   "kb": 52.3,
+   "fecha_dato": "2026-11-25T10:06:26Z",
+   "fecha_descarga": "2026-11-25T10:06:26Z",
+   "edad_dias": 0,
    "caducado": false
   },
   "ferris-ign": {
