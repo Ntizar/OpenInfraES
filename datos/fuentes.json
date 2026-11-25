@@ -1004,9 +1004,9 @@
    "fuente": "Operadores (Renfe)",
    "editor": "GTFS-Realtime",
    "licencia": "condiciones del editor",
-   "actualizado": "2026-11-25T08:42:13",
-   "descargado": "2026-11-25T08:42:05",
-   "features": 425,
+   "actualizado": "2026-11-25T09:42:11",
+   "descargado": "2026-11-25T09:42:07",
+   "features": 391,
    "url": "https://gtfsrt.renfe.com/vehicle_positions.pb",
    "metodo": "protobuf GTFS-RT, refresco continuo"
   },
@@ -1040,8 +1040,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-25T10:15",
-   "descargado": "2026-11-25T09:17:55Z",
+   "actualizado": "2026-11-25T10:30",
+   "descargado": "2026-11-25T09:42:08Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el poligono), paso 15 min"
@@ -1052,8 +1052,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-25T10:15",
-   "descargado": "2026-11-25T09:17:55Z",
+   "actualizado": "2026-11-25T10:30",
+   "descargado": "2026-11-25T09:42:08Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias"
@@ -1292,8 +1292,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-25T10:15",
-   "descargado": "2026-11-25T09:17:55Z",
+   "actualizado": "2026-11-25T10:30",
+   "descargado": "2026-11-25T09:42:08Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el polígono), paso 15 min"
@@ -1304,8 +1304,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-25T10:15",
-   "descargado": "2026-11-25T09:17:55Z",
+   "actualizado": "2026-11-25T10:30",
+   "descargado": "2026-11-25T09:42:08Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "una llamada por lotes a /v1/forecast (current) y rejilla IDW vectorial propia"
@@ -1345,6 +1345,18 @@
    "features": 58,
    "url": "https://signa.ign.es/",
    "metodo": "Capa 23 de 02_redes_transporte"
+  },
+  "nucleos": {
+   "capa": "nucleos",
+   "titulo": "nucleos",
+   "fuente": "IGN · SignA (SCNE)",
+   "editor": "Instituto Geográfico Nacional (SCNE)",
+   "licencia": "CC BY 4.0 · © Instituto Geográfico Nacional de España",
+   "actualizado": "2026-11-25T09:41:27Z",
+   "descargado": "2026-11-25T09:41:27Z",
+   "features": 37469,
+   "url": "https://signa.ign.es/signa/",
+   "metodo": "query f=geojson sobre Signa/01_unidades_administrativas/12, paginado de 1000 en 1000, redondeo a 5 decimales"
   },
   "ocio-ign": {
    "capa": "ocio-ign",
@@ -1562,5 +1574,5 @@
    "kb": 7
   }
  },
- "total_capas": 120
+ "total_capas": 121
 }

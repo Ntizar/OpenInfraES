@@ -1,0 +1,14 @@
+{
+ "fichero": "datos/nucleos.geojson",
+ "features": 37469,
+ "fuente": "IGN · SignA (SCNE)",
+ "editor": "Instituto Geográfico Nacional (SCNE)",
+ "url": "https://signa.ign.es/signa/",
+ "licencia": "CC BY 4.0 · © Instituto Geográfico Nacional de España",
+ "descargado": "2026-11-25T09:41:27Z",
+ "metodo": "query f=geojson sobre Signa/01_unidades_administrativas/12, paginado de 1000 en 1000, redondeo a 5 decimales",
+ "poblacion_total": 47419058,
+ "nucleos_con_poblacion": 36859,
+ "fecha_dato": null,
+ "nota": "SignA es servicio vivo: el IGN no publica fecha por núcleo; la población es la del BTN en el momento de la consulta"
+}

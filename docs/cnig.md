@@ -7,13 +7,26 @@ Fuente: <https://centrodedescargas.cnig.es/CentroDescargas/buscar-mapa>
 Ficha de cada serie: `catalogo.do?Serie=<código>` (de ahí salen formato, unidad de descarga y
 número de ficheros).
 
-## 1. El Centro de Descargas no es una API
+## 1. El Centro de Descargas no es una API, pero el IGN tiene siete puertas
 
-La descarga es un `POST` a `descargaDir` con `nav_signature` y un campo trampa
+La descarga del Centro es un `POST` a `descargaDir` con `nav_signature` y un campo trampa
 (`secuencial_descarga_9f713b4d`). No se scrapea: no hay endpoint estable y forzarlo es pelear con
-un anti-bot. **Para datos, la vía es el servicio abierto** (`serviciosgis.ign.es`, ArcGIS REST
-`f=geojson`, que es lo que ya usan los scripts del visor). El Centro de Descargas sirve aquí como
-**inventario de lo que existe**, no como tubería.
+un anti-bot. Sirve como **inventario de lo que existe**, no como tubería.
+
+Lo que sí es una API, medido el 2026-11-25:
+
+| servicio | qué da | estado |
+|---|---|---|
+| ArcGIS REST `serviciosgis.ign.es/servicios/rest/services` | **168 servicios · 675 capas** (612 reales): SignA, Redes de Transporte, Hidrografía, Hosted, ADE | 200, **sin clave** — la mina |
+| WMS `www.ign.es/wms-inspire/ign-base` | solo cartografía de fondo (4 capas) | 200 |
+| WMTS `www.ign.es/wmts/ign-base` | teselas de fondo (150 KB de capabilities) | 200 |
+| WFS `www.ign.es/wfs-inspire/...` | — | **404**, ahí no hay WFS |
+| CSW IDEE `www.idee.es/csw-inspire` | metadatos, no datos | no responde desde la VM (000) |
+| Geocodificador CartoCiudad `www.cartociudad.es/geocoder/api/geocoder` | direcciones → coordenada | **200, sin clave** |
+| Centro de Descargas `descargaDir` | SHP / GPKG / GeoTIFF | protegido (honeypot) |
+
+Barrido reproducible del árbol ArcGIS: `~/.hermes/cache/scratch/cnig/barrido_servicios_ign.py`
+(168 servicios, ~2 min) → `servicios_ign.json`.
 
 ## 2. Lo que se ha añadido hoy
 
@@ -28,6 +41,12 @@ usaba: `Signa/06_espacios_protegidos`.
   degenerados** y se perdían en silencio. Ahora se piden sin simplificar y se redondea en local,
   conservando el anillo fino cuando el polígono es de dos manzanas.
 
+`nucleos` es capa nueva: **37.469 núcleos de población** con población, hombres y mujeres por
+núcleo (`Signa/01_unidades_administrativas/12`). El padrón que teníamos estaba agregado a
+municipio, así que una pedanía de 40 habitantes no existía en el visor. Suma 47,4 M de habitantes
+frente a los 49,1 M del padrón: la diferencia es población que el BTN no asigna a ningún núcleo,
+y se declara en el recibo.
+
 Recibo: `datos/espacios_protegidos_recibo.json` (fuente, licencia, método, fecha de descarga,
 recuento por figura). Servicio vivo: no hay fecha de referencia del IGN por elemento; la edad que
 publica el catálogo es la de descarga.
@@ -40,7 +59,7 @@ publica el catálogo es la de descarga.
 | BTN-POI (`BPOIS`) | 20 capas `ciudad-*` desde SignA (`03_construcciones_otros`) |
 | Redes de transporte (`REDTR`) | `carreteras` (MITMA), `adif-tramos`, `nap-*`, `vias-verdes` |
 | Hidrografía (`HIDRO`) | `rios-mtn`, `presas`, `canales`, `aguas estancadas` (SignA/HIDRO) |
-| Poblaciones (`POBLA`) y Nomenclátor (`NGMEN`) | `municipios` con padrón INE 2025 y `poblacion` |
+| Poblaciones (`POBLA`) y Nomenclátor (`NGMEN`) | **`nucleos` añadido hoy** (37.469, con población por núcleo); `municipios` con padrón INE 2025 |
 | Límites (`LILIM`) | `municipios`, `provincias`, `ccaa` (INE/Eurostat) |
 | LIC y ZEPA (`10`, `11`, `12`) | `red-natura` (1.790 espacios) |
 | Geoparques (`GEOPA`) | **añadido hoy** vía SignA, mismo dato y servicio abierto |
@@ -55,6 +74,14 @@ publica el catálogo es la de descarga.
 | `SIOAR` / `SIOSE` | Ocupación del suelo 1:25.000 / alta resolución | GPKG · 184 / 144 | alto: pesado, por CCAA |
 | `ECLIP` Trío de eclipses | Franjas de totalidad 2026-2027 | GPKG+KML · 9 | bajo, pero es novedad, no infraestructura |
 | `MPIFL` Peligrosidad por inundación | Zonas inundables T=10/100/500 | GeoTIFF · 5.507 | alto: es ráster, pide teselas; el vectorial está en SNCZI (MITECO) |
+| `08_redes_geodesicas/3` Mareógrafos | 10 puntos con enlace al PSMSL: nivel del mar medido | 1 consulta | bajo |
+| `03_construcciones_otros/11` Faros | 278, con BIC, municipio y provincia | 1 consulta | bajo |
+| `Hosted/intensidades_tratado/0` Intensidades de tráfico | **88.232 registros** con fecha, intensidad y municipio; sin geometría, hay que unirlos con los aforos | 1 tabla | medio |
+| `04_hidrografia/9` Balsas y estanques | 343.380 puntos | — | alto: ruido, no capa |
+
+Lo que aparece en el árbol y **ya tenemos** (no repetir): subestaciones, depuradoras, hospitales,
+nucleares, puertos, aeropuertos, helipuertos, faros del patrimonio, cuencas, embalses, antenas,
+gasolineras, depósitos.
 
 ## 5. Lo que se descarta y por qué
 
