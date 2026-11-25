@@ -4,21 +4,21 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 919,
+ "features": 913,
  "paneles_localizados": 2538,
- "descargado": "2026-11-25T13:03:43",
+ "descargado": "2026-11-25T13:18:14",
  "mensajes_top": [
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
    "paneles": 93
   },
   {
-   "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 84
+   "texto": "MODERE VELOCIDAD · MODERE VELOCITAT",
+   "paneles": 88
   },
   {
-   "texto": "MODERE VELOCIDAD · MODERE VELOCITAT",
-   "paneles": 80
+   "texto": "VELOCIDAD CONTROLADA POR RADAR",
+   "paneles": 84
   },
   {
    "texto": "@H @F",
@@ -26,15 +26,15 @@
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD",
-   "paneles": 35
+   "paneles": 36
   },
   {
    "texto": "MODERE VELOCIDAD",
-   "paneles": 19
+   "paneles": 20
   },
   {
    "texto": "PREVISION NEVADAS · INFORMESE Y PLANIFIQUE SU VIAJE",
-   "paneles": 15
+   "paneles": 12
   },
   {
    "texto": "PEGUERA 7m ANDRATX 12m P.ANDRATX 16m",
