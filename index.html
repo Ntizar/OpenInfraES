@@ -1032,7 +1032,7 @@ mapa.on("moveend", () => {
     // `c.__encendida` y no `hasLayer`: con `ocultaHasta` la capa esta encendida pero fuera del
     // mapa, y sus trozos tienen que llegar igualmente en cuanto se cruza el zoom.
     if (c.carpeta && c.__idx && c.__feats && c.__encendida &&
-        (!c.zoomMin || mapa.getZoom() >= c.zoomMin)) {
+        (!c.ocultaHasta || mapa.getZoom() >= c.ocultaHasta)) {
       const faltan = partesEnVista(c, mapa.getBounds().pad(0.25))
         .filter(p => !c.__pedidas[p.slug]);
       if (faltan.length) cargarPartes(c, faltan);
@@ -3805,9 +3805,10 @@ async function cargarPartesAlEntrar(c) {
   }
   if (!lista.length) lista = partesEnVista(c, mapa.getBounds().pad(0.25));
   if (!lista.length) lista = (c.__idx.partes || []).slice(0, PARTES_A_LA_VEZ);
-  // Una capa que no se dibuja por debajo de su zoom no se descarga: los nucleos son 8,7 MB y
-  // a zoom de pais no se pintan. Se piden cuando el mapa llega al zoom en que existen.
-  if (c.zoomMin && mapa.getZoom() < c.zoomMin) {
+  // Una capa que NO se dibuja por debajo de su zoom no se descarga: los nucleos son 8,7 MB y a
+  // zoom de pais no se pintan. Ojo: eso es `ocultaHasta`, no `zoomMin` — por debajo de `zoomMin`
+  // la capa se atenua pero se pinta, asi que sus datos hacen falta igual.
+  if (c.ocultaHasta && mapa.getZoom() < c.ocultaHasta) {
     const el = document.getElementById("n-" + c.id);
     if (el) el.textContent = nf(c.__idx.total || 0);
     return;
