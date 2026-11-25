@@ -1,0 +1,35 @@
+{
+ "capa": "incendios-effis",
+ "titulo": "Incendios forestales · superficie quemada (EFFIS)",
+ "fuente": "Copernicus EMS",
+ "editor": "European Commission JRC · WFS mapserver EFFIS (capa MODIS burned area)",
+ "producto": "Perímetro quemado derivado de MODIS (250 m), histórico por incendio",
+ "url": "https://maps.effis.emergency.copernicus.eu/effis?service=WFS&version=1.1.0&request=GetFeature&typeName=ms:modis.ba.poly&bbox=-18.5,27.5,4.6,44.0",
+ "licencia": "Copernicus: reutilización libre con atribución (© Unión Europea, Copernicus EMS · EFFIS)",
+ "crs": "EPSG:4326",
+ "features": 9952,
+ "descartados": {
+  "fuera_de_espana": 15523,
+  "sin_geometria": 0,
+  "menos_de_1ha": 176
+ },
+ "area_min_ha": 1.0,
+ "hectareas_totales": 1649733.0,
+ "incendio_mas_reciente": "2026-11-23",
+ "incendio_mas_antiguo": "2016-04-30",
+ "descargado": "2026-11-25T21:08:59Z",
+ "metodo": "WFS 1.1.0 GML paginado por startIndex (el servidor no admite GeoJSON) → anillo exterior, redondeo a 4 decimales, decimado a 250 vértices",
+ "provincias_top": {
+  "Ourense": 229316.0,
+  "Zamora": 142878.0,
+  "Asturias": 126736.0,
+  "León": 125364.0,
+  "Huelva": 104746.0,
+  "Cáceres": 96496.0,
+  "Ávila": 91318.0,
+  "Cantabria": 91288.0,
+  "Zaragoza": 50680.0,
+  "Guadalajara": 48143.0
+ },
+ "fichero": "incendios_effis.geojson"
+}

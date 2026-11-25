@@ -33,7 +33,9 @@ ORGANISMO = {
     "OpenStreetMap (red)": "OpenStreetMap", "OpenStreetMap": "OpenStreetMap",
     "I-ReWater HUB (Interreg)": "I-ReWater HUB", "I-ReWater HUB (Interreg) + INE": "I-ReWater HUB",
     "INE · Eurostat GISCO": "INE / Eurostat", "INE · Cifras Oficiales del Padrón": "INE",
-    "Visor Hermes — MITMA": "MITMA", "Renfe": "Renfe", "OMIE": "OMIE", "Adif": "Adif", "Adif · IDEADIF": "Adif", "IGME": "IGME", "EMODnet": "EMODnet",
+    "Visor Hermes — MITMA": "MITMA",    "Renfe": "Renfe", "OMIE": "OMIE", "Adif": "Adif", "Adif · IDEADIF": "Adif", "IGME": "IGME", "EMODnet": "EMODnet",
+    "Copernicus EMS · EFFIS": "Copernicus EMS", "Copernicus EMS": "Copernicus EMS",
+    "EFFIS · Copernicus Emergency Management Service": "Copernicus EMS",
     "Ministerio de Transportes (ArcGIS REST)": "MITMA",
     # Open-Meteo no produce el dato: agrega los modelos ICON (DWD) y GFS (NOAA). Jerarquía 2.
     "Open-Meteo": "Open-Meteo",
@@ -79,6 +81,10 @@ LICENCIA = {
     "Renfe": ("pendiente", "GTFS-RT sin condiciones localizadas (los conjuntos de data.renfe.com "
                            "de estaciones sí son CC BY 4.0)",
               "https://data.renfe.com"),
+    # Copernicus: política de datos abiertos del programa (Reg. UE 2021/696), atribución obligatoria.
+    "Copernicus EMS": ("si", "Copernicus: reutilización libre con atribución (© Unión Europea, "
+                             "Copernicus EMS · EFFIS)",
+                       "https://www.copernicus.eu/en/legal-notice"),
 }
 
 # --- frescura (P2): el TTL lo define la fuente, no la comodidad del servidor ---
@@ -149,6 +155,9 @@ TTL = {
     # parque o se revisa el MTN, no cada dia; se refrescan con el cron semanal.
     "espacios-protegidos": (7776000, "trimestral", "foto"),
     "red-natura": (7776000, "trimestral", "foto"),
+    # EFFIS revisa el histórico con retraso: lo que caduca no es la fecha del incendio (un incendio
+    # de 2019 sigue siendo cierto), es el snapshot. A los 90 días sin volver a pedirlo, se declara.
+    "incendios-effis": (7776000, "trimestral", "foto"),
     "rios-mtn": (7776000, "trimestral", "foto"),
     "presas": (7776000, "trimestral", "foto"),
 }
@@ -168,6 +177,7 @@ JERARQUIA = {
     "INE": 1, "INE / Eurostat": 1, "MITECO": 1, "REE": 1, "Adif": 1, "DGT": 1,
     "AEMET": 1, "IGN": 1, "CSN": 1, "ENRESA": 1, "CORES": 1, "Enagás": 1,
     "I-ReWater HUB": 1, "OMIE": 1, "Renfe": 1, "EMSC-CSEM": 2,
+    "Copernicus EMS": 1,
     "MITMA": 2, "EMODnet": 2, "IGME": 1, "OpenStreetMap": 3, "Open-Meteo": 2,
 }
 ETIQUETA_JERARQUIA = {1: "organismo productor", 2: "organismo agregador", 3: "fuente comunitaria"}

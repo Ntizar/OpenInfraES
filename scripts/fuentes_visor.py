@@ -56,6 +56,8 @@ OFICIAL = {
                              "GTFS de Renfe Cercanías, paradas"),
     "plantas": ("REE · Registro administrativo de instalaciones de producción",
                 "https://www.ree.es", "registro RAIPEE cruzado con ELECTRA"),
+    "incendios-effis": ("Copernicus EMS · EFFIS", "https://effis.jrc.ec.europa.eu",
+                        "perímetro quemado MODIS (WFS), histórico por incendio con fecha y hectáreas"),
 }
 
 HERMES = {

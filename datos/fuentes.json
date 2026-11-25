@@ -1383,6 +1383,19 @@
    "url": "https://signa.ign.es/",
    "metodo": "Capa 23 de 02_redes_transporte"
   },
+  "incendios-effis": {
+   "capa": "incendios-effis",
+   "titulo": "Incendios forestales · superficie quemada (EFFIS)",
+   "fuente": "Copernicus EMS",
+   "editor": "European Commission JRC · WFS mapserver EFFIS (capa MODIS burned area)",
+   "licencia": "Copernicus: reutilización libre con atribución (© Unión Europea, Copernicus EMS · EFFIS)",
+   "actualizado": "2026-11-25T21:08:59Z",
+   "descargado": "2026-11-25T21:08:59Z",
+   "features": 9952,
+   "fecha_dato": null,
+   "url": "https://maps.effis.emergency.copernicus.eu/effis?service=WFS&version=1.1.0&request=GetFeature&typeName=ms:modis.ba.poly&bbox=-18.5,27.5,4.6,44.0",
+   "metodo": "WFS 1.1.0 GML paginado por startIndex (el servidor no admite GeoJSON) → anillo exterior, redondeo a 4 decimales, decimado a 250 vértices"
+  },
   "nucleos": {
    "capa": "nucleos",
    "titulo": "Núcleos de población (IGN)",
@@ -1646,5 +1659,5 @@
    "kb": 7
   }
  },
- "total_capas": 124
+ "total_capas": 125
 }
