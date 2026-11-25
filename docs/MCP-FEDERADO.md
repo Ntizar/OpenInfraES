@@ -12,6 +12,10 @@ centro de mando municipal sobre CloudFront) y diseño de lo mismo para OpenInfra
 del repositorio hablen por una sola superficie MCP**, con un solo vocabulario y un solo contrato de
 respuesta.
 
+> **Las cifras de este documento son las del día que se midió** (23-11-2026, 77 capas). El catálogo
+> vivo es `datos/catalogo.json`, y las cifras del README las reescribe `cifras.py` en cada refresco:
+> si aquí pone 77 y allí 99, manda el catálogo.
+
 No es un resumen de la portada: todo lo que sigue sale de hablarle al servidor.
 
 ## 1. Qué se ha medido (y con qué resultado)

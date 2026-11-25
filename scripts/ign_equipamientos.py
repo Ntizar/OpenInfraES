@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Equipamientos del IGN (SignA 03_construcciones_otros): dónde dormir y qué visitar.
 
-Dos capas, no ocho. El visor ya tiene 77 capas y una más por tipo de equipamiento sería ruido:
+Dos capas, no ocho. El visor ya pasa de noventa capas y una más por tipo de equipamiento sería ruido:
 se agrupan por uso —alojamiento y ocio— y el tipo va como atributo con su color.
 
 Fuera a propósito: instalaciones deportivas (16.411 puntos de piscina y pista municipal, ruido a

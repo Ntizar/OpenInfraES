@@ -13,7 +13,8 @@ Un visor de la infraestructura **energética, de transporte y de riesgo** de Esp
 normalizados, verificados y con su fuente declarada. No es una copia de OpenInfraMap ni un mapa
 decorativo: cada capa se puede rastrear hasta el organismo que publica el dato.
 
-Documentación: [`docs/PROYECTO.md`](docs/PROYECTO.md) (visión general) · [`docs/FUENTES.md`](docs/FUENTES.md)
+Documentación: [`docs/PROYECTO.md`](docs/PROYECTO.md) (visión general) · [`docs/DATOS.md`](docs/DATOS.md)
+(cómo está organizado `datos/`: recibos, contratos y capas partidas) · [`docs/FUENTES.md`](docs/FUENTES.md)
 (ficha por fuente oficial) · [`docs/apis.md`](docs/apis.md) (estado técnico) · [`docs/nap.md`](docs/nap.md).
 
 ## Las cinco reglas
@@ -29,6 +30,11 @@ Documentación: [`docs/PROYECTO.md`](docs/PROYECTO.md) (visión general) · [`do
    obliga a ODbL para el conjunto.
 5. **Toda cifra publicada lleva fecha de dato y de descarga.** No son lo mismo: el parte hidrológico es
    del 10 de noviembre aunque se descargue el 16.
+
+Y una que se olvida porque no duele hasta que duele: **siete capas gordas se sirven troceadas** por
+provincia o comunidad (`datos/<id>/`). Si regeneras una, corre `python3 scripts/partir.py` antes de
+validar; `validar.py` da ROJO si los trozos no son los del fichero de hoy. Detalle en
+[`docs/DATOS.md`](docs/DATOS.md).
 
 ## Cómo añadir una capa
 

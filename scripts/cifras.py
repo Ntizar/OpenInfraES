@@ -153,10 +153,17 @@ PATRONES = [
     # tablas de estado
     (r"(\| Capas en el visor \| \*\*)(\d+)(\*\* \|)",
      lambda m, v: f"{m.group(1)}{v['capas']}{m.group(3)}"),
+    # README, el catálogo citado en prosa: «—N entradas, incluidas las que no son capa—»
+    (r"(—)(\d+)( entradas, incluidas)", lambda m, v: f"{m.group(1)}{v['entradas']}{m.group(3)}"),
+    (r"(\| Grupos temáticos \| \*\*)(\d+)(\*\*)",
+     lambda m, v: f"{m.group(1)}{v['grupos']}{m.group(3)}"),
     (r"(\| Capas documentadas en `fuentes.json` \| \*\*)(\d+)(\*\* \|)",
      lambda m, v: f"{m.group(1)}{v['entradas']}{m.group(3)}"),
     (r"(\| Organismos citados \| \*\*)(\d+)(\*\*)",
      lambda m, v: f"{m.group(1)}{v['organismos']}{m.group(3)}"),
+    # PROYECTO, titular: «**99 capas en 17 grupos.**»
+    (r"(\*\*)(\d+)( capas en \d+ grupos\.\*\*)",
+     lambda m, v: f"{m.group(1)}{v['capas']} capas en {v['grupos']} grupos.**"),
     # biblioteca
     (r"(\*\*)(\d+)( capas en el visor\*\* y \*\*)(\d+)( entradas documentadas\*\*)",
      lambda m, v: f"{m.group(1)}{v['capas']} capas en el visor** y **{v['entradas']} entradas documentadas**"),

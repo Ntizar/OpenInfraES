@@ -90,7 +90,7 @@ def partir(capa, fichero, campo, campo_etiqueta):
         partes.append({"slug": slug(valor), "valor": valor, "etiqueta": etiqueta,
                        "fichero": nombre, "n": len(fs), "bbox": bbox,
                        "bytes": os.path.getsize(os.path.join(carpeta, nombre))})
-    indice = {"capa": capa, "campo": campo, "total": len(feats),
+    indice = {"capa": capa, "base": fichero, "campo": campo, "total": len(feats),
               "fuente": gj.get("fuente"), "generado": gj.get("generado"), "partes": partes}
     with open(os.path.join(carpeta, "index.json"), "w", encoding="utf-8") as fh:
         json.dump(indice, fh, ensure_ascii=False, separators=(",", ":"))

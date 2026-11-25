@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """mcp_openinfra.py — el MCP federado de OpenInfraES.
 
-Todas las fuentes del repositorio —77 capas, 12 organismos, energía, agua, red,
+Todas las fuentes del repositorio —las capas del catálogo, energía, agua, red,
 gas, transporte, clima y geografía— detrás de UNA sola superficie JSON-RPC 2.0.
 
 Tres modos:
@@ -989,7 +989,7 @@ HERRAMIENTAS = [
     {
         "name": "es.datos.catalogo",
         "fn": t_datos_catalogo,
-        "description": "Lista las 77 capas de OpenInfraES con su organismo productor, su licencia, su fecha de dato "
+        "description": "Lista las capas de OpenInfraES con su organismo productor, su licencia, su fecha de dato "
                        "y si está caducada. Es el índice de la federación: úsalo antes de preguntar por una fuente "
                        "concreta. Filtra por texto (filtro), solo oficiales, solo caducadas o solo licencia pendiente.",
         "inputSchema": {

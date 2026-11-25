@@ -20,7 +20,7 @@ El despliegue no depende de nada más: son ficheros estáticos y los datos van a
 
 ## Qué contiene
 
-**77 capas en 14 grupos.** El visor abre **vacío**: no descarga nada hasta que enciendes una capa.
+**99 capas en 17 grupos.** El visor abre **vacío**: no descarga nada hasta que enciendes una capa.
 La tabla completa, generada desde el propio array `CAPAS`, está en el
 [README](../README.md#capas-del-visor).
 
@@ -71,14 +71,19 @@ cimas y puntos acotados (**14.793**), alineaciones montañosas (**4.946**) y hos
 ## Cómo está hecho
 
 ```
-datos/            GeoJSON servidos al visor (simplificados)
+datos/            un GeoJSON por capa, con su _recibo.json al lado
   simplificado/   geometrías reducidas (-84% de vértices)
   oficial/        capas vectorizadas de IGN, MITECO, CSN, CORES y Enagás
   hermes/         capas del visor del MITMA
+  series/         series vivas (REE, OMIE, sismos…) en JSON
+  <id>/           capas gordas partidas por provincia o comunidad
 scripts/          un script por fuente, cada uno con su recibo
 index.html        el visor: Leaflet + canvas, un solo fichero
-docs/             este documento, apis.md, nap.md
+docs/             este documento, DATOS.md, apis.md, nap.md
 ```
+
+El directorio al detalle —qué es cada fichero, quién lo escribe y qué no se toca— está en
+[`DATOS.md`](DATOS.md).
 
 **Regla de oro: nada se escribe a mano.** Cada `datos/*.geojson` sale de un script que descarga,
 normaliza y deja un `_recibo.json` con cuántos registros y de cuándo. El validador (`scripts/validar.py`)
@@ -128,7 +133,7 @@ Conviven dos regímenes y **no se pueden mezclar sin cuidado**:
 
 ## De dónde sale cada dato
 
-Las 46 entradas de `datos/fuentes.json` declaran **productor → publica → descarga** y tres fechas
+Cada entrada de `datos/fuentes.json` declara **productor → publica → descarga** y tres fechas
 distintas. El detalle, fuente por fuente, está en [`FUENTES.md`](FUENTES.md). Resumen:
 
 | Organismo | Qué aporta | Licencia |

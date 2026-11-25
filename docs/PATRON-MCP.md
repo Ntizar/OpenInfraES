@@ -221,7 +221,7 @@ lo que falta es la capa de preguntas.
 
 ## De un recurso a 77: la federación
 
-Este documento convierte **un** organismo en un servidor. Cuando el problema es que hay 77 capas y
+Este documento convierte **un** organismo en un servidor. Cuando el problema es que hay decenas de capas y
 ningún agente sabe cuál abrir, el patrón es otro: una sola superficie con namespace de dominio, catálogo
 como dato y contrato de respuesta con fuente, edad y caducidad. Está medido y construido en
 [`MCP-FEDERADO.md`](MCP-FEDERADO.md) y vive en `scripts/mcp_openinfra.py` (12 herramientas, stdio y

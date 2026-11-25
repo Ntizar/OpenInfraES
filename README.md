@@ -68,7 +68,7 @@ de este README se desfasa de la realidad, el CI se pone rojo.
 flowchart TD
     A["checkbox · vista temática · enlace permanente · API"] --> B["ponerCapa(id, on)<br/>UN solo camino"]
     B --> C{"¿encendida?"}
-    C -->|"sí"| D["cargar() → fetch del GeoJSON<br/>una sola vez por sesión"]
+    C -->|"sí"|    D["cargar() → fetch del GeoJSON<br/>o de los trozos que cortan la vista"]
     C -->|"no"| E["mapa.removeLayer"]
     D --> F["datos[id] guardados<br/>índice para el buscador"]
     F --> G["mapa · pintarPuntos o L.geoJSON"]
@@ -81,16 +81,45 @@ flowchart TD
 Las cuatro puertas que encienden una capa llaman a la misma función. Cuando cada una tocaba el
 checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 
+## El repositorio y los datos
+
+El visor es **una página** (`index.html`) y **los datos al lado**, en `datos/`. No hay build ni base
+de datos: `git push` es desplegar. Un fichero por capa, con su recibo de procedencia:
+
+```
+datos/
+├── <base>.geojson          la capa; el nombre da el id del visor
+├── <base>_recibo.json      fuente, editor, licencia, fecha y estado (obligatorio)
+├── fuentes.json            ficha por id: organismo, editor, licencia, método
+├── catalogo.json           contrato por capa: jerarquía, TTL, caducidad, resumen
+├── oficial/ hermes/ simplificado/ series/
+└── <id-de-capa>/           capas gordas partidas por provincia o comunidad
+```
+
+**Tres reglas que ahorran una tarde:**
+
+- **Nada de `datos/` se edita a mano.** Cada fichero lo escribe un script y se regenera; si un dato
+  está mal, se corrige en la fuente o en el script.
+- **Un conflicto en un generado se regenera**, no se elige lado (correr su script, `git add`).
+- **El orden de la cadena manda**: generadores → `agregados.py` → `partir.py` → `fuentes_visor.py` →
+  `catalogo.py` → `cifras.py` → `snapshot.py` → `validar.py`.
+
+Las capas que pesan (núcleos 37.469 objetos, docencia 33.232, tráfico 7.398 tramos) se **parten por
+provincia o comunidad** con `scripts/partir.py`: el visor descarga solo los trozos que cortan la vista
+y el fichero entero se queda para la API. El detalle —campos, índices, cómo se añade una capa
+partida— está en [`docs/DATOS.md`](docs/DATOS.md).
+
 ## Documentación
 
 | Documento | Qué encontrarás |
 |---|---|
 | [`docs/PROYECTO.md`](docs/PROYECTO.md) | qué es, qué contiene, rendimiento medido y límites |
+| [`docs/DATOS.md`](docs/DATOS.md) | **cómo está organizado `datos/`**: recibos, contratos, carpetas, capas partidas y reglas |
 | [`docs/BIBLIOTECA.md`](docs/BIBLIOTECA.md) | **para qué existe esto**: base reutilizable y cómo crece con fichas enriquecidas |
 | [`docs/FUENTES.md`](docs/FUENTES.md) | **ficha por organismo**: qué publica, URL, cómo se obtiene, licencia, frecuencia y límites |
 | [`docs/apis.md`](docs/apis.md) | estado técnico de cada API, con los errores literales |
 | [`docs/PATRON-MCP.md`](docs/PATRON-MCP.md) | convertir un recurso oficial en servidor MCP, con el estudio medido de `ree-mcp` |
-| [`docs/MCP-FEDERADO.md`](docs/MCP-FEDERADO.md) | **las 77 capas como un solo MCP**: estudio medido de CivicMesh OS, contrato de respuesta y las 12 herramientas publicadas |
+| [`docs/MCP-FEDERADO.md`](docs/MCP-FEDERADO.md) | **todas las capas como un solo MCP**: estudio medido de CivicMesh OS, contrato de respuesta y las herramientas publicadas |
 | [`docs/AUDITORIA.md`](docs/AUDITORIA.md) | auditorías del proyecto: qué fallaba, qué se corrigió y cómo se verificó |
 | [`docs/emplazamiento.md`](docs/emplazamiento.md) | **consultar un punto**: el contexto que da el dato abierto y lo que falta, con el probador y sus huecos |
 | [`GUIA.md`](GUIA.md) | reglas de trabajo: cómo añadir una capa, sin editar a mano, sin inventar |
@@ -129,7 +158,7 @@ checkbox por su cuenta, la leyenda se quedaba abierta sobre una capa ya apagada.
 Los objetos se cuentan de los ficheros que usa cada grupo **sin contar dos veces el mismo fichero**
 (400 y 220 kV son dos capas del mismo GeoJSON, y cuatro capas de generación leen `plantas.geojson`).
 **No coinciden con lo que se ve en pantalla**: una capa apagada no ha descargado nada. El catálogo
-completo —102 entradas, incluidas las que todavía no son capa— va en `datos/fuentes.json`.
+completo —124 entradas, incluidas las que todavía no son capa— va en `datos/fuentes.json`.
 
 Los grupos se encienden de un golpe con las **vistas temáticas** de arriba: **Todo · Eléctrico · Gas ·
 Agua · Transporte · DGT · En vivo · Riesgo**. Al elegir una vista se encienden sus capas **y el panel
@@ -349,6 +378,9 @@ python scripts/aemet_geo.py       # avisos con polígono
 python scripts/aemet.py           # avisos por comarca (Meteoalarm)
 python scripts/ine.py             # población y paro (INE Tempus3)
 
+# Capas gordas: trocearlas por provincia o comunidad para no bajar 9 MB de golpe
+python3 scripts/partir.py
+
 # Puertas: si esto no sale verde, no se publica
 python scripts/fuentes_visor.py   # datos/fuentes.json desde los recibos
 python scripts/catalogo.py        # datos/catalogo.json (contrato machine-readable)
@@ -356,7 +388,7 @@ python scripts/sanear_atribuciones.py   # limpia atribuciones dentro de los GeoJ
 python scripts/cifras.py --check  # las cifras de este README, contadas del dato
 python scripts/validar.py         # el arnés: RESULTADO: VERDE
 
-# La puerta para agentes: las 77 capas como un solo MCP
+# La puerta para agentes: todas las capas como un solo MCP
 python scripts/mcp_openinfra.py --test        # autochequeo (12 herramientas)
 python scripts/mcp_openinfra.py               # stdio para Claude Code / Cursor
 python scripts/mcp_openinfra.py --http 8077   # POST /api/mcp + GET /api/state para la web
@@ -405,11 +437,12 @@ hay que atribuir a OpenStreetMap y compartir igual. El **código** (visor, scrip
 
 ## Estado
 
-**Actualizado el 24-11-2026.**
+**Estas cifras no se escriben a mano**: `cifras.py` las cuenta de los ficheros en cada refresco.
 
 | | |
 |---|---|
-| Capas en el visor | **77** en **14 grupos** |
+| Capas en el visor | **99** |
+| Grupos temáticos | **17** |
 | Capas documentadas en `fuentes.json` | **124** |
 | Fusión geoespacial | **4.784 EDAR** únicas desde 8.708 filas de tres fuentes |
 | Organismos citados | **20** — MITECO, MITMA, IGN, REE, DGT, AEMET, CSN, CORES, Enagás, ENRESA, INE, Renfe, Adif, EMSC-CSEM, I-ReWater HUB, OpenStreetMap |

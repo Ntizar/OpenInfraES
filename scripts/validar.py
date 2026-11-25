@@ -172,6 +172,37 @@ def main():
             if not os.path.exists(os.path.join(DATOS, "oficial", u + ".geojson")):
                 error("falta datos/oficial/%s.geojson (lo usa el visor)" % u)
 
+    # 4e-bis. capas partidas: los trozos tienen que ser los del fichero de hoy
+    # Si alguien regenera una capa partida y no corre scripts/partir.py, el visor sigue sirviendo
+    # los trozos viejos y nada se queja. Esto lo canta antes de publicar.
+    for nombre in sorted(os.listdir(DATOS)):
+        ruta_carpeta = os.path.join(DATOS, nombre)
+        ruta_ind = os.path.join(ruta_carpeta, "index.json")
+        if not os.path.isdir(ruta_carpeta) or not os.path.exists(ruta_ind):
+            continue
+        try:
+            ind = json.load(open(ruta_ind, encoding="utf-8"))
+        except Exception:
+            error("datos/%s/index.json: no se puede leer" % nombre)
+            continue
+        partes = ind.get("partes") or []
+        total = ind.get("total") or 0
+        suma = sum(p.get("n", 0) for p in partes)
+        if suma != total:
+            error("datos/%s: los trozos suman %d y el indice declara %d" % (nombre, suma, total))
+        for p in partes:
+            if not os.path.exists(os.path.join(ruta_carpeta, p.get("fichero", ""))):
+                error("datos/%s: falta el trozo %s" % (nombre, p.get("fichero")))
+        base = ind.get("base") or (nombre.replace("-", "_") + ".geojson")
+        ruta_rec = os.path.join(DATOS, base.replace(".geojson", "_recibo.json"))
+        if os.path.exists(ruta_rec):
+            hojas = json.load(open(ruta_rec, encoding="utf-8")).get("features")
+            if hojas is not None and hojas != total:
+                error("datos/%s: trozos de %d objetos y el fichero entero %d; ejecuta scripts/partir.py"
+                      % (nombre, total, hojas))
+        else:
+            error("datos/%s: no encuentro el recibo de %s" % (nombre, base))
+
     # 4e. capas de transporte (visor Hermes)
     rh = os.path.join(DATOS, "hermes", "_recibo_hermes.json")
     if not os.path.exists(rh):
