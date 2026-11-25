@@ -1026,7 +1026,18 @@ const mapa = L.map("mapa", {
 
 // Al soltar el mapa se recalcula qué se ve en las capas grandes (ver recortar()).
 mapa.on("moveend", () => {
-  for (const c of CAPAS) if (c.__dibujo && mapa.hasLayer(capas[c.id])) recortar(c);
+  for (const c of CAPAS) {
+    if (c.__dibujo && mapa.hasLayer(capas[c.id])) recortar(c);
+    // Capa partida: al mover el mapa, si asoma una provincia que aun no esta, se pide.
+    // `c.__encendida` y no `hasLayer`: con `ocultaHasta` la capa esta encendida pero fuera del
+    // mapa, y sus trozos tienen que llegar igualmente en cuanto se cruza el zoom.
+    if (c.carpeta && c.__idx && c.__feats && c.__encendida &&
+        (!c.zoomMin || mapa.getZoom() >= c.zoomMin)) {
+      const faltan = partesEnVista(c, mapa.getBounds().pad(0.25))
+        .filter(p => !c.__pedidas[p.slug]);
+      if (faltan.length) cargarPartes(c, faltan);
+    }
+  }
 });
 
 // Leaflet 1.9.4 usa _moveStart/_move/_moveEnd para el pellizco nativo.
@@ -1448,14 +1459,14 @@ const CAPAS = [
     escala:{ campo:"capacidad_hm3_anio", min:10, max:300, unidad:"hm³/año" },
     radioPorMagnitud:true, radioMin:4, radioMax:11, colorPorEscala:true },
   { id:"municipios", grupo:"Demografía", label:"Municipios (polígono y población)", tipo:"poligono",
-    color:"#0ea5e9", fichero:"datos/municipios.geojson", opacidad:.34, peso:1.1, zoomMin:7,
+    color:"#0ea5e9", fichero:"datos/municipios.geojson", carpeta:"datos/municipios", opacidad:.34, peso:1.1, zoomMin:7,
     paleta:"secuencial",
     popupTitulo:"nombre", colorCampo:"color", corteVar:"municipios_poblacion",
     campos:["cod_ine","poblacion","anio_poblacion","area_km2","provincia"],
     etiquetas:{cod_ine:"Código INE", poblacion:"Población", anio_poblacion:"Año del padrón",
                area_km2:"Superficie (km²)", provincia:"Código de provincia"} },
   { id:"nucleos", grupo:"Demografía", label:"Núcleos de población (IGN)", tipo:"punto", on:false,
-    color:"#a855f7", fichero:"datos/nucleos.geojson", radio:2.2, zoomMin:9, ocultaHasta:9,
+    color:"#a855f7", fichero:"datos/nucleos.geojson", carpeta:"datos/nucleos", radio:2.2, zoomMin:9, ocultaHasta:9,
     popupTitulo:"nombre", campos:["municipio","provincia","poblacion","hombres","mujeres"],
     etiquetas:{municipio:"Municipio", provincia:"Provincia", poblacion:"Población"} },
   { id:"ine-ccaa", grupo:"Demografía", label:"Población por comunidad (INE)", tipo:"poligono", on:false,
@@ -1491,7 +1502,7 @@ const CAPAS = [
   { id:"carreteras", grupo:"Transporte", label:"Carreteras del Estado", tipo:"linea", on:false, color:"#64748b",
     fichero:"datos/hermes/carreteras.geojson", peso:1.1, opacidad:.6, zoomMin:7.5 },
   { id:"trafico-ccaa", grupo:"Transporte", label:"IMD de tráfico por comunidades · red estatal y autonómica", tipo:"linea", on:false,
-    color:"#f97316", fichero:"datos/trafico_ccaa.geojson", peso:2.6, opacidad:.9, zoomMin:6.5,
+    color:"#f97316", fichero:"datos/trafico_ccaa.geojson", carpeta:"datos/trafico-ccaa", peso:2.6, opacidad:.9, zoomMin:6.5,
     popupTitulo:"carretera", colorCampo:"color", filtroCampo:{campo:"ccaa", etiqueta:"Comunidad"},
     nota:"IMD en vehículos/día · cada tramo lleva su año y su fuente en la ficha",
     rampa:[{color:"#22c55e",etiqueta:"menos de 2.000"},{color:"#84cc16",etiqueta:"2.000 – 5.000"},
@@ -1504,7 +1515,7 @@ const CAPAS = [
                pk_inicio:"PK inicio", pk_fin:"PK fin", km:"Longitud (km)", imd:"IMD (veh/día)",
                pesados_pct:"Pesados (%)"} },
   { id:"trafico-estaciones", grupo:"Transporte", label:"Aforos por estación · Tenerife 2025 · Cataluña 2022", tipo:"punto", on:false,
-    color:"#ef4444", fichero:"datos/trafico_estaciones.geojson", radio:3, zoomMin:7, ocultaHasta:7,
+    color:"#ef4444", fichero:"datos/trafico_estaciones.geojson", carpeta:"datos/trafico-estaciones", radio:3, zoomMin:7, ocultaHasta:7,
     popupTitulo:"carretera", colorCampo:"color", filtroCampo:{campo:"ccaa", etiqueta:"Comunidad"},
     nota:"IMD en vehículos/día, por estación de aforo",
     rampa:[{color:"#22c55e",etiqueta:"menos de 2.000"},{color:"#84cc16",etiqueta:"2.000 – 5.000"},
@@ -1540,7 +1551,7 @@ const CAPAS = [
     color:"#f97316", fichero:"datos/dgt_incidencias.geojson", radio:5, zoomMin:6, zoomDetalle:11,
     popupTitulo:"carretera" },
   { id:"dgt-electrolineras", grupo:"DGT · Tráfico", label:"Puntos de recarga eléctrica", tipo:"punto", on:false,
-    color:"#34d399", fichero:"datos/dgt_electrolineras.geojson", radio:4.2, zoomMin:7, zoomDetalle:11,
+    color:"#34d399", fichero:"datos/dgt_electrolineras.geojson", carpeta:"datos/dgt-electrolineras", radio:4.2, zoomMin:7, zoomDetalle:11,
     radioPorMagnitud:true,
     // escala por cuartiles reales: p25 = 22 kW, p75 = 50 kW, y los rapidos (>150) son 1.095
     // de 12.144. Con min 22 / max 350 casi todos caian en el mismo tamano.
@@ -1710,7 +1721,7 @@ const CAPAS = [
     etiquetas:{municipio:"Municipio", provincia:"Provincia"} },
   { id:"ciudad-docencia", grupo:"Servicios", label:"Docencia · universidades y centros (IGN)", tipo:"punto", on:false,
     color:"#60a5fa", colorCampo:"color", etiquetaCampo:"tipo",
-    fichero:"datos/ciudad_docencia.geojson", radio:2.8, zoomMin:12, ocultaHasta:12, zoomDetalle:14,
+    fichero:"datos/ciudad_docencia.geojson", carpeta:"datos/ciudad-docencia", radio:2.8, zoomMin:12, ocultaHasta:12, zoomDetalle:14,
     popupTitulo:"nombre", campos:["tipo","municipio","provincia"],
     etiquetas:{municipio:"Municipio", provincia:"Provincia"} },
   { id:"ciudad-antenas", grupo:"Servicios", label:"Antenas de telecomunicaciones (IGN)", tipo:"punto", on:false,
@@ -1760,7 +1771,7 @@ const CAPAS = [
     color:"#a8a29e", fichero:"datos/sierras_ign.geojson", peso:2.4, opacidad:.8, zoomMin:7,
     popupTitulo:"nombre", leyendaSimple:true },
   { id:"dpmt", grupo:"Medio ambiente", label:"Dominio público marítimo-terrestre", tipo:"linea", on:false,
-    color:"#f59e0b", fichero:"datos/dpmt.geojson", peso:1.5, opacidad:.85, zoomMin:7,
+    color:"#f59e0b", fichero:"datos/dpmt.geojson", carpeta:"datos/dpmt", peso:1.5, opacidad:.85, zoomMin:7,
     popupTitulo:"municipio" },
   /* --- IGN · SignA. Tres escalones de proteccion que se pintan a la vez y no se tapan: el parque
      nacional encima (verde oscuro, 34 % de opacidad), la Red Natura debajo (violeta y rosa, 26 %).
@@ -3412,6 +3423,16 @@ const SvgPuntos = SvgConLienzo.extend({
   }
 });
 
+/* Un punto, sea Point o MultiPoint. Los nucleos del IGN vienen como MultiPoint y el codigo
+   hacia `const [lng, lat] = coordinates`: con un array dentro, `lat` era `undefined` y ninguno
+   de los 37.469 nucleos se pintaba jamas. Las capas de puntos pasan todas por aqui. */
+function puntoDe(g) {
+  if (!g) return null;
+  let a = g.coordinates;
+  while (Array.isArray(a) && Array.isArray(a[0])) a = a[0];
+  return (Array.isArray(a) && a.length >= 2 && typeof a[0] === "number") ? a : null;
+}
+
 function pintarPuntos(c) {
   const feats = datos[c.id];
   if (!feats) return;
@@ -3436,7 +3457,9 @@ function pintarPuntos(c) {
   if (!individual && !mismoNivel) {
     const celdas = new Map();
     for (const f of feats) {
-      const [lng, lat] = f.geometry.coordinates;
+      const pto = puntoDe(f.geometry);
+      if (!pto) continue;
+      const [lng, lat] = pto;
       const k = Math.floor(lat / paso) + ":" + Math.floor(lng / paso);
       if (!celdas.has(k)) celdas.set(k, []);
       celdas.get(k).push(f);
@@ -3510,9 +3533,9 @@ function pintarPuntos(c) {
   }
   if (individual) {
     for (const f of feats) {
-      if (!f.geometry?.coordinates) continue;
-      const [lng, lat] = f.geometry.coordinates;
-      mostrar(f, lat, lng);
+      const pto = puntoDe(f.geometry);
+      if (!pto) continue;
+      mostrar(f, pto[1], pto[0]);
     }
   } else {
     for (const {items, lat, lng} of c.__grupos) mostrar(items[0], lat, lng, items);
@@ -3638,7 +3661,8 @@ const FILTRO = { valor: "*" };
 function capaFiltrable() {
   for (const c of CAPAS) {
     if (!c.filtroCampo || !capas[c.id] || !mapa.hasLayer(capas[c.id])) continue;
-    if (c.__feats && c.__feats.length) return c;
+    // Con la capa partida basta el indice: las comunidades se listan sin esperar a los datos.
+    if ((c.__feats && c.__feats.length) || c.__idx) return c;
   }
   return null;
 }
@@ -3649,11 +3673,17 @@ function pintarFiltro() {
   const c = capaFiltrable();
   if (!c) { caja.hidden = true; return; }
   const campo = c.filtroCampo.campo;
-  const vals = Array.from(new Set(c.__feats.map(f => (f.properties || {})[campo])
-    .filter(v => v !== null && v !== undefined && v !== "")))
-    .sort((a, b) => String(a).localeCompare(String(b), "es"));
+  // Con la capa partida las opciones salen del indice: se listan las 17 comunidades sin haber
+  // descargado ni un trozo, y «Todas» enseña el total real, no lo que va llegando.
+  const vals = c.__idx
+    ? (c.__idx.partes || []).map(p => p.etiqueta)
+        .sort((a, b) => String(a).localeCompare(String(b), "es"))
+    : Array.from(new Set((c.__feats || []).map(f => (f.properties || {})[campo])
+        .filter(v => v !== null && v !== undefined && v !== "")))
+        .sort((a, b) => String(a).localeCompare(String(b), "es"));
+  const total = c.__idx ? c.__idx.total : (c.__feats || []).length;
   caja.innerHTML = `<label for="filtro-sel">${c.filtroCampo.etiqueta || nombreCampo(campo)}</label>` +
-    `<select id="filtro-sel"><option value="*">Todas (${nf(c.__feats.length)})</option>` +
+    `<select id="filtro-sel"><option value="*">Todas (${nf(total)})</option>` +
     vals.map(v => `<option value="${String(v).replace(/"/g, "&quot;")}"` +
       `${String(v) === FILTRO.valor ? " selected" : ""}>${v}</option>`).join("") + "</select>";
   caja.hidden = false;
@@ -3665,6 +3695,14 @@ function aplicarFiltro() {
   const c = capaFiltrable();
   if (!c) return;
   const campo = c.filtroCampo.campo;
+  // Capa partida: si la comunidad elegida aun no esta descargada, se pide y dibujarPartes pinta.
+  if (c.carpeta && c.__idx) {
+    const parte = (c.__idx.partes || []).find(x => String(x.etiqueta) === FILTRO.valor);
+    if (parte && !c.__pedidas[parte.slug]) {
+      cargarPartes(c, [parte]);
+      return;
+    }
+  }
   const sub = FILTRO.valor === "*" ? c.__feats
     : c.__feats.filter(f => String((f.properties || {})[campo]) === FILTRO.valor);
   dibujarVector(c, sub);
@@ -3674,6 +3712,130 @@ function aplicarFiltro() {
   if (el) el.textContent = nf(sub.length);
   actualizarLeyenda();
   estado();
+}
+
+/* ---------------- capas partidas: se descarga solo el trozo que se ve ----------------
+   Un GeoJSON de 9 MB se nota dos veces: en la descarga y en el parseo, que bloquea el hilo
+   justo cuando el usuario espera el mapa. `scripts/partir.py` lo parte por provincia o
+   comunidad y deja `index.json` con la caja de cada trozo; aqui se piden solo los que cortan
+   la vista, de cuatro en cuatro, pintando en cuanto llega el primero y completando al mover. */
+const PARTES_A_LA_VEZ = 4;
+
+function partesEnVista(c, caja) {
+  const o = caja.getWest(), s = caja.getSouth(), e = caja.getEast(), n = caja.getNorth();
+  return (c.__idx.partes || []).filter(p => {
+    const b = p.bbox;
+    return !b || (b[2] >= o && b[0] <= e && b[3] >= s && b[1] <= n);
+  }).sort((a, b) => b.n - a.n);
+}
+
+function pedirParte(c, p) {
+  if (c.__pedidas[p.slug]) return c.__pedidas[p.slug];
+  c.__pedidas[p.slug] = fetch(c.carpeta + "/" + p.fichero + "?v=" + VER_DATOS)
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(gj => gj.features || [])
+    .catch(e => { console.warn("trozo no disponible:", c.id, p.fichero, e.message); return []; });
+  return c.__pedidas[p.slug];
+}
+
+async function cargarPartes(c, lista) {
+  // Redibujar cuesta: con 37.000 puntos cada repintado se nota, asi que los trozos se acumulan
+  // y se pinta como mucho cada 200 ms, y siempre al final.
+  let turno = null;
+  const pintarPronto = () => {
+    if (turno) return;
+    turno = setTimeout(() => { turno = null; dibujarPartes(c); }, 200);
+  };
+  for (let i = 0; i < lista.length; i += PARTES_A_LA_VEZ) {
+    const lote = lista.slice(i, i + PARTES_A_LA_VEZ);
+    const res = await Promise.all(lote.map(p => pedirParte(c, p)));
+    let nuevas = 0;
+    res.forEach(fs => {
+      if (!fs.length) return;
+      c.__feats = c.__feats.concat(fs);
+      indexar(c, fs);
+      nuevas += 1;
+    });
+    if (nuevas) pintarPronto();
+  }
+  if (turno) { clearTimeout(turno); turno = null; }
+  dibujarPartes(c);
+}
+
+/* Repinta una capa partida: mismo camino que `dibujarVector`, pero la fuente es la union de
+   los trozos ya descargados, filtrada por el selector de comunidad si lo tiene. */
+function dibujarPartes(c) {
+  const campo = c.filtroCampo ? c.filtroCampo.campo : null;
+  const sub = (campo && FILTRO.valor && FILTRO.valor !== "*")
+    ? c.__feats.filter(f => String((f.properties || {})[campo]) === FILTRO.valor)
+    : c.__feats;
+  datos[c.id] = sub;
+  conteo[c.id] = sub.length;
+  if (c.tipo === "punto") pintarPuntos(c);
+  else dibujarVector(c, sub);
+  const el = document.getElementById("n-" + c.id);
+  if (el) el.textContent = nf(sub.length);
+  if (c.colorCampo || c.colorPorEscala || c.leyendaSimple) actualizarLeyenda();
+  estado();
+}
+
+async function cargarPartesAlEntrar(c) {
+  const rot = document.getElementById("n-" + c.id);
+  if (rot) rot.innerHTML = '<i class="spin"></i>';
+  try {
+    const r = await fetch(c.carpeta + "/index.json?v=" + VER_DATOS);
+    if (!r.ok) throw new Error(r.status);
+    c.__idx = await r.json();
+  } catch (e) {
+    console.warn("capa partida sin indice:", c.id, e.message);
+    if (rot) rot.textContent = "—";
+    c.__cargada = false;
+    return;
+  }
+  c.__feats = [];
+  c.__pedidas = {};
+  conteo[c.id] = c.__idx.total || 0;
+  const fila = document.querySelector('[data-fila="' + c.id + '"]');
+  if (fila) fila.classList.add("activa");
+  pintarFiltro();
+  // Con una comunidad elegida se pide solo esa; si no, los trozos que cortan la vista.
+  let lista = [];
+  if (c.filtroCampo && FILTRO.valor && FILTRO.valor !== "*") {
+    lista = (c.__idx.partes || []).filter(p => String(p.etiqueta) === FILTRO.valor);
+  }
+  if (!lista.length) lista = partesEnVista(c, mapa.getBounds().pad(0.25));
+  if (!lista.length) lista = (c.__idx.partes || []).slice(0, PARTES_A_LA_VEZ);
+  // Una capa que no se dibuja por debajo de su zoom no se descarga: los nucleos son 8,7 MB y
+  // a zoom de pais no se pintan. Se piden cuando el mapa llega al zoom en que existen.
+  if (c.zoomMin && mapa.getZoom() < c.zoomMin) {
+    const el = document.getElementById("n-" + c.id);
+    if (el) el.textContent = nf(c.__idx.total || 0);
+    return;
+  }
+  await cargarPartes(c, lista);
+  if (!c.__feats.length) {
+    const el = document.getElementById("n-" + c.id);
+    if (el) el.textContent = "—";
+  }
+}
+
+/* Indice del buscador: nombre + coordenadas. Sirve para cualquier capa, tambien para las
+   partidas: cada trozo que llega se indexa al vuelo. */
+function indexar(c, feats) {
+  for (const f of feats) {
+    const p = f.properties || {};
+    const nom = p.nombre || p.name || p.Nombre || p.Nombre_terminal || p.Rotulo ||
+                p.Direccion || p.Carretera;
+    if (!nom) continue;
+    let arr = puntoDe(f.geometry);
+    if (!arr) {
+      const g = f.geometry || {};
+      if (g.type === "LineString" && g.coordinates.length) arr = g.coordinates[0];
+    }
+    if (!arr) continue;
+    INDICE.push({ nombre: String(nom), alias: p.nombre_norm || null,
+                  lat: arr[1], lng: arr[0], capa: c.id, props: p });
+  }
 }
 
 function cargar(c) {
@@ -3719,6 +3881,8 @@ function cargar(c) {
     conteo[c.id] = 0;
     return;
   }
+  // Capa partida por provincia o comunidad: no hay un fichero unico que bajar.
+  if (c.carpeta) { cargarPartesAlEntrar(c); return; }
   const rot = document.getElementById("n-" + c.id);
   if (rot) rot.innerHTML = '<i class="spin"></i>';
   fetch(c.fichero + (c.fichero.includes("?") ? "&" : "?") + "v=" + VER_DATOS)
@@ -3730,20 +3894,7 @@ function cargar(c) {
       if (el) el.textContent = nf(feats.length);
       document.querySelector('[data-fila="' + c.id + '"]').classList.add("activa");
 
-      // indice para el buscador: nombre + coordenadas
-      feats.forEach(f => {
-        const p = f.properties || {};
-        const nom = p.nombre || p.name || p.Nombre || p.Nombre_terminal || p.Rotulo ||
-                    p.Direccion || p.Carretera;
-        if (!nom) return;
-        const g = f.geometry || {};
-        let arr = null;
-        if (g.type === "Point") arr = g.coordinates;
-        else if (g.type === "LineString" && g.coordinates.length) arr = g.coordinates[0];
-        if (!arr) return;
-        INDICE.push({ nombre: String(nom), alias: p.nombre_norm || null,
-                      lat: arr[1], lng: arr[0], capa: c.id, props: p });
-      });
+      indexar(c, feats);
 
       datos[c.id] = feats;      // siempre: el panel derecho analiza el GeoJSON al abrirse
       c.__feats = feats;        // la copia completa: el filtro repinta desde aqui, sin red
@@ -3777,6 +3928,7 @@ function ponerCapa(id, on, silencioso) {
   const chk = document.querySelector('[data-capa="' + id + '"]');
   if (!c || !chk) return false;
   if (chk.checked !== on) chk.checked = on;
+  c.__encendida = !!on;          // encendida aunque `ocultaHasta` la deje fuera del mapa
   if (on) {
     cargar(c);
     if (c.tipo === "punto") pintarPuntos(c);

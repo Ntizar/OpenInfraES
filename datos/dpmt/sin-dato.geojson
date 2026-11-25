@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"LineString","coordinates":[[-6.02371,37.34968],[-6.02361,37.35104]]},"properties":{"tipo_linea":"Límite SP provisional o en tramitación"}},{"type":"Feature","geometry":{"type":"LineString","coordinates":[[-6.02361,37.35105],[-6.02371,37.34968]]},"properties":{"tipo_linea":"Límite SP aprobada"}}]}
