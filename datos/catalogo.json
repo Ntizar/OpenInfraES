@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-25T10:28:21",
+ "generado": "2026-11-25T10:29:54",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 123,
@@ -15,7 +15,7 @@
    "3": 14
   },
   "descargables_ligeros": 61,
-  "kb_total": 151352.6
+  "kb_total": 151373.5
  },
  "avisos": {
   "pendiente": [
@@ -105,10 +105,10 @@
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
    "features": 49,
-   "bytes": 218763,
-   "kb": 213.6,
+   "bytes": 219613,
+   "kb": 214.5,
    "fecha_dato": "20261125",
-   "fecha_descarga": "2026-11-25T10:20:22",
+   "fecha_descarga": "2026-11-25T10:29:47",
    "edad_dias": 0,
    "caducado": false
   },
@@ -945,7 +945,7 @@
    "bytes": null,
    "kb": null,
    "fecha_dato": "2026-11-25T11:15",
-   "fecha_descarga": "2026-11-25T10:20:26Z",
+   "fecha_descarga": "2026-11-25T10:29:53Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -972,7 +972,7 @@
    "bytes": 76136,
    "kb": 74.4,
    "fecha_dato": "2026-11-25T11:15",
-   "fecha_descarga": "2026-11-25T10:20:26Z",
+   "fecha_descarga": "2026-11-25T10:29:53Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -999,7 +999,7 @@
    "bytes": 76136,
    "kb": 74.4,
    "fecha_dato": "2026-11-25T11:15",
-   "fecha_descarga": "2026-11-25T10:20:26Z",
+   "fecha_descarga": "2026-11-25T10:29:53Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1026,7 +1026,7 @@
    "bytes": 54440,
    "kb": 53.2,
    "fecha_dato": "2026-11-25T11:15",
-   "fecha_descarga": "2026-11-25T10:20:26Z",
+   "fecha_descarga": "2026-11-25T10:29:53Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1211,9 +1211,9 @@
    "ttl_segundos": 300,
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
-   "features": 1709,
-   "bytes": 742303,
-   "kb": 724.9,
+   "features": 1758,
+   "bytes": 761115,
+   "kb": 743.3,
    "fecha_dato": "2026-11-25",
    "fecha_descarga": "2026-11-25",
    "edad_dias": 0,
@@ -1238,9 +1238,9 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
-   "features": 1016,
-   "bytes": 224394,
-   "kb": 219.1,
+   "features": 1023,
+   "bytes": 225998,
+   "kb": 220.7,
    "fecha_dato": "2026-11-25",
    "fecha_descarga": "2026-11-25",
    "edad_dias": 0,
