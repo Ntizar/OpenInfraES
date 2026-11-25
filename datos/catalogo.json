@@ -1,31 +1,25 @@
 {
- "generado": "2026-11-25T21:49:33",
+ "generado": "2026-11-25T21:54:06",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 125,
+ "total": 126,
  "resumen": {
-  "licencia_si": 119,
-  "licencia_pendiente": 6,
+  "licencia_si": 122,
+  "licencia_pendiente": 0,
+  "licencia_vetada": 4,
   "caducados": 29,
-  "oficiales": 110,
+  "oficiales": 111,
   "comunitarias": 15,
   "por_jerarquia": {
-   "1": 86,
+   "1": 87,
    "2": 24,
    "3": 15
   },
-  "descargables_ligeros": 62,
-  "kb_total": 183256.6
+  "descargables_ligeros": 63,
+  "kb_total": 183724.9
  },
  "avisos": {
-  "pendiente": [
-   "electricidad-interconexiones",
-   "generacion-electrica-provincia",
-   "gtfsrt",
-   "interelec",
-   "plantas",
-   "trafico-estaciones"
-  ],
+  "pendiente": [],
   "sin_organismo": [],
   "caducado": [
    "almacenamiento-petrolifero",
@@ -57,6 +51,12 @@
    "subestaciones",
    "trafico-ccaa",
    "trafico-estaciones"
+  ],
+  "vetada": [
+   "electricidad-interconexiones",
+   "generacion-electrica-provincia",
+   "interelec",
+   "plantas"
   ]
  },
  "capas": {
@@ -1482,8 +1482,8 @@
    "origen_txt": "Fichero",
    "origen_detalle": "Registro de REE (descarga)",
    "licencia": {
-    "estado": "pendiente",
-    "nombre": "Aviso legal REE §5: uso informativo no comercial; el resto exige autorización escrita. Condiciones de apidatos no localizadas",
+    "estado": "no",
+    "nombre": "Aviso legal REE §5: uso informativo no comercial permitido; reproducción, reutilización y difusión prohibidas sin autorización escrita",
     "url_terminos": "https://www.ree.es/es/aviso-legal"
    },
    "endpoint": "https://www.ree.es",
@@ -1678,6 +1678,36 @@
    "fecha_dato": "2026-11-23",
    "fecha_descarga": "2026-11-23",
    "edad_dias": 2,
+   "caducado": false
+  },
+  "fallas-qafi": {
+   "id": "fallas-qafi",
+   "titulo": "Fallas activas del Cuaternario (QAFI v4)",
+   "organismo": "IGME · QAFI",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "GeoJSON directo del MapServer (f=geojson). Sin WFS en el IGME: el WFSServer devuelve 400. Códigos numéricos traducidos con QAFI_v4_Guide.pdf",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "QAFI v4 · servicio REST del IGME",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY-SA 4.0 · compartir igual (atribuir a IGME-CSIC / QAFI)",
+    "url_terminos": "https://info.igme.es/qafi/Disclaimer.aspx"
+   },
+   "endpoint": "https://mapas.igme.es/gis/rest/services/BasesDatos/IGME_QAFI_v4/MapServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson",
+   "modo": "foto",
+   "frecuencia_fuente": "anual (por versión)",
+   "ttl_segundos": 31536000,
+   "ultima_verificacion": "2026-11-25",
+   "crs": "EPSG:4326",
+   "features": 201,
+   "bytes": 479506,
+   "kb": 468.3,
+   "fecha_dato": "2026-11-25T21:52:28Z",
+   "fecha_descarga": "2026-11-25T21:52:28Z",
+   "edad_dias": 0,
    "caducado": false
   },
   "faros": {
@@ -1932,8 +1962,8 @@
    "origen_txt": "Elaborado",
    "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
    "licencia": {
-    "estado": "pendiente",
-    "nombre": "Aviso legal REE §5: uso informativo no comercial; el resto exige autorización escrita. Condiciones de apidatos no localizadas",
+    "estado": "no",
+    "nombre": "Aviso legal REE §5: uso informativo no comercial permitido; reproducción, reutilización y difusión prohibidas sin autorización escrita",
     "url_terminos": "https://www.ree.es/es/aviso-legal"
    },
    "endpoint": "https://www.ree.es",
@@ -1962,9 +1992,9 @@
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
    "licencia": {
-    "estado": "pendiente",
-    "nombre": "GTFS-RT sin condiciones localizadas (los conjuntos de data.renfe.com de estaciones sí son CC BY 4.0)",
-    "url_terminos": "https://data.renfe.com"
+    "estado": "si",
+    "nombre": "CC BY 4.0 (feed vehicle_positions de data.renfe.com; citar «Origen: Renfe Operadora»)",
+    "url_terminos": "https://data.renfe.com/dataset/ubicacion-vehiculos"
    },
    "endpoint": "https://gtfsrt.renfe.com/vehicle_positions.pb",
    "modo": "vivo",
@@ -2292,8 +2322,8 @@
    "origen_txt": "Fichero",
    "origen_detalle": "Registro de REE (descarga)",
    "licencia": {
-    "estado": "pendiente",
-    "nombre": "Aviso legal REE §5: uso informativo no comercial; el resto exige autorización escrita. Condiciones de apidatos no localizadas",
+    "estado": "no",
+    "nombre": "Aviso legal REE §5: uso informativo no comercial permitido; reproducción, reutilización y difusión prohibidas sin autorización escrita",
     "url_terminos": "https://www.ree.es/es/aviso-legal"
    },
    "endpoint": "https://www.ree.es",
@@ -2892,8 +2922,8 @@
    "origen_txt": "Elaborado",
    "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
    "licencia": {
-    "estado": "pendiente",
-    "nombre": "Aviso legal REE §5: uso informativo no comercial; el resto exige autorización escrita. Condiciones de apidatos no localizadas",
+    "estado": "no",
+    "nombre": "Aviso legal REE §5: uso informativo no comercial permitido; reproducción, reutilización y difusión prohibidas sin autorización escrita",
     "url_terminos": "https://www.ree.es/es/aviso-legal"
    },
    "endpoint": "https://www.ree.es",
@@ -3702,9 +3732,9 @@
    "origen_txt": "Fichero",
    "origen_detalle": "CSV del Cabildo de Tenerife, cruzado por PK",
    "licencia": {
-    "estado": "pendiente",
-    "nombre": "sin evaluar",
-    "url_terminos": ""
+    "estado": "si",
+    "nombre": "Cabildo de Tenerife CC0/CC-BY · Generalitat de Catalunya (llicència oberta d'ús d'informació)",
+    "url_terminos": "https://datos.tenerife.es/es/terminos-de-uso"
    },
    "endpoint": "https://datos.tenerife.es/ckan/dataset/1717bda1-6b7b-43e0-be4e-e3ed060b8b97/resource/c3fe76ac-d91c-46cf-a765-46c3a741c6a9/download/intensidad-media-diaria-de-trafico-2025.csv · https://analisi.transparenciacatalunya.cat/resource/xsvx-ym46.geojson",
    "modo": "foto",
