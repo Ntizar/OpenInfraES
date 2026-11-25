@@ -688,6 +688,6 @@
  "horas_separadas_es_pt": [],
  "filas_en_fichero": 96,
  "nota_resolucion": "Las 96 filas NO son cuatro bloques de 24 horas: son 96 CUARTOS DE HORA de un solo día (resolución PT15M, la que aplica al mercado diario desde 2025). Contraste con ENTSO-E A44: las 78 posiciones que ENTSO-E publica coinciden al céntimo con estas.",
- "descargado": "2026-11-25T00:50:24",
+ "descargado": "2026-11-25T01:10:30",
  "nota": "Precio del mercado mayorista, no el precio final del consumidor: faltan peajes, cargos e impuestos. Portugal comparte precio salvo en las horas de separación."
 }
