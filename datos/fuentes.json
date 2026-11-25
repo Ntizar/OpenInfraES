@@ -716,9 +716,9 @@
    "fuente": "MITECO",
    "editor": "Secretaría de Estado de Energía",
    "licencia": "Reutilización con atribución (Ley 37/2007)",
-   "actualizado": "24/11/2026 7:21:16",
+   "actualizado": "25/11/2026 7:20:23",
    "descargado": "2026-11-25",
-   "features": 11454,
+   "features": 11443,
    "url": "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/",
    "metodo": "GET al JSON de estaciones terrestres; coma decimal"
   },
@@ -970,7 +970,7 @@
    "licencia": "reutilización con atribución",
    "actualizado": null,
    "descargado": "2026-11-25",
-   "features": 1031,
+   "features": 1076,
    "url": "https://nap.dgt.es",
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Paneles DGT DATEX2 v3.7"
   },
@@ -982,7 +982,7 @@
    "licencia": "reutilización con atribución",
    "actualizado": null,
    "descargado": "2026-11-25",
-   "features": 856,
+   "features": 933,
    "url": "https://nap.dgt.es",
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Incidencias DGT DATEX2 v3.7"
   },
@@ -1017,7 +1017,7 @@
    "editor": "AEMET · Meteoalerta",
    "licencia": "© AEMET, citar como autora",
    "actualizado": "20261124",
-   "descargado": "2026-11-25T06:17:53",
+   "descargado": "2026-11-25T06:30:38",
    "features": 47,
    "url": "https://www.aemet.es/es/eltiempo/prediccion/avisos",
    "metodo": "tar.gz de GeoJSON de la pagina de avisos (sin clave)"
