@@ -438,6 +438,15 @@
     text-transform:uppercase; letter-spacing:.06em; }
   #panel-dato .pd-cerca a b { color:var(--suave); font-weight:500; font-variant-numeric:tabular-nums; }
 
+  /* filtro de capa (comunidad, provincia...): vive en el panel, debajo de la lista */
+  #filtro-capa { padding:9px 16px 11px; border-top:1px solid var(--borde);
+    display:flex; gap:8px; align-items:center; }
+  #filtro-capa[hidden] { display:none; }
+  #filtro-capa label { font-size:10.6px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--suave); font-weight:600; }
+  #filtro-capa select { flex:1 1 auto; min-width:0; background:var(--panel-solido);
+    color:var(--tinta); border:1px solid var(--borde); border-radius:3px;
+    padding:4px 6px; font:inherit; font-size:11.6px; }
   #leyenda { position:fixed; right:14px; top:78px; width:clamp(180px, 16vw, 230px);
     max-height:calc(100vh - 200px); overflow-y:auto;
     background:rgba(8,12,20,.97); border:1px solid rgba(255,255,255,.22); border-radius:6px;
@@ -724,6 +733,7 @@
   <div id="vista-aviso"></div>
   <div id="presets"></div>
   <div id="capas"></div>
+  <div id="filtro-capa" hidden></div>
   <div id="opacidad"><label>Datos</label><input id="op" type="range" min="30" max="100" value="100"><b id="opv">100%</b></div>
   <div id="pie"><select id="base"></select></div>
 </div>
@@ -1473,6 +1483,13 @@ const CAPAS = [
 
   { id:"carreteras", grupo:"Transporte", label:"Carreteras del Estado", tipo:"linea", on:false, color:"#64748b",
     fichero:"datos/hermes/carreteras.geojson", peso:1.1, opacidad:.6, zoomMin:7.5 },
+  { id:"trafico-ccaa", grupo:"Transporte", label:"Tráfico por comunidades · IMD (CV 2025 · AR 2022)", tipo:"linea", on:false,
+    color:"#f97316", fichero:"datos/trafico_ccaa.geojson", peso:2.6, opacidad:.9, zoomMin:6.5,
+    popupTitulo:"carretera", colorCampo:"color", filtroCampo:{campo:"ccaa", etiqueta:"Comunidad"},
+    campos:["ccaa","anio","carretera","tipo","titular","pk_inicio","pk_fin","km","imd","pesados_pct"],
+    etiquetas:{ccaa:"Comunidad", anio:"Año del aforo", tipo:"Tipo de vía", titular:"Red",
+               pk_inicio:"PK inicio", pk_fin:"PK fin", km:"Longitud (km)", imd:"IMD (veh/día)",
+               pesados_pct:"Pesados (%)"} },
   { id:"trafico-imd", grupo:"Transporte", label:"Intensidad de tráfico · IMD 2021 por tramo (MITMA)", tipo:"linea", on:false,
     color:"#ef4444", fichero:"datos/trafico_imd.geojson", peso:2.6, opacidad:.85, zoomMin:6.5,
     popupTitulo:"carretera", colorCampo:"color",
@@ -3473,6 +3490,109 @@ function pintarPuntos(c) {
   elementos[c.id] = Array.from(marcas.values());
 }
 
+/* ---------------- pintar lineas y poligonos: un solo sitio ----------------
+   Se dibuja dentro de un grupo propio (`c.__dibujo`) para poder vaciarlo y repintar cuando cambia
+   el filtro, sin volver a descargar el GeoJSON ni tocar las demas capas. */
+function dibujarVector(c, feats) {
+  elementos[c.id] = [];
+  if (c.__dibujo) capas[c.id].removeLayer(c.__dibujo);
+  c.__dibujo = L.layerGroup();
+  const destino = c.__dibujo;
+  if (!feats.length) return;
+        // lineas y poligonos: halo debajo si se pide (solo 400/220 kV y el viento)
+        if (c.halo) {
+          // el halo sigue al grosor del tramo: uno fijo de 4,5 sobre una flecha de 1,3 la
+          // convertia en una mancha oscura, y sobre una de 3,2 no dejaba borde. Siempre +2,4.
+          const haloDe = (f) => {
+            if (!c.pesoPorTramo || !f || !f.properties) return c.halo;
+            const w = c.pesoPorTramo[f.properties[c.colorCampo]];
+            return w ? w + 2.4 : c.halo;
+          };
+          L.geoJSON({ type:"FeatureCollection", features:feats }, {
+            style: (f) => ({ color:"#0b1220", weight:haloDe(f), opacity:.9, fill:false })
+          }).addTo(destino);
+        }
+        L.geoJSON({ type:"FeatureCollection", features:feats }, {
+          // `colorCampo` pinta cada feature segun una propiedad. Dos modos:
+          //   - con `colores`: mapa valor->color (nivel de aviso de AEMET)
+          //   - sin `colores`: el propio dato trae el color (lineas de metro, color oficial)
+          style: (f) => {
+            let col = c.color;
+            if (c.colorCampo && f && f.properties) {
+              const v = f.properties[c.colorCampo];
+              if (v) col = (c.colores ? (c.colores[v] || c.color) : v);
+            }
+            // En polígonos el TRAZO va en un tono oscuro fijo: dos comunidades con el mismo
+            // dato comparten relleno y sin borde propio se leían como una sola mancha.
+            // Salvo que la capa pida `borde:"propio"`: sobre un mapa oscuro un borde casi negro
+            // no separa nada (las capas del IGN se veían como manchas sin contorno).
+            const esPoli = c.tipo === "poligono";
+            // `pesoPorTramo`: el grosor tambien dice la intensidad. Una flecha de temporal
+            // dibujada con el mismo pelo que una de 6 km/h se pierde en el campo.
+            const pesoBase = c.peso || 1.2;
+            const peso = (!esPoli && c.pesoPorTramo && f && f.properties)
+              ? (c.pesoPorTramo[f.properties[c.colorCampo]] || pesoBase) : pesoBase;
+            const trazoPropio = esPoli && c.borde === "propio";
+            const trazo = (esPoli && !trazoPropio) ? "rgba(4,7,12,.92)" : col;
+            return { color: trazo,
+                     weight: esPoli ? Math.max(1.2, pesoBase) : peso,
+                     opacity: trazoPropio ? .9 : (c.opacidad || .8),
+                     fillColor: col, fillOpacity: esPoli ? (c.opacidad || .3) : .12 };
+          },
+          onEachFeature: (f, layer) => {
+            elementos[c.id].push(layer);
+            layer.on("click", e => { abrirFicha(f.properties, c, e.latlng); L.DomEvent.stopPropagation(e); });
+          }
+        }).addTo(destino);
+  destino.addTo(capas[c.id]);
+}
+
+/* ---------------- filtro por campo (comunidad, provincia...) ----------------
+   La capa lo declara: `filtroCampo:{campo:"ccaa", etiqueta:"Comunidad"}`. El selector se llena
+   con los valores que trae el dato y repinta solo lo elegido; «Todas» devuelve la capa entera.
+   No se descarga nada de nuevo: se filtra en memoria sobre `c.__feats`. */
+const FILTRO = { valor: "*" };
+
+function capaFiltrable() {
+  for (const c of CAPAS) {
+    if (!c.filtroCampo || !capas[c.id] || !mapa.hasLayer(capas[c.id])) continue;
+    if (c.__feats && c.__feats.length) return c;
+  }
+  return null;
+}
+
+function pintarFiltro() {
+  const caja = document.getElementById("filtro-capa");
+  if (!caja) return;
+  const c = capaFiltrable();
+  if (!c) { caja.hidden = true; return; }
+  const campo = c.filtroCampo.campo;
+  const vals = Array.from(new Set(c.__feats.map(f => (f.properties || {})[campo])
+    .filter(v => v !== null && v !== undefined && v !== "")))
+    .sort((a, b) => String(a).localeCompare(String(b), "es"));
+  caja.innerHTML = `<label for="filtro-sel">${c.filtroCampo.etiqueta || nombreCampo(campo)}</label>` +
+    `<select id="filtro-sel"><option value="*">Todas (${nf(c.__feats.length)})</option>` +
+    vals.map(v => `<option value="${String(v).replace(/"/g, "&quot;")}"` +
+      `${String(v) === FILTRO.valor ? " selected" : ""}>${v}</option>`).join("") + "</select>";
+  caja.hidden = false;
+  const sel = document.getElementById("filtro-sel");
+  if (sel) sel.addEventListener("change", e => { FILTRO.valor = e.target.value; aplicarFiltro(); });
+}
+
+function aplicarFiltro() {
+  const c = capaFiltrable();
+  if (!c) return;
+  const campo = c.filtroCampo.campo;
+  const sub = FILTRO.valor === "*" ? c.__feats
+    : c.__feats.filter(f => String((f.properties || {})[campo]) === FILTRO.valor);
+  dibujarVector(c, sub);
+  conteo[c.id] = sub.length;
+  const el = document.getElementById("n-" + c.id);
+  if (el) el.textContent = nf(sub.length);
+  actualizarLeyenda();
+  estado();
+}
+
 function cargar(c) {
   if (c.__cargada) return;
   c.__cargada = true;
@@ -3543,60 +3663,18 @@ function cargar(c) {
       });
 
       datos[c.id] = feats;      // siempre: el panel derecho analiza el GeoJSON al abrirse
+      c.__feats = feats;        // la copia completa: el filtro repinta desde aqui, sin red
       if (c.colorCampo) actualizarLeyenda();
       if (c.tipo === "punto") { pintarPuntos(c); }
       else {
-        // lineas y poligonos: halo debajo si se pide (solo 400/220 kV y el viento)
-        if (c.halo) {
-          // el halo sigue al grosor del tramo: uno fijo de 4,5 sobre una flecha de 1,3 la
-          // convertia en una mancha oscura, y sobre una de 3,2 no dejaba borde. Siempre +2,4.
-          const haloDe = (f) => {
-            if (!c.pesoPorTramo || !f || !f.properties) return c.halo;
-            const w = c.pesoPorTramo[f.properties[c.colorCampo]];
-            return w ? w + 2.4 : c.halo;
-          };
-          L.geoJSON({ type:"FeatureCollection", features:feats }, {
-            style: (f) => ({ color:"#0b1220", weight:haloDe(f), opacity:.9, fill:false })
-          }).addTo(capas[c.id]);
-        }
-        L.geoJSON({ type:"FeatureCollection", features:feats }, {
-          // `colorCampo` pinta cada feature segun una propiedad. Dos modos:
-          //   - con `colores`: mapa valor->color (nivel de aviso de AEMET)
-          //   - sin `colores`: el propio dato trae el color (lineas de metro, color oficial)
-          style: (f) => {
-            let col = c.color;
-            if (c.colorCampo && f && f.properties) {
-              const v = f.properties[c.colorCampo];
-              if (v) col = (c.colores ? (c.colores[v] || c.color) : v);
-            }
-            // En polígonos el TRAZO va en un tono oscuro fijo: dos comunidades con el mismo
-            // dato comparten relleno y sin borde propio se leían como una sola mancha.
-            // Salvo que la capa pida `borde:"propio"`: sobre un mapa oscuro un borde casi negro
-            // no separa nada (las capas del IGN se veían como manchas sin contorno).
-            const esPoli = c.tipo === "poligono";
-            // `pesoPorTramo`: el grosor tambien dice la intensidad. Una flecha de temporal
-            // dibujada con el mismo pelo que una de 6 km/h se pierde en el campo.
-            const pesoBase = c.peso || 1.2;
-            const peso = (!esPoli && c.pesoPorTramo && f && f.properties)
-              ? (c.pesoPorTramo[f.properties[c.colorCampo]] || pesoBase) : pesoBase;
-            const trazoPropio = esPoli && c.borde === "propio";
-            const trazo = (esPoli && !trazoPropio) ? "rgba(4,7,12,.92)" : col;
-            return { color: trazo,
-                     weight: esPoli ? Math.max(1.2, pesoBase) : peso,
-                     opacity: trazoPropio ? .9 : (c.opacidad || .8),
-                     fillColor: col, fillOpacity: esPoli ? (c.opacidad || .3) : .12 };
-          },
-          onEachFeature: (f, layer) => {
-            elementos[c.id].push(layer);
-            layer.on("click", e => { abrirFicha(f.properties, c, e.latlng); L.DomEvent.stopPropagation(e); });
-          }
-        }).addTo(capas[c.id]);
+        dibujarVector(c, feats);
       }
       atenuarCapa(c);
       estado();
       // la leyenda se pide al encender la capa, cuando `datos` aun viene vacio: si la capa trae
       // leyenda (tramos, rampa o una simple fila de trazo), hay que repintarla ya con datos.
       if (c.colorCampo || c.colorPorEscala || c.leyendaSimple) actualizarLeyenda();
+      pintarFiltro();
     })
     .catch(e => {
       const el = document.getElementById("n-" + c.id);
@@ -3629,6 +3707,7 @@ function ponerCapa(id, on, silencioso) {
     c.__panel?.classList.remove("cambiando");
     if (c.__renderer) mapa.removeLayer(c.__renderer);
   }
+  pintarFiltro();   // la caja solo aparece si hay una capa filtrable encendida
   if (!silencioso) { actualizarLeyenda(); estado(); }   // en lote (vistas, enlace) se hace una vez al final
   return true;
 }

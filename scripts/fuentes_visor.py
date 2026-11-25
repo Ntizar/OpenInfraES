@@ -622,6 +622,7 @@ def main():
             "actualizado": r.get("actualizado") or r.get("descargado"),
             "descargado": r.get("descargado"),
             "features": r.get("features"),
+            "fecha_dato": r.get("fecha_dato"),   # el año del aforo, no la fecha de descarga
             "url": r.get("url"), "metodo": r.get("metodo"),
         }
 

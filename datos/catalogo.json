@@ -1,21 +1,21 @@
 {
- "generado": "2026-11-25T10:29:54",
+ "generado": "2026-11-25T10:50:07",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 123,
+ "total": 124,
  "resumen": {
   "licencia_si": 118,
-  "licencia_pendiente": 5,
-  "caducados": 28,
+  "licencia_pendiente": 6,
+  "caducados": 29,
   "oficiales": 109,
-  "comunitarias": 14,
+  "comunitarias": 15,
   "por_jerarquia": {
    "1": 85,
    "2": 24,
-   "3": 14
+   "3": 15
   },
   "descargables_ligeros": 61,
-  "kb_total": 151373.5
+  "kb_total": 161706.3
  },
  "avisos": {
   "pendiente": [
@@ -23,7 +23,8 @@
    "generacion-electrica-provincia",
    "gtfsrt",
    "interelec",
-   "plantas"
+   "plantas",
+   "trafico-ccaa"
   ],
   "sin_organismo": [],
   "caducado": [
@@ -54,6 +55,7 @@
    "residuos-radiactivos",
    "solares",
    "subestaciones",
+   "trafico-ccaa",
    "trafico-imd"
   ]
  },
@@ -944,8 +946,8 @@
    "features": 52,
    "bytes": null,
    "kb": null,
-   "fecha_dato": "2026-11-25T11:15",
-   "fecha_descarga": "2026-11-25T10:29:53Z",
+   "fecha_dato": "2026-11-25T11:30",
+   "fecha_descarga": "2026-11-25T10:42:07Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -969,10 +971,10 @@
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76136,
+   "bytes": 76140,
    "kb": 74.4,
-   "fecha_dato": "2026-11-25T11:15",
-   "fecha_descarga": "2026-11-25T10:29:53Z",
+   "fecha_dato": "2026-11-25T11:30",
+   "fecha_descarga": "2026-11-25T10:42:07Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -996,10 +998,10 @@
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 76136,
+   "bytes": 76140,
    "kb": 74.4,
-   "fecha_dato": "2026-11-25T11:15",
-   "fecha_descarga": "2026-11-25T10:29:53Z",
+   "fecha_dato": "2026-11-25T11:30",
+   "fecha_descarga": "2026-11-25T10:42:07Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1023,10 +1025,10 @@
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
    "features": 52,
-   "bytes": 54440,
-   "kb": 53.2,
-   "fecha_dato": "2026-11-25T11:15",
-   "fecha_descarga": "2026-11-25T10:29:53Z",
+   "bytes": 54422,
+   "kb": 53.1,
+   "fecha_dato": "2026-11-25T11:30",
+   "fecha_descarga": "2026-11-25T10:42:07Z",
    "edad_dias": 0,
    "caducado": false
   },
@@ -1778,11 +1780,11 @@
    "ttl_segundos": 120,
    "ultima_verificacion": "2026-11-25",
    "crs": "EPSG:4326",
-   "features": 391,
-   "bytes": 111544,
-   "kb": 108.9,
-   "fecha_dato": "2026-11-25T09:42:11",
-   "fecha_descarga": "2026-11-25T09:42:07",
+   "features": 375,
+   "bytes": 107105,
+   "kb": 104.6,
+   "fecha_dato": "2026-11-25T10:42:13",
+   "fecha_descarga": "2026-11-25T10:42:06",
    "edad_dias": 0,
    "caducado": false
   },
@@ -3270,6 +3272,33 @@
    "fecha_descarga": "2026-11-25",
    "edad_dias": 0,
    "caducado": false
+  },
+  "trafico-ccaa": {
+   "id": "trafico-ccaa",
+   "titulo": "Tráfico por comunidades · IMD (CV 2025 · AR 2022)",
+   "organismo": "Comunitat Valenciana (GVA · ICV) y Aragón (DGA)",
+   "oficial": false,
+   "jerarquia": 3,
+   "jerarquia_txt": "fuente comunitaria",
+   "producto": "CV: WFS 2.0 ms:Aforos2025 en GML (posList lat/lon). AR: query f=geojson sobre AFOROS_ARAGON_GENERICO/1 (DGA 2022) y /5 (MITMA 2021). Simplificado a 0,0015° y redondeado a 4 decimales.",
+   "licencia": {
+    "estado": "pendiente",
+    "nombre": "sin evaluar",
+    "url_terminos": ""
+   },
+   "endpoint": "https://terramapas.icv.gva.es/0902_Aforos · https://idearagon.aragon.es/servicios/rest/services/CARRETERAS/AFOROS_ARAGON_GENERICO/MapServer",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual o inferior",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-25",
+   "crs": "EPSG:4326",
+   "features": 1539,
+   "bytes": 10585322,
+   "kb": 10337.2,
+   "fecha_dato": "2025-12-31",
+   "fecha_descarga": "2026-11-25T10:49:55Z",
+   "edad_dias": 329,
+   "caducado": true
   },
   "trafico-imd": {
    "id": "trafico-imd",
