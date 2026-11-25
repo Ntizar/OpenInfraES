@@ -5,7 +5,7 @@
  "editor": "GVA · Institut Cartogràfic Valencià / Gobierno de Aragón · IDEARAGON",
  "url": "https://terramapas.icv.gva.es/0902_Aforos · https://idearagon.aragon.es/servicios/rest/services/CARRETERAS/AFOROS_ARAGON_GENERICO/MapServer",
  "licencia": "Reutilización con atribución (Ley 37/2007) · GVA y DGA",
- "descargado": "2026-11-25T10:49:55Z",
+ "descargado": "2026-11-25T10:53:47Z",
  "actualizado": "2025-12-31",
  "fecha_dato": "Comunitat Valenciana 2025, Aragón 2021-2022",
  "metodo": "CV: WFS 2.0 ms:Aforos2025 en GML (posList lat/lon). AR: query f=geojson sobre AFOROS_ARAGON_GENERICO/1 (DGA 2022) y /5 (MITMA 2021). Simplificado a 0,0015° y redondeado a 4 decimales.",
@@ -23,7 +23,7 @@
     "2021",
     "2022"
    ],
-   "km": 8518.1
+   "km": 8277.2
   }
  },
  "nota": "Continuación de trafico-imd (MITMA 2021): aquí manda la comunidad, y el año va por feature para no mezclar 2025 con 2022 sin avisar."

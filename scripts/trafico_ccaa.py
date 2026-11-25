@@ -54,12 +54,26 @@ def largo_km(partes):
     return round(total, 2) or None
 
 
-def limpia(coords, dec=4):
+def limpia(coords, dec=4, paso=0.0005):
+    """Redondea y adelgaza: un vertice cada ~50 m basta para leer una carretera a zoom de
+    provincia, y el original traia uno cada 5 m (10 MB de GeoJSON por dos comunidades)."""
     out = []
     for c in coords:
         p = [round(c[0], dec), round(c[1], dec)]
-        if not out or out[-1] != p:
+        if not out:
             out.append(p)
+            continue
+        if abs(p[0] - out[-1][0]) < paso and abs(p[1] - out[-1][1]) < paso:
+            continue
+        out.append(p)
+    if len(coords) > 1:
+        fin = [round(coords[-1][0], dec), round(coords[-1][1], dec)]
+        if len(out) > 1 and out[-1] != fin:
+            out[-1] = fin
+        if len(out) < 2:      # tramo mas corto que el paso: se queda con sus dos extremos
+            ini = [round(coords[0][0], dec), round(coords[0][1], dec)]
+            if ini != fin:
+                out = [ini, fin]
     return out
 
 
@@ -150,8 +164,14 @@ def aragon():
             for f in lote:
                 a = f.get("attributes") or {}
                 paths = (f.get("geometry") or {}).get("paths") or []
-                partes = [limpia([[c[0], c[1]] for c in tramo]) for tramo in paths]
-                partes = [x for x in partes if len(x) >= 2]
+                crudo = [[[c[0], c[1]] for c in tramo] for tramo in paths]
+                crudo = [x for x in crudo if len(x) >= 2]
+                if not crudo:
+                    continue
+                # La longitud se mide sobre el trazado original, no sobre el adelgazado:
+                # quitar vertices recorta metros y el km dejaria de cuadrar con el del aforo.
+                km = largo_km(crudo)
+                partes = [x for x in (limpia(t) for t in crudo) if len(x) >= 2]
                 if not partes:
                     continue
                 geom = ({"type": "LineString", "coordinates": partes[0]} if len(partes) == 1
@@ -167,7 +187,7 @@ def aragon():
                     "titular": red,
                     "pk_inicio": a.get("PKI") if red == "DGA" else a.get("PK_INICIO"),
                     "pk_fin": a.get("PKF") if red == "DGA" else a.get("PK_FIN"),
-                    "km": largo_km(partes),
+                    "km": km,
                     "imd": imd,
                     "pesados_pct": pct,
                     "color": color(imd)}})
