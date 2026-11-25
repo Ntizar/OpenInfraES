@@ -20,7 +20,11 @@ jobs:
         # OJO: sin `run: |` YAML pliega las dos líneas en UNA y validar.py acaba siendo un
         # argumento de cifras.py (rc=0, verde, y el gate de recibos sin correr nunca).
         run: |
-          python scripts/cifras.py --check
+          # `cifras.py --check` compara la tabla del README con los datos del momento. Los dos
+          # publicadores (Action y VM) commitean cada hora por separado, así que ese desfase
+          # aparece a media cadena sin que haya nada mal: era la causa de 7 rojos en 11 h.
+          # Se avisa, no se bloquea. Lo que sí bloquea es validar.py (contrato de capas/recibos).
+          python scripts/cifras.py --check || echo "::warning title=Cifras desfasadas::README.md no cuadra con los datos de este commit · lo regenera el siguiente refresco"
           python scripts/validar.py
       - name: Sintaxis
         run: |

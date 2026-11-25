@@ -13,7 +13,8 @@ name: Refresco de datos vivos
 
 on:
   schedule:
-    - cron: "*/30 * * * *"      # cada 30 minutos
+    - cron: "7 * * * *"         # cada hora a los :07 UTC (antes */30: 48 commits/dia
+                                 #  y choques con el cron horario de la VM)
   workflow_dispatch:            # y a mano desde la pestaña Actions
   push:
     branches: [main]
@@ -107,5 +108,17 @@ jobs:
             echo "sin cambios"
           else
             git commit -m "datos: refresco automatico $(date -u +%Y-%m-%dT%H:%MZ)"
-            git push
+            # La VM tambien publica en main (openinfra-vivo, cada hora). Un `git push` pelado
+            # muere con "! [rejected] main -> main (fetch first)" en cuanto los dos coinciden:
+            # era el rojo mas repetido del repo. Pull con rebase + 3 intentos; si aun asi no
+            # entra, el run queda rojo de verdad (no se tapa el fallo).
+            ok=0
+            for i in 1 2 3; do
+              git pull --rebase --autostash -X theirs origin main || { git rebase --abort || true; }
+              if git push origin HEAD:main; then ok=1; break; fi
+              echo "push rechazado (intento $i/3): reintento en $((i*5))s"
+              sleep $((i*5))
+              git fetch -q origin
+            done
+            [ "$ok" -eq 1 ] || { echo "::error title=Publicacion::no se pudo empujar tras 3 intentos"; exit 1; }
           fi
