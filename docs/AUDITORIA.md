@@ -36,7 +36,7 @@ La auditoría midió 1-3 días. Medido hoy: **30 capas superan su TTL** de las 7
 
    > `licencia pendiente de evaluar` · `dato de hace 9 días (TTL 168 h)`
 
-2. **Se refresca.** `.github/workflows/refresco.yml` corre **cada 30 minutos**: demanda, precio,
+2. **Se refresca.** `.github/workflows/refresco.yml` corre **cada hora** (a los :07 UTC): demanda, precio,
    mix, avisos y sismos. Los pasos con `continue-on-error` hacen que la falta de una clave no
    rompa el workflow: el fichero anterior se queda y su fecha lo delata.
 

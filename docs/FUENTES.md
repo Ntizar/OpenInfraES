@@ -49,7 +49,7 @@ Tres conjuntos distintos, los tres oficiales:
 - **Cómo se obtiene**: `GET` a esa URL → ~12 MB de JSON con **11.528 estaciones**. `scripts/carburantes.py`
   lo reduce a 11.433 con precio válido.
 - **Licencia**: Ley 37/2007.
-- **Frecuencia**: **cada 30 minutos**.
+- **Frecuencia**: **una vez al día** (07:20 Europe/Madrid, cron `openinfra-diario` en la VM).
 - **Alimenta**: carburantes con gasóleo A, gasolina 95/98, GNC, GNL y H₂.
 - **Limitaciones**: el servidor **corta el handshake TLS con Python** (`SSLEOFError`) → descargar con
   `curl`. Números con **coma decimal** (`39,211417`) y claves con espacios y tildes.
