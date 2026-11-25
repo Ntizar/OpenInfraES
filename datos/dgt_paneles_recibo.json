@@ -4,13 +4,13 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 640,
+ "features": 633,
  "paneles_localizados": 2538,
- "descargado": "2026-11-25T21:56:05",
+ "descargado": "2026-11-25T22:15:22",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 92
+   "paneles": 91
   },
   {
    "texto": "@H @F",
@@ -18,27 +18,23 @@
   },
   {
    "texto": "MAQUINAS EN TRATAMIENTO INVERNAL",
-   "paneles": 24
+   "paneles": 23
   },
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD",
    "paneles": 17
   },
   {
-   "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
-   "paneles": 15
+   "texto": "MAQUINA MOVIL TRABAJANDO · MAQUINA MOBIL TREBALLANT",
+   "paneles": 14
   },
   {
-   "texto": "MAQUINA MOVIL TRABAJANDO · MAQUINA MOBIL TREBALLANT",
-   "paneles": 13
+   "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
+   "paneles": 14
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
    "paneles": 10
-  },
-  {
-   "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
-   "paneles": 8
   },
   {
    "texto": "CARRIL IZQUIERDO BUS-VAO · CARRIL ESQUERRE BUS-VAO",
@@ -47,6 +43,10 @@
   {
    "texto": "CONTROL DE VELOCIDAD POR RADAR · CONTROL DE VELOCIDADE POR RADAR",
    "paneles": 7
+  },
+  {
+   "texto": "CONTROL DE VELOCIDAD POR RADAR",
+   "paneles": 6
   }
  ]
 }
