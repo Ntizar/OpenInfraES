@@ -8,6 +8,7 @@ import datetime
 import json
 import os
 import re
+import sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATOS = os.path.join(RAIZ, "datos")
@@ -739,6 +740,29 @@ def main():
 
     sim = leer("simplificado/_recibo.json", {})
     simpl = {os.path.basename(c["id"]): c for c in sim.get("capas", [])}
+
+    # Peso real de cada capa, en bytes de GeoJSON. El visor lo usa para su presupuesto de memoria
+    # (`estimar` con `features` se queda corto en polígonos: 9.952 incendios son 26 MB, no 15).
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    try:
+        import cifras as _cifras
+        capas_visor = _cifras.leer_array_capas(open(os.path.join(RAIZ, "index.html"),
+                                                    encoding="utf-8").read())
+    except Exception:
+        capas_visor = []
+    for c in capas_visor:
+        v = fuentes.get(c.get("id"))
+        if v is None:
+            continue
+        carpeta = c.get("carpeta")
+        ruta_cap = os.path.join(RAIZ, carpeta) if carpeta else None
+        if ruta_cap and os.path.isdir(ruta_cap):
+            v["bytes"] = sum(os.path.getsize(os.path.join(ruta_cap, f))
+                             for f in os.listdir(ruta_cap) if f.endswith(".geojson"))
+        else:
+            ruta_fich = os.path.join(RAIZ, c.get("fichero") or "")
+            if os.path.exists(ruta_fich):
+                v["bytes"] = os.path.getsize(ruta_fich)
 
     salida = {
         "generado": HOY,
