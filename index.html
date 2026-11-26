@@ -3334,6 +3334,53 @@ function resumenDe(p, c) {
   return t;
 }
 
+/* ---------------- INE · renta del municipio ----------------
+   `datos/ine/municipios.json` (scripts/ine_municipios.py) trae la renta media y mediana de cada
+   municipio, cruzada por el código INE de 5 dígitos. Se pide UNA vez, bajo demanda, y se queda en
+   memoria: 150 KB no justifican meterla en el arranque. El fichero es también lo que consulta un
+   MCP, así que la clave es el código y no el nombre. */
+const INE_MUN = { datos: null, pidiendo: false, esperando: [] };
+function pedirIneMunicipio(alLlegar) {
+  if (alLlegar) INE_MUN.esperando.push(alLlegar);
+  if (INE_MUN.datos) { INE_MUN.esperando.splice(0).forEach(f => f()); return; }
+  if (INE_MUN.pidiendo) return;
+  INE_MUN.pidiendo = true;
+  fetch("datos/ine/municipios.json?v=" + VER_DATOS)
+    .then(r => r.ok ? r.json() : null)
+    .then(d => {
+      INE_MUN.datos = d;
+      INE_MUN.esperando.splice(0).forEach(f => f());
+    })
+    .catch(() => {})
+    .finally(() => { INE_MUN.pidiendo = false; });
+}
+function codMunicipio(p) {
+  const cod = String((p && (p.cod_ine_municipio || p.cod_ine)) || "").replace(/\D/g, "").padStart(5, "0");
+  return cod.length === 5 && cod !== "00000" ? cod : null;
+}
+/* Bloque para la ficha. Vale para cualquier capa que traiga `cod_ine_municipio`: la ficha de una
+   planta dice también cómo es el municipio donde está. */
+function bloqueIne(p) {
+  const cod = codMunicipio(p);
+  if (!cod || !INE_MUN.datos || !INE_MUN.datos.municipios) return "";
+  const m = INE_MUN.datos.municipios[cod];
+  if (!m) return "";
+  const ind = INE_MUN.datos.indicadores || {};
+  let lineas = Object.keys(ind).filter(k => m[k] != null)
+    .map(k => `<div class="pd-k"><span>${ind[k].etiqueta}</span><span>${numES(m[k])} ${ind[k].unidad}</span></div>`)
+    .join("");
+  // Densidad: sale de la población y la superficie que ya trae el propio polígono, sin otra fuente.
+  const hab = Number(p.poblacion), km2 = Number(p.area_km2);
+  if (hab > 0 && km2 > 0)
+    lineas += `<div class="pd-k"><span>Densidad</span><span>${nf(hab / km2)} hab/km²</span></div>`;
+  if (!lineas) return "";
+  return `<div class="pd-sec">INE · renta del municipio ${INE_MUN.datos.anyo || ""}</div>` +
+    `<div class="pd-grid">${lineas}</div>` +
+    `<div class="pd-nota">Municipio INE ${cod} · Atlas de distribución de renta de los hogares · ` +
+    `<a href="${INE_MUN.datos.url || "https://www.ine.es/experimental/atlas/experimental_atlas.htm"}" ` +
+    `target="_blank" rel="noopener">ver en el INE ↗</a></div>`;
+}
+
 function abrirPanelDato(p, c, latlng) {
   cerrarPanelesDerecha("dato");
   const panel = document.getElementById("panel-dato");
@@ -3451,6 +3498,13 @@ function abrirPanelDato(p, c, latlng) {
              otros: filas.slice(1, 4).map(f => f[1]) };
   }
   const resumen = resumenDe(p, c);
+  /* INE: si el dato trae municipio, la ficha enseña la renta de su municipio. La primera vez los
+     datos aún no están; cuando llegan se repinta la ficha (una sola vez: `dataset.ine`). */
+  const codMun = codMunicipio(p);
+  const blkIne = bloqueIne(p);
+  if (codMun && !blkIne) pedirIneMunicipio(() => {
+    if (!panel.hidden && panel.dataset.ine !== codMun) abrirPanelDato(p, c, latlng);
+  });
   // una coordenada municipal no es la de la instalación: se dice en la ficha, no se supone
   const precision = (p.geo_precision === "municipio")
     ? "Coordenada del núcleo municipal, no de la instalación: la distancia real puede ser mayor."
@@ -3462,6 +3516,7 @@ function abrirPanelDato(p, c, latlng) {
     foto +
     (hl ? `<div class="pd-hl">${hl}</div>` : "") +
     (filas ? `<div class="pd-grid">${filas}</div>` : "") +
+    blkIne +
     (cerca.length
       ? `<div class="pd-sec">A menos de 30 km · capas ya cargadas</div><div class="pd-cerca">` +
         cerca.map(x =>
@@ -3500,6 +3555,7 @@ function abrirPanelDato(p, c, latlng) {
   };
 
   panel.hidden = false;
+  panel.dataset.ine = blkIne ? codMun : "";
   const x = document.getElementById("panel-dato-x");
   if (x) x.onclick = () => { panel.hidden = true; actualizarLeyenda(); };
 }

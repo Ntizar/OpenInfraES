@@ -54,3 +54,6 @@ datos/nap_catalogo.json
 # XML crudos de DATEX II: 88 MB, se regeneran con scripts/dgt.py
 datos/dgt/*.xml
 datos/.cp_api_cache*.json
+
+# caché de tablas del INE (58 MB): se regenera sola, no va al repo
+datos/ine/.cache/
