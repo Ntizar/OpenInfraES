@@ -4,37 +4,33 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 646,
+ "features": 685,
  "paneles_localizados": 2538,
- "descargado": "2026-11-26T04:18:45",
+ "descargado": "2026-11-26T05:17:10",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 90
+   "paneles": 87
   },
   {
    "texto": "@H @F",
-   "paneles": 85
-  },
-  {
-   "texto": "MAQUINAS EN TRATAMIENTO INVERNAL",
-   "paneles": 25
+   "paneles": 86
   },
   {
    "texto": "CON NIEBLA MODERE VELOCIDAD",
-   "paneles": 17
+   "paneles": 40
   },
   {
-   "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
-   "paneles": 15
+   "texto": "CONTROL MOVIL DE VELOCIDAD",
+   "paneles": 33
   },
   {
-   "texto": "MAQUINA MOVIL TRABAJANDO · MAQUINA MOBIL TREBALLANT",
-   "paneles": 14
+   "texto": "PRECAUCION BANCOS DE NIEBLA",
+   "paneles": 28
   },
   {
    "texto": "MODERE VELOCIDAD · MODERE VELOCITAT",
-   "paneles": 12
+   "paneles": 14
   },
   {
    "texto": "PREVISION NEVADAS · PLANIFIQUE SU VIAJE",
@@ -45,8 +41,12 @@
    "paneles": 8
   },
   {
-   "texto": "MODERE VELOCIDAD",
+   "texto": "MAQUINA MOVIL TRABAJANDO · MAQUINA MOBIL TREBALLANT",
    "paneles": 8
+  },
+  {
+   "texto": "CARRIL IZQUIERDO BUS-VAO · CARRIL ESQUERRE BUS-VAO",
+   "paneles": 7
   }
  ]
 }
