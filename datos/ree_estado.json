@@ -65,12 +65,6 @@
     "color": "#ff0000"
    },
    {
-    "titulo": "Otras renovables",
-    "valor": 11201.6,
-    "tipo": "Renovable",
-    "color": "#9a5cbc"
-   },
-   {
     "titulo": "Cogeneración",
     "valor": 28481.3,
     "tipo": "No-Renovable",
