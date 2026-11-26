@@ -90,7 +90,8 @@
    "metodo": "Refinerías del sistema petrolífero",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Registro de CORES (descarga)"
+   "origen_detalle": "Registro de CORES (descarga)",
+   "bytes": 30890
   },
   "almacenamiento-petrolifero": {
    "capa": "almacenamiento-petrolifero",
@@ -120,7 +121,8 @@
    "metodo": "Centrales y reactores autorizados",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Registro del CSN (descarga)"
+   "origen_detalle": "Registro del CSN (descarga)",
+   "bytes": 35258
   },
   "residuos-radiactivos": {
    "capa": "residuos-radiactivos",
@@ -240,7 +242,8 @@
    "metodo": "Instalaciones de desalación",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Instalaciones declaradas por MITECO/Acuamed"
+   "origen_detalle": "Instalaciones declaradas por MITECO/Acuamed",
+   "bytes": 115796
   },
   "hidrogeno-red": {
    "capa": "hidrogeno-red",
@@ -345,7 +348,8 @@
    "metodo": "Hermes/7__COMBUSTIBLES_ALTERNATIVOS/457 — query ArcGIS REST, paginado de 500 en 500",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa Visor Hermes (MITMA)"
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
+   "bytes": 5856548
   },
   "irewater-edar": {
    "capa": "irewater-edar",
@@ -390,7 +394,8 @@
    "metodo": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 1650198
   },
   "etap": {
    "capa": "etap",
@@ -405,7 +410,8 @@
    "metodo": "Overpass API (man_made=*) · 994 con nombre",
    "origen": "osm",
    "origen_txt": "OSM",
-   "origen_detalle": "OpenStreetMap (Overpass API)"
+   "origen_detalle": "OpenStreetMap (Overpass API)",
+   "bytes": 325061
   },
   "agua-conducciones": {
    "capa": "agua-conducciones",
@@ -435,7 +441,8 @@
    "metodo": "query ArcGIS REST, paginado de 500 en 500",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa Visor Hermes (MITMA)"
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
+   "bytes": 661945
   },
   "puertos": {
    "capa": "puertos",
@@ -450,7 +457,8 @@
    "metodo": "Hermes/0__PUERTOS/1 — query ArcGIS REST, paginado de 500 en 500",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa Visor Hermes (MITMA)"
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
+   "bytes": 26092
   },
   "terminales-puerto": {
    "capa": "terminales-puerto",
@@ -465,7 +473,8 @@
    "metodo": "Hermes/0__PUERTOS/3 — query ArcGIS REST, paginado de 500 en 500",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa Visor Hermes (MITMA)"
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
+   "bytes": 1551333
   },
   "terminales-aero": {
    "capa": "terminales-aero",
@@ -480,7 +489,8 @@
    "metodo": "Hermes/0__AEROPUERTOS/1 — query ArcGIS REST, paginado de 500 en 500",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa Visor Hermes (MITMA)"
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
+   "bytes": 697173
   },
   "intermodales": {
    "capa": "intermodales",
@@ -495,7 +505,8 @@
    "metodo": "Hermes/0__TERMINALES_INTERMODALES/1 — query ArcGIS REST, paginado de 500 en 500",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa Visor Hermes (MITMA)"
+   "origen_detalle": "Mapa Visor Hermes (MITMA)",
+   "bytes": 516861
   },
   "plantas": {
    "capa": "plantas",
@@ -510,7 +521,8 @@
    "metodo": "registro RAIPEE cruzado con ELECTRA",
    "origen": "elaborado",
    "origen_txt": "Elaborado",
-   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
+   "bytes": 4292460
   },
   "estaciones-cercanias": {
    "capa": "estaciones-cercanias",
@@ -525,7 +537,8 @@
    "metodo": "GTFS de Renfe Cercanías, tabla stops.txt",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "GTFS-ZIP del NAP (fichero)"
+   "origen_detalle": "GTFS-ZIP del NAP (fichero)",
+   "bytes": 105034
   },
   "ine-provincias": {
    "capa": "ine-provincias",
@@ -540,7 +553,8 @@
    "metodo": "padrón del INE cruzado por cod_ine con polígonos NUTS de Eurostat",
    "origen": "elaborado",
    "origen_txt": "Elaborado",
-   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
+   "bytes": 76866
   },
   "ine-ccaa": {
    "capa": "ine-ccaa",
@@ -555,7 +569,8 @@
    "metodo": "padrón del INE cruzado por cod_ine con polígonos NUTS de Eurostat",
    "origen": "elaborado",
    "origen_txt": "Elaborado",
-   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
+   "bytes": 44725
   },
   "ine-densidad": {
    "capa": "ine-densidad",
@@ -570,7 +585,8 @@
    "metodo": "población / superficie del polígono",
    "origen": "elaborado",
    "origen_txt": "Elaborado",
-   "origen_detalle": "Elaborado desde tablas del INE"
+   "origen_detalle": "Elaborado desde tablas del INE",
+   "bytes": 76866
   },
   "ine-paro": {
    "capa": "ine-paro",
@@ -585,7 +601,8 @@
    "metodo": "padrón del INE cruzado por cod_ine con polígonos NUTS de Eurostat",
    "origen": "elaborado",
    "origen_txt": "Elaborado",
-   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
+   "bytes": 44725
   },
   "l400": {
    "capa": "l400",
@@ -600,7 +617,8 @@
    "metodo": "Overpass API (power=line, pipeline, plant)",
    "origen": "osm",
    "origen_txt": "OSM",
-   "origen_detalle": "OpenStreetMap (Overpass API)"
+   "origen_detalle": "OpenStreetMap (Overpass API)",
+   "bytes": 1585833
   },
   "l220": {
    "capa": "l220",
@@ -615,7 +633,8 @@
    "metodo": "Overpass API (power=line, pipeline, plant)",
    "origen": "osm",
    "origen_txt": "OSM",
-   "origen_detalle": "OpenStreetMap (Overpass API)"
+   "origen_detalle": "OpenStreetMap (Overpass API)",
+   "bytes": 1585833
   },
   "gasoductos": {
    "capa": "gasoductos",
@@ -630,7 +649,8 @@
    "metodo": "Overpass API (power=line, pipeline, plant)",
    "origen": "osm",
    "origen_txt": "OSM",
-   "origen_detalle": "OpenStreetMap (Overpass API)"
+   "origen_detalle": "OpenStreetMap (Overpass API)",
+   "bytes": 373135
   },
   "hidro": {
    "capa": "hidro",
@@ -645,7 +665,8 @@
    "metodo": "Overpass API (power=line, pipeline, plant)",
    "origen": "osm",
    "origen_txt": "OSM",
-   "origen_detalle": "OpenStreetMap (Overpass API)"
+   "origen_detalle": "OpenStreetMap (Overpass API)",
+   "bytes": 4292460
   },
   "subestaciones": {
    "capa": "subestaciones",
@@ -660,7 +681,8 @@
    "metodo": "BTN Continua: subestaciones (recintos) y tendido 220/400 kV",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "BTN del IGN · descarga directa"
+   "origen_detalle": "BTN del IGN · descarga directa",
+   "bytes": 1652165
   },
   "eolicos": {
    "capa": "eolicos",
@@ -675,7 +697,8 @@
    "metodo": "Registro de instalaciones de producción",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Registro de instalaciones de producción (MITECO)"
+   "origen_detalle": "Registro de instalaciones de producción (MITECO)",
+   "bytes": 3240796
   },
   "solares": {
    "capa": "solares",
@@ -690,7 +713,8 @@
    "metodo": "Registro de instalaciones de producción",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Registro de instalaciones de producción (MITECO)"
+   "origen_detalle": "Registro de instalaciones de producción (MITECO)",
+   "bytes": 2950393
   },
   "residuos": {
    "capa": "residuos",
@@ -705,7 +729,8 @@
    "metodo": "Instalaciones de gestión de residuos",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Registro de ENRESA (descarga)"
+   "origen_detalle": "Registro de ENRESA (descarga)",
+   "bytes": 72450
   },
   "petrolifero": {
    "capa": "petrolifero",
@@ -720,7 +745,8 @@
    "metodo": "Almacenamiento de productos petrolíferos",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Registro de CORES (descarga)"
+   "origen_detalle": "Registro de CORES (descarga)",
+   "bytes": 627031
   },
   "h2red": {
    "capa": "h2red",
@@ -735,7 +761,8 @@
    "metodo": "Red de hidrógeno (PCI)",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Proyectos PCI del MITECO (fichero)"
+   "origen_detalle": "Proyectos PCI del MITECO (fichero)",
+   "bytes": 61835
   },
   "interelec": {
    "capa": "interelec",
@@ -750,7 +777,8 @@
    "metodo": "Interconexiones del sistema eléctrico",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Registro de REE (descarga)"
+   "origen_detalle": "Registro de REE (descarga)",
+   "bytes": 28004
   },
   "regas": {
    "capa": "regas",
@@ -765,7 +793,8 @@
    "metodo": "Plantas de regasificación declaradas",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Instalaciones de Enagás (descarga)"
+   "origen_detalle": "Instalaciones de Enagás (descarga)",
+   "bytes": 27570
   },
   "gasalm": {
    "capa": "gasalm",
@@ -780,7 +809,8 @@
    "metodo": "Almacenamientos subterráneos",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Instalaciones de Enagás (descarga)"
+   "origen_detalle": "Instalaciones de Enagás (descarga)",
+   "bytes": 18038
   },
   "embalses": {
    "capa": "embalses",
@@ -795,7 +825,8 @@
    "metodo": "Boletín Hidrológico, parte semanal",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Boletín Hidrológico del MITECO (parte semanal)"
+   "origen_detalle": "Boletín Hidrológico del MITECO (parte semanal)",
+   "bytes": 863570
   },
   "h2": {
    "capa": "h2",
@@ -810,7 +841,8 @@
    "metodo": "Proyectos de Interés Común (PCI)",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Proyectos PCI del MITECO (fichero)"
+   "origen_detalle": "Proyectos PCI del MITECO (fichero)",
+   "bytes": 34425
   },
   "gasgen": {
    "capa": "gasgen",
@@ -825,7 +857,8 @@
    "metodo": "Overpass API (power=line, pipeline, plant) · subconjunto: technology_normalized in (ccgt, fuel_gas)",
    "origen": "osm",
    "origen_txt": "OSM",
-   "origen_detalle": "OpenStreetMap (Overpass API)"
+   "origen_detalle": "OpenStreetMap (Overpass API)",
+   "bytes": 4292460
   },
   "resto": {
    "capa": "resto",
@@ -840,7 +873,8 @@
    "metodo": "Overpass API (power=line, pipeline, plant) · subconjunto: resto de tecnologias",
    "origen": "osm",
    "origen_txt": "OSM",
-   "origen_detalle": "OpenStreetMap (Overpass API)"
+   "origen_detalle": "OpenStreetMap (Overpass API)",
+   "bytes": 4292460
   },
   "trasvases": {
    "capa": "trasvases",
@@ -855,7 +889,8 @@
    "metodo": "Overpass API (man_made=*) · 12 tramos unidos en 5 trazos de 3 trasvases (scripts/unir_trasvases_v2.py, tolerancia 66 m)",
    "origen": "osm",
    "origen_txt": "OSM",
-   "origen_detalle": "Trazado propio sobre OpenStreetMap"
+   "origen_detalle": "Trazado propio sobre OpenStreetMap",
+   "bytes": 7078
   },
   "canales": {
    "capa": "canales",
@@ -870,7 +905,8 @@
    "metodo": "Overpass API (man_made=*) · resto: canales de riego, acequias y aducciones",
    "origen": "osm",
    "origen_txt": "OSM",
-   "origen_detalle": "OpenStreetMap (Overpass API)"
+   "origen_detalle": "OpenStreetMap (Overpass API)",
+   "bytes": 767835
   },
   "rios": {
    "capa": "rios",
@@ -885,7 +921,8 @@
    "metodo": "Overpass API (man_made=*) · 14263 tramos agrupados, mínimo 12 km; caudal por Open-Meteo Flood (GloFAS)",
    "origen": "osm",
    "origen_txt": "OSM",
-   "origen_detalle": "OpenStreetMap (Overpass API)"
+   "origen_detalle": "OpenStreetMap (Overpass API)",
+   "bytes": 1225334
   },
   "carburantes": {
    "capa": "carburantes",
@@ -900,7 +937,8 @@
    "metodo": "GET al JSON de estaciones terrestres; coma decimal",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 4827888
   },
   "demarcaciones": {
    "capa": "demarcaciones",
@@ -915,7 +953,8 @@
    "metodo": "query ArcGIS REST, maxAllowableOffset 0.0005",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 1805514
   },
   "sismos": {
    "capa": "sismos",
@@ -925,12 +964,13 @@
    "licencia": "abierta con atribución",
    "actualizado": "2026-11-19",
    "descargado": "2026-11-26",
-   "features": 74,
+   "features": 75,
    "url": "https://www.seismicportal.eu/fdsnws/event/1/query",
    "metodo": "FDSN query con bbox de Espana",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 24991
   },
   "aeropuertos": {
    "capa": "aeropuertos",
@@ -945,7 +985,8 @@
    "metodo": "CSV global de aeródromos, filtro iso_country=ES; los cerrados se descartan",
    "origen": "comunidad",
    "origen_txt": "Base comunitaria",
-   "origen_detalle": "OurAirports · base comunitaria, no oficial"
+   "origen_detalle": "OurAirports · base comunitaria, no oficial",
+   "bytes": 198778
   },
   "alertas-gdacs": {
    "capa": "alertas-gdacs",
@@ -960,7 +1001,8 @@
    "metodo": "RSS público acumulativo, bbox de España, ventana de 120 días",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 536
   },
   "aforos": {
    "capa": "aforos",
@@ -975,7 +1017,8 @@
    "metodo": "OGC API Features, coleccion agua:Estaciones_Aforos",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 677236
   },
   "canales-miteco": {
    "capa": "canales-miteco",
@@ -990,7 +1033,8 @@
    "metodo": "OGC API Features, coleccion agua:canales, simplificado a ~22 m",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 1474397
   },
   "calidad-aire-estaciones": {
    "capa": "calidad-aire-estaciones",
@@ -1005,7 +1049,8 @@
    "metodo": "OGC API Features, coleccion evaluacionambiental:ca_red_estaciones",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 156790
   },
   "masas-subterraneas": {
    "capa": "masas-subterraneas",
@@ -1020,7 +1065,8 @@
    "metodo": "OGC API Features, coleccion agua:estado_masas_aguasub_2027_global, simplificado a ~220 m",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 2109183
   },
   "dpmt": {
    "capa": "dpmt",
@@ -1035,7 +1081,8 @@
    "metodo": "OGC API Features, coleccion costas:dominio_publico_maritimo_terrestre, simplificado a ~22 m",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 6215578
   },
   "espacios-protegidos": {
    "capa": "espacios-protegidos",
@@ -1050,7 +1097,8 @@
    "metodo": "query ArcGIS REST f=geojson, parques nacionales/naturales/otros, simplificado a ~110 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 1399832
   },
   "red-natura": {
    "capa": "red-natura",
@@ -1065,7 +1113,8 @@
    "metodo": "query ArcGIS REST f=geojson sobre Espacios_Protegidos/5 y /6",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 1854949
   },
   "rios-mtn": {
    "capa": "rios-mtn",
@@ -1080,7 +1129,8 @@
    "metodo": "query ArcGIS REST f=geojson sobre Hidrografia/3, tramos de más de 15 km",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 1013346
   },
   "presas": {
    "capa": "presas",
@@ -1095,7 +1145,8 @@
    "metodo": "query ArcGIS REST f=geojson sobre Hidrografia/0 (solo el muro)",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 161631
   },
   "nap-metro": {
    "capa": "nap-metro",
@@ -1110,7 +1161,8 @@
    "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Fichero descargado del organismo"
+   "origen_detalle": "Fichero descargado del organismo",
+   "bytes": 178940
   },
   "nap-cercanias": {
    "capa": "nap-cercanias",
@@ -1125,7 +1177,8 @@
    "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Fichero descargado del organismo"
+   "origen_detalle": "Fichero descargado del organismo",
+   "bytes": 190923
   },
   "nap-ave": {
    "capa": "nap-ave",
@@ -1140,7 +1193,8 @@
    "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Fichero descargado del organismo"
+   "origen_detalle": "Fichero descargado del organismo",
+   "bytes": 163760
   },
   "nap-lineas-metro": {
    "capa": "nap-lineas-metro",
@@ -1155,7 +1209,8 @@
    "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Fichero descargado del organismo"
+   "origen_detalle": "Fichero descargado del organismo",
+   "bytes": 1257963
   },
   "nap-lineas-cercanias": {
    "capa": "nap-lineas-cercanias",
@@ -1170,7 +1225,8 @@
    "metodo": "GTFS-ZIP del NAP; cabecera `ApiKey`",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Fichero descargado del organismo"
+   "origen_detalle": "Fichero descargado del organismo",
+   "bytes": 2505905
   },
   "adif-tramos": {
    "capa": "adif-tramos",
@@ -1185,7 +1241,8 @@
    "metodo": "Trazado oficial de tramos (1.178 tramos, 604.913 vertices). El WFS de IDEADIF responde 403 (Akamai); se parte del GeoJSON ya descargado y se simplifica con Douglas-Peucker a 40 m",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 898085
   },
   "dgt-camaras": {
    "capa": "dgt-camaras",
@@ -1200,7 +1257,8 @@
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Cámaras DGT DATEX2 v3.7",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 620793
   },
   "dgt-paneles": {
    "capa": "dgt-paneles",
@@ -1215,7 +1273,8 @@
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Paneles DGT DATEX2 v3.7",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 45
   },
   "dgt-incidencias": {
    "capa": "dgt-incidencias",
@@ -1230,7 +1289,8 @@
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Incidencias DGT DATEX2 v3.7",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 684003
   },
   "dgt-electrolineras": {
    "capa": "dgt-electrolineras",
@@ -1245,7 +1305,8 @@
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Puntos de recarga eléctrica para vehículos",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 5944542
   },
   "gtfsrt": {
    "capa": "gtfsrt",
@@ -1253,14 +1314,15 @@
    "fuente": "Operadores (Renfe)",
    "editor": "GTFS-Realtime",
    "licencia": "condiciones del editor",
-   "actualizado": "2026-11-26T07:42:30",
-   "descargado": "2026-11-26T07:42:15",
-   "features": 494,
+   "actualizado": "2026-11-26T08:42:30",
+   "descargado": "2026-11-26T08:42:19",
+   "features": 414,
    "url": "https://gtfsrt.renfe.com/vehicle_positions.pb",
    "metodo": "protobuf GTFS-RT, refresco continuo",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 118138
   },
   "aemet-zonas": {
    "capa": "aemet-zonas",
@@ -1275,7 +1337,8 @@
    "metodo": "tar.gz de GeoJSON de la pagina de avisos (sin clave)",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "Fichero descargado del organismo"
+   "origen_detalle": "Fichero descargado del organismo",
+   "bytes": 50947
   },
   "municipios": {
    "capa": "municipios",
@@ -1290,7 +1353,8 @@
    "metodo": "polígonos LAU 1M de Eurostat GISCO cruzados POR CÓDIGO INE (LAU_ID) con las cifras oficiales del padrón (INE, tabla 29005 en CSV, columna Municipios = código + nombre)",
    "origen": "elaborado",
    "origen_txt": "Elaborado",
-   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
+   "bytes": 8790235
   },
   "clima-temperatura": {
    "capa": "clima-temperatura",
@@ -1298,14 +1362,15 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-26T08:30",
-   "descargado": "2026-11-26T07:42:16Z",
+   "actualizado": "2026-11-26T09:30",
+   "descargado": "2026-11-26T08:42:20Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el poligono), paso 15 min",
    "origen": "elaborado",
    "origen_txt": "Elaborado",
-   "origen_detalle": "Interpolación IDW sobre Open-Meteo"
+   "origen_detalle": "Interpolación IDW sobre Open-Meteo",
+   "bytes": 76172
   },
   "clima-viento": {
    "capa": "clima-viento",
@@ -1313,14 +1378,15 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-26T08:30",
-   "descargado": "2026-11-26T07:42:16Z",
+   "actualizado": "2026-11-26T09:30",
+   "descargado": "2026-11-26T08:42:20Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias",
    "origen": "elaborado",
    "origen_txt": "Elaborado",
-   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes"
+   "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
+   "bytes": 54250
   },
   "alojamiento-ign": {
    "capa": "alojamiento-ign",
@@ -1336,7 +1402,8 @@
    "metodo": "Capas 15, 16, 24, 25 y 17 de 03_construcciones_otros; una capa con el tipo como atributo",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 649178
   },
   "aviacion-ligera": {
    "capa": "aviacion-ligera",
@@ -1352,7 +1419,8 @@
    "metodo": "Capas 6 y 7 de 02_redes_transporte, multiPoint desdoblado en puntos",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 431397
   },
   "cable-ign": {
    "capa": "cable-ign",
@@ -1368,7 +1436,8 @@
    "metodo": "Capas 1-3 de 02_redes_transporte (teleférico, telesilla, telesquí)",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 64533
   },
   "caminos-santiago": {
    "capa": "caminos-santiago",
@@ -1384,7 +1453,8 @@
    "metodo": "Capa 18 de 02_redes_transporte, con agrupación y longitud",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 2081739
   },
   "cimas-ign": {
    "capa": "cimas-ign",
@@ -1400,7 +1470,8 @@
    "metodo": "Capa 1 de 07_orografia_paisaje con cota, clase y municipio",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 3637513
   },
   "ciudad-acuicultura": {
    "capa": "ciudad-acuicultura",
@@ -1416,7 +1487,8 @@
    "metodo": "Capa 41 de 05_servicios_industria, contorno simplificado a ~13 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 101060
   },
   "ciudad-antenas": {
    "capa": "ciudad-antenas",
@@ -1432,7 +1504,8 @@
    "metodo": "Capa 25 de 05_servicios_industria; el IGN no publica nombre ni operador, varias filas por mástil fundidas a 25 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 3871054
   },
   "ciudad-aparcamientos": {
    "capa": "ciudad-aparcamientos",
@@ -1448,7 +1521,8 @@
    "metodo": "Capa 19 de 05_servicios_industria, una chincheta por recinto a 30 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 3132245
   },
   "ciudad-cementerios": {
    "capa": "ciudad-cementerios",
@@ -1464,7 +1538,8 @@
    "metodo": "Capa 22 de 05_servicios_industria, dedupe a 30 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 5758013
   },
   "ciudad-ciencia": {
    "capa": "ciudad-ciencia",
@@ -1480,7 +1555,8 @@
    "metodo": "Capa 45 de 05_servicios_industria, contorno simplificado a ~13 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 39596
   },
   "ciudad-comercio": {
    "capa": "ciudad-comercio",
@@ -1496,7 +1572,8 @@
    "metodo": "Capa 47 de 05_servicios_industria, contorno simplificado a ~13 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 53056
   },
   "ciudad-deportivas": {
    "capa": "ciudad-deportivas",
@@ -1512,7 +1589,8 @@
    "metodo": "Capa 50 de 05_servicios_industria, contorno simplificado a ~13 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 3786117
   },
   "ciudad-docencia": {
    "capa": "ciudad-docencia",
@@ -1528,7 +1606,8 @@
    "metodo": "Capas 5-8 de 05_servicios_industria, con el tipo como atributo y dedupe a 30 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 9638090
   },
   "ciudad-ferias": {
    "capa": "ciudad-ferias",
@@ -1544,7 +1623,8 @@
    "metodo": "Capa 46 de 05_servicios_industria, contorno simplificado a ~13 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 79479
   },
   "ciudad-logistica": {
    "capa": "ciudad-logistica",
@@ -1560,7 +1640,8 @@
    "metodo": "Capa 44 de 05_servicios_industria, contorno simplificado a ~13 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 20606
   },
   "ciudad-mineria": {
    "capa": "ciudad-mineria",
@@ -1576,7 +1657,8 @@
    "metodo": "Capas 30 y 31 de 05_servicios_industria, con tipo y sustancia",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 452810
   },
   "ciudad-recreo": {
    "capa": "ciudad-recreo",
@@ -1592,7 +1674,8 @@
    "metodo": "Capas 20 y 21 de 05_servicios_industria, con el tipo como atributo",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 252096
   },
   "ciudad-singulares": {
    "capa": "ciudad-singulares",
@@ -1608,7 +1691,8 @@
    "metodo": "Capas 23 y 24 de 05_servicios_industria",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 39342
   },
   "ciudad-zonas-verdes": {
    "capa": "ciudad-zonas-verdes",
@@ -1624,7 +1708,8 @@
    "metodo": "Capa 48 de 05_servicios_industria, contorno simplificado a ~13 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 4005452
   },
   "clima-provincias": {
    "capa": "clima-provincias",
@@ -1632,8 +1717,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-26T08:30",
-   "descargado": "2026-11-26T07:42:16Z",
+   "actualizado": "2026-11-26T09:30",
+   "descargado": "2026-11-26T08:42:20Z",
    "features": 52,
    "fecha_dato": null,
    "url": "https://open-meteo.com/",
@@ -1648,8 +1733,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-26T08:30",
-   "descargado": "2026-11-26T07:42:16Z",
+   "actualizado": "2026-11-26T09:30",
+   "descargado": "2026-11-26T08:42:20Z",
    "features": 52,
    "fecha_dato": null,
    "url": "https://open-meteo.com/",
@@ -1672,7 +1757,8 @@
    "metodo": "Capa 27 de 05_servicios_industria, con estado y tipo del registro",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 111333
   },
   "edar-unificado": {
    "capa": "edar-unificado",
@@ -1704,7 +1790,8 @@
    "metodo": "GeoJSON directo del MapServer (f=geojson). Sin WFS en el IGME: el WFSServer devuelve 400. Códigos numéricos traducidos con QAFI_v4_Guide.pdf",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "QAFI v4 · servicio REST del IGME"
+   "origen_detalle": "QAFI v4 · servicio REST del IGME",
+   "bytes": 479506
   },
   "faros": {
    "capa": "faros",
@@ -1720,7 +1807,8 @@
    "metodo": "query f=geojson sobre Signa/03_construcciones_otros/11, redondeo a 5 decimales",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 53582
   },
   "ferris-ign": {
    "capa": "ferris-ign",
@@ -1736,7 +1824,8 @@
    "metodo": "Capa 23 de 02_redes_transporte",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 31393
   },
   "incendios-effis": {
    "capa": "incendios-effis",
@@ -1752,7 +1841,8 @@
    "metodo": "WFS 1.1.0 GML paginado por startIndex (el servidor no admite GeoJSON) → anillo exterior, redondeo a 4 decimales, decimado a 250 vértices",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 27566606
   },
   "nucleos": {
    "capa": "nucleos",
@@ -1768,7 +1858,8 @@
    "metodo": "query f=geojson sobre Signa/01_unidades_administrativas/12, paginado de 1000 en 1000, redondeo a 5 decimales",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 8939237
   },
   "ocio-ign": {
    "capa": "ocio-ign",
@@ -1784,7 +1875,8 @@
    "metodo": "Capas 20, 18 y 14 de 03_construcciones_otros",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 210404
   },
   "patrimonio-ign": {
    "capa": "patrimonio-ign",
@@ -1800,7 +1892,8 @@
    "metodo": "Capas 1, 6-13 y 26 de 03_construcciones_otros, fundidas por sitio a 60 m",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 5782829
   },
   "puentes-rce": {
    "capa": "puentes-rce",
@@ -1816,7 +1909,8 @@
    "metodo": "Overpass `bridge` sobre vías A-/AP-/N-, calzadas fundidas por proximidad de 45 m",
    "origen": "osm",
    "origen_txt": "OSM",
-   "origen_detalle": "OpenStreetMap (Overpass API)"
+   "origen_detalle": "OpenStreetMap (Overpass API)",
+   "bytes": 2383804
   },
   "residencias-ign": {
    "capa": "residencias-ign",
@@ -1832,7 +1926,8 @@
    "metodo": "Capa 3 de 05_servicios_industria",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 107038
   },
   "sanidad-ign": {
    "capa": "sanidad-ign",
@@ -1848,7 +1943,8 @@
    "metodo": "Capas 1 y 2 de 05_servicios_industria, fundidas por sitio a 60 m; una chincheta por recinto",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 1030845
   },
   "sierras-ign": {
    "capa": "sierras-ign",
@@ -1864,7 +1960,8 @@
    "metodo": "Capa 4 de 07_orografia_paisaje",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 2248081
   },
   "trafico-ccaa": {
    "capa": "trafico-ccaa",
@@ -1880,7 +1977,8 @@
    "metodo": "Estatal: trafico_imd.geojson (MITMA 2021, simplificado) con la provincia traducida a comunidad. CV: WFS 2.0 ms:Aforos2025 en GML (posList lat/lon). AR: query f=json sobre AFOROS_ARAGON_GENERICO/1 (DGA 2022). Redondeo a 4 decimales y un vértice cada ~50 m.",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 7111611
   },
   "trafico-estaciones": {
    "capa": "trafico-estaciones",
@@ -1896,7 +1994,8 @@
    "metodo": "Tenerife: CSV de IMD 2025 cruzado por estacion_id con el GeoJSON de estaciones del mismo portal. Cataluña: Socrata xsvx-ym46 filtrado a 2022, punto desde latitud/longitud.",
    "origen": "fichero",
    "origen_txt": "Fichero",
-   "origen_detalle": "CSV del Cabildo de Tenerife, cruzado por PK"
+   "origen_detalle": "CSV del Cabildo de Tenerife, cruzado por PK",
+   "bytes": 366535
   },
   "tuneles-rce": {
    "capa": "tuneles-rce",
@@ -1912,7 +2011,8 @@
    "metodo": "ArcGIS REST, capa 929, un elemento por túnel con sus tubos anidados",
    "origen": "api",
    "origen_txt": "API",
-   "origen_detalle": "Servicio web del organismo"
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 373916
   },
   "vias-verdes": {
    "capa": "vias-verdes",
@@ -1928,7 +2028,8 @@
    "metodo": "Capa 19 de 02_redes_transporte, con firme y longitud",
    "origen": "visor",
    "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)"
+   "origen_detalle": "Mapa SignA (IGN)",
+   "bytes": 2818161
   }
  },
  "simplificacion": {

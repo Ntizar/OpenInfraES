@@ -647,13 +647,36 @@
 
     /* el cajón es un panel, no un cristal: con --panel (88 %) el mapa y los KPIs se leían
        por debajo y las capas salían con texto fantasma. En móvil, fondo sólido. */
-    #hud { display:none; top:58px; left:8px; right:8px; width:auto;
-      background:var(--panel-solido);
-      max-height:calc(100% - 130px); border-radius:8px; }
+    /* El cajón móvil no es una tarjeta flotante: es una hoja que sube desde abajo. Antes era un
+       panel de 510 px en una pantalla de 640 y el pie quedaba fuera. Ahora nace al 62 % para que
+       el mapa se vea y se lea (es un visor: si tapas el mapa, no sirve), y el asa la sube al 92 %
+       cuando toca buscar entre las 101 capas. */
+    #hud { display:none; position:fixed; top:auto; bottom:0; left:0; right:0; width:auto;
+      height:62vh; height:62dvh; max-height:none;
+      border-radius:14px 14px 0 0; border-bottom:0;
+      box-shadow:0 -18px 40px rgba(0,0,0,.55);
+      padding-bottom:env(safe-area-inset-bottom, 0px);
+      overflow:hidden; transition:height .18s ease;
+      background:var(--panel-solido); }
+    #hud.alto { height:92vh; height:92dvh; }
     #hud.abierto { display:flex; }
-    #cabeza { padding:11px 13px 9px; }
-    #acciones { grid-template-columns:repeat(3,1fr); gap:6px; padding:8px 10px; }
-    #acciones button { padding:9px 2px 8px; font-size:9px; }
+    /* Asa real (no ::after): se puede tocar y se ve en todos los navegadores. */
+    #asa-hud { display:block; flex:0 0 auto; height:18px; position:relative; cursor:pointer;
+      touch-action:manipulation; }
+    #asa-hud::after { content:""; position:absolute; top:6px; left:50%; transform:translateX(-50%);
+      width:40px; height:4px; border-radius:2px; background:var(--borde-fuerte); }
+    /* Los 17 chips de grupo medían 185 px, un tercio de la pantalla, y duplicaban lo que ya hace
+       el acordeón del panel. Fuera en móvil: quedan el acordeón y «Todo». */
+    #presets { display:none; }
+    #cabeza { padding:6px 13px 9px; }
+    /* Sin min-height:0 un hijo flex con overflow NO encoge y empuja el pie fuera de la hoja:
+       era la razón de que el slider de «Datos» tapase el final de la lista. */
+    #capas { min-height:0; }
+    /* 6 botones en dos filas se comían un quinto de la hoja. Una fila de iconos. */
+    #acciones { grid-template-columns:repeat(6,1fr); gap:5px; padding:6px 10px; }
+    #acciones button { padding:7px 2px 6px; font-size:0; }
+    #acciones button b { font-size:15px; }
+    #cabeza .sub { font-size:9px; }
     /* el botón de tema es un cuadrado de 26 px en la barra de escritorio; en la rejilla móvil
        se quedaba del ancho de un guisante, solo, en la esquina */
     #btn-tema { width:auto; height:auto; }
@@ -727,6 +750,7 @@
 
 <button id="btn-hud" aria-label="Capas y controles" title="Capas y controles">☰</button>
 <div id="hud">
+  <div id="asa-hud" title="Tocar para agrandar o encoger"></div>
   <div id="cabeza">
     <div class="marca"><span class="punto-vivo"></span><h1>Infraestructura España</h1></div>
     <div class="sub" id="sub-hud">—</div>
@@ -1033,10 +1057,13 @@ const trazos = new SvgTrazos({ padding: 0.15, tolerance: 17 });
 
 const mapa = L.map("mapa", {
   zoomControl: true, minZoom: 5, maxZoom: 18,
-  zoomSnap: 0, zoomDelta: 0.75, scrollWheelZoom: false,
+  /* 0,25 y no 0: con `zoomSnap: 0` el zoom cae en fracciones arbitrarias (6,87), las teselas se
+     escalan a un factor que no es potencia de dos y el mapa se ve borroso; a cuartos sigue
+     habiendo zoom fino y las teselas quedan nítidas. La rueda redondea a ese mismo paso. */
+  zoomSnap: 0.25, zoomDelta: 0.75, scrollWheelZoom: false,
   zoomAnimation: true, fadeAnimation: false, inertia: true, inertiaDeceleration: 2500,
   renderer: trazos
-}).setView([40.1, -3.7], 6.6);
+}).setView([40.1, -3.7], 6.5);
 
 // Al soltar el mapa se recalcula qué se ve en las capas grandes (ver recortar()).
 /* El repintado va en COLA, no en un bucle cerrado: con las 99 capas encendidas, un cambio de
@@ -1145,7 +1172,11 @@ function activarZoomRueda(map) {
       ? gesto.cursor : map.mouseEventToContainerPoint(e);
     // Al invertir el sentido, descartar el recorrido que aún quedaba por animar.
     const base = gesto && (gesto.destino - actual) * delta >= 0 ? gesto.destino : actual;
-    const destino = Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(), base + delta / 220));
+    // El destino se redondea a cuartos de nivel: es el paso con el que las teselas se ven
+    // nítidas (ver `zoomSnap`). Sin esto el zoom continuo dejaba el mapa en 7,13 y borroso.
+    const crudo = base + delta / 220;
+    const destino = Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(),
+      Math.round(crudo * 4) / 4));
     if (!gesto) {
       if (destino === actual) return;
       map._stop();
@@ -1341,6 +1372,7 @@ function analizarCapa(id) {
 function bloqueResumen(id) {
   const a = analizarCapa(id);
   if (!a) return "";
+  INFO_CAPA = id;
   let h = "";
   // categoricos: top 5 por campo, maximo 2 campos para no hacer un muro
   let nCat = 0;
@@ -1622,7 +1654,7 @@ const CAPAS = [
   // Gasóleo y gasolina, con la misma vara y un conmutador en la leyenda: antes solo se pintaba el
   // gasóleo A y quien repostaba gasolina no tenía nada que ver en el mapa.
   { id:"carburantes", grupo:"Tiempo real", label:"Carburantes · precio por surtidor", tipo:"punto", on:false,
-    color:"#22c55e", fichero:"datos/carburantes.geojson", radio:4, zoomMin:7,
+    color:"#22c55e", fichero:"datos/carburantes.geojson", carpeta:"datos/carburantes", radio:4, zoomMin:7,
     colorPorEscala:true, radioPorMagnitud:true, radioMin:3, radioMax:9,
     escala:{ campo:"gasoleo_a", min:1.40, max:2.20, unidad:"€/l" },
     alterna:[{ campo:"gasoleo_a", etiqueta:"Gasóleo A", min:1.40, max:2.20 },
@@ -1681,7 +1713,7 @@ const CAPAS = [
      mismo que la alerta de GDACS. Se pinta desde zoom 7: a escala de país son miles de polígonos
      pequeños que no se leen y atascarían el repintado. --- */
   { id:"incendios-effis", grupo:"Riesgo", label:"Incendios · superficie quemada (EFFIS)", tipo:"poligono", on:false,
-    color:"#f97316", fichero:"datos/incendios_effis.geojson", opacidad:.32, peso:.9, zoomMin:7,
+    color:"#f97316", fichero:"datos/incendios_effis.geojson", carpeta:"datos/incendios-effis", opacidad:.32, peso:.9, zoomMin:7,
     borde:"propio", popupTitulo:"municipio", campos:["fecha","hectareas","provincia","clase"],
     etiquetas:{fecha:"Fecha del incendio", hectareas:"Superficie quemada (ha)",
       clase:"Cobertura del suelo", actualizado:"Última revisión EFFIS"} },
@@ -1743,7 +1775,7 @@ const CAPAS = [
     popupTitulo:"nombre", colorCampo:"color", etiquetaCampo:"tipo",
     campos:["nombre","tipo","uso","iata","icao","gestion"] },
   { id:"patrimonio-ign", grupo:"Patrimonio", label:"Patrimonio cultural (IGN)", tipo:"punto", on:false,
-    color:"#f59e0b", fichero:"datos/patrimonio_ign.geojson", radio:4, zoomMin:7, zoomDetalle:9,
+    color:"#f59e0b", fichero:"datos/patrimonio_ign.geojson", carpeta:"datos/patrimonio-ign", radio:4, zoomMin:7, zoomDetalle:9,
     popupTitulo:"nombre", colorCampo:"color", etiquetaCampo:"categoria",
     campos:["nombre","categoria","tambien","municipio","provincia"] },
   /* Sanidad: el IGN publica hospitales y «otros centros sanitarios» por separado, pero un hospital
@@ -1774,7 +1806,7 @@ const CAPAS = [
     popupTitulo:"nombre", leyendaSimple:true,
     campos:["municipio","provincia"], etiquetas:{municipio:"Municipio", provincia:"Provincia"} },
   { id:"ciudad-cementerios", grupo:"Ciudad", label:"Cementerios (IGN)", tipo:"punto", on:false,
-    color:"#a3a3a3", fichero:"datos/ciudad_cementerios.geojson", radio:3, zoomMin:11, ocultaHasta:11, zoomDetalle:13,
+    color:"#a3a3a3", fichero:"datos/ciudad_cementerios.geojson", carpeta:"datos/ciudad-cementerios", radio:3, zoomMin:11, ocultaHasta:11, zoomDetalle:13,
     popupTitulo:"nombre", leyendaSimple:true,
     campos:["municipio","provincia","bic"], etiquetas:{municipio:"Municipio", provincia:"Provincia", bic:"Figura de protección"} },
   { id:"ciudad-zonas-verdes", grupo:"Ciudad", label:"Zonas verdes (IGN)", tipo:"poligono", on:false,
@@ -1842,7 +1874,7 @@ const CAPAS = [
     campos:["tipo","municipio","provincia"],
     etiquetas:{municipio:"Municipio", provincia:"Provincia"} },
   { id:"cimas-ign", grupo:"Relieve", label:"Cimas y puntos acotados (IGN)", tipo:"punto", on:false,
-    color:"#fbbf24", fichero:"datos/cimas_ign.geojson", zoomMin:9, zoomDetalle:10, radio:2.2, opacidad:.55,
+    color:"#fbbf24", fichero:"datos/cimas_ign.geojson", carpeta:"datos/cimas-ign", zoomMin:9, zoomDetalle:10, radio:2.2, opacidad:.55,
     popupTitulo:"nombre", leyendaSimple:true,
     escala:{ campo:"cota_m", min:200, max:3400, unidad:"m" },
     campos:["nombre","cota_m","clase","puerto","municipio","provincia"] },
@@ -1913,6 +1945,7 @@ const ZOOM_DETALLE = 8;
 const VER_DATOS = "2026-11-23l";
 
 const grupos = {}, capas = {}, conteo = {}, elementos = {}, datos = {}, INDICE = [];
+let INFO_CAPA = null;   // la capa cuyo resumen está abierto en el panel derecho (no se suelta)
 CAPAS.forEach(c => {
   (grupos[c.grupo] = grupos[c.grupo] || []).push(c);
   capas[c.id] = L.layerGroup();
@@ -3884,12 +3917,230 @@ function aplicarFiltro() {
    la vista, de cuatro en cuatro, pintando en cuanto llega el primero y completando al mover. */
 const PARTES_A_LA_VEZ = 4;
 
+/* ------------------------- presupuesto de memoria -------------------------
+   Medido con las 101 capas encendidas: 254 MB de GeoJSON en disco se convierten en ~990 MB de
+   heap en el navegador (cada objeto JSON pasa a ser objetos JS: ×3,9). En un móvil eso no «va
+   lento»: la pestaña se cierra. Y de esas 101 capas, a cualquier zoom se ven cuatro.
+   Regla: el visor mantiene en RAM lo que se está mirando, hasta un presupuesto por aparato.
+   Lo que no cabe se aparca (y se dice en la barra de estado); lo que sale de la vista o de su
+   rango de zoom se suelta, y al volver se pide otra vez —el navegador lo tiene en caché HTTP,
+   así que es instantáneo—. Tardar un poco en cargar es aceptable; quedarse sin memoria, no. */
+const MOVIL = matchMedia("(max-width: 820px)").matches || (navigator.deviceMemory || 8) <= 3;
+/* `?mb=40` fuerza el presupuesto: sirve para probar el comportamiento de un móvil desde el
+   escritorio sin tener que vaciar el mapa a mano. */
+const MB_URL = parseFloat(new URLSearchParams(location.search).get("mb"));
+const PRESUPUESTO = (isFinite(MB_URL) && MB_URL > 0 ? MB_URL : (MOVIL ? 40 : 160)) * 1048576;
+let REINTENTO = null;        // temporizador de reintento cuando algo no cupo por la caché de 2,5 s
+const PESO_CAPA = {};        // id -> bytes de GeoJSON que ocupa ahora (reserva incluida)
+const ESTIMADO = {};         // id -> lo que costará, de fuentes.json (features × bytes/tipo)
+let PESO = 0;                // suma de PESO_CAPA
+
+// Media de bytes por objeto según el tipo de geometría (medida sobre datos/*.geojson).
+const BYTES_OBJETO = { punto: 260, linea: 900, poligono: 1500 };
+
+fetch("datos/fuentes.json?v=" + VER_DATOS).then(r => r.json()).then(d => {
+  const caps = d.capas || {};
+  for (const c of CAPAS) {
+    const f = caps[c.id] || {};
+    // `bytes` lo escribe fuentes_visor.py midiendo el fichero (o la suma de sus trozos). Si falta,
+    // se estima por número de objetos, que en polígonos se queda corto.
+    if (f.bytes) ESTIMADO[c.id] = f.bytes;
+    else if (f.features) ESTIMADO[c.id] = f.features * (BYTES_OBJETO[c.tipo] || 400);
+  }
+  estado();
+}).catch(() => {});
+
+function coste(c) { return PESO_CAPA[c.id] || ESTIMADO[c.id] || 0.5 * 1048576; }
+
+function reservar(c) { const e = coste(c); c.__reserva = e; PESO_CAPA[c.id] = e; PESO += e; }
+
+/* Al terminar de cargar se cambia la reserva por lo que de verdad ha llegado. */
+function cerrarCarga(c) {
+  const real = c.__real || 0;
+  PESO += real - (c.__reserva || 0);
+  PESO_CAPA[c.id] = real;
+  c.__reserva = 0; c.__real = 0; c.__cargando = false;
+}
+
+function sumarReal(c, bytes) {
+  c.__real = (c.__real || 0) + bytes;
+  // Trozos que llegan con la capa ya cargada: se cobran al momento.
+  if (!c.__reserva) { PESO += bytes; PESO_CAPA[c.id] = (PESO_CAPA[c.id] || 0) + bytes; }
+}
+
+function cajaDeFeats(feats) {
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  for (const f of feats) {
+    let k = f.__caja;
+    if (!k) {
+      const p = f.geometry && f.geometry.type === "Point" ? puntoDe(f.geometry) : null;
+      k = f.__caja = p ? [p[0], p[1], p[0], p[1]] : cajaDe(f.geometry);
+    }
+    if (k[0] < x0) x0 = k[0]; if (k[1] < y0) y0 = k[1];
+    if (k[2] > x1) x1 = k[2]; if (k[3] > y1) y1 = k[3];
+  }
+  return x0 > x1 ? null : [x0, y0, x1, y1];
+}
+
+/* ¿Esta capa puede verse con la vista y el zoom de ahora? Sin datos todavía, se responde que sí
+   (mejor pedir de más que dejar un hueco en el mapa). */
+function seVe(c, vista, z) {
+  if (c.ocultaHasta && z < c.ocultaHasta) return false;
+  const b = c.__bbox;
+  if (!b) return true;
+  return !(b[1] > vista.getNorth() || b[3] < vista.getSouth() ||
+           b[0] > vista.getEast() || b[2] < vista.getWest());
+}
+
+/* ¿Está el zoom dentro de la escala natural de la capa? Una capa nacional (zoomMin 7) vista a
+   zoom 13 se dibuja 64 veces más grande de lo que fue pensada: sigue sirviendo de contexto, pero
+   es la primera que debe ceder su memoria cuando el detalle urbano pide sitio. */
+function desfase(c, z) { return z - (c.zoomMin || 6); }
+
+function enBanda(c, z) { return desfase(c, z) <= 3; }
+
+/* Suelta TODO lo que ocupa una capa: objetos, nodos, pane y contabilidad. La definición de la
+   capa (`CAPAS`) y su estado encendido/apagado no se tocan: al volver se vuelve a pedir. */
+function soltarDatos(c) {
+  if (c.__cargando) return false;
+  if (INFO_CAPA === c.id) return false;          // la ficha del panel derecho está en esta capa
+  capas[c.id].clearLayers();
+  if (c.__dibujo) { try { capas[c.id].removeLayer(c.__dibujo); } catch (e) {} }
+  if (c.__renderer) { try { mapa.removeLayer(c.__renderer); } catch (e) {} }
+  const pane = c.__panel;
+  if (pane) {
+    pane.remove();
+    if (mapa._panes) delete mapa._panes[pane.id || ("puntos-" + c.id)];
+    if (mapa._panes) delete mapa._panes["puntos-" + c.id];
+  }
+  c.__renderer = c.__dibujo = c.__panel = c.__marcas = c.__grupos = null;
+  c.__feats = null; c.__idx = null; c.__pedidas = null; c.__bbox = null;
+  datos[c.id] = null; elementos[c.id] = [];
+  c.__paso = undefined; c.__zoom = undefined; c.__vista = null; c.__claveVista = null;
+  c.__cargada = false; c.__dormida = false; c.__aparcada = false;
+  for (let i = INDICE.length - 1; i >= 0; i--) if (INDICE[i].capa === c.id) INDICE.splice(i, 1);
+  PESO -= PESO_CAPA[c.id] || 0;
+  if (PESO < 0) PESO = 0;
+  delete PESO_CAPA[c.id];
+  marcarFila(c);
+  return true;
+}
+
+/* Suelta memoria para hacer sitio. Orden: primero lo que está fuera de la vista, después lo que
+   está fuera de su banda de zoom (una capa nacional a zoom de calle), y de lo más viejo a lo más
+   nuevo. `necesita` son los bytes que hay que liberar; sin él se baja hasta el 60 % del tope. */
+function ajustarMemoria(necesita) {
+  const objetivo = necesita ? PRESUPUESTO - necesita : PRESUPUESTO * 0.6;
+  if (PESO <= objetivo) return 0;
+  const vista = mapa.getBounds().pad(0.35), z = mapa.getZoom(), ahora = performance.now();
+  const fueraVista = [], fueraBanda = [];
+  for (const c of CAPAS) {
+    if (!PESO_CAPA[c.id] || !c.__encendida || c.__cargando || INFO_CAPA === c.id) continue;
+    const visto = c.__vistoEl || 0;
+    if (!seVe(c, vista, z)) {
+      if (ahora - visto < 2500) continue;      // acaba de salir de la vista
+      fueraVista.push(c);
+    } else if (!enBanda(c, z)) {
+      if (ahora - visto < 2500) continue;      // acaba de salir de su escala: puede volver
+      fueraBanda.push(c);
+    } else {
+      c.__vistoEl = ahora;                     // se está mirando, en su escala: no se toca
+    }
+  }
+  fueraVista.sort((a, b) => (a.__vistoEl || 0) - (b.__vistoEl || 0));
+  // Primero lo más lejos de su escala natural: a zoom de calle, la capa nacional.
+  fueraBanda.sort((a, b) => desfase(b, z) - desfase(a, z) || (a.__vistoEl || 0) - (b.__vistoEl || 0));
+  let n = 0;
+  for (const c of fueraVista.concat(fueraBanda)) {
+    if (PESO <= objetivo) break;
+    if (soltarDatos(c)) n++;
+  }
+  return n;
+}
+
+/* Qué toca cargar ahora: capas encendidas, en su rango de zoom, que cortan la vista y que caben
+   en el presupuesto. Las que no caben quedan aparcadas y se cuentan en la barra.
+   El orden importa: se pide de una en una por grupo y de la más barata a la más cara dentro del
+   grupo, para que el presupuesto dé capas de todos los temas y no se lo coma una sola. */
+function ordenCarga(lista) {
+  const porGrupo = new Map();
+  for (const c of lista) {
+    if (!porGrupo.has(c.grupo)) porGrupo.set(c.grupo, []);
+    porGrupo.get(c.grupo).push(c);
+  }
+  const colas = [...porGrupo.values()].map(l => l.sort((a, b) => coste(a) - coste(b)));
+  const orden = [];
+  let queda = true;
+  while (queda) {
+    queda = false;
+    for (const cola of colas) {
+      const c = cola.shift();
+      if (c) { orden.push(c); queda = true; }
+    }
+  }
+  return orden;
+}
+
+function refrescarCarga() {
+  const z = mapa.getZoom(), vista = mapa.getBounds().pad(0.25);
+  const pendientes = [];
+  let aparcadas = 0;
+  for (const c of CAPAS) {
+    if (!c.__encendida || c.__cargada || c.__cargando) continue;
+    const dormida = c.ocultaHasta && z < c.ocultaHasta;
+    if (dormida) {
+      // Por debajo de su zoom no se pinta: lo que ocupara en memoria se suelta aquí mismo.
+      if (PESO_CAPA[c.id]) { soltarDatos(c); c.__dormida = true; marcarFila(c); }
+      else if (!c.__dormida) { c.__dormida = true; marcarFila(c); }
+      continue;
+    }
+    c.__dormida = false;
+    if (!seVe(c, vista, z)) continue;
+    pendientes.push(c);
+  }
+  for (const c of ordenCarga(pendientes)) {
+    if (PESO + coste(c) > PRESUPUESTO) {
+      ajustarMemoria(coste(c));   // hace sitio soltando lo que no está en su sitio
+    }
+    if (PESO + coste(c) > PRESUPUESTO) {
+      if (!c.__aparcada) { c.__aparcada = true; marcarFila(c); }
+      aparcadas++;
+      continue;
+    }
+    c.__aparcada = false;
+    cargar(c);
+  }
+  /* Si algo quedó aparcado puede ser sólo porque las capas que hay que soltar todavía están en su
+     margen de 2,5 s. Se reintenta una vez, sin bucle. */
+  if (aparcadas && !REINTENTO) {
+    REINTENTO = setTimeout(() => { REINTENTO = null; refrescarCarga(); estado(); }, 3000);
+  }
+  return aparcadas;
+}
+
+/* Texto de la fila de la capa: número, «z 11» si espera zoom, «en espera» si no cabe. */
+function marcarFila(c) {
+  const el = document.getElementById("n-" + c.id);
+  if (!el || c.__cargando) return;
+  if (c.__aparcada) { el.textContent = "en espera"; el.title = "No cabe en la memoria del aparato ahora mismo"; }
+  else if (c.__dormida) { el.textContent = "z " + c.ocultaHasta; el.title = "Se carga al acercarse a zoom " + c.ocultaHasta; }
+  else if (conteo[c.id]) { el.textContent = nf(conteo[c.id]); el.title = ""; }
+}
+
+/* Cada movimiento del mapa: primero se suelta lo que ya no se ve, después se pide lo que sí.
+   Va en su propio handler (y no dentro del de `moveend` de arriba) porque aquí ya están
+   declarados el presupuesto y sus contadores. */
+mapa.on("moveend", () => {
+  refrescarCarga();
+  estado();
+});
+
 /* ------------------------- turnos de descarga -------------------------
    Encender las 99 capas lanzaba 250 peticiones en el mismo tick: el navegador parseaba varios
    megas de GeoJSON a la vez y el mapa dejaba de responder durante la carga (medido: >16 s con el
    hilo principal a pleno). Seis descargas simultáneas bastan para saturar una conexión normal y
    dejan respirar al hilo entre parseo y parseo. */
-const DESCARGAS_MAX = 6;
+const DESCARGAS_MAX = MOVIL ? 3 : 6;
 let DESCARGAS_ACTIVAS = 0;
 const COLA_DESCARGAS = [];
 
@@ -3922,8 +4173,17 @@ function pedirParte(c, p) {
   if (c.__pedidas[p.slug]) return c.__pedidas[p.slug];
   c.__pedidas[p.slug] = conTurno(() =>
     fetch(c.carpeta + "/" + p.fichero + "?v=" + VER_DATOS)
-      .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }))
-    .then(gj => gj.features || [])
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); }))
+    .then(texto => {
+      sumarReal(c, texto.length);
+      const gj = JSON.parse(texto);
+      if (p.bbox) {   // caja acumulada de lo descargado: decide si la capa sigue en la vista
+        const b = c.__bbox;
+        c.__bbox = b ? [Math.min(b[0], p.bbox[0]), Math.min(b[1], p.bbox[1]),
+                       Math.max(b[2], p.bbox[2]), Math.max(b[3], p.bbox[3])] : p.bbox.slice();
+      }
+      return gj.features || [];
+    })
     .catch(e => { console.warn("trozo no disponible:", c.id, p.fichero, e.message); return []; });
   return c.__pedidas[p.slug];
 }
@@ -3982,10 +4242,12 @@ async function cargarPartesAlEntrar(c) {
     console.warn("capa partida sin indice:", c.id, e.message);
     if (rot) rot.textContent = "—";
     c.__cargada = false;
+    cerrarCarga(c);
     return;
   }
   c.__feats = [];
   c.__pedidas = {};
+  c.__bbox = null;
   conteo[c.id] = c.__idx.total || 0;
   const fila = document.querySelector('[data-fila="' + c.id + '"]');
   if (fila) fila.classList.add("activa");
@@ -4003,6 +4265,8 @@ async function cargarPartesAlEntrar(c) {
   if (c.ocultaHasta && mapa.getZoom() < c.ocultaHasta) {
     const el = document.getElementById("n-" + c.id);
     if (el) el.textContent = nf(c.__idx.total || 0);
+    c.__dormida = true;
+    cerrarCarga(c);
     return;
   }
   await cargarPartes(c, lista);
@@ -4010,6 +4274,7 @@ async function cargarPartesAlEntrar(c) {
     const el = document.getElementById("n-" + c.id);
     if (el) el.textContent = "—";
   }
+  cerrarCarga(c);
 }
 
 /* Indice del buscador: nombre + coordenadas. Sirve para cualquier capa, tambien para las
@@ -4032,10 +4297,28 @@ function indexar(c, feats) {
 }
 
 function cargar(c) {
-  if (c.__cargada) return;
+  if (c.__cargada || c.__cargando) return;
+  /* Fuera de su rango de zoom no se descarga NADA. `ocultaHasta` sólo frenaba las capas
+     partidas: el detalle urbano (docencia, cementerios, antenas, aparcamientos…) son ~40 MB de
+     GeoJSON que se bajaban a zoom de país para no pintarse ni un objeto. */
+  if (c.ocultaHasta && mapa.getZoom() < c.ocultaHasta) {
+    c.__dormida = true; marcarFila(c); estado(); return;
+  }
+  /* Presupuesto del aparato: si no cabe, primero se suelta lo que no se ve; si aun así no cabe,
+     la capa se aparca entera (nunca a medias) y su fila lo dice. */
+  if (PESO + coste(c) > PRESUPUESTO) {
+    ajustarMemoria(coste(c));
+    if (PESO + coste(c) > PRESUPUESTO) {
+      c.__aparcada = true; marcarFila(c); estado(); return;
+    }
+  }
   c.__cargada = true;
+  c.__cargando = true;
+  c.__dormida = false; c.__aparcada = false;
+  reservar(c);
   // Capas ráster (teselas ya dibujadas): no hay GeoJSON que descargar.
   if (c.tipo === "xyz") {
+    cerrarCarga(c);
     if (!mapa.getPane("rasterPane")) {
       const pn = mapa.createPane("rasterPane");
       pn.style.zIndex = 250;          // encima del mapa base, debajo de los datos vectoriales
@@ -4053,6 +4336,7 @@ function cargar(c) {
     return;
   }
   if (c.tipo === "wms") {
+    cerrarCarga(c);
     const capa = L.tileLayer.wms(c.url, {
       layers: c.wmsCapa,
       format: c.formato || "image/png",
@@ -4078,10 +4362,14 @@ function cargar(c) {
   if (c.carpeta) { cargarPartesAlEntrar(c); return; }
   const rot = document.getElementById("n-" + c.id);
   if (rot) rot.innerHTML = '<i class="spin"></i>';
+  // Se pide TEXTO y se parsea aquí: así se cobra el peso real (lo que ocupa el JSON) y no la
+  // estimación de `fuentes.json`, que en polígonos se queda corta.
   conTurno(() =>
     fetch(c.fichero + (c.fichero.includes("?") ? "&" : "?") + "v=" + VER_DATOS)
-      .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }))
-    .then(gj => {
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); }))
+    .then(texto => {
+      sumarReal(c, texto.length);
+      const gj = JSON.parse(texto);
       const feats = c.filtro ? gj.features.filter(c.filtro) : gj.features;
       conteo[c.id] = feats.length;
       const el = document.getElementById("n-" + c.id);
@@ -4092,6 +4380,7 @@ function cargar(c) {
 
       datos[c.id] = feats;      // siempre: el panel derecho analiza el GeoJSON al abrirse
       c.__feats = feats;        // la copia completa: el filtro repinta desde aqui, sin red
+      c.__bbox = cajaDeFeats(feats);
       if (c.colorCampo) actualizarLeyenda();
       if (c.tipo === "punto") { pintarPuntos(c); }
       else {
@@ -4109,7 +4398,8 @@ function cargar(c) {
       if (el) el.textContent = "—";
       c.__cargada = false;      // una capa que fallo se puede reintentar al volver a encenderla
       console.warn("capa no disponible:", c.id, e.message);
-    });
+    })
+    .finally(() => cerrarCarga(c));
 }
 CAPAS.forEach(c => { if (c.on) ponerCapa(c.id, true); });
 
@@ -4134,7 +4424,9 @@ function ponerCapa(id, on, silencioso) {
   } else {
     mapa.removeLayer(capas[id]);
     c.__panel?.classList.remove("cambiando");
-    if (c.__renderer) mapa.removeLayer(c.__renderer);
+    if (c.__renderer) { try { mapa.removeLayer(c.__renderer); } catch (e) {} }
+    // Apagar una capa es la forma más barata de liberar: se sueltan sus objetos y sus nodos.
+    soltarDatos(c);
   }
   pintarFiltro();   // la caja solo aparece si hay una capa filtrable encendida
   if (!silencioso) { actualizarLeyenda(); estado(); }   // en lote (vistas, enlace) se hace una vez al final
@@ -4155,6 +4447,13 @@ function plegarHud(abierto) {
     BTN_HUD.setAttribute("aria-expanded", abierto ? "true" : "false");
     BTN_HUD.setAttribute("aria-label", abierto ? "Cerrar capas y controles" : "Capas y controles");
   }
+  if (!abierto) CAJON_HUD.classList.remove("alto");   // al cerrar vuelve a media hoja
+}
+/* Asa de la hoja: un toque la sube al 92 % o la baja al 62 %. Dos posiciones no necesitan
+   arrastre con inercia; el gesto de tocar es el que todo el mundo prueba primero. */
+const ASA_HUD = document.getElementById("asa-hud");
+if (ASA_HUD && CAJON_HUD) {
+  ASA_HUD.addEventListener("click", () => CAJON_HUD.classList.toggle("alto"));
 }
 if (BTN_HUD) BTN_HUD.addEventListener("click", () => {
   plegarHud(!(CAJON_HUD && CAJON_HUD.classList.contains("abierto")));
@@ -4234,6 +4533,8 @@ function aplicarOcultoZoom(c) {
     mapa.addLayer(capas[c.id]);
   }
   else if (!dentro && esta) mapa.removeLayer(capas[c.id]);
+  // Entrar por zoom con una capa que no se había descargado (porque dormía) la pide ahora.
+  if (dentro && !c.__cargada && !c.__cargando) cargar(c);
 }
 /* (El repintado por moveend vive arriba, en la cola: aquí sólo queda el detalle urbano, que
    ya se aplica desde el único handler.) */
@@ -4247,8 +4548,11 @@ function estado() {
   document.getElementById("btn-hud")?.classList.toggle("sugerir", activas.length === 0);
 
   let n = 0; activas.forEach(c => n += conteo[c.id] || 0);
-  $("#s-peso").textContent = nf(n) + " objetos";
-  $("#sub-hud").textContent = (BASES[sel.value] ? BASES[sel.value][0] : "") + " · " + nf(n) + " objetos";
+  const enEspera = CAPAS.filter(c => c.__aparcada).length;
+  const mb = Math.round(PESO / 1048576);
+  $("#s-peso").textContent = nf(n) + " objetos · " + mb + "/" + Math.round(PRESUPUESTO / 1048576) + " MB";
+  $("#sub-hud").textContent = (BASES[sel.value] ? BASES[sel.value][0] : "") + " · " + nf(n) + " objetos" +
+    (enEspera ? " · " + enEspera + " en espera" : "");
 }
 mapa.on("zoomend", estado);
 mapa.on("mousemove", e => {
@@ -4764,6 +5068,15 @@ function irAMunicipio(cod, nombre, provincia, pob, anio, cp) {
 
 /* ---------------- API ---------------- */
 window.OpenInfraES = {
+  /* Estado de la memoria del visor: lo que ocupa ahora, su tope y cuántas capas quedan fuera
+     por presupuesto o por zoom. Sirve para comprobar desde la consola que el mapa no se hincha. */
+  memoria: () => ({
+    mb: +(PESO / 1048576).toFixed(1), tope: +(PRESUPUESTO / 1048576).toFixed(0),
+    zoom: mapa.getZoom(),
+    cargadas: CAPAS.filter(c => PESO_CAPA[c.id]).length,
+    enEspera: CAPAS.filter(c => c.__aparcada).length,
+    dormidas: CAPAS.filter(c => c.__dormida).length
+  }),
   abrir(capaId, i = 0, zoom = 11) {
     if (!capas[capaId]) return "sin capa";
     const chk = document.querySelector('[data-capa="' + capaId + '"]');

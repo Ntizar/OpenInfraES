@@ -27,6 +27,14 @@ PARTIR = [
     ("dpmt", "dpmt.geojson", "provincia", "provincia"),
     ("dgt-electrolineras", "dgt_electrolineras.geojson", "provincia_municipio",
      "provincia_municipio"),
+    # Las gordas de nivel nacional: se ven a zoom 7-12 y no hace falta bajarlas enteras.
+    # (Antenas y aparcamientos del IGN no traen provincia: se quedan en un fichero.)
+    # Sin esto, mirar Madrid descargaba los 26 MB de incendios de toda España.
+    ("incendios-effis", "incendios_effis.geojson", "provincia", "provincia"),
+    ("patrimonio-ign", "patrimonio_ign.geojson", "provincia", "provincia"),
+    ("carburantes", "carburantes.geojson", "provincia", "provincia"),
+    ("ciudad-cementerios", "ciudad_cementerios.geojson", "provincia", "provincia"),
+    ("cimas-ign", "cimas_ign.geojson", "provincia", "provincia"),
 ]
 
 
