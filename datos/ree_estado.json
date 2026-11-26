@@ -6,91 +6,91 @@
   "generacion": [
    {
     "titulo": "Hidráulica",
-    "valor": 84937.2,
+    "valor": 87394.9,
     "tipo": "Renovable",
     "color": "#0090d1"
    },
    {
     "titulo": "Nuclear",
-    "valor": 145835.4,
+    "valor": 145846.6,
     "tipo": "No-Renovable",
     "color": "#464394"
    },
    {
     "titulo": "Carbón",
-    "valor": 3925.6,
+    "valor": 4622.8,
     "tipo": "No-Renovable",
     "color": "#993300"
    },
    {
     "titulo": "Motores diésel",
-    "valor": 6011.1,
+    "valor": 5753.7,
     "tipo": "No-Renovable",
     "color": "#8DA69F"
    },
    {
     "titulo": "Turbina de gas",
-    "valor": 1044.3,
+    "valor": 1271.5,
     "tipo": "No-Renovable",
     "color": "#BA0F16"
    },
    {
     "titulo": "Turbina de vapor",
-    "valor": 10112.4,
+    "valor": 10078.9,
     "tipo": "No-Renovable",
     "color": "#AF8E00"
    },
    {
     "titulo": "Ciclo combinado",
-    "valor": 80167.4,
+    "valor": 101710.2,
     "tipo": "No-Renovable",
     "color": "#ffcc66"
    },
    {
     "titulo": "Eólica",
-    "valor": 397255.7,
+    "valor": 389693.6,
     "tipo": "Renovable",
     "color": "#6fb114"
    },
    {
     "titulo": "Solar fotovoltaica",
-    "valor": 104231.2,
+    "valor": 99209.9,
     "tipo": "Renovable",
     "color": "#e48500"
    },
    {
     "titulo": "Solar térmica",
-    "valor": 1380.5,
+    "valor": 1223.5,
     "tipo": "Renovable",
     "color": "#ff0000"
    },
    {
     "titulo": "Otras renovables",
-    "valor": 11314.8,
+    "valor": 11201.6,
     "tipo": "Renovable",
     "color": "#9a5cbc"
    },
    {
     "titulo": "Cogeneración",
-    "valor": 28606.3,
+    "valor": 28481.3,
     "tipo": "No-Renovable",
     "color": "#cfa2ca"
    },
    {
     "titulo": "Residuos no renovables",
-    "valor": 3525.1,
+    "valor": 3271.7,
     "tipo": "No-Renovable",
     "color": "#666666"
    },
    {
     "titulo": "Residuos renovables",
-    "valor": 2453.5,
+    "valor": 2421.2,
     "tipo": "Renovable",
     "color": "#a0a0a0"
    },
    {
     "titulo": "Generación total",
-    "valor": 880800.6,
+    "valor": 892181.3,
     "tipo": "total",
     "color": "#2b2e34"
    }
@@ -98,7 +98,7 @@
   "demanda": [
    {
     "titulo": "Demanda",
-    "valor": 751709.9,
+    "valor": 771534.2,
     "tipo": null,
     "color": "#ffea00"
    }
