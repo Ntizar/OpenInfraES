@@ -27,12 +27,13 @@
      y deja el mapa en negro sin costas) se desatura y se oscurece: queda una base
      legible en grises oscuros sobre la que los datos neón sí destacan. */
   /* cada base trae su filtro: el IGN no tiene teselas oscuras, así que el look se hace aquí */
-  /* Dos mapas base: el ráster del IGN (fondo claro que se oscurece en tema oscuro) y OSM (se
-     invierte). Las claves de `data-base` son las mismas de `BASES`: antes el CSS hablaba de
-     «todo»/«gris»/«orto» y el JS escribía «IGNBaseTodo», así que sólo acertaban radar y OSM. */
-  html[data-tema="oscuro"][data-base="ign"] .leaflet-tile-pane { filter:brightness(.62) contrast(1.15) saturate(.75); }
-  html[data-tema="claro"] .leaflet-tile-pane { filter:none; }
+  /* Dos mapas base: el IGN de LÍNEAS (vectorial, sin fondo: en tema oscuro se invierte y queda
+     como una pizarra, que es como se leen mejor las capas encima) y OpenStreetMap (gris invertido).
+     Las claves de `data-base` son las mismas de `BASES`; antes el CSS hablaba de
+     «todo»/«gris»/«orto» y el JS escribía «IGNBaseTodo», así que casi nunca acertaba. */
+  html[data-tema="oscuro"][data-base="lineas"] .leaflet-tile-pane { filter:invert(1) brightness(2.15) contrast(1.22) saturate(0); }
   html[data-tema="oscuro"][data-base="osm"] .leaflet-tile-pane { filter:grayscale(1) invert(1) brightness(.75) contrast(1.2); }
+  html[data-tema="claro"] .leaflet-tile-pane { filter:none; }
   .leaflet-container { background:var(--fondo); font-family:inherit; }
 
   .trazos path { vector-effect:non-scaling-stroke; }
@@ -904,11 +905,10 @@ const IGN = (c, f) => "https://www.ign.es/wmts/ign-base?request=GetTile&service=
 const BASES_PNOA = "https://www.ign.es/wmts/pnoa-ma?layer=OI.OrthoimageCoverage&style=default" +
   "&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/jpeg" +
   "&TileMatrix={z}&TileCol={x}&TileRow={y}";
-/* Sólo dos mapas base: el ráster del IGN (el de referencia, con toponimia y relieve) y OSM.
-   Fuera el radar invertido, el gris y la ortofoto: sumaban tres modos de mirar lo mismo y el
-   arranque caía en un fondo negro que parecía un fallo. */
+/* Sólo dos mapas base: el IGN de LÍNEAS (IGNBaseTodo sin fondo: toponimia, relieve y límites, sin
+   el relleno del ráster, que tapa las capas) y OpenStreetMap. Fuera el gris y la ortofoto. */
 const BASES = {
-  ign: ["IGN ráster", IGN("IGNBaseTodo", "image/png")],
+  lineas: ["IGN líneas", IGN("IGNBaseTodo-nofondo", "image/png")],
   osm: ["OpenStreetMap", "https://tile.openstreetmap.org/{z}/{x}/{y}.png"]
 };
 
@@ -1273,7 +1273,7 @@ mapa.on("click", e => {
 
 let capaBase = null;
 function ponerBase(k) {
-  const [nombre, url] = BASES[k] || BASES.ign;
+  const [nombre, url] = BASES[k] || BASES.lineas;
   if (capaBase) mapa.removeLayer(capaBase);
   capaBase = L.tileLayer(url, {
     attribution: "© IGN · datos: OSM / REE / MITMA / MITECO / CSN / CORES / Enagás",
@@ -1281,7 +1281,7 @@ function ponerBase(k) {
     updateWhenZooming: true, keepBuffer: 4
   }).addTo(mapa);
   capaBase.bringToBack();
-  document.documentElement.dataset.base = BASES[k] ? k : "ign";
+  document.documentElement.dataset.base = BASES[k] ? k : "lineas";
 }
 
 /* ---------------- ficha ---------------- */
@@ -2108,11 +2108,11 @@ if (cajaPresets) {
 const sel = $("#base");
 Object.entries(BASES).forEach(([k, v]) => {
   const o = document.createElement("option");
-  o.value = k; o.textContent = v[0]; if (k === "ign") o.selected = true;
+  o.value = k; o.textContent = v[0]; if (k === "lineas") o.selected = true;
   sel.appendChild(o);
 });
 sel.addEventListener("change", e => ponerBase(e.target.value));
-ponerBase("ign");
+ponerBase("lineas");
 
 /* ---------------- motor ---------------- */
 const POPUP = L.popup({ maxWidth: 348, minWidth: 302, autoPanPadding: [26, 26] });
@@ -3916,7 +3916,21 @@ function lienzoDe(c) {
 
 function recortar(c) {
   const todo = datos[c.id];
-  if (!c.__dibujo || !todo || todo.length <= RECORTE_MIN) return;
+  if (!c.__dibujo || !todo || !todo.length) return;
+  /* Capa pequeña (≤ RECORTE_MIN): no hay nada que recortar, se dibuja ENTERA. Antes se salía por
+     aquí sin pintar, y como la primera pintura de una capa recién encendida llega con el grupo
+     vacío (los datos aún no han bajado), la capa se quedaba invisible PARA SIEMPRE: no había
+     ningún camino que volviera a llamar a `dibujarVector` con los datos. Les pasaba a
+     demarcaciones (25), ine-ccaa (19), ine-paro (19), clima-temperatura (52) y todas las demás
+     por debajo de 120 objetos. */
+  if (todo.length <= RECORTE_MIN) {
+    const claveTodo = "todo:" + todo.length;
+    if (claveTodo === c.__claveVista) return;
+    c.__claveVista = claveTodo;
+    c.__pintadoEn = L.latLngBounds([[-85, -180], [85, 180]]);   // está dibujada entera: no se recorta
+    dibujarVector(c, todo);
+    return;
+  }
   /* Si la vista sigue dentro de lo que ya está pintado, no se toca nada. Antes se recortaba y se
      volvía a dibujar en CADA arrastre: miles de objetos nuevos y miles liberados por movimiento,
      y el navegador se pasaba el rato en el recolector de basura (medido: 15 % del tiempo en GC,
@@ -5219,7 +5233,7 @@ function estadoUrl() {
   const c = mapa.getCenter();
   const activas = CAPAS.filter(x => document.querySelector(`[data-capa="${x.id}"]`)?.checked).map(x => x.id);
   return "#z=" + mapa.getZoom().toFixed(2) + "&lat=" + c.lat.toFixed(4) + "&lng=" + c.lng.toFixed(4) +
-         "&c=" + activas.join(",") + "&b=" + (document.documentElement.dataset.base || "ign") +
+         "&c=" + activas.join(",") + "&b=" + (document.documentElement.dataset.base || "lineas") +
          "&t=" + (document.documentElement.dataset.tema || "oscuro");
 }
 $("#btn-enlace").addEventListener("click", async () => {
