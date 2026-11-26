@@ -1,0 +1,271 @@
+{
+ "paso": 0.05,
+ "generado": "2026-11-26T14:14:04Z",
+ "capas": {
+  "interelec": {
+   "total": 5,
+   "celdas": 5,
+   "bytes": 128
+  },
+  "plantas": {
+   "total": 5797,
+   "celdas": 3717,
+   "bytes": 55429
+  },
+  "hidro": {
+   "total": 5797,
+   "celdas": 3717,
+   "bytes": 55427
+  },
+  "residuos": {
+   "total": 14,
+   "celdas": 11,
+   "bytes": 211
+  },
+  "nuclear": {
+   "total": 7,
+   "celdas": 5,
+   "bytes": 123
+  },
+  "gasgen": {
+   "total": 5797,
+   "celdas": 3717,
+   "bytes": 55428
+  },
+  "resto": {
+   "total": 5797,
+   "celdas": 3717,
+   "bytes": 55427
+  },
+  "petrolifero": {
+   "total": 133,
+   "celdas": 99,
+   "bytes": 1539
+  },
+  "regas": {
+   "total": 7,
+   "celdas": 7,
+   "bytes": 152
+  },
+  "gasalm": {
+   "total": 5,
+   "celdas": 5,
+   "bytes": 125
+  },
+  "refinerias": {
+   "total": 10,
+   "celdas": 10,
+   "bytes": 202
+  },
+  "embalses": {
+   "total": 402,
+   "celdas": 390,
+   "bytes": 5857
+  },
+  "desaladoras": {
+   "total": 28,
+   "celdas": 25,
+   "bytes": 419
+  },
+  "nucleos": {
+   "total": 37469,
+   "celdas": 12203,
+   "bytes": 182563
+  },
+  "edar": {
+   "total": 4784,
+   "celdas": 3563,
+   "bytes": 53022
+  },
+  "etap": {
+   "total": 1552,
+   "celdas": 735,
+   "bytes": 11127
+  },
+  "h2": {
+   "total": 7,
+   "celdas": 7,
+   "bytes": 148
+  },
+  "trafico-estaciones": {
+   "total": 1074,
+   "celdas": 538,
+   "bytes": 7772
+  },
+  "puertos": {
+   "total": 44,
+   "celdas": 44,
+   "bytes": 711
+  },
+  "faros": {
+   "total": 278,
+   "celdas": 243,
+   "bytes": 3659
+  },
+  "intermodales": {
+   "total": 383,
+   "celdas": 307,
+   "bytes": 4643
+  },
+  "dgt-camaras": {
+   "total": 1977,
+   "celdas": 1056,
+   "bytes": 15852
+  },
+  "dgt-paneles": {
+   "total": 761,
+   "celdas": 472,
+   "bytes": 7120
+  },
+  "dgt-incidencias": {
+   "total": 1653,
+   "celdas": 1078,
+   "bytes": 16145
+  },
+  "dgt-electrolineras": {
+   "total": 12144,
+   "celdas": 2793,
+   "bytes": 41705
+  },
+  "carburantes": {
+   "total": 11453,
+   "celdas": 4324,
+   "bytes": 64603
+  },
+  "nap-metro": {
+   "total": 1050,
+   "celdas": 30,
+   "bytes": 528
+  },
+  "nap-cercanias": {
+   "total": 1167,
+   "celdas": 748,
+   "bytes": 11119
+  },
+  "nap-ave": {
+   "total": 1006,
+   "celdas": 825,
+   "bytes": 12330
+  },
+  "estaciones-cercanias": {
+   "total": 405,
+   "celdas": 242,
+   "bytes": 3683
+  },
+  "gtfsrt": {
+   "total": 398,
+   "celdas": 202,
+   "bytes": 3034
+  },
+  "sismos": {
+   "total": 79,
+   "celdas": 73,
+   "bytes": 1148
+  },
+  "estaciones-gas": {
+   "total": 11484,
+   "celdas": 4329,
+   "bytes": 64713
+  },
+  "aeropuertos": {
+   "total": 553,
+   "celdas": 531,
+   "bytes": 7941
+  },
+  "alertas-gdacs": {
+   "total": 1,
+   "celdas": 1,
+   "bytes": 73
+  },
+  "aforos": {
+   "total": 2191,
+   "celdas": 1558,
+   "bytes": 23279
+  },
+  "calidad-aire-estaciones": {
+   "total": 783,
+   "celdas": 544,
+   "bytes": 8181
+  },
+  "puentes-rce": {
+   "total": 10946,
+   "celdas": 4149,
+   "bytes": 61984
+  },
+  "aviacion-ligera": {
+   "total": 1748,
+   "celdas": 1564,
+   "bytes": 23398
+  },
+  "patrimonio-ign": {
+   "total": 20116,
+   "celdas": 8157,
+   "bytes": 121286
+  },
+  "sanidad-ign": {
+   "total": 3531,
+   "celdas": 2171,
+   "bytes": 32517
+  },
+  "residencias-ign": {
+   "total": 420,
+   "celdas": 339,
+   "bytes": 5096
+  },
+  "depositos-ign": {
+   "total": 423,
+   "celdas": 196,
+   "bytes": 3064
+  },
+  "ciudad-aparcamientos": {
+   "total": 12679,
+   "celdas": 3159,
+   "bytes": 47154
+  },
+  "ciudad-cementerios": {
+   "total": 19242,
+   "celdas": 10468,
+   "bytes": 155952
+  },
+  "ciudad-recreo": {
+   "total": 915,
+   "celdas": 813,
+   "bytes": 12257
+  },
+  "ciudad-docencia": {
+   "total": 33232,
+   "celdas": 5452,
+   "bytes": 81906
+  },
+  "ciudad-antenas": {
+   "total": 16361,
+   "celdas": 7956,
+   "bytes": 118810
+  },
+  "ciudad-mineria": {
+   "total": 1490,
+   "celdas": 783,
+   "bytes": 11761
+  },
+  "ciudad-singulares": {
+   "total": 134,
+   "celdas": 116,
+   "bytes": 1796
+  },
+  "alojamiento-ign": {
+   "total": 2703,
+   "celdas": 1952,
+   "bytes": 28975
+  },
+  "ocio-ign": {
+   "total": 837,
+   "celdas": 733,
+   "bytes": 10965
+  },
+  "cimas-ign": {
+   "total": 14793,
+   "celdas": 6370,
+   "bytes": 94694
+  }
+ }
+}

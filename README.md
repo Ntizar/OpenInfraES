@@ -334,6 +334,7 @@ Cada capa sale de un script. Ningún dato se escribe a mano: todo es regenerable
 python scripts/descargar.py       # baja los GeoJSON de la fuente (con fecha en el nombre)
 python scripts/agregar.py         # agrega y VERIFICA los conteos de la fuente
 python scripts/simplificar.py     # Douglas-Peucker para el visor (89 m de tolerancia)
+python scripts/resumen_puntos.py  # burbujas nacionales (0,05°) para pintar mientras carga
 
 # Organismos, capa por capa
 python scripts/capas_oficiales.py # IGN, MITECO, CSN, CORES, Enagás

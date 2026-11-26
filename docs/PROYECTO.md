@@ -113,6 +113,19 @@ Palancas: simplificación Douglas-Peucker, agrupación por rejilla al alejar, LO
 líneas de 220 kV no se dibujan por debajo de z6,2), carga solo de lo que cae en la vista y descarga
 bajo demanda.
 
+**Agrupación medida en píxeles (2026-11-26).** La rejilla no se pide en grados sino en pantalla: una
+burbuja ocupa hasta 36 px, así que la celda se calcula para que quepan ~100 burbujas legibles en
+escritorio y ~60 en móvil, a cualquier zoom. Encima, dos capas distintas no apilan burbujas en el
+mismo punto: la que llega después cede el sitio (`OCUPADO`) y vuelve a aparecer al acercarse.
+Medido con 8 capas de puntos a zoom 8 (1280×800): **3.959 → 569 burbujas (-86 %)** y **7.484 → 77
+parejas de burbujas solapadas (-99 %)**; a zoom 9, 2.814 → 774.
+
+**Mientras carga, burbujas.** `scripts/resumen_puntos.py` deja cada capa de puntos agregada en 0,05°
+(~5,5 km, 50-100 KB, ~2 % del original) en `datos/resumen/`. El visor la pide a la vez que el
+GeoJSON y pinta las burbujas nacionales con la cifra real en medio segundo; cuando llega el fichero
+completo, repinta con los puntos de verdad. Medido con 4 capas y 6 s de latencia simulada: 416
+burbujas a los 0,5 s, datos completos a los 7 s.
+
 ## Límites conocidos
 
 - **No hay generación por planta en la API pública de REE.** Solo agregado diario. Por unidad exige

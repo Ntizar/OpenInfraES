@@ -1072,6 +1072,29 @@ const mapa = L.map("mapa", {
    mientras termina— y ordena por tamaño, que es lo que el usuario nota primero. */
 const COLA_PINTADO = [];
 let COLA_ACTIVA = false;
+/* Solape entre capas: cada capa se agrupa por su cuenta y aun así dos capas distintas ponen
+   burbuja en el mismo pueblo (plantas y carburantes, patrimonio y cimas). Medido con cuatro
+   capas a zoom 8: 136 parejas de burbujas pisadas. Este índice guarda cada burbuja ya dibujada
+   con su radio y la siguiente sólo ocupa sitio si no se pisa; al acercarse, las celdas se separan
+   y vuelven a aparecer todas. */
+const OCUPADO = new Map(), HUECO_PX = 48;
+function sitioLibre(x, y, r) {
+  const bx = (x / HUECO_PX) | 0, by = (y / HUECO_PX) | 0;
+  for (let i = bx - 1; i <= bx + 1; i++) for (let j = by - 1; j <= by + 1; j++) {
+    const lista = OCUPADO.get(i + ":" + j);
+    if (!lista) continue;
+    for (const o of lista) {
+      if (Math.hypot(o.x - x, o.y - y) < (o.r + r) * 0.85) return false;
+    }
+  }
+  return true;
+}
+function ocuparSitio(x, y, r) {
+  const k = ((x / HUECO_PX) | 0) + ":" + ((y / HUECO_PX) | 0);
+  let lista = OCUPADO.get(k);
+  if (!lista) OCUPADO.set(k, lista = []);
+  lista.push({ x, y, r });
+}
 
 function encolarPintado() {
   COLA_PINTADO.length = 0;
@@ -1084,12 +1107,25 @@ function encolarPintado() {
     // Sólo se encola lo que de verdad cambia: si el zoom y la vista no movieron el paso, la capa
     // se queda como está y la cola no se llena de trabajo inútil (99 capas → 3 o 4 reales).
     if (c.tipo === "punto") {
-      if (c.__paso === pasoPuntos(c, z) && c.__zoom === z &&
+      if (c.__paso === pasoPuntos(c, z) && c.__nivel === Math.floor(z) &&
           c.__vista && c.__vista.contains(vista)) continue;
-    } else if (c.__claveVista === clave) continue;
+    } else if (c.__pintadoEn && c.__pintadoEn.contains(vista)) continue;
     COLA_PINTADO.push(c);
   }
   COLA_PINTADO.sort((a, b) => (datos[b.id]?.length || 0) - (datos[a.id]?.length || 0));
+  /* Las burbujas de las capas que NO se repintan en esta ronda siguen en pantalla: se anotan para
+     que las nuevas de otra capa no se les suban encima. */
+  OCUPADO.clear();
+  for (const c of CAPAS) {
+    if (c.tipo !== "punto" || !c.__marcas || COLA_PINTADO.includes(c)) continue;
+    if (!mapa.hasLayer(capas[c.id])) continue;
+    for (const m of c.__marcas.values()) {
+      const tam = m.options && m.options.icon && m.options.icon.options.iconSize;
+      if (!tam) continue;                          // punto suelto: no ocupa hueco
+      const ll = m.getLatLng(), p = mapa.latLngToContainerPoint(ll);
+      ocuparSitio(p.x, p.y, tam[0] / 2);
+    }
+  }
   if (!COLA_ACTIVA) { COLA_ACTIVA = true; setTimeout(procesarCola, 0); }
 }
 
@@ -1098,12 +1134,15 @@ function procesarCola() {
   while (COLA_PINTADO.length && performance.now() - t0 < 8) {
     const c = COLA_PINTADO.shift();
     if (!mapa.hasLayer(capas[c.id])) continue;
+    const t1 = performance.now();
     try {
       if (c.tipo === "punto") pintarPuntos(c);
       else if (c.__dibujo) recortar(c);
+      else pintarVector(c, datos[c.id] || []);   // primera pintura: aún no hay dibujo que recortar
       atenuarCapa(c);
       c.__panel?.classList.remove("cambiando");
     } catch (e) { console.warn("repintado:", c.id, e.message); }
+    c.__ms = performance.now() - t1;    // cuánto costó pintar esta capa: lo lee `memoria()`
   }
   /* `setTimeout` y no `requestAnimationFrame`: rAF se pausa cuando la pestaña no está visible
      (o en headless) y la cola se quedaba congelada con 99 capas dentro — medido: 87 s sin
@@ -1113,19 +1152,19 @@ function procesarCola() {
 }
 
 mapa.on("moveend", () => {
+  const z = mapa.getZoom();
   for (const c of CAPAS) {
-    // Detalle urbano: entra o sale según el zoom (barato, va antes que la cola).
-    aplicarOcultoZoom(c);
     // Capa partida: al mover el mapa, si asoma una provincia que aun no esta, se pide.
-    // `c.__encendida` y no `hasLayer`: con `ocultaHasta` la capa esta encendida pero fuera del
-    // mapa, y sus trozos tienen que llegar igualmente en cuanto se cruza el zoom.
-    if (c.carpeta && c.__idx && c.__feats && c.__encendida &&
-        (!c.ocultaHasta || mapa.getZoom() >= c.ocultaHasta)) {
+    // `c.__encendida` y no `hasLayer`: fuera de banda la capa esta encendida pero no dibujada,
+    // y sus trozos tienen que seguir llegando si el zoom la deja dentro.
+    if (c.carpeta && c.__idx && c.__feats && c.__encendida && !fueraDeBanda(c, z)) {
       const faltan = partesEnVista(c, mapa.getBounds().pad(0.25))
         .filter(p => !c.__pedidas[p.slug]);
       if (faltan.length) cargarPartes(c, faltan);
     }
   }
+  // Banda + turno de dibujo: decide qué capas se ven con este zoom (y sale del mapa lo que no).
+  aplicarBandaZoom();
   encolarPintado();
 });
 
@@ -1133,11 +1172,18 @@ mapa.on("moveend", () => {
 // La rueda comparte ese ciclo: un gesto puede cambiar de destino en cada fotograma.
 function activarZoomRueda(map) {
   const nodo = map.getContainer();
-  let gesto = null, frame = 0;
+  let gesto = null, frame = 0, ultimoPaso = 0;
 
   function terminar() {
     if (!gesto) return;
+    const destino = gesto.destino;
     cancelAnimationFrame(frame);
+    // Si la animación se quedó a medias (pestaña oculta), se salta al destino sin animar.
+    if (Math.abs(map.getZoom() - destino) > 0.001) {
+      const desdeCentro = gesto.cursor.subtract(map.getSize().divideBy(2));
+      const centro = map.unproject(map.project(gesto.ancla, destino).subtract(desdeCentro), destino);
+      map._move(centro, destino, { flyTo: true });
+    }
     gesto = null;
     // Actualizar y liberar las teselas intermedias al cerrar el gesto.
     map.fire("zoom");
@@ -1167,22 +1213,33 @@ function activarZoomRueda(map) {
     if (!delta) return;
     e.preventDefault();
     if (map._animatingZoom || map.touchZoom?._zooming) return;
+    /* Una muesca = un paso de `zoomDelta` (0,75 niveles), siempre redondeado a cuartos, y como
+       mucho uno cada 70 ms para que un trackpad que manda veinte eventos seguidos no se lleve el
+       mapa a zoom 18. Antes el destino era `base + delta/220` redondeado: con rueda de 120 se
+       saltaba medio nivel y con trackpad (deltas de 4-8) casi todos redondeaban a cero, así que
+       el zoom parecía muerto a ratos. */
+    const ahora = performance.now();
+    if (ahora - ultimoPaso < 70) return;
+    ultimoPaso = ahora;
     const actual = map.getZoom();
     const cursor = gesto && e.clientX === gesto.x && e.clientY === gesto.y
       ? gesto.cursor : map.mouseEventToContainerPoint(e);
     // Al invertir el sentido, descartar el recorrido que aún quedaba por animar.
+    const haciaDentro = delta < 0;
     const base = gesto && (gesto.destino - actual) * delta >= 0 ? gesto.destino : actual;
-    // El destino se redondea a cuartos de nivel: es el paso con el que las teselas se ven
-    // nítidas (ver `zoomSnap`). Sin esto el zoom continuo dejaba el mapa en 7,13 y borroso.
-    const crudo = base + delta / 220;
+    const crudo = base + (haciaDentro ? 1 : -1) * (map.options.zoomDelta || 0.75);
     const destino = Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(),
       Math.round(crudo * 4) / 4));
     if (!gesto) {
       if (destino === actual) return;
       map._stop();
       map._moveStart(true);
-      gesto = { frameAnterior: performance.now() - 16 };
+      gesto = { frameAnterior: performance.now() - 16, inicio: performance.now() };
       frame = requestAnimationFrame(avanzar);
+      /* Red de seguridad: con la pestaña oculta el navegador para `requestAnimationFrame` y el
+         gesto se quedaba a medias, con el mapa sin llegar al destino y la rueda muerta hasta
+         recargar. Si en 1,2 s no ha terminado sola, se cierra a mano. */
+      setTimeout(() => { if (gesto && performance.now() - gesto.inicio > 1200) { terminar(); } }, 1300);
     }
     if (!gesto.cursor || !gesto.cursor.equals(cursor)) {
       gesto.cursor = cursor;
@@ -1596,7 +1653,7 @@ const CAPAS = [
   { id:"carreteras", grupo:"Transporte", label:"Carreteras del Estado", tipo:"linea", on:false, color:"#64748b",
     fichero:"datos/hermes/carreteras.geojson", peso:1.1, opacidad:.6, zoomMin:7.5 },
   { id:"trafico-ccaa", grupo:"Transporte", label:"IMD de tráfico por comunidades · red estatal y autonómica", tipo:"linea", on:false,
-    color:"#f97316", fichero:"datos/trafico_ccaa.geojson", carpeta:"datos/trafico-ccaa", peso:2.6, opacidad:.9, zoomMin:6.5,
+    color:"#f97316", fichero:"datos/trafico_ccaa.geojson", carpeta:"datos/trafico-ccaa", peso:2.6, opacidad:.9, zoomMin:9,
     popupTitulo:"carretera", colorCampo:"color", filtroCampo:{campo:"ccaa", etiqueta:"Comunidad"},
     nota:"IMD en vehículos/día · cada tramo lleva su año y su fuente en la ficha",
     rampa:[{color:"#22c55e",etiqueta:"menos de 2.000"},{color:"#84cc16",etiqueta:"2.000 – 5.000"},
@@ -1938,8 +1995,22 @@ const CAPAS = [
      Leaflet pide el bbox en un sistema y coloca el tile en otro, y salen parches de otra zona. --- */
 ];
 
-/* zoom a partir del cual se dibuja cada punto por separado */
-const ZOOM_DETALLE = 8;
+/* ---------------- banda de zoom: la regla que hace fino el visor ----------------
+   Cada capa vive en una banda [entra, zoomMax]. Entra en `ocultaHasta` (detalle urbano) o en su
+   `zoomMin`, y sale seis niveles más arriba: una capa nacional (zoomMin 6) deja de pintarse a
+   partir de 12, cuando ya sólo se vería una esquina ampliada de sus polígonos; una de calle
+   (ocultaHasta 12) vive hasta 18.
+   Fuera de su banda una capa no se descarga, no se recorta y no se pinta. Es lo que hace que a
+   cada nivel de zoom haya un conjunto distinto —y pequeño— de capas: el mapa no se satura nunca
+   y el presupuesto de memoria da para todo lo que se ve.
+   Se puede fijar a mano con `zoomMax:` en la capa cuando la regla de seis no valga. */
+for (const c of CAPAS) {
+  const entra = c.ocultaHasta || c.zoomMin || 5;
+  if (!c.zoomMax) c.zoomMax = Math.min(18, entra + 6);
+  if (c.zoomMax < entra) c.zoomMax = entra;
+}
+
+
 // Version de los datos: se sube al regenerar los geojson. Sin ella el navegador puede seguir
 // sirviendo de cache un fichero viejo y los cambios no aparecen por mucho que recargues.
 const VER_DATOS = "2026-11-23l";
@@ -3517,25 +3588,60 @@ const radioDe = (c, p) => {
   return Math.max(rmin, Math.min(rmax, Math.sqrt(p[c.magnitud] || 0) / 1.6));
 };
 
-/* ---------- agregación propia por rejilla (sin plugin) ----------
-   A zoom nacional 1.400 puntos hidráulicos son una mancha. Se agrupan en celdas
-   cuyo tamaño crece al alejar; al acercarse (z>=8) cada punto se dibuja solo. */
-function celda(z) {
-  // calibrado para ~70 burbujas con 1.400 puntos a zoom nacional
-  const grados = Math.pow(2, 9 - Math.floor(z)) * 0.045;
-  return Math.max(0.06, Math.min(3, grados));
-}
+/* ---------- agregación propia por rejilla, medida en PÍXELES (sin plugin) ----------
+   Una burbuja ocupa hasta 36 px de diámetro, así que lo que manda no es una celda en grados sino
+   cuántas burbujas caben sin pisarse. La fórmula anterior era en grados (0,72° a zoom 5 = 16 px
+   de pantalla): salían cientos de burbujas de 36 px solapadas — una alfombra naranja que tapaba
+   España y que además pesaba como miles de nodos DOM.
+   Ahora la rejilla se pide en píxeles: separación de ~34 px como mínimo y un objetivo de burbujas
+   por pantalla, el mismo a cualquier zoom. El tamaño en grados sale de la escala del nivel.
+   Resultado: ~100 burbujas en escritorio y ~60 en móvil, y nunca más de eso por capa, en vez de
+   20.000 marcas. Al acercarse, las celdas se encogen en grados y los puntos se van separando solos
+   hasta quedar sueltos (la celda con un solo punto se dibuja como punto). */
+const BURBUJAS_OBJETIVO = 100, BURBUJAS_MOVIL = 60, SEPARACION_MIN_PX = 34;
+const COS_LAT_ES = Math.cos(40 * Math.PI / 180);   // 1° de longitud son 0,77° de latitud en España
 
-function pasoPuntos(c, z) {
-  /* `siempreIndividual` sólo manda si la capa no fija `zoomDetalle`: con las dos cosas, el zoom
-     decide. Plantas es el caso: 5.593 puntos sueltos a zoom de país son una masa ilegible (y
-     5.593 nodos SVG que Leaflet reproyecta en cada arrastre); por debajo de 8 se agrupan en
-     burbujas y a partir de 8 cada planta se ve con su radio. */
-  if (c.zoomDetalle ? z >= c.zoomDetalle : c.siempreIndividual) return null;
-  /* En pantalla de móvil caben tres veces menos celdas: con el paso de escritorio, 20.000 puntos
-     se convierten en una alfombra de burbujas que tapa el mapa. */
-  const densa = (datos[c.id]?.length || 0) > 10000 ? 1.5 : 1;
-  return celda(z) * densa * (innerWidth < 640 ? 1.8 : 1);
+function pxPorGrado(z) { return (256 * Math.pow(2, z)) / 360; }
+
+function pasoPuntos(c, z, vista) {
+  /* La agregación va por NIVELES ENTEROS: con zoom a cuartos, 6,25 y 6,75 tienen la misma rejilla,
+     así que no se reagrupa ni se repinta hasta cruzar el nivel. Antes cada cuarto de zoom
+     reconstruía todas las capas y el mapa daba tirones en cada muesca de rueda. */
+  z = Math.floor(z);
+  const feats = datos[c.id] || (RESUMEN[c.id] && RESUMEN[c.id].feats);
+  if (!feats || !feats.length) return null;
+  const v = vista || mapa.getBounds();
+  const s = v.getSouth(), n = v.getNorth(), o = v.getWest(), e = v.getEast();
+  const movil = innerWidth < 640;
+  const objetivo = movil ? BURBUJAS_MOVIL : BURBUJAS_OBJETIVO;
+  /* Una pasada (con salida temprana): cuántos puntos caen en la vista. Si caben sueltos sin
+     taparse, no se agrupa — una capa de 7 nucleares o 45 puertos se dibuja entera y se lee mejor
+     que en burbujas de 3. */
+  let dentro = 0;
+  for (const f of feats) {
+    const p = puntoDe(f.geometry);
+    if (p && p[1] >= s && p[1] <= n && p[0] >= o && p[0] <= e && ++dentro > objetivo) break;
+  }
+  if (dentro <= objetivo) return null;
+  /* Rejilla cuyo lado son `px` píxeles de pantalla, pasada a grados con la escala del nivel y
+     corregida por la latitud: la celda sale casi cuadrada en pantalla, no estirada. */
+  let px = Math.sqrt((mapa.getSize().x * mapa.getSize().y) / (movil ? BURBUJAS_MOVIL : BURBUJAS_OBJETIVO));
+  px = Math.max(SEPARACION_MIN_PX, Math.min(px, 150));
+  let paso = px * COS_LAT_ES / pxPorGrado(z);
+  /* Donde el mapa está muy lleno (costa, áreas metropolitanas) la rejilla aún da más celdas de las
+     que se leen: se engorda hasta que quepan. Lo que manda es que el mapa se lea. */
+  for (let intento = 0; intento < 4; intento++) {
+    const celdas = new Set();
+    for (const f of feats) {
+      const p = puntoDe(f.geometry);
+      if (!p || p[1] < s || p[1] > n || p[0] < o || p[0] > e) continue;
+      celdas.add(Math.floor(p[1] / paso) + ":" + Math.floor(p[0] / paso));
+      if (celdas.size > objetivo * 1.3) break;
+    }
+    if (celdas.size <= objetivo * 1.3) break;
+    paso *= 1.4;
+  }
+  return paso;
 }
 
 // En capas pequeñas basta con compensar el radio en el SVG. Las densas
@@ -3589,11 +3695,53 @@ function puntoDe(g) {
   return (Array.isArray(a) && a.length >= 2 && typeof a[0] === "number") ? a : null;
 }
 
+/* ---------- resumen previo: burbujas antes de que llegue el GeoJSON ----------
+   Una capa de puntos pesa 1-10 MB y entre descarga y `JSON.parse` pasan segundos con el mapa
+   vacío. `scripts/resumen_puntos.py` deja la misma capa agregada en 0,05° (50-100 KB, ~2 %), y
+   aquí se pinta al instante con la cifra real de cada celda. Cuando llega el fichero completo se
+   repinta con los puntos de verdad. */
+const RESUMEN = {};                    // id -> {total, feats} ya convertido a features
+function pedirResumen(c) {
+  if (c.__resumenPedido) return;
+  c.__resumenPedido = true;
+  fetch(`datos/resumen/${c.id}.json?v=${VER_DATOS}`)
+    .then(r => r.ok ? r.json() : null)
+    .then(d => {
+      if (!d || !d.celdas || !d.celdas.length) return;
+      RESUMEN[c.id] = {
+        total: d.total,
+        feats: d.celdas.map(([lat, lng, n]) => ({
+          type: "Feature",
+          geometry: { type: "Point", coordinates: [lng, lat] },
+          properties: { __n: n }
+        }))
+      };
+      // Sólo se pinta si el GeoJSON completo no ha llegado ya.
+      if (!datos[c.id] && c.__encendida && !fueraDeBanda(c, mapa.getZoom())) {
+        c.__paso = undefined; c.__nivel = undefined; c.__vista = null;
+        encolarPintado();
+      }
+    })
+    .catch(() => {});
+}
+
 function pintarPuntos(c) {
-  const feats = datos[c.id];
+  const completo = datos[c.id];
+  const feats = completo || (RESUMEN[c.id] && RESUMEN[c.id].feats);
   if (!feats) return;
   const z = mapa.getZoom();
-  const paso = pasoPuntos(c, z);
+  const vista = mapa.getBounds();
+  const paso = pasoPuntos(c, z, vista);
+  const nivel = Math.floor(z);
+  const mismoNivel = c.__paso === paso;
+  /* La caché incluye el NIVEL, no el zoom exacto: los cuartos de nivel no repintan nada (Leaflet
+     ya escala los puntos con `--escala-radio`). Con paso `null` (puntos sueltos) sin el nivel la
+     vista nueva quedaba «contenida» en la anterior y no se repintaba nunca: a zoom de ciudad
+     seguían dibujados los puntos de toda España. */
+  if (mismoNivel && c.__nivel === nivel && c.__vista && c.__vista.contains(vista)) return;
+  /* Con la rejilla en píxeles, una capa nunca pasa de ~190 marcas (burbujas o puntos) por
+     pantalla: no hace falta un tope de emergencia como el `TOPE_MARCAS` anterior, que agrupaba a
+     destiempo y dejaba el mapa a medio pintar. */
   const individual = paso === null;
   if (!c.__panel) {
     const pane = "puntos-" + c.id;
@@ -3607,14 +3755,9 @@ function pintarPuntos(c) {
       }
     });
   }
-  const vista = mapa.getBounds();
-  const mismoNivel = c.__paso === paso;
-  /* La caché incluye el ZOOM, no solo el paso: con `siempreIndividual` el paso es siempre null,
-     así que al acercarse la vista nueva quedaba «contenida» en la anterior y no se repintaba
-     nunca — a zoom de ciudad seguían dibujados los puntos de toda España, y Leaflet los
-     reproyectaba en cada arrastre. */
-  if (mismoNivel && c.__zoom === z && c.__vista && c.__vista.contains(vista)) return;
-  if (!individual && !mismoNivel) {
+  /* El paso puede haber cambiado por el tope de marcas: se rehace la agrupación si toca. */
+  const cambiaPaso = c.__paso !== paso;
+  if (!individual && cambiaPaso) {
     const celdas = new Map();
     for (const f of feats) {
       const pto = puntoDe(f.geometry);
@@ -3639,6 +3782,7 @@ function pintarPuntos(c) {
 
   c.__paso = paso;
   c.__zoom = z;
+  c.__nivel = nivel;
   c.__vista = vista.pad(0.25);
   if (z < c.zoomMin) c.__tenue = undefined;
   const anteriores = c.__marcas || new Map();
@@ -3649,18 +3793,27 @@ function pintarPuntos(c) {
   const vb = c.__vista, vS = vb.getSouth(), vN = vb.getNorth(), vO = vb.getWest(), vE = vb.getEast();
   function mostrar(f, lat, lng, items) {
     if (!(lat >= vS && lat <= vN && lng >= vO && lng <= vE)) return;
-    const n = items ? items.length : 1;
+    /* La cifra de una burbuja es la suma de sus puntos: en el resumen previo cada celda ya trae
+       su cuenta en `__n` (una celda = n puntos reales). */
+    let n = 1;
+    if (items) { n = 0; for (const it of items) n += (it.properties && it.properties.__n) || 1; }
     const clave = n === 1 ? f : items;
+    /* Burbuja con el número dentro: sin cifra, 416 círculos naranjas parecen una trama y el mapa
+       deja de leerse. Y el tamaño dice cuánto hay: 11 y 435 no pueden pesar igual. */
+    const radio = n > 1 ? Math.min(18, 5 + 1.35 * Math.log2(n + 1)) : 0;
+    /* Dos capas distintas ponen burbuja en el mismo pueblo (plantas y carburantes, patrimonio y
+       cimas): la que llega después cede el sitio en vez de apilarse encima. */
+    if (n > 1) {
+      const pto = mapa.latLngToContainerPoint([lat, lng]);
+      if (!sitioLibre(pto.x, pto.y, radio)) return;
+      ocuparSitio(pto.x, pto.y, radio);
+    }
     if (anteriores.has(clave)) {
       marcas.set(clave, anteriores.get(clave));
       return;
     }
     const p = f.properties || {};
     if (n > 1) {
-      /* Burbuja con el número dentro: sin cifra, 416 círculos naranjas parecen una trama y el
-         mapa deja de leerse. Con cifra se entiende de un vistazo que ahí hay 48 cosas. */
-      /* el tamano tambien dice cuanto hay: 11 y 435 no pueden pesar igual */
-      const radio = Math.min(18, 5 + 1.35 * Math.log2(n + 1));
       const lado = Math.round(radio * 2);
       // color del tipo dominante en la celda: 40 campings y 2 balnearios se pintan de camping
       let tinte = c.color;
@@ -3675,12 +3828,18 @@ function pintarPuntos(c) {
       const icono = L.divIcon({
         className: "burbuja",
         iconSize: [lado, lado], iconAnchor: [lado / 2, lado / 2],
-        html: `<span style="border-color:${tinte};color:${tinte};font-size:${Math.max(8, Math.round(lado * 0.34))}px">${n}</span>`
+        /* A partir de mil la cifra no cabe y no dice nada: «37k» se lee, «37469» no. */
+        html: `<span style="border-color:${tinte};color:${tinte};font-size:${Math.max(8, Math.round(lado * 0.34))}px">${n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(".", ",") + "k" : n}</span>`
       });
       const m = L.marker([lat, lng], { icon: icono, keyboard: false, pane: c.__panel });
       m.on("click", e => {
-        POPUP.setLatLng(e.latlng).setContent(fichaGrupo(items, c)).openOn(mapa);
-        engancharGrupo();
+        /* Con el resumen previo la ficha no tiene atributos: se dice que están llegando en vez
+           de abrir un panel vacío. */
+        POPUP.setLatLng(e.latlng).setContent(completo ? fichaGrupo(items, c)
+          : `<div class="ficha"><h4>${n} ${n === 1 ? "punto" : "puntos"}</h4>
+             <p class="nota">Los datos completos de «${c.label || c.id}» están llegando: la cifra
+             ya es la real, la ficha por punto aparece en cuanto termine la descarga.</p></div>`).openOn(mapa);
+        if (completo) engancharGrupo();
         L.DomEvent.stopPropagation(e);
       });
       m.addTo(capas[c.id]);
@@ -3757,6 +3916,11 @@ function lienzoDe(c) {
 function recortar(c) {
   const todo = datos[c.id];
   if (!c.__dibujo || !todo || todo.length <= RECORTE_MIN) return;
+  /* Si la vista sigue dentro de lo que ya está pintado, no se toca nada. Antes se recortaba y se
+     volvía a dibujar en CADA arrastre: miles de objetos nuevos y miles liberados por movimiento,
+     y el navegador se pasaba el rato en el recolector de basura (medido: 15 % del tiempo en GC,
+     con pausas de más de un segundo). */
+  if (c.__pintadoEn && c.__pintadoEn.contains(mapa.getBounds())) return;
   const v = mapa.getBounds().pad(0.3);
   const o = v.getWest(), s = v.getSouth(), e = v.getEast(), n = v.getNorth();
   const clave = [o, s, e, n].map(x => x.toFixed(3)).join(",");
@@ -3767,6 +3931,7 @@ function recortar(c) {
     if (k[2] >= o && k[0] <= e && k[3] >= s && k[1] <= n) dentro.push(f);
   }
   c.__claveVista = clave;
+  c.__pintadoEn = v;                    // hasta dónde está pintado: límite para no repintar
   /* Vista sin nada de esta capa: se VACÍA. Antes se dejaba lo anterior «por si acaso», y al
      acercarse a una ciudad las capas nacionales seguían con miles de caminos dibujados fuera
      de pantalla que Leaflet reproyectaba en cada arrastre. */
@@ -3787,17 +3952,26 @@ function pintarVector(c, feats) {
     if (k[2] >= o && k[0] <= e && k[3] >= s && k[1] <= n) dentro.push(f);
   }
   c.__claveVista = [o, s, e, n].map(x => x.toFixed(3)).join(",");
+  c.__pintadoEn = v;       // lo pintado cubre esta caja: mientras la vista quepa, no se repinta
   // `dibujarVector` se encarga de quitar el grupo anterior; con `dentro` vacío deja uno vacío
   // montado, que es lo que `recortar` necesita para volver a pintar al mover el mapa.
   dibujarVector(c, dentro);
 }
 
+/* Vectores por tandas: una capa de 7.500 polígonos se montaba en un solo tick y bloqueaba el
+   navegador ~600 ms (medido con `municipios` a zoom 8). Ahora se monta de 1.500 en 1.500 con un
+   temporizador entre tandas; si llega otra pintura, la anterior se abandona (`__token`). */
+const TROZO_VECTOR = 1500;
+
 function dibujarVector(c, feats) {
+  const token = (c.__token = (c.__token || 0) + 1);
   elementos[c.id] = [];
   if (c.__dibujo) capas[c.id].removeLayer(c.__dibujo);
   c.__dibujo = L.layerGroup();
   const destino = c.__dibujo;
-  if (!feats.length) return;
+  if (!feats.length) { destino.addTo(capas[c.id]); return; }
+  const grande = feats.length > RECORTE_MIN;
+  const montar = (trozo) => {
         // lineas y poligonos: halo debajo si se pide (solo 400/220 kV y el viento)
         if (c.halo) {
           // el halo sigue al grosor del tramo: uno fijo de 4,5 sobre una flecha de 1,3 la
@@ -3807,12 +3981,28 @@ function dibujarVector(c, feats) {
             const w = c.pesoPorTramo[f.properties[c.colorCampo]];
             return w ? w + 2.4 : c.halo;
           };
-          L.geoJSON({ type:"FeatureCollection", features:feats }, {
+          L.geoJSON({ type:"FeatureCollection", features:trozo }, {
             style: (f) => ({ color:"#0b1220", weight:haloDe(f), opacity:.9, fill:false })
           }).addTo(destino);
         }
-        const grande = feats.length > RECORTE_MIN;
-        L.geoJSON({ type:"FeatureCollection", features:feats }, {
+        L.geoJSON({ type:"FeatureCollection", features:trozo },
+          objetoVector(c, grande, destino)).addTo(destino);
+  };
+  if (feats.length <= TROZO_VECTOR) { montar(feats); destino.addTo(capas[c.id]); return; }
+  destino.addTo(capas[c.id]);
+  let i = 0;
+  const tanda = () => {
+    if (c.__token !== token) return;       // otra pintura la ha sustituido: se deja a medias
+    montar(feats.slice(i, i + TROZO_VECTOR));
+    i += TROZO_VECTOR;
+    if (i < feats.length) setTimeout(tanda, 0);
+  };
+  tanda();
+}
+
+/* Opciones de `L.geoJSON` de una capa vectorial: estilo por feature y ficha al pulsar. */
+function objetoVector(c, grande, destino) {
+  return {
           renderer: grande ? lienzoDe(c) : undefined,
           // `colorCampo` pinta cada feature segun una propiedad. Dos modos:
           //   - con `colores`: mapa valor->color (nivel de aviso de AEMET)
@@ -3844,8 +4034,7 @@ function dibujarVector(c, feats) {
             elementos[c.id].push(layer);
             layer.on("click", e => { abrirFicha(f.properties, c, e.latlng); L.DomEvent.stopPropagation(e); });
           }
-        }).addTo(destino);
-  destino.addTo(capas[c.id]);
+  };
 }
 
 /* ---------------- filtro por campo (comunidad, provincia...) ----------------
@@ -3930,6 +4119,15 @@ const MOVIL = matchMedia("(max-width: 820px)").matches || (navigator.deviceMemor
    escritorio sin tener que vaciar el mapa a mano. */
 const MB_URL = parseFloat(new URLSearchParams(location.search).get("mb"));
 const PRESUPUESTO = (isFinite(MB_URL) && MB_URL > 0 ? MB_URL : (MOVIL ? 40 : 160)) * 1048576;
+/* Cuántas capas de puntos se dibujan a la vez. Cada capa de puntos es un mapa de burbujas o de
+   puntos encima del anterior: con veinte encendidas a zoom de país el mapa deja de leerse aunque
+   vaya a 60 fps. Las que no entran en el turno siguen encendidas y cargadas, pero no se dibujan y
+   su fila dice «de fondo»; vuelven al apagar otra o al cambiar de zoom. */
+const TOPE_PUNTOS = MOVIL ? 8 : 12;
+
+/* Marcas por capa de puntos en pantalla. La rejilla en píxeles ya las deja en ~190 como mucho;
+   este número es el techo duro que `pasoPuntos` respeta y el que se comprueba en la medición. */
+const TOPE_MARCAS = MOVIL ? 220 : 400;
 let REINTENTO = null;        // temporizador de reintento cuando algo no cupo por la caché de 2,5 s
 const PESO_CAPA = {};        // id -> bytes de GeoJSON que ocupa ahora (reserva incluida)
 const ESTIMADO = {};         // id -> lo que costará, de fuentes.json (features × bytes/tipo)
@@ -3968,6 +4166,34 @@ function sumarReal(c, bytes) {
   if (!c.__reserva) { PESO += bytes; PESO_CAPA[c.id] = (PESO_CAPA[c.id] || 0) + bytes; }
 }
 
+/* Caja de la capa, por tandas. Antes se recorría el fichero entero de golpe para sacar el
+   rectángulo que la contiene: con `incendios-effis` (26 MB de polígonos) eran más de 1,5 s
+   bloqueando el hilo al terminar de descargar. Ahora son tandas de 300 con un temporizador entre
+   ellas y, mientras no está, la capa simplemente no se descarta por vista (se recorta igual al
+   pintar). */
+function cajaDeFeatsDiferida(c, feats) {
+  c.__bbox = null;
+  let i = 0, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  const tanda = () => {
+    const fin = Math.min(feats.length, i + 300);
+    for (; i < fin; i++) {
+      const f = feats[i];
+      let k = f.__caja;
+      if (!k) {
+        const p = f.geometry && f.geometry.type === "Point" ? puntoDe(f.geometry) : null;
+        k = f.__caja = p ? [p[0], p[1], p[0], p[1]] : cajaDe(f.geometry);
+      }
+      if (k[0] < x0) x0 = k[0]; if (k[1] < y0) y0 = k[1];
+      if (k[2] > x1) x1 = k[2]; if (k[3] > y1) y1 = k[3];
+    }
+    if (i < feats.length) setTimeout(tanda, 0);
+    else c.__bbox = x0 > x1 ? null : [x0, y0, x1, y1];
+  };
+  tanda();
+}
+
+/* Rectángulo de la capa, de una pasada. Sólo para listas cortas: en `cargar` se usa la versión
+   por tandas. */
 function cajaDeFeats(feats) {
   let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
   for (const f of feats) {
@@ -3982,10 +4208,19 @@ function cajaDeFeats(feats) {
   return x0 > x1 ? null : [x0, y0, x1, y1];
 }
 
+/* Banda de zoom de la capa: `null` si el zoom actual cae dentro; si no, hacia dónde se sale.
+   Es la regla dura del visor: fuera de banda no se descarga, no se recorta y no se pinta. */
+function fueraDeBanda(c, z) {
+  const entra = c.ocultaHasta || c.zoomMin || 0;
+  if (z < entra) return "baja";
+  if (z > (c.zoomMax || 18)) return "alta";
+  return null;
+}
+
 /* ¿Esta capa puede verse con la vista y el zoom de ahora? Sin datos todavía, se responde que sí
    (mejor pedir de más que dejar un hueco en el mapa). */
 function seVe(c, vista, z) {
-  if (c.ocultaHasta && z < c.ocultaHasta) return false;
+  if (fueraDeBanda(c, z)) return false;
   const b = c.__bbox;
   if (!b) return true;
   return !(b[1] > vista.getNorth() || b[3] < vista.getSouth() ||
@@ -4017,7 +4252,8 @@ function soltarDatos(c) {
   c.__feats = null; c.__idx = null; c.__pedidas = null; c.__bbox = null;
   datos[c.id] = null; elementos[c.id] = [];
   c.__paso = undefined; c.__zoom = undefined; c.__vista = null; c.__claveVista = null;
-  c.__cargada = false; c.__dormida = false; c.__aparcada = false;
+  c.__pintadoEn = null; c.__ms = 0;
+  c.__cargada = false; c.__dormida = false; c.__aparcada = false; c.__alta = false;
   for (let i = INDICE.length - 1; i >= 0; i--) if (INDICE[i].capa === c.id) INDICE.splice(i, 1);
   PESO -= PESO_CAPA[c.id] || 0;
   if (PESO < 0) PESO = 0;
@@ -4087,14 +4323,18 @@ function refrescarCarga() {
   let aparcadas = 0;
   for (const c of CAPAS) {
     if (!c.__encendida || c.__cargada || c.__cargando) continue;
-    const dormida = c.ocultaHasta && z < c.ocultaHasta;
-    if (dormida) {
-      // Por debajo de su zoom no se pinta: lo que ocupara en memoria se suelta aquí mismo.
-      if (PESO_CAPA[c.id]) { soltarDatos(c); c.__dormida = true; marcarFila(c); }
-      else if (!c.__dormida) { c.__dormida = true; marcarFila(c); }
+    if (c.__fondo) continue;                 // encendida pero sin turno de dibujo: no se pide nada
+    const fuera = fueraDeBanda(c, z);
+    if (fuera) {
+      // Fuera de su banda no se pinta: lo que ocupara en memoria se suelta aquí mismo.
+      const bajo = fuera === "baja";
+      const cambia = c.__dormida !== bajo || c.__alta !== !bajo;
+      if (PESO_CAPA[c.id]) soltarDatos(c);
+      c.__dormida = bajo; c.__alta = !bajo;
+      if (cambia) marcarFila(c);
       continue;
     }
-    c.__dormida = false;
+    c.__dormida = false; c.__alta = false;
     if (!seVe(c, vista, z)) continue;
     pendientes.push(c);
   }
@@ -4118,12 +4358,16 @@ function refrescarCarga() {
   return aparcadas;
 }
 
-/* Texto de la fila de la capa: número, «z 11» si espera zoom, «en espera» si no cabe. */
+/* Texto de la fila de la capa: número, «z 11» si espera zoom bajo, «hasta 12» si el zoom ya pasó
+   su banda, «en espera» si no cabe en la memoria del aparato. */
 function marcarFila(c) {
   const el = document.getElementById("n-" + c.id);
   if (!el || c.__cargando) return;
+  const entra = c.ocultaHasta || c.zoomMin || 0;
   if (c.__aparcada) { el.textContent = "en espera"; el.title = "No cabe en la memoria del aparato ahora mismo"; }
-  else if (c.__dormida) { el.textContent = "z " + c.ocultaHasta; el.title = "Se carga al acercarse a zoom " + c.ocultaHasta; }
+  else if (c.__dormida) { el.textContent = "z " + entra; el.title = "Se carga a partir del zoom " + entra; }
+  else if (c.__alta) { el.textContent = "hasta " + c.zoomMax; el.title = "A zoom " + (c.zoomMax + 1) + " o más no se dibuja: su escala es menor"; }
+  else if (c.__fondo) { el.textContent = "de fondo"; el.title = "Encendida y cargada, pero no dibujada: hay " + TOPE_PUNTOS + " capas de puntos en pantalla"; }
   else if (conteo[c.id]) { el.textContent = nf(conteo[c.id]); el.title = ""; }
 }
 
@@ -4221,8 +4465,11 @@ function dibujarPartes(c) {
     : c.__feats;
   datos[c.id] = sub;
   conteo[c.id] = sub.length;
-  if (c.tipo === "punto") pintarPuntos(c);
-  else pintarVector(c, sub);
+  /* Al final de la cola, no aquí: `pintarVector` de una capa grande monta miles de objetos y
+     congela el hilo; la cola los reparte en trozos de 8 ms. */
+  if (c.tipo === "punto") { c.__nivel = undefined; c.__vista = null; }
+  else { c.__claveVista = null; c.__pintadoEn = null; }
+  encolarPintado();
   const el = document.getElementById("n-" + c.id);
   if (el) el.textContent = nf(sub.length);
   if (c.colorCampo || c.colorPorEscala || c.leyendaSimple) actualizarLeyenda();
@@ -4298,12 +4545,16 @@ function indexar(c, feats) {
 
 function cargar(c) {
   if (c.__cargada || c.__cargando) return;
-  /* Fuera de su rango de zoom no se descarga NADA. `ocultaHasta` sólo frenaba las capas
-     partidas: el detalle urbano (docencia, cementerios, antenas, aparcamientos…) son ~40 MB de
-     GeoJSON que se bajaban a zoom de país para no pintarse ni un objeto. */
-  if (c.ocultaHasta && mapa.getZoom() < c.ocultaHasta) {
-    c.__dormida = true; marcarFila(c); estado(); return;
+  /* Fuera de su banda de zoom no se descarga NADA: el detalle urbano no se baja a zoom de país y
+     una capa nacional no se baja por encima de su techo (a zoom de calle sólo se vería un trozo
+     de polígono con cuatro atributos que ya no dicen nada). */
+  const fuera = fueraDeBanda(c, mapa.getZoom());
+  if (fuera) {
+    c.__dormida = fuera === "baja";
+    c.__alta = fuera === "alta";
+    marcarFila(c); estado(); return;
   }
+  c.__alta = false;
   /* Presupuesto del aparato: si no cabe, primero se suelta lo que no se ve; si aun así no cabe,
      la capa se aparca entera (nunca a medias) y su fila lo dice. */
   if (PESO + coste(c) > PRESUPUESTO) {
@@ -4316,6 +4567,10 @@ function cargar(c) {
   c.__cargando = true;
   c.__dormida = false; c.__aparcada = false;
   reservar(c);
+  /* El resumen (50-100 KB, precalculado por `scripts/resumen_puntos.py`) se pide a la vez que el
+     fichero completo: mientras el GeoJSON viaja y se parsea, el mapa ya enseña las burbujas
+     nacionales con las cifras reales. */
+  if (c.tipo === "punto") pedirResumen(c);
   // Capas ráster (teselas ya dibujadas): no hay GeoJSON que descargar.
   if (c.tipo === "xyz") {
     cerrarCarga(c);
@@ -4380,12 +4635,14 @@ function cargar(c) {
 
       datos[c.id] = feats;      // siempre: el panel derecho analiza el GeoJSON al abrirse
       c.__feats = feats;        // la copia completa: el filtro repinta desde aqui, sin red
-      c.__bbox = cajaDeFeats(feats);
+      c.__bbox = cajaDeFeatsDiferida(c, feats);
       if (c.colorCampo) actualizarLeyenda();
-      if (c.tipo === "punto") { pintarPuntos(c); }
-      else {
-        pintarVector(c, feats);
-      }
+      /* La pintura va a la cola (8 ms por turno) en vez de aquí: `pintarVector` de una capa de
+         miles de tramos tarda más de un segundo y este es el momento en que llegan varias a la
+         vez. */
+      if (c.tipo === "punto") { c.__nivel = undefined; c.__vista = null; }
+      else { c.__claveVista = null; c.__pintadoEn = null; }
+      encolarPintado();
       atenuarCapa(c);
       estado();
       // la leyenda se pide al encender la capa, cuando `datos` aun viene vacio: si la capa trae
@@ -4414,12 +4671,10 @@ function ponerCapa(id, on, silencioso) {
   if (chk.checked !== on) chk.checked = on;
   c.__encendida = !!on;          // encendida aunque `ocultaHasta` la deje fuera del mapa
   if (on) {
-    cargar(c);
-    if (c.tipo === "punto") pintarPuntos(c);
-    atenuarCapa(c);
-    // siempre al mapa, en cualquier zoom: por debajo de su zoomMin se atenua, no se esconde.
-    // Excepción: `ocultaHasta` (detalle urbano) sí la deja fuera hasta que te acercas.
-    if (!c.ocultaHasta || mapa.getZoom() >= c.ocultaHasta) capas[id].addTo(mapa);
+    /* Ni se dibuja ni se descarga aquí: lo decide `aplicarBandaZoom` con la banda de zoom y el
+       turno de capas de puntos. Encender veinte capas de golpe ya no baja veinte ficheros ni
+       monta veinte capas de burbujas. */
+    if (!silencioso) aplicarBandaZoom();
     if (c.colorCampo || c.colorPorEscala) { ULTIMA_CON_COLOR = id; window.__leyendaOff = false; }
   } else {
     mapa.removeLayer(capas[id]);
@@ -4427,6 +4682,7 @@ function ponerCapa(id, on, silencioso) {
     if (c.__renderer) { try { mapa.removeLayer(c.__renderer); } catch (e) {} }
     // Apagar una capa es la forma más barata de liberar: se sueltan sus objetos y sus nodos.
     soltarDatos(c);
+    if (!silencioso) aplicarBandaZoom();   // su turno de dibujo pasa a otra capa de puntos
   }
   pintarFiltro();   // la caja solo aparece si hay una capa filtrable encendida
   if (!silencioso) { actualizarLeyenda(); estado(); }   // en lote (vistas, enlace) se hace una vez al final
@@ -4514,27 +4770,45 @@ function prepararZoomPuntos(z, continuo = false) {
 }
 mapa.on("zoomanim", e => prepararZoomPuntos(e.zoom));
 mapa.on("zoom", e => { if (e.pinch || e.flyTo) prepararZoomPuntos(mapa.getZoom(), true); });
-/* Detalle urbano: 20.000 polígonos atenuados a escala nacional son 20.000 caminos SVG que Leaflet
-   redibuja en cada arrastre. Con `ocultaHasta` la capa sale del mapa hasta que el zoom llega, y
-   vuelve al acercarse sin tocar el checkbox (sigue encendida, simplemente no se dibuja). */
-function aplicarOcultoZoom(c) {
-  if (!c.ocultaHasta || !capas[c.id]) return;
-  const chk = document.querySelector('[data-capa="' + c.id + '"]');
-  if (!chk || !chk.checked) return;
-  const dentro = mapa.getZoom() >= c.ocultaHasta;
-  const esta = mapa.hasLayer(capas[c.id]);
-  /* Al entrar por zoom se recorta ANTES de añadir: si no, la capa aparecía con los 20.000
-     objetos del fichero entero y el recorte llegaba en el siguiente movimiento. Ese era el
-     tirón de dos segundos al acercarse a una ciudad. */
-  if (dentro && !esta) {
-    c.__claveVista = null;
-    if (c.tipo === "punto") pintarPuntos(c);
-    else if (c.__dibujo || datos[c.id]) pintarVector(c, datos[c.id] || []);
-    mapa.addLayer(capas[c.id]);
+/* Qué se dibuja con este zoom. Tres reglas y ninguna excepción:
+   1. Fuera de su banda de zoom no se dibuja ni se descarga.
+   2. Las capas de puntos entran por turno (primero las ya cargadas, luego las más baratas).
+   3. Una capa dibujada sólo pinta lo que cae en la vista: el recorte de vectores y el filtro por
+      caja de los puntos ya lo hacen; por eso mirar Madrid no dibuja España.
+   Antes esto se hacía capa a capa desde `ponerCapa` y `moveend`, con cada capa decidiendo sola:
+   a zoom de calle se amontonaban encima las nacionales y el detalle urbano. */
+function aplicarBandaZoom() {
+  const z = mapa.getZoom();
+  const puntos = [], vectores = [];
+  for (const c of CAPAS) {
+    if (!c.__encendida || !capas[c.id]) continue;
+    if (fueraDeBanda(c, z)) { c.__fondo = false; continue; }
+    (c.tipo === "punto" ? puntos : vectores).push(c);
   }
-  else if (!dentro && esta) mapa.removeLayer(capas[c.id]);
-  // Entrar por zoom con una capa que no se había descargado (porque dormía) la pide ahora.
-  if (dentro && !c.__cargada && !c.__cargando) cargar(c);
+  puntos.sort((a, b) =>
+    (b.__cargada ? 1 : 0) - (a.__cargada ? 1 : 0) ||
+    (ESTIMADO[a.id] || 0) - (ESTIMADO[b.id] || 0) ||
+    a.id.localeCompare(b.id));
+  const turno = new Set(puntos.slice(0, TOPE_PUNTOS));
+  for (const c of CAPAS) {
+    if (!c.__encendida || !capas[c.id]) continue;
+    const dentro = !fueraDeBanda(c, z);
+    const debe = dentro && (c.tipo !== "punto" || turno.has(c));
+    const esta = mapa.hasLayer(capas[c.id]);
+    if (debe && !esta) {
+      /* Se añade vacía y la pinta la COLA (8 ms por fotograma). Pintar aquí en línea era el
+         tirón de dos segundos al cruzar un nivel de zoom: al entrar seis capas a la vez se
+         recortaban y se dibujaban todas en el mismo tick. */
+      c.__nivel = undefined; c.__paso = undefined; c.__claveVista = null;
+      mapa.addLayer(capas[c.id]);
+    } else if (!debe && esta) {
+      mapa.removeLayer(capas[c.id]);
+    }
+    if (debe && !c.__cargada && !c.__cargando) cargar(c);
+    const fondo = dentro && !debe;
+    if (fondo !== !!c.__fondo) { c.__fondo = fondo; marcarFila(c); }
+  }
+  encolarPintado();
 }
 /* (El repintado por moveend vive arriba, en la cola: aquí sólo queda el detalle urbano, que
    ya se aplica desde el único handler.) */
@@ -4549,10 +4823,11 @@ function estado() {
 
   let n = 0; activas.forEach(c => n += conteo[c.id] || 0);
   const enEspera = CAPAS.filter(c => c.__aparcada).length;
+  const fondo = CAPAS.filter(c => c.__fondo).length;
   const mb = Math.round(PESO / 1048576);
   $("#s-peso").textContent = nf(n) + " objetos · " + mb + "/" + Math.round(PRESUPUESTO / 1048576) + " MB";
   $("#sub-hud").textContent = (BASES[sel.value] ? BASES[sel.value][0] : "") + " · " + nf(n) + " objetos" +
-    (enEspera ? " · " + enEspera + " en espera" : "");
+    (fondo ? " · " + fondo + " de fondo" : "") + (enEspera ? " · " + enEspera + " en espera" : "");
 }
 mapa.on("zoomend", estado);
 mapa.on("mousemove", e => {
@@ -4967,6 +5242,7 @@ function aplicarUrl() {
       if (!chk || chk.checked === on) return;
       ponerCapa(x.id, on, true);
     });
+    aplicarBandaZoom();     // en lote: una sola pasada decide qué se dibuja con este zoom
     actualizarLeyenda();
     estado();
   }
@@ -5044,6 +5320,7 @@ document.querySelectorAll("[data-preset]").forEach(btn => {
       if (!chk || chk.checked === on) return;
       ponerCapa(c.id, on, true);   // en lote: la leyenda y el estado se refrescan una vez al final
     });
+    aplicarBandaZoom();            // y una sola pasada decide qué se dibuja con este zoom
     actualizarLeyenda();
     estado();
   });
@@ -5074,8 +5351,15 @@ window.OpenInfraES = {
     mb: +(PESO / 1048576).toFixed(1), tope: +(PRESUPUESTO / 1048576).toFixed(0),
     zoom: mapa.getZoom(),
     cargadas: CAPAS.filter(c => PESO_CAPA[c.id]).length,
+    dibujadas: CAPAS.filter(c => capas[c.id] && mapa.hasLayer(capas[c.id])).length,
+    fondo: CAPAS.filter(c => c.__fondo).length,
     enEspera: CAPAS.filter(c => c.__aparcada).length,
-    dormidas: CAPAS.filter(c => c.__dormida).length
+    dormidas: CAPAS.filter(c => c.__dormida).length,
+    alta: CAPAS.filter(c => c.__alta).length,
+    /* Las capas que más tardaron en el último repintado: si alguna pasa de ~120 ms, es la que
+       hace que el zoom se atragante en ese aparato. */
+    lentas: CAPAS.filter(c => c.__ms > 40).sort((a, b) => b.__ms - a.__ms)
+      .slice(0, 6).map(c => c.id + " " + Math.round(c.__ms) + "ms")
   }),
   abrir(capaId, i = 0, zoom = 11) {
     if (!capas[capaId]) return "sin capa";

@@ -83,6 +83,9 @@ jobs:
           python scripts/catalogo.py || true
           python scripts/cifras.py || true
           python scripts/snapshot.py || true
+          # burbujas nacionales de las capas de puntos (50-100 KB por capa): el visor las pinta
+          # mientras el GeoJSON completo viaja. Incremental: solo regenera las que cambiaron.
+          python scripts/resumen_puntos.py || true
 
       - name: Validador
         # El validador NO puede congelar el dato. Pasó: la DGT añadió el código DATEX
