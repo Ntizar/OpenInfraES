@@ -1023,7 +1023,12 @@ const SvgTrazos = SvgConLienzo.extend({
     const origen = map.getPixelOrigin();
     for (const id in this._layers) {
       const layer = this._layers[id];
-      if (!vista.intersects(layer.getBounds())) {
+      /* Un `CircleMarker` no tiene `getBounds` (sólo polígonos y polilíneas): su caja es su propio
+         punto. Sin esta salida, cualquier capa vectorial con puntos sueltos —la red de hidrógeno
+         trae cinco estaciones de compresión— petaba al mover el mapa. */
+      const caja = layer.getBounds ? layer.getBounds()
+        : (layer.getLatLng ? L.latLngBounds(layer.getLatLng(), layer.getLatLng()) : null);
+      if (!caja || !vista.intersects(caja)) {
         if (layer._parts?.length) {
           layer._parts = [];
           this._setPath(layer, "M0 0");
@@ -4048,7 +4053,19 @@ function objetoVector(c, grande, destino) {
           onEachFeature: (f, layer) => {
             elementos[c.id].push(layer);
             layer.on("click", e => { abrirFicha(f.properties, c, e.latlng); L.DomEvent.stopPropagation(e); });
-          }
+          },
+          /* Una capa de líneas puede traer puntos sueltos: la red de hidrógeno son tres
+             hidroductos y cinco estaciones de compresión, y sin `pointToLayer` Leaflet pinta
+             esos puntos con su marcador por defecto (el pin azul con sombra), que no se parece a
+             nada más del visor. Aquí se pintan como el resto: círculo del color de la capa. */
+          pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+            /* Sin `renderer` explícito: lo pone el mapa. El lienzo propio del visor recorre sus
+               capas con `getBounds()` y un CircleMarker no lo tiene — eso ya está cubierto en
+               `_updatePaths`, que usa el propio punto como caja. */
+            radius: c.radio || 5.5,
+            fillColor: colorDe(c, (f && f.properties) || {}),
+            fillOpacity: .88, color: "#fff", weight: 1.2, opacity: .6
+          })
   };
 }
 
