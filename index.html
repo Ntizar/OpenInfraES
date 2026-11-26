@@ -27,13 +27,11 @@
      y deja el mapa en negro sin costas) se desatura y se oscurece: queda una base
      legible en grises oscuros sobre la que los datos neón sí destacan. */
   /* cada base trae su filtro: el IGN no tiene teselas oscuras, así que el look se hace aquí */
-  html[data-base="radar"] .leaflet-tile-pane { filter:invert(1) brightness(2.15) contrast(1.22) saturate(0); }
-  html[data-base="gris"]  .leaflet-tile-pane { filter:grayscale(1) brightness(.42) contrast(1.55); }
-  html[data-tema="oscuro"][data-base="todo"] .leaflet-tile-pane,
-  html[data-tema="oscuro"][data-base="orto"] .leaflet-tile-pane { filter:brightness(.62) contrast(1.15) saturate(.75); }
-  html[data-tema="claro"][data-base="todo"] .leaflet-tile-pane,
-  html[data-tema="claro"][data-base="orto"] .leaflet-tile-pane,
-  html[data-tema="claro"][data-base="osm"] .leaflet-tile-pane { filter:none; }
+  /* Dos mapas base: el ráster del IGN (fondo claro que se oscurece en tema oscuro) y OSM (se
+     invierte). Las claves de `data-base` son las mismas de `BASES`: antes el CSS hablaba de
+     «todo»/«gris»/«orto» y el JS escribía «IGNBaseTodo», así que sólo acertaban radar y OSM. */
+  html[data-tema="oscuro"][data-base="ign"] .leaflet-tile-pane { filter:brightness(.62) contrast(1.15) saturate(.75); }
+  html[data-tema="claro"] .leaflet-tile-pane { filter:none; }
   html[data-tema="oscuro"][data-base="osm"] .leaflet-tile-pane { filter:grayscale(1) invert(1) brightness(.75) contrast(1.2); }
   .leaflet-container { background:var(--fondo); font-family:inherit; }
 
@@ -906,12 +904,12 @@ const IGN = (c, f) => "https://www.ign.es/wmts/ign-base?request=GetTile&service=
 const BASES_PNOA = "https://www.ign.es/wmts/pnoa-ma?layer=OI.OrthoimageCoverage&style=default" +
   "&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/jpeg" +
   "&TileMatrix={z}&TileCol={x}&TileRow={y}";
+/* Sólo dos mapas base: el ráster del IGN (el de referencia, con toponimia y relieve) y OSM.
+   Fuera el radar invertido, el gris y la ortofoto: sumaban tres modos de mirar lo mismo y el
+   arranque caía en un fondo negro que parecía un fallo. */
 const BASES = {
-  radar:          ["IGN radar (líneas)", IGN("IGNBaseTodo-nofondo", "image/png")],
-  "IGNBase-gris": ["IGN gris",      IGN("IGNBase-gris", "image/png")],
-  "IGNBaseTodo":  ["Mapa base IGN", IGN("IGNBaseTodo", "image/png")],
-  "IGNBaseOrto":  ["Ortofoto PNOA", IGN("IGNBaseOrto", "image/jpeg")],
-  "osm":          ["OpenStreetMap", "https://tile.openstreetmap.org/{z}/{x}/{y}.png"]
+  ign: ["IGN ráster", IGN("IGNBaseTodo", "image/png")],
+  osm: ["OpenStreetMap", "https://tile.openstreetmap.org/{z}/{x}/{y}.png"]
 };
 
 // Durante la rueda, Canvas dibuja las geometrías visibles. En reposo el SVG
@@ -1225,7 +1223,10 @@ function activarZoomRueda(map) {
     const cursor = gesto && e.clientX === gesto.x && e.clientY === gesto.y
       ? gesto.cursor : map.mouseEventToContainerPoint(e);
     // Al invertir el sentido, descartar el recorrido que aún quedaba por animar.
-    const haciaDentro = delta < 0;
+    /* `getWheelDelta` de Leaflet ya devuelve POSITIVO al girar la rueda hacia arriba («negative if
+       scrolling down», dice su propio comentario), o sea que arriba es acercarse. Estaba al revés:
+       la rueda hacia arriba alejaba y con trackpad parecía que el mapa hacía lo contrario que el dedo. */
+    const haciaDentro = delta > 0;
     const base = gesto && (gesto.destino - actual) * delta >= 0 ? gesto.destino : actual;
     const crudo = base + (haciaDentro ? 1 : -1) * (map.options.zoomDelta || 0.75);
     const destino = Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(),
@@ -1272,7 +1273,7 @@ mapa.on("click", e => {
 
 let capaBase = null;
 function ponerBase(k) {
-  const [nombre, url] = BASES[k] || BASES["IGNBase-gris"];
+  const [nombre, url] = BASES[k] || BASES.ign;
   if (capaBase) mapa.removeLayer(capaBase);
   capaBase = L.tileLayer(url, {
     attribution: "© IGN · datos: OSM / REE / MITMA / MITECO / CSN / CORES / Enagás",
@@ -1280,7 +1281,7 @@ function ponerBase(k) {
     updateWhenZooming: true, keepBuffer: 4
   }).addTo(mapa);
   capaBase.bringToBack();
-  document.documentElement.dataset.base = BASES[k] ? k : "radar";
+  document.documentElement.dataset.base = BASES[k] ? k : "ign";
 }
 
 /* ---------------- ficha ---------------- */
@@ -2107,11 +2108,11 @@ if (cajaPresets) {
 const sel = $("#base");
 Object.entries(BASES).forEach(([k, v]) => {
   const o = document.createElement("option");
-  o.value = k; o.textContent = v[0]; if (k === "radar") o.selected = true;
+  o.value = k; o.textContent = v[0]; if (k === "ign") o.selected = true;
   sel.appendChild(o);
 });
 sel.addEventListener("change", e => ponerBase(e.target.value));
-ponerBase("radar");
+ponerBase("ign");
 
 /* ---------------- motor ---------------- */
 const POPUP = L.popup({ maxWidth: 348, minWidth: 302, autoPanPadding: [26, 26] });
@@ -5218,7 +5219,7 @@ function estadoUrl() {
   const c = mapa.getCenter();
   const activas = CAPAS.filter(x => document.querySelector(`[data-capa="${x.id}"]`)?.checked).map(x => x.id);
   return "#z=" + mapa.getZoom().toFixed(2) + "&lat=" + c.lat.toFixed(4) + "&lng=" + c.lng.toFixed(4) +
-         "&c=" + activas.join(",") + "&b=" + (document.documentElement.dataset.base || "radar") +
+         "&c=" + activas.join(",") + "&b=" + (document.documentElement.dataset.base || "ign") +
          "&t=" + (document.documentElement.dataset.tema || "oscuro");
 }
 $("#btn-enlace").addEventListener("click", async () => {
