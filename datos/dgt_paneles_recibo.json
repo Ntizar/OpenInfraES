@@ -4,9 +4,9 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 761,
+ "features": 742,
  "paneles_localizados": 2539,
- "descargado": "2026-11-26T17:14:36",
+ "descargado": "2026-11-26T18:19:27",
  "mensajes_top": [
   {
    "texto": "@H @F",
@@ -14,7 +14,7 @@
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 79
+   "paneles": 72
   },
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
@@ -25,19 +25,19 @@
    "paneles": 30
   },
   {
-   "texto": "MODERE VELOCIDAD",
-   "paneles": 12
-  },
-  {
-   "texto": "MODERE VELOCIDAD · MODERE VELOCITAT",
-   "paneles": 9
-  },
-  {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
-   "paneles": 9
+   "paneles": 10
+  },
+  {
+   "texto": "MODERE VELOCIDAD",
+   "paneles": 10
   },
   {
    "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
+   "paneles": 8
+  },
+  {
+   "texto": "MODERE VELOCIDAD · MODERE VELOCITAT",
    "paneles": 8
   },
   {
