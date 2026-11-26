@@ -1,6 +1,6 @@
 {
  "paso": 0.05,
- "generado": "2026-11-26T14:20:43Z",
+ "generado": "2026-11-26T15:16:32Z",
  "capas": {
   "residuos": {
    "total": 14,
@@ -23,19 +23,19 @@
    "bytes": 7772
   },
   "dgt-paneles": {
-   "total": 710,
-   "celdas": 417,
-   "bytes": 6288
+   "total": 712,
+   "celdas": 424,
+   "bytes": 6394
   },
   "dgt-incidencias": {
-   "total": 1593,
-   "celdas": 988,
-   "bytes": 14824
+   "total": 1475,
+   "celdas": 915,
+   "bytes": 13727
   },
   "sismos": {
-   "total": 79,
-   "celdas": 73,
-   "bytes": 1148
+   "total": 82,
+   "celdas": 76,
+   "bytes": 1192
   },
   "sanidad-ign": {
    "total": 3531,
