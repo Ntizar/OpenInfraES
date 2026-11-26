@@ -23,7 +23,7 @@
     "color": "#993300"
    },
    {
-    "titulo": "Motores diésel",
+    "titulo": "Motor combustión interna",
     "valor": 5753.7,
     "tipo": "No-Renovable",
     "color": "#8DA69F"
@@ -63,6 +63,12 @@
     "valor": 1223.5,
     "tipo": "Renovable",
     "color": "#ff0000"
+   },
+   {
+    "titulo": "Biocombustibles",
+    "valor": 11201.6,
+    "tipo": "Renovable",
+    "color": "#9a5cbc"
    },
    {
     "titulo": "Cogeneración",
