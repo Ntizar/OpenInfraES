@@ -4,21 +4,21 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 681,
+ "features": 665,
  "paneles_localizados": 2538,
- "descargado": "2026-11-26T00:36:15",
+ "descargado": "2026-11-26T01:16:39",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 90
+   "paneles": 91
   },
   {
    "texto": "@H @F",
-   "paneles": 83
+   "paneles": 84
   },
   {
    "texto": "MAQUINAS EN TRATAMIENTO INVERNAL",
-   "paneles": 58
+   "paneles": 59
   },
   {
    "texto": "MAQUINA MOVIL TRABAJANDO · MAQUINA MOBIL TREBALLANT",
@@ -37,12 +37,12 @@
    "paneles": 12
   },
   {
-   "texto": "CON LLUVIA MODERE LA VELOCIDAD",
+   "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
    "paneles": 8
   },
   {
-   "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
-   "paneles": 8
+   "texto": "MODERE VELOCIDAD",
+   "paneles": 7
   },
   {
    "texto": "CONTROL DE VELOCIDAD POR RADAR · CONTROL DE VELOCIDADE POR RADAR",
