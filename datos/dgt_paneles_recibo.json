@@ -4,32 +4,36 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 573,
+ "features": 585,
  "paneles_localizados": 2539,
- "descargado": "2026-11-26T20:17:03",
+ "descargado": "2026-11-26T21:14:39",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 87
+   "paneles": 89
   },
   {
    "texto": "@H @F",
-   "paneles": 86
+   "paneles": 87
   },
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
-   "paneles": 28
+   "paneles": 29
+  },
+  {
+   "texto": "MAQUINAS EN TRATAMIENTO INVERNAL",
+   "paneles": 9
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
    "paneles": 9
   },
   {
-   "texto": "PRECAUCION TORMENTAS",
+   "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
    "paneles": 8
   },
   {
-   "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
+   "texto": "MAQUINA MOVIL ENLACES",
    "paneles": 8
   },
   {
@@ -43,10 +47,6 @@
   {
    "texto": "CON NIEBLA MODERE LA VELOCIDAD · CON NEBOA MODERE A VELOCIDADE",
    "paneles": 6
-  },
-  {
-   "texto": "CONTROL DE VELOCIDAD POR RADAR · CONTROL DE VELOCIDADE POR RADAR",
-   "paneles": 5
   }
  ]
 }
