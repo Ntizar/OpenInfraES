@@ -1,6 +1,6 @@
 {
  "paso": 0.05,
- "generado": "2026-11-27T12:50:58Z",
+ "generado": "2026-11-27T12:52:36Z",
  "capas": {
   "residuos": {
    "total": 14,
@@ -23,14 +23,14 @@
    "bytes": 7772
   },
   "dgt-paneles": {
-   "total": 679,
+   "total": 680,
    "celdas": 400,
-   "bytes": 6037
+   "bytes": 6035
   },
   "dgt-incidencias": {
-   "total": 1457,
-   "celdas": 941,
-   "bytes": 14117
+   "total": 1453,
+   "celdas": 944,
+   "bytes": 14162
   },
   "sismos": {
    "total": 82,
