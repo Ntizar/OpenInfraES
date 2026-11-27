@@ -1,6 +1,6 @@
 {
  "paso": 0.05,
- "generado": "2026-11-27T13:13:48Z",
+ "generado": "2026-11-27T13:16:39Z",
  "capas": {
   "residuos": {
    "total": 14,
@@ -22,25 +22,15 @@
    "celdas": 538,
    "bytes": 7772
   },
-  "navarra-eolicos": {
-   "total": 1422,
-   "celdas": 79,
-   "bytes": 1304
-  },
-  "madrid-semaforos": {
-   "total": 2301,
-   "celdas": 21,
-   "bytes": 402
-  },
   "dgt-paneles": {
-   "total": 658,
-   "celdas": 392,
-   "bytes": 5912
+   "total": 662,
+   "celdas": 396,
+   "bytes": 5972
   },
   "dgt-incidencias": {
-   "total": 1159,
-   "celdas": 735,
-   "bytes": 11038
+   "total": 1180,
+   "celdas": 749,
+   "bytes": 11236
   },
   "sismos": {
    "total": 82,
