@@ -4,49 +4,49 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 775,
+ "features": 860,
  "paneles_localizados": 2539,
- "descargado": "2026-11-27T06:25:48",
+ "descargado": "2026-11-27T07:17:31",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 77
+   "paneles": 72
   },
   {
    "texto": "@H @F",
-   "paneles": 77
-  },
-  {
-   "texto": "CONTROL MOVIL DE VELOCIDAD",
-   "paneles": 50
+   "paneles": 69
   },
   {
    "texto": "CON NIEBLA MODERE VELOCIDAD",
-   "paneles": 44
+   "paneles": 53
   },
   {
-   "texto": "CON LLUVIA MODERE VELOCIDAD",
+   "texto": "CONTROLES MOVILES DE VELOCIDAD",
    "paneles": 40
   },
   {
+   "texto": "CON LLUVIA MODERE VELOCIDAD",
+   "paneles": 37
+  },
+  {
+   "texto": "CONTROL MOVIL DE VELOCIDAD",
+   "paneles": 35
+  },
+  {
+   "texto": "SOL BAJO MODERE VELOCIDAD",
+   "paneles": 34
+  },
+  {
    "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
-   "paneles": 36
+   "paneles": 32
   },
   {
    "texto": "BANCOS DE NIEBLA",
-   "paneles": 15
+   "paneles": 22
   },
   {
    "texto": "MODERE VELOCIDAD · MODERE VELOCITAT",
    "paneles": 8
-  },
-  {
-   "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
-   "paneles": 8
-  },
-  {
-   "texto": "CONTROL DE VELOCIDAD POR RADAR · CONTROL DE VELOCIDADE POR RADAR",
-   "paneles": 7
   }
  ]
 }
