@@ -62,6 +62,7 @@ datos/ine/.cache/
 datos/store.duckdb
 datos/store/*.geojson
 datos/store/*.parquet
+datos/municipios_mart.csv
 datos/store/*_recibo.json
 
 # informe del auditor de duplicados: se regenera con scripts/duplicados.py

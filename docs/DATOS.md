@@ -27,6 +27,7 @@ datos/
 ├── _procedencia.json         qué se capturó, de qué fuente y con qué ficheros
 ├── agregados.json            cifras de cabecera del visor (no es capa)
 ├── agregado_*.csv            5 tablas planas para consultar sin abrir el mapa
+├── municipios_mart.csv       tabla ancha municipal: renta + población + plantas (regenerable)
 ├── oficial/                  capas vectorizadas a mano desde un PDF/servicio sin GeoJSON
 ├── hermes/                   capas del visor de MITMA (Hermes), tal como las sirve
 ├── simplificado/             versión Douglas-Peucker de las capas gordas
@@ -147,6 +148,20 @@ sus valores sin haber descargado el resto.
 
 - **`agregados.json`** y los cinco **`agregado_*.csv`** (líneas por operador, plantas por comunidad y
   por tecnología): cifras para consultar o pintar en la cabecera, no capas del mapa.
+- **`municipios_mart.csv`** — una fila por municipio (`cod_ine`) con los seis indicadores de renta del
+  INE, población, área, provincia y las centrales agregadas por tecnología (MW y número). Es la tabla
+  para **cruzar fuentes por municipio**: renta ↔ plantas ↔ cualquier capa con `cod_ine`. No se
+  commitea (se regenera), y se consulta con SQL sin dependencias:
+
+  ```bash
+  python3 scripts/consulta.py --mart                          # (re)genera el CSV: 0,6 s
+  python3 scripts/consulta.py "select municipio, renta_persona from municipios
+                               where mw_nuclear > 0 order by renta_persona desc"
+  ```
+
+  La media nacional se saca de la propia tabla, ponderando por población:
+  `sum(renta_persona*poblacion)/sum(poblacion)` — da 15.952 €, frente a los 15.948 € que publica el
+  INE para 2024 (0,03 %). Si esa comprobación se va de más de 1 %, la capa de renta está desfasada.
 - **Intermedios de fusión**: ficheros de una fuente que se han cruzado con otra para producir la capa
   buena (`edar`, `depuradoras_ign`, `irewater_hib_edar`). Se declaran en `INTERMEDIOS`
   (`scripts/fuentes_visor.py`) para que el catálogo no los cuente dos veces.
