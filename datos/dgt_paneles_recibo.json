@@ -4,17 +4,17 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 670,
+ "features": 664,
  "paneles_localizados": 2539,
- "descargado": "2026-11-27T12:22:16",
+ "descargado": "2026-11-27T12:34:04",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 78
+   "paneles": 76
   },
   {
    "texto": "@H @F",
-   "paneles": 73
+   "paneles": 72
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
@@ -25,11 +25,11 @@
    "paneles": 16
   },
   {
-   "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
-   "paneles": 8
+   "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
+   "paneles": 9
   },
   {
-   "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
+   "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
    "paneles": 8
   },
   {
