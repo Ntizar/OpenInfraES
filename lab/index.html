@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenInfraES · laboratorio Parquet</title>
+<style>
+  :root{--fg:#111;--mut:#666;--line:#e3e3e3;--bg:#fff;--ok:#0a7d38;--warn:#a8590b}
+  @media (prefers-color-scheme:dark){:root{--fg:#eee;--mut:#9a9a9a;--line:#2c2c2c;--bg:#141414}}
+  *{box-sizing:border-box}
+  body{margin:0;padding:24px;max-width:900px;font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       color:var(--fg);background:var(--bg)}
+  h1{font-size:20px;margin:0 0 4px}
+  p.sub{color:var(--mut);margin:0 0 20px;font-size:14px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+  button{font:inherit;padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--fg);cursor:pointer}
+  button:hover{border-color:var(--fg)}
+  button[disabled]{opacity:.5;cursor:default}
+  select{font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--fg)}
+  table{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}
+  th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--mut);font-weight:500}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  .card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .card h2{font-size:14px;margin:0 0 10px;color:var(--mut);font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+  .big{font-size:26px;font-variant-numeric:tabular-nums}
+  .ok{color:var(--ok)} .warn{color:var(--warn)}
+  code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(127,127,127,.12);padding:1px 5px;border-radius:4px}
+  #log{font:12px ui-monospace,monospace;color:var(--mut);white-space:pre-wrap;max-height:120px;overflow:auto}
+</style>
+</head>
+<body>
+<h1>Laboratorio: ¿se puede leer el almacén desde el navegador?</h1>
+<p class="sub">Prueba de campo del modelo «un sitio = una fila». Lee <code>datos/store/entidades.parquet</code> por rangos HTTP, filtra por caja y lo compara con bajarse el GeoJSON equivalente.</p>
+
+<div class="row">
+  <select id="zona">
+    <option value="madrid">Madrid capital (0,3°)</option>
+    <option value="cataluna">Cataluña</option>
+    <option value="espana" selected>España entera</option>
+    <option value="galicia">Galicia</option>
+  </select>
+  <button id="medir">Medir con Parquet</button>
+  <button id="geojson">Comparar con GeoJSON</button>
+</div>
+
+<div class="card">
+  <h2>Parquet por rangos</h2>
+  <div class="row" style="margin:0">
+    <div><div class="big" id="pBytes">—</div><div class="sub" style="margin:0">bytes descargados</div></div>
+    <div style="margin-left:32px"><div class="big" id="pMs">—</div><div class="sub" style="margin:0">ms hasta tener datos</div></div>
+    <div style="margin-left:32px"><div class="big" id="pN">—</div><div class="sub" style="margin:0">entidades en la caja</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>GeoJSON equivalente</h2>
+  <div class="row" style="margin:0">
+    <div><div class="big" id="gBytes">—</div><div class="sub" style="margin:0">bytes descargados</div></div>
+    <div style="margin-left:32px"><div class="big" id="gMs">—</div><div class="sub" style="margin:0">ms</div></div>
+    <div style="margin-left:32px"><div class="big" id="gN">—</div><div class="sub" style="margin:0">features en la caja</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Entidades por tipo en la caja</h2>
+  <table id="tabla"><tbody><tr><td class="sub">Pulsa «Medir con Parquet».</td></tr></tbody></table>
+</div>
+
+<div class="card">
+  <h2>Registro</h2>
+  <div id="log"></div>
+</div>
+
+<script type="module">
+import { asyncBufferFromUrl, parquetReadObjects } from "./vendor/hyparquet.js";
+
+const PARQUET = "../datos/store/entidades.parquet?v=3";
+const GEOJSON = "../datos/store/municipio.geojson";
+const CAJAS = {
+  madrid:   [-3.85, 40.30, -3.55, 40.55],
+  cataluna: [0.15, 40.50, 3.35, 42.90],
+  espana:   [-9.30, 35.90, 4.40, 43.80],
+  galicia:  [-9.30, 41.80, -6.70, 43.80],
+};
+
+const $ = (id) => document.getElementById(id);
+const kB = (n) => n > 1e6 ? (n / 1e6).toFixed(2) + " MB" : Math.round(n / 1e3) + " kB";
+const log = (t) => { $("log").textContent += t + "\n"; };
+const dentro = (lon, lat, c) => lon >= c[0] && lon <= c[2] && lat >= c[1] && lat <= c[3];
+
+function bytesDe(fragmento) {
+  return performance.getEntriesByType("resource")
+    .filter((e) => e.name.includes(fragmento))
+    .reduce((s, e) => s + (e.transferSize || e.encodedBodySize || 0), 0);
+}
+
+async function medirParquet() {
+  const c = CAJAS[$("zona").value];
+  $("pBytes").textContent = $("pMs").textContent = $("pN").textContent = "…";
+  $("log").textContent = "";
+  const t0 = performance.now();
+  performance.clearResourceTimings();
+  const file = await asyncBufferFromUrl({ url: PARQUET });
+  const filas = await parquetReadObjects({
+    file,
+    columns: ["id", "tipo", "nombre", "lon", "lat"],
+  });
+  const ms = Math.round(performance.now() - t0);
+  const enCaja = filas.filter((f) => f.lon != null && f.lat != null && dentro(+f.lon, +f.lat, c));
+  const porTipo = {};
+  for (const f of enCaja) porTipo[f.tipo] = (porTipo[f.tipo] || 0) + 1;
+  const bytes = bytesDe("entidades.parquet");
+  $("pBytes").textContent = kB(bytes);
+  $("pMs").textContent = ms;
+  $("pN").textContent = enCaja.length.toLocaleString("es-ES");
+  const filasTabla = Object.entries(porTipo).sort((a, b) => b[1] - a[1])
+    .map(([t, n]) => `<tr><td>${t}</td><td class="n">${n.toLocaleString("es-ES")}</td></tr>`).join("");
+  $("tabla").innerHTML = `<thead><tr><th>Tipo</th><th class="n">Entidades</th></tr></thead><tbody>${filasTabla}</tbody>`;
+  log(`parquet: ${filas.length.toLocaleString("es-ES")} filas leídas · ${Object.keys(porTipo).length} tipos · ${kB(bytes)} en ${bytesDe("entidades.parquet") ? "rangos" : "¿?"}`);
+}
+
+async function medirGeoJSON() {
+  const c = CAJAS[$("zona").value];
+  $("gBytes").textContent = $("gMs").textContent = $("gN").textContent = "…";
+  const t0 = performance.now();
+  performance.clearResourceTimings();
+  const r = await fetch(GEOJSON + "?t=" + Date.now());
+  const txt = await r.text();
+  const gj = JSON.parse(txt);
+  const ms = Math.round(performance.now() - t0);
+  const n = gj.features.filter((f) => {
+    const g = f.geometry;
+    const [lon, lat] = g.type === "Point" ? g.coordinates : centro(g.coordinates);
+    return dentro(lon, lat, c);
+  }).length;
+  $("gBytes").textContent = kB(new Blob([txt]).size);
+  $("gMs").textContent = ms;
+  $("gN").textContent = n.toLocaleString("es-ES");
+  log(`geojson: ${gj.features.length.toLocaleString("es-ES")} features descargadas enteras · ${kB(new Blob([txt]).size)} en ${ms} ms`);
+}
+
+function centro(coords) {
+  const anillo = JSON.stringify(coords[0][0]) ? coords[0][0] : coords[0];
+  const xs = anillo.map((p) => p[0]), ys = anillo.map((p) => p[1]);
+  return [xs.reduce((a, b) => a + b, 0) / xs.length, ys.reduce((a, b) => a + b, 0) / ys.length];
+}
+
+$("medir").addEventListener("click", () => medirParquet().catch((e) => log("ERROR: " + e.message)));
+$("geojson").addEventListener("click", () => medirGeoJSON().catch((e) => log("ERROR: " + e.message)));
+medirParquet().catch((e) => log("ERROR: " + e.message));
+</script>
+</body>
+</html>

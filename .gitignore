@@ -57,3 +57,9 @@ datos/.cp_api_cache*.json
 
 # caché de tablas del INE (58 MB): se regenera sola, no va al repo
 datos/ine/.cache/
+
+# Almacén entidades+atributos: se regenera con scripts/store.py, no se versiona
+datos/store.duckdb
+datos/store/*.geojson
+datos/store/*.parquet
+datos/store/*_recibo.json
