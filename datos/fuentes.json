@@ -1268,13 +1268,13 @@
    "licencia": "reutilización con atribución",
    "actualizado": null,
    "descargado": "2026-11-27",
-   "features": 778,
+   "features": 743,
    "url": "https://nap.dgt.es",
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Paneles DGT DATEX2 v3.7",
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 166439
+   "bytes": 159262
   },
   "dgt-incidencias": {
    "capa": "dgt-incidencias",
@@ -1284,13 +1284,13 @@
    "licencia": "reutilización con atribución",
    "actualizado": null,
    "descargado": "2026-11-27",
-   "features": 1425,
+   "features": 1440,
    "url": "https://nap.dgt.es",
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Incidencias DGT DATEX2 v3.7",
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 623417
+   "bytes": 628963
   },
   "dgt-electrolineras": {
    "capa": "dgt-electrolineras",
@@ -1331,14 +1331,14 @@
    "editor": "AEMET · Meteoalerta",
    "licencia": "© AEMET, citar como autora",
    "actualizado": "20261127",
-   "descargado": "2026-11-27T10:16:54",
-   "features": 3,
+   "descargado": "2026-11-27T11:15:21",
+   "features": 4,
    "url": "https://www.aemet.es/es/eltiempo/prediccion/avisos",
    "metodo": "tar.gz de GeoJSON de la pagina de avisos (sin clave)",
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Fichero descargado del organismo",
-   "bytes": 20961
+   "bytes": 28620
   },
   "municipios": {
    "capa": "municipios",
@@ -1362,15 +1362,15 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-27T11:15",
-   "descargado": "2026-11-27T10:17:00Z",
+   "actualizado": "2026-11-27T12:15",
+   "descargado": "2026-11-27T11:15:26Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "modelo ICON/GFS por provincia sobre el shape de nuts3_es.geojson (consulta en el centroide, pintado en el poligono), paso 15 min",
    "origen": "elaborado",
    "origen_txt": "Elaborado",
    "origen_detalle": "Interpolación IDW sobre Open-Meteo",
-   "bytes": 76122
+   "bytes": 76163
   },
   "clima-viento": {
    "capa": "clima-viento",
@@ -1378,15 +1378,15 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-27T11:15",
-   "descargado": "2026-11-27T10:17:00Z",
+   "actualizado": "2026-11-27T12:15",
+   "descargado": "2026-11-27T11:15:26Z",
    "features": 52,
    "url": "https://open-meteo.com/",
    "metodo": "interpolacion IDW vectorial sobre rejilla propia, barbas de 2 vertices; rejilla aparte para Canarias",
    "origen": "elaborado",
    "origen_txt": "Elaborado",
    "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
-   "bytes": 54063
+   "bytes": 54091
   },
   "alojamiento-ign": {
    "capa": "alojamiento-ign",
@@ -1717,8 +1717,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-27T11:15",
-   "descargado": "2026-11-27T10:17:00Z",
+   "actualizado": "2026-11-27T12:15",
+   "descargado": "2026-11-27T11:15:26Z",
    "features": 52,
    "fecha_dato": null,
    "url": "https://open-meteo.com/",
@@ -1733,8 +1733,8 @@
    "fuente": "Open-Meteo",
    "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
    "licencia": "CC BY 4.0",
-   "actualizado": "2026-11-27T11:15",
-   "descargado": "2026-11-27T10:17:00Z",
+   "actualizado": "2026-11-27T12:15",
+   "descargado": "2026-11-27T11:15:26Z",
    "features": 52,
    "fecha_dato": null,
    "url": "https://open-meteo.com/",

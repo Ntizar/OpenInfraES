@@ -3,19 +3,19 @@
  "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
  "url": "https://open-meteo.com/",
  "licencia": "CC BY 4.0",
- "descargado": "2026-11-27T10:17:00Z",
- "actualizado": "2026-11-27T11:15",
+ "descargado": "2026-11-27T11:15:26Z",
+ "actualizado": "2026-11-27T12:15",
  "features": 52,
  "barbas": 242,
  "provincias": 52,
- "temperatura_media": 9.5,
+ "temperatura_media": 10.7,
  "mas_caliente": {
   "provincia": "Las Palmas",
-  "temperatura": 18.2
+  "temperatura": 19.3
  },
  "mas_frio": {
   "provincia": "Teruel",
-  "temperatura": 3.1
+  "temperatura": 4.8
  },
  "nota": "Modelo interpolado, no estación oficial. Los avisos oficiales son la capa aemet-zonas.",
  "metodo": "una llamada por lotes a /v1/forecast (current) y rejilla IDW vectorial propia"
