@@ -27,14 +27,13 @@
      y deja el mapa en negro sin costas) se desatura y se oscurece: queda una base
      legible en grises oscuros sobre la que los datos neón sí destacan. */
   /* cada base trae su filtro: el IGN no tiene teselas oscuras, así que el look se hace aquí */
-  html[data-base="radar"] .leaflet-tile-pane { filter:invert(1) brightness(2.15) contrast(1.22) saturate(0); }
-  html[data-base="gris"]  .leaflet-tile-pane { filter:grayscale(1) brightness(.42) contrast(1.55); }
-  html[data-tema="oscuro"][data-base="todo"] .leaflet-tile-pane,
-  html[data-tema="oscuro"][data-base="orto"] .leaflet-tile-pane { filter:brightness(.62) contrast(1.15) saturate(.75); }
-  html[data-tema="claro"][data-base="todo"] .leaflet-tile-pane,
-  html[data-tema="claro"][data-base="orto"] .leaflet-tile-pane,
-  html[data-tema="claro"][data-base="osm"] .leaflet-tile-pane { filter:none; }
+  /* Dos mapas base: el IGN de LÍNEAS (vectorial, sin fondo: en tema oscuro se invierte y queda
+     como una pizarra, que es como se leen mejor las capas encima) y OpenStreetMap (gris invertido).
+     Las claves de `data-base` son las mismas de `BASES`; antes el CSS hablaba de
+     «todo»/«gris»/«orto» y el JS escribía «IGNBaseTodo», así que casi nunca acertaba. */
+  html[data-tema="oscuro"][data-base="lineas"] .leaflet-tile-pane { filter:invert(1) brightness(2.15) contrast(1.22) saturate(0); }
   html[data-tema="oscuro"][data-base="osm"] .leaflet-tile-pane { filter:grayscale(1) invert(1) brightness(.75) contrast(1.2); }
+  html[data-tema="claro"] .leaflet-tile-pane { filter:none; }
   .leaflet-container { background:var(--fondo); font-family:inherit; }
 
   .trazos path { vector-effect:non-scaling-stroke; }
@@ -916,12 +915,11 @@ const IGN = (c, f) => "https://www.ign.es/wmts/ign-base?request=GetTile&service=
 const BASES_PNOA = "https://www.ign.es/wmts/pnoa-ma?layer=OI.OrthoimageCoverage&style=default" +
   "&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/jpeg" +
   "&TileMatrix={z}&TileCol={x}&TileRow={y}";
+/* Sólo dos mapas base: el IGN de LÍNEAS (IGNBaseTodo sin fondo: toponimia, relieve y límites, sin
+   el relleno del ráster, que tapa las capas) y OpenStreetMap. Fuera el gris y la ortofoto. */
 const BASES = {
-  radar:          ["IGN radar (líneas)", IGN("IGNBaseTodo-nofondo", "image/png")],
-  "IGNBase-gris": ["IGN gris",      IGN("IGNBase-gris", "image/png")],
-  "IGNBaseTodo":  ["Mapa base IGN", IGN("IGNBaseTodo", "image/png")],
-  "IGNBaseOrto":  ["Ortofoto PNOA", IGN("IGNBaseOrto", "image/jpeg")],
-  "osm":          ["OpenStreetMap", "https://tile.openstreetmap.org/{z}/{x}/{y}.png"]
+  lineas: ["IGN líneas", IGN("IGNBaseTodo-nofondo", "image/png")],
+  osm: ["OpenStreetMap", "https://tile.openstreetmap.org/{z}/{x}/{y}.png"]
 };
 
 // Durante la rueda, Canvas dibuja las geometrías visibles. En reposo el SVG
@@ -1035,7 +1033,12 @@ const SvgTrazos = SvgConLienzo.extend({
     const origen = map.getPixelOrigin();
     for (const id in this._layers) {
       const layer = this._layers[id];
-      if (!vista.intersects(layer.getBounds())) {
+      /* Un `CircleMarker` no tiene `getBounds` (sólo polígonos y polilíneas): su caja es su propio
+         punto. Sin esta salida, cualquier capa vectorial con puntos sueltos —la red de hidrógeno
+         trae cinco estaciones de compresión— petaba al mover el mapa. */
+      const caja = layer.getBounds ? layer.getBounds()
+        : (layer.getLatLng ? L.latLngBounds(layer.getLatLng(), layer.getLatLng()) : null);
+      if (!caja || !vista.intersects(caja)) {
         if (layer._parts?.length) {
           layer._parts = [];
           this._setPath(layer, "M0 0");
@@ -1235,7 +1238,10 @@ function activarZoomRueda(map) {
     const cursor = gesto && e.clientX === gesto.x && e.clientY === gesto.y
       ? gesto.cursor : map.mouseEventToContainerPoint(e);
     // Al invertir el sentido, descartar el recorrido que aún quedaba por animar.
-    const haciaDentro = delta < 0;
+    /* `getWheelDelta` de Leaflet ya devuelve POSITIVO al girar la rueda hacia arriba («negative if
+       scrolling down», dice su propio comentario), o sea que arriba es acercarse. Estaba al revés:
+       la rueda hacia arriba alejaba y con trackpad parecía que el mapa hacía lo contrario que el dedo. */
+    const haciaDentro = delta > 0;
     const base = gesto && (gesto.destino - actual) * delta >= 0 ? gesto.destino : actual;
     const crudo = base + (haciaDentro ? 1 : -1) * (map.options.zoomDelta || 0.75);
     const destino = Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(),
@@ -1282,7 +1288,7 @@ mapa.on("click", e => {
 
 let capaBase = null;
 function ponerBase(k) {
-  const [nombre, url] = BASES[k] || BASES["IGNBase-gris"];
+  const [nombre, url] = BASES[k] || BASES.lineas;
   if (capaBase) mapa.removeLayer(capaBase);
   capaBase = L.tileLayer(url, {
     attribution: "© IGN · datos: OSM / REE / MITMA / MITECO / CSN / CORES / Enagás",
@@ -1290,7 +1296,7 @@ function ponerBase(k) {
     updateWhenZooming: true, keepBuffer: 4
   }).addTo(mapa);
   capaBase.bringToBack();
-  document.documentElement.dataset.base = BASES[k] ? k : "radar";
+  document.documentElement.dataset.base = BASES[k] ? k : "lineas";
 }
 
 /* ---------------- ficha ---------------- */
@@ -2092,58 +2098,72 @@ const qc = $("#qc"), qcN = $("#qc-n");
    los semáforos, si estás en Galicia no. El chip lo desactiva y vuelve la lista completa. */
 let AMBITOS = null;
 const SOLO_AQUI = () => localStorage.getItem("oi-solo-aqui") !== "0";
-const filasCapa = new Map();
-panel.querySelectorAll(".fila").forEach(f => filasCapa.set(f.dataset.fila, f));
 const btAmb = $("#qc-amb");
+/* Estado que se calcula UNA vez: texto de cada fila y si está a la vista. Así el filtro no toca
+   el DOM para leer. Leer `textContent` de 104 filas intercalado con escrituras de `display`
+   obliga al navegador a recalcular el layout fila a fila: eso es lo que se nota como tirón. */
+const TEXTO = new Map(), A_LA_VISTA = new Map(), GRUPOS = [];
+panel.querySelectorAll(".grupo").forEach(g => {
+  GRUPOS.push({ nodo: g, filas: [...g.querySelectorAll(".fila")] });
+  g.querySelectorAll(".fila").forEach(f => TEXTO.set(f.dataset.fila, f.textContent.toLowerCase().trim()));
+});
 
 function aplicaAmbito() {
   const t = (qc && qc.value || "").trim().toLowerCase();
   const solo = SOLO_AQUI();
-  const b = mapa.getBounds();
+  const z = mapa.getZoom();
+  const b = solo ? mapa.getBounds() : null;
   let ocultas = 0, visibles = 0;
-  panel.querySelectorAll(".grupo").forEach(g => {
+  const pon = [];   // primero se decide todo (lecturas), después se escribe: sin intercalar
+  for (const g of GRUPOS) {
     let dentro = 0;
-    g.querySelectorAll(".fila").forEach(f => {
+    for (const f of g.filas) {
       const id = f.dataset.fila;
       const a = AMBITOS && AMBITOS[id];
-      const casaTexto = !t || f.textContent.toLowerCase().includes(t);
+      const casaTexto = !t || (TEXTO.get(id) || "").includes(t);
       let casaSitio = true;
       // mundo, nacional y sin dato: siempre. Regional: solo si su caja toca la vista y ya
       // estás lo bastante cerca como para que la capa pinte algo (zoom 8).
       if (solo && a && a.bbox && a.ambito !== "nacional" && a.ambito !== "mundo") {
         const [w, s, e, n] = a.bbox;
-        casaSitio = mapa.getZoom() >= 8 && b.intersects(L.latLngBounds([[s, w], [n, e]]));
+        casaSitio = z >= 8 && b.intersects(L.latLngBounds([[s, w], [n, e]]));
       }
       const ver = casaTexto && casaSitio;
-      f.style.display = ver ? "" : "none";
       if (ver) dentro++; else if (casaTexto && !casaSitio) ocultas++;
-    });
-    g.style.display = dentro ? "" : "none";
-    if (t) g.classList.toggle("cerrado", !dentro);
+      if (A_LA_VISTA.get(id) !== ver) { A_LA_VISTA.set(id, ver); pon.push([f, ver]); }
+    }
+    const verGrupo = dentro > 0;
+    if (g.oculto !== !verGrupo) { g.oculto = !verGrupo; pon.push([g.nodo, verGrupo]); }
+    if (t) g.nodo.classList.toggle("cerrado", !verGrupo);
     visibles += dentro;
-  });
+  }
+  for (const [nodo, ver] of pon) nodo.style.display = ver ? "" : "none";
   if (qcN) qcN.textContent = t ? visibles : (solo && ocultas ? ocultas + " fuera" : "");
-  if (btAmb) btAmb.classList.toggle("on", solo);
-  if (btAmb) btAmb.title = solo
-    ? "Enseñando solo las capas que aplican a esta vista. Pulsa para ver todas."
-    : "Enseñando todas las capas. Pulsa para ocultar las que no aplican a esta vista.";
+  if (btAmb) {
+    btAmb.classList.toggle("on", solo);
+    btAmb.title = solo
+      ? "Enseñando solo las capas que aplican a esta vista. Pulsa para ver todas."
+      : "Enseñando todas las capas. Pulsa para ocultar las que no aplican a esta vista.";
+  }
 }
 
+if (qc) qc.addEventListener("input", aplicaAmbito);
 if (btAmb) {
   btAmb.addEventListener("click", () => {
     localStorage.setItem("oi-solo-aqui", SOLO_AQUI() ? "0" : "1");
     aplicaAmbito();
   });
 }
-if (qc) qc.addEventListener("input", aplicaAmbito);
 
-fetch("datos/ambitos.json?cb=" + Date.now())
+/* Con ?v= y no Date.now(): la URL es estable y el navegador puede cachear el fichero. Con un
+   sello de tiempo se vuelve a bajar en cada visita y no hay caché que valga. */
+fetch("datos/ambitos.json?v=" + VER_DATOS)
   .then(r => r.json())
   .then(d => {
     AMBITOS = d.capas || {};
     // distintivo en la fila: la nacional no lleva nada (es lo normal); lo demás, etiqueta
     Object.entries(AMBITOS).forEach(([id, a]) => {
-      const f = filasCapa.get(id);
+      const f = panel.querySelector('.fila[data-fila="' + id + '"]');
       if (!f || !a || a.ambito === "nacional") return;
       const n = f.querySelector(".n");
       const sp = document.createElement("span");
@@ -2192,11 +2212,11 @@ if (cajaPresets) {
 const sel = $("#base");
 Object.entries(BASES).forEach(([k, v]) => {
   const o = document.createElement("option");
-  o.value = k; o.textContent = v[0]; if (k === "radar") o.selected = true;
+  o.value = k; o.textContent = v[0]; if (k === "lineas") o.selected = true;
   sel.appendChild(o);
 });
 sel.addEventListener("change", e => ponerBase(e.target.value));
-ponerBase("radar");
+ponerBase("lineas");
 
 /* ---------------- motor ---------------- */
 const POPUP = L.popup({ maxWidth: 348, minWidth: 302, autoPanPadding: [26, 26] });
@@ -3413,6 +3433,53 @@ function resumenDe(p, c) {
   return t;
 }
 
+/* ---------------- INE · renta del municipio ----------------
+   `datos/ine/municipios.json` (scripts/ine_municipios.py) trae la renta media y mediana de cada
+   municipio, cruzada por el código INE de 5 dígitos. Se pide UNA vez, bajo demanda, y se queda en
+   memoria: 150 KB no justifican meterla en el arranque. El fichero es también lo que consulta un
+   MCP, así que la clave es el código y no el nombre. */
+const INE_MUN = { datos: null, pidiendo: false, esperando: [] };
+function pedirIneMunicipio(alLlegar) {
+  if (alLlegar) INE_MUN.esperando.push(alLlegar);
+  if (INE_MUN.datos) { INE_MUN.esperando.splice(0).forEach(f => f()); return; }
+  if (INE_MUN.pidiendo) return;
+  INE_MUN.pidiendo = true;
+  fetch("datos/ine/municipios.json?v=" + VER_DATOS)
+    .then(r => r.ok ? r.json() : null)
+    .then(d => {
+      INE_MUN.datos = d;
+      INE_MUN.esperando.splice(0).forEach(f => f());
+    })
+    .catch(() => {})
+    .finally(() => { INE_MUN.pidiendo = false; });
+}
+function codMunicipio(p) {
+  const cod = String((p && (p.cod_ine_municipio || p.cod_ine)) || "").replace(/\D/g, "").padStart(5, "0");
+  return cod.length === 5 && cod !== "00000" ? cod : null;
+}
+/* Bloque para la ficha. Vale para cualquier capa que traiga `cod_ine_municipio`: la ficha de una
+   planta dice también cómo es el municipio donde está. */
+function bloqueIne(p) {
+  const cod = codMunicipio(p);
+  if (!cod || !INE_MUN.datos || !INE_MUN.datos.municipios) return "";
+  const m = INE_MUN.datos.municipios[cod];
+  if (!m) return "";
+  const ind = INE_MUN.datos.indicadores || {};
+  let lineas = Object.keys(ind).filter(k => m[k] != null)
+    .map(k => `<div class="pd-k"><span>${ind[k].etiqueta}</span><span>${numES(m[k])} ${ind[k].unidad}</span></div>`)
+    .join("");
+  // Densidad: sale de la población y la superficie que ya trae el propio polígono, sin otra fuente.
+  const hab = Number(p.poblacion), km2 = Number(p.area_km2);
+  if (hab > 0 && km2 > 0)
+    lineas += `<div class="pd-k"><span>Densidad</span><span>${nf(hab / km2)} hab/km²</span></div>`;
+  if (!lineas) return "";
+  return `<div class="pd-sec">INE · renta del municipio ${INE_MUN.datos.anyo || ""}</div>` +
+    `<div class="pd-grid">${lineas}</div>` +
+    `<div class="pd-nota">Municipio INE ${cod} · Atlas de distribución de renta de los hogares · ` +
+    `<a href="${INE_MUN.datos.url || "https://www.ine.es/experimental/atlas/experimental_atlas.htm"}" ` +
+    `target="_blank" rel="noopener">ver en el INE ↗</a></div>`;
+}
+
 function abrirPanelDato(p, c, latlng) {
   cerrarPanelesDerecha("dato");
   const panel = document.getElementById("panel-dato");
@@ -3530,6 +3597,13 @@ function abrirPanelDato(p, c, latlng) {
              otros: filas.slice(1, 4).map(f => f[1]) };
   }
   const resumen = resumenDe(p, c);
+  /* INE: si el dato trae municipio, la ficha enseña la renta de su municipio. La primera vez los
+     datos aún no están; cuando llegan se repinta la ficha (una sola vez: `dataset.ine`). */
+  const codMun = codMunicipio(p);
+  const blkIne = bloqueIne(p);
+  if (codMun && !blkIne) pedirIneMunicipio(() => {
+    if (!panel.hidden && panel.dataset.ine !== codMun) abrirPanelDato(p, c, latlng);
+  });
   // una coordenada municipal no es la de la instalación: se dice en la ficha, no se supone
   const precision = (p.geo_precision === "municipio")
     ? "Coordenada del núcleo municipal, no de la instalación: la distancia real puede ser mayor."
@@ -3541,6 +3615,7 @@ function abrirPanelDato(p, c, latlng) {
     foto +
     (hl ? `<div class="pd-hl">${hl}</div>` : "") +
     (filas ? `<div class="pd-grid">${filas}</div>` : "") +
+    blkIne +
     (cerca.length
       ? `<div class="pd-sec">A menos de 30 km · capas ya cargadas</div><div class="pd-cerca">` +
         cerca.map(x =>
@@ -3579,6 +3654,7 @@ function abrirPanelDato(p, c, latlng) {
   };
 
   panel.hidden = false;
+  panel.dataset.ine = blkIne ? codMun : "";
   const x = document.getElementById("panel-dato-x");
   if (x) x.onclick = () => { panel.hidden = true; actualizarLeyenda(); };
 }
@@ -4000,7 +4076,21 @@ function lienzoDe(c) {
 
 function recortar(c) {
   const todo = datos[c.id];
-  if (!c.__dibujo || !todo || todo.length <= RECORTE_MIN) return;
+  if (!c.__dibujo || !todo || !todo.length) return;
+  /* Capa pequeña (≤ RECORTE_MIN): no hay nada que recortar, se dibuja ENTERA. Antes se salía por
+     aquí sin pintar, y como la primera pintura de una capa recién encendida llega con el grupo
+     vacío (los datos aún no han bajado), la capa se quedaba invisible PARA SIEMPRE: no había
+     ningún camino que volviera a llamar a `dibujarVector` con los datos. Les pasaba a
+     demarcaciones (25), ine-ccaa (19), ine-paro (19), clima-temperatura (52) y todas las demás
+     por debajo de 120 objetos. */
+  if (todo.length <= RECORTE_MIN) {
+    const claveTodo = "todo:" + todo.length;
+    if (claveTodo === c.__claveVista) return;
+    c.__claveVista = claveTodo;
+    c.__pintadoEn = L.latLngBounds([[-85, -180], [85, 180]]);   // está dibujada entera: no se recorta
+    dibujarVector(c, todo);
+    return;
+  }
   /* Si la vista sigue dentro de lo que ya está pintado, no se toca nada. Antes se recortaba y se
      volvía a dibujar en CADA arrastre: miles de objetos nuevos y miles liberados por movimiento,
      y el navegador se pasaba el rato en el recolector de basura (medido: 15 % del tiempo en GC,
@@ -4118,7 +4208,19 @@ function objetoVector(c, grande, destino) {
           onEachFeature: (f, layer) => {
             elementos[c.id].push(layer);
             layer.on("click", e => { abrirFicha(f.properties, c, e.latlng); L.DomEvent.stopPropagation(e); });
-          }
+          },
+          /* Una capa de líneas puede traer puntos sueltos: la red de hidrógeno son tres
+             hidroductos y cinco estaciones de compresión, y sin `pointToLayer` Leaflet pinta
+             esos puntos con su marcador por defecto (el pin azul con sombra), que no se parece a
+             nada más del visor. Aquí se pintan como el resto: círculo del color de la capa. */
+          pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+            /* Sin `renderer` explícito: lo pone el mapa. El lienzo propio del visor recorre sus
+               capas con `getBounds()` y un CircleMarker no lo tiene — eso ya está cubierto en
+               `_updatePaths`, que usa el propio punto como caja. */
+            radius: c.radio || 5.5,
+            fillColor: colorDe(c, (f && f.properties) || {}),
+            fillOpacity: .88, color: "#fff", weight: 1.2, opacity: .6
+          })
   };
 }
 
@@ -5303,7 +5405,7 @@ function estadoUrl() {
   const c = mapa.getCenter();
   const activas = CAPAS.filter(x => document.querySelector(`[data-capa="${x.id}"]`)?.checked).map(x => x.id);
   return "#z=" + mapa.getZoom().toFixed(2) + "&lat=" + c.lat.toFixed(4) + "&lng=" + c.lng.toFixed(4) +
-         "&c=" + activas.join(",") + "&b=" + (document.documentElement.dataset.base || "radar") +
+         "&c=" + activas.join(",") + "&b=" + (document.documentElement.dataset.base || "lineas") +
          "&t=" + (document.documentElement.dataset.tema || "oscuro");
 }
 $("#btn-enlace").addEventListener("click", async () => {
