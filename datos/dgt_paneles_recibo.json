@@ -4,21 +4,29 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 684,
+ "features": 767,
  "paneles_localizados": 2539,
- "descargado": "2026-11-27T13:29:24",
+ "descargado": "2026-11-27T14:16:52",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 75
+   "paneles": 72
   },
   {
    "texto": "@H @F",
-   "paneles": 73
+   "paneles": 68
+  },
+  {
+   "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
+   "paneles": 36
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD",
-   "paneles": 18
+   "paneles": 20
+  },
+  {
+   "texto": "MODERE VELOCIDAD · MODERE VELOCITAT",
+   "paneles": 11
   },
   {
    "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
@@ -26,11 +34,11 @@
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
-   "paneles": 8
+   "paneles": 7
   },
   {
-   "texto": "MODERE VELOCIDAD · MODERE VELOCITAT",
-   "paneles": 8
+   "texto": "MODERE VELOCIDAD",
+   "paneles": 7
   },
   {
    "texto": "CONTROL DE VELOCIDAD POR RADAR · CONTROL DE VELOCIDADE POR RADAR",
@@ -39,14 +47,6 @@
   {
    "texto": "EN N-232 4 EJES O MAS",
    "paneles": 6
-  },
-  {
-   "texto": "4 EJES O MAS",
-   "paneles": 6
-  },
-  {
-   "texto": "MODERE LA VELOCIDAD",
-   "paneles": 4
   }
  ]
 }
