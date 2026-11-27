@@ -3,18 +3,18 @@
  "dataset": "Incidencias DGT DATEX2 v3.7",
  "url": "https://nap.dgt.es/datex2/v3/dgt/SituationPublication/datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 1180,
- "activas": 1180,
+ "features": 1189,
+ "activas": 1189,
  "por_tipo": {
   "roadOrCarriagewayOrLaneManagement": 610,
-  "otra": 382,
-  "abnormalTraffic": 78,
-  "obstruction": 58,
+  "otra": 388,
+  "abnormalTraffic": 82,
+  "obstruction": 57,
   "speedManagement": 33,
   "nonWeatherRelatedRoadCondition": 9,
   "generalInstructionToRoadUsers": 8,
   "vehicleObstruction": 1,
   "poorEnvironment": 1
  },
- "descargado": "2026-11-27T13:16:35"
+ "descargado": "2026-11-27T13:19:25"
 }
