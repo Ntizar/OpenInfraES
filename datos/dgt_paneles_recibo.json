@@ -6,19 +6,19 @@
  "licencia": "reutilización con atribución",
  "features": 697,
  "paneles_localizados": 2539,
- "descargado": "2026-11-26T23:14:44",
+ "descargado": "2026-11-27T00:36:31",
  "mensajes_top": [
   {
    "texto": "MAQUINAS EN TRATAMIENTO INVERNAL",
-   "paneles": 93
+   "paneles": 94
+  },
+  {
+   "texto": "VELOCIDAD CONTROLADA POR RADAR",
+   "paneles": 85
   },
   {
    "texto": "@H @F",
    "paneles": 85
-  },
-  {
-   "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 84
   },
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
@@ -26,7 +26,7 @@
   },
   {
    "texto": "MAQUINA EN TRATAMIENTO INVERNAL",
-   "paneles": 15
+   "paneles": 19
   },
   {
    "texto": "CONTROLES MOVILES DE VELOCIDAD",
