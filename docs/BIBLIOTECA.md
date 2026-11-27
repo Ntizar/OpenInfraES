@@ -67,7 +67,7 @@ La clave es la última fila: **cada campo dice de dónde viene**. Un dato sin pr
 
 ## Qué contiene hoy
 
-**102 capas en el visor** y **126 entradas documentadas** en `datos/fuentes.json`. Lo que se puede
+**104 capas en el visor** y **128 entradas documentadas** en `datos/fuentes.json`. Lo que se puede
 consultar ya:
 
 - **Energía**: red de 400/220 kV, 657 subestaciones, 7 reactores nucleares, ciclos combinados,

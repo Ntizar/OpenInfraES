@@ -36,6 +36,8 @@ ORGANISMO = {
     "Visor Hermes — MITMA": "MITMA",    "Renfe": "Renfe", "OMIE": "OMIE", "Adif": "Adif", "Adif · IDEADIF": "Adif",     "IGME · QAFI": "IGME · QAFI", "IGME": "IGME", "EMODnet": "EMODnet",
     "Copernicus EMS · EFFIS": "Copernicus EMS", "Copernicus EMS": "Copernicus EMS",
     "Puertos del Estado": "Puertos del Estado",
+    "Gobierno de Navarra · IDENA": "IDENA",
+    "Ayuntamiento de Madrid · sigma.madrid.es": "Ayuntamiento de Madrid",
     "EFFIS · Copernicus Emergency Management Service": "Copernicus EMS",
     "Ministerio de Transportes (ArcGIS REST)": "MITMA",
     # Open-Meteo no produce el dato: agrega los modelos ICON (DWD) y GFS (NOAA). Jerarquía 2.
@@ -84,6 +86,9 @@ LICENCIA = {
     "EMODnet": ("si", "CC BY 4.0", "https://emodnet.ec.europa.eu/en/legal-notice"),
     "Puertos del Estado": ("si", "CC BY 4.0 · Puertos del Estado",
                            "https://www.idee.es/csw-codsi-idee/srv/api/records/spa_puertos_estado"),
+    "IDENA": ("si", "CC BY 4.0 · Gobierno de Navarra", "https://idena.navarra.es/"),
+    "Ayuntamiento de Madrid": ("si", "Reutilización Ley 37/2007 · Ayto. de Madrid",
+                               "https://sigma.madrid.es/"),
     "Adif": ("si", "CC BY 4.0 según ficha de datos.gob.es",
              "https://datos.gob.es/es/catalogo/e0dat0002-wfs-de-la-red-de-transporte-ferroviario-de-adif"),
     # Verificado por la API CKAN de data.renfe.com: el conjunto 'ubicacion-vehiculos' declara
@@ -100,6 +105,8 @@ LICENCIA = {
 # --- frescura (P2): el TTL lo define la fuente, no la comodidad del servidor ---
 TTL = {
     "puertos-zonas": (2592000, "mensual", "foto"),
+    "navarra-eolicos": (604800, "semanal", "foto"),
+    "madrid-semaforos": (2592000, "mensual", "foto"),
     "embalses": (604800, "semanal", "foto"),
     "omie_precio": (3600, "cada subasta (≈13:00)", "vivo"),
     "ree_vivo": (300, "5 minutos", "vivo"),
@@ -193,6 +200,7 @@ JERARQUIA = {
     "Copernicus EMS": 1,
     "MITMA": 2, "EMODnet": 2, "IGME · QAFI": 1, "IGME": 1, "OpenStreetMap": 3, "Open-Meteo": 2,
     "Puertos del Estado": 1,
+    "IDENA": 1, "Ayuntamiento de Madrid": 1,
 }
 ETIQUETA_JERARQUIA = {1: "organismo productor", 2: "organismo agregador", 3: "fuente comunitaria"}
 

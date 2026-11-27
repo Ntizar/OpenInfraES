@@ -1,22 +1,22 @@
 {
- "generado": "2026-11-27T12:52:36",
+ "generado": "2026-11-27T13:11:59",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 126,
+ "total": 128,
  "resumen": {
-  "licencia_si": 122,
+  "licencia_si": 124,
   "licencia_pendiente": 0,
   "licencia_vetada": 4,
   "caducados": 30,
-  "oficiales": 111,
+  "oficiales": 113,
   "comunitarias": 15,
   "por_jerarquia": {
-   "1": 87,
+   "1": 89,
    "2": 24,
    "3": 15
   },
-  "descargables_ligeros": 64,
-  "kb_total": 182915.0
+  "descargables_ligeros": 66,
+  "kb_total": 183575.3
  },
  "avisos": {
   "pendiente": [],
@@ -2461,6 +2461,36 @@
    "edad_dias": 0,
    "caducado": false
   },
+  "madrid-semaforos": {
+   "id": "madrid-semaforos",
+   "titulo": "Semáforos de Madrid",
+   "organismo": "Ayuntamiento de Madrid",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "query ArcGIS REST paginada con resultOffset (el servicio corta en 2000); coordenadas a 5 decimales",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
+   "licencia": {
+    "estado": "si",
+    "nombre": "Reutilización Ley 37/2007 · Ayto. de Madrid",
+    "url_terminos": "https://sigma.madrid.es/"
+   },
+   "endpoint": "https://sigma.madrid.es/hosted/rest/services/MOVILIDAD/SEMAFOROS/MapServer/4/query",
+   "modo": "foto",
+   "frecuencia_fuente": "mensual",
+   "ttl_segundos": 2592000,
+   "ultima_verificacion": "2026-11-27",
+   "crs": "EPSG:4326",
+   "features": 2301,
+   "bytes": 272216,
+   "kb": 265.8,
+   "fecha_dato": "2026-11-27T13:11:31Z",
+   "fecha_descarga": "2026-11-27T13:11:31Z",
+   "edad_dias": 0,
+   "caducado": false
+  },
   "masas-subterraneas": {
    "id": "masas-subterraneas",
    "titulo": "Masas de agua subterránea (estado)",
@@ -2668,6 +2698,36 @@
    "kb": 174.7,
    "fecha_dato": "2026-11-27",
    "fecha_descarga": "2026-11-27",
+   "edad_dias": 0,
+   "caducado": false
+  },
+  "navarra-eolicos": {
+   "id": "navarra-eolicos",
+   "titulo": "Aerogeneradores de Navarra, uno a uno (IDENA)",
+   "organismo": "IDENA",
+   "oficial": true,
+   "jerarquia": 1,
+   "jerarquia_txt": "organismo productor",
+   "producto": "WFS paginado con startIndex (el servicio corta en 1000 y no lo dice); coordenadas a 5 decimales",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
+   "licencia": {
+    "estado": "si",
+    "nombre": "CC BY 4.0 · Gobierno de Navarra",
+    "url_terminos": "https://idena.navarra.es/"
+   },
+   "endpoint": "https://idena.navarra.es/ogc/wfs",
+   "modo": "foto",
+   "frecuencia_fuente": "semanal",
+   "ttl_segundos": 604800,
+   "ultima_verificacion": "2026-11-27",
+   "crs": "EPSG:4326",
+   "features": 1422,
+   "bytes": 402775,
+   "kb": 393.3,
+   "fecha_dato": "2026-11-27T13:11:05Z",
+   "fecha_descarga": "2026-11-27T13:11:05Z",
    "edad_dias": 0,
    "caducado": false
   },

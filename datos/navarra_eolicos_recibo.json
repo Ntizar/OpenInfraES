@@ -1,0 +1,20 @@
+{
+ "capa": "navarra-eolicos",
+ "titulo": "Aerogeneradores de Navarra, uno a uno (IDENA)",
+ "fuente": "Gobierno de Navarra · IDENA",
+ "editor": "Gobierno de Navarra · IDENA (Infraestructura de Datos Espaciales de Navarra)",
+ "producto": "WFS 2.0 · IDENA:ENERGI_Sym_AeroGen",
+ "url": "https://idena.navarra.es/ogc/wfs",
+ "licencia": "CC BY 4.0",
+ "url_terminos": "https://idena.navarra.es/",
+ "crs": "EPSG:4326 (pedido con srsName; nativo UTM 30N/25830)",
+ "features": 1422,
+ "parques": 65,
+ "modelos": 53,
+ "potencia_total_mw": 1769.1,
+ "descargado": "2026-11-27T13:11:05Z",
+ "metodo": "WFS paginado con startIndex (el servicio corta en 1000 y no lo dice); coordenadas a 5 decimales",
+ "ambito": "Navarra",
+ "nota": "Capa regional: se dibuja a partir de zoom 9. Complementa `eolicos` (instalaciones nacionales) con la máquina: potencia unitaria, rotor, buje y alta.",
+ "fichero": "navarra_eolicos.geojson"
+}

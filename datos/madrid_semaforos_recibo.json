@@ -1,0 +1,17 @@
+{
+ "capa": "madrid-semaforos",
+ "titulo": "Semáforos de Madrid",
+ "fuente": "Ayuntamiento de Madrid · sigma.madrid.es",
+ "editor": "Ayuntamiento de Madrid · Servicio de Información Geográfica (sigma)",
+ "producto": "MOVILIDAD/SEMAFOROS · capa 4 «Cabezas semáforos» (ArcGIS REST)",
+ "url": "https://sigma.madrid.es/hosted/rest/services/MOVILIDAD/SEMAFOROS/MapServer/4/query",
+ "licencia": "Reutilización Ley 37/2007 con atribución",
+ "url_terminos": "https://sigma.madrid.es/",
+ "crs": "EPSG:4326 (pedido con outSR)",
+ "features": 2301,
+ "descargado": "2026-11-27T13:11:31Z",
+ "metodo": "query ArcGIS REST paginada con resultOffset (el servicio corta en 2000); coordenadas a 5 decimales",
+ "ambito": "Madrid",
+ "nota": "El campo TIPO_ELEM viene a 'other' en todos los objetos: se descarta antes que publicar un tipo inventado. La capa dice dónde hay semáforo, no de qué clase.",
+ "fichero": "madrid_semaforos.geojson"
+}

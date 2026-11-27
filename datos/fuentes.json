@@ -1848,6 +1848,40 @@
    "origen_detalle": "Servicio web del organismo",
    "bytes": 27566606
   },
+  "madrid-semaforos": {
+   "capa": "madrid-semaforos",
+   "titulo": "Semáforos de Madrid",
+   "fuente": "Ayuntamiento de Madrid · sigma.madrid.es",
+   "editor": "Ayuntamiento de Madrid · Servicio de Información Geográfica (sigma)",
+   "licencia": "Reutilización Ley 37/2007 con atribución",
+   "actualizado": "2026-11-27T13:11:31Z",
+   "descargado": "2026-11-27T13:11:31Z",
+   "features": 2301,
+   "fecha_dato": null,
+   "url": "https://sigma.madrid.es/hosted/rest/services/MOVILIDAD/SEMAFOROS/MapServer/4/query",
+   "metodo": "query ArcGIS REST paginada con resultOffset (el servicio corta en 2000); coordenadas a 5 decimales",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 272216
+  },
+  "navarra-eolicos": {
+   "capa": "navarra-eolicos",
+   "titulo": "Aerogeneradores de Navarra, uno a uno (IDENA)",
+   "fuente": "Gobierno de Navarra · IDENA",
+   "editor": "Gobierno de Navarra · IDENA (Infraestructura de Datos Espaciales de Navarra)",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-27T13:11:05Z",
+   "descargado": "2026-11-27T13:11:05Z",
+   "features": 1422,
+   "fecha_dato": null,
+   "url": "https://idena.navarra.es/ogc/wfs",
+   "metodo": "WFS paginado con startIndex (el servicio corta en 1000 y no lo dice); coordenadas a 5 decimales",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 402775
+  },
   "nucleos": {
    "capa": "nucleos",
    "titulo": "Núcleos de población (IGN)",
@@ -2172,5 +2206,5 @@
    "kb": 7
   }
  },
- "total_capas": 126
+ "total_capas": 128
 }
