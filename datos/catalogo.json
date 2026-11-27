@@ -1,22 +1,22 @@
 {
- "generado": "2026-11-27T12:22:20",
+ "generado": "2026-11-27T12:32:36",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
- "total": 126,
+ "total": 125,
  "resumen": {
-  "licencia_si": 122,
+  "licencia_si": 121,
   "licencia_pendiente": 0,
   "licencia_vetada": 4,
   "caducados": 30,
-  "oficiales": 111,
+  "oficiales": 110,
   "comunitarias": 15,
   "por_jerarquia": {
-   "1": 87,
+   "1": 86,
    "2": 24,
    "3": 15
   },
   "descargables_ligeros": 63,
-  "kb_total": 183921.4
+  "kb_total": 182309.9
  },
  "avisos": {
   "pendiente": [],
@@ -63,6 +63,7 @@
  "capas": {
   "adif-tramos": {
    "id": "adif-tramos",
+   "alias_de": null,
    "titulo": "Red ferroviaria (Adif)",
    "organismo": "Adif",
    "oficial": true,
@@ -93,6 +94,7 @@
   },
   "aemet-zonas": {
    "id": "aemet-zonas",
+   "alias_de": null,
    "titulo": "Avisos AEMET (zonas)",
    "organismo": "AEMET",
    "oficial": true,
@@ -123,6 +125,7 @@
   },
   "aeropuertos": {
    "id": "aeropuertos",
+   "alias_de": null,
    "titulo": "Aeródromos y helipuertos",
    "organismo": "OurAirports",
    "oficial": false,
@@ -153,6 +156,7 @@
   },
   "aforos": {
    "id": "aforos",
+   "alias_de": null,
    "titulo": "Estaciones de aforo (SAIH-ROEA)",
    "organismo": "MITECO",
    "oficial": true,
@@ -183,6 +187,7 @@
   },
   "agua-conducciones": {
    "id": "agua-conducciones",
+   "alias_de": null,
    "titulo": "Conducciones de agua",
    "organismo": "OpenStreetMap",
    "oficial": false,
@@ -213,6 +218,7 @@
   },
   "agua-embalsada": {
    "id": "agua-embalsada",
+   "alias_de": null,
    "titulo": "Agua embalsada",
    "organismo": "MITECO",
    "oficial": true,
@@ -243,6 +249,7 @@
   },
   "alertas-gdacs": {
    "id": "alertas-gdacs",
+   "alias_de": null,
    "titulo": "Alertas de desastre (120 días)",
    "organismo": "GDACS — Comisión Europea (JRC)",
    "oficial": false,
@@ -273,6 +280,7 @@
   },
   "almacenamiento-petrolifero": {
    "id": "almacenamiento-petrolifero",
+   "alias_de": null,
    "titulo": "Almacenamiento de productos petrolíferos",
    "organismo": "CORES",
    "oficial": true,
@@ -303,6 +311,7 @@
   },
   "alojamiento-ign": {
    "id": "alojamiento-ign",
+   "alias_de": null,
    "titulo": "Alojamiento (campings, albergues, autocaravanas)",
    "organismo": "IGN",
    "oficial": true,
@@ -333,6 +342,7 @@
   },
   "aviacion-ligera": {
    "id": "aviacion-ligera",
+   "alias_de": null,
    "titulo": "Aviación ligera · aeródromos y helipuertos",
    "organismo": "IGN",
    "oficial": true,
@@ -363,6 +373,7 @@
   },
   "cable-ign": {
    "id": "cable-ign",
+   "alias_de": null,
    "titulo": "Transporte por cable",
    "organismo": "IGN",
    "oficial": true,
@@ -393,6 +404,7 @@
   },
   "calidad-aire-estaciones": {
    "id": "calidad-aire-estaciones",
+   "alias_de": null,
    "titulo": "Estaciones de calidad del aire",
    "organismo": "MITECO",
    "oficial": true,
@@ -423,6 +435,7 @@
   },
   "caminos-santiago": {
    "id": "caminos-santiago",
+   "alias_de": null,
    "titulo": "Caminos de Santiago",
    "organismo": "IGN",
    "oficial": true,
@@ -453,6 +466,7 @@
   },
   "canales": {
    "id": "canales",
+   "alias_de": null,
    "titulo": "Canales y acequias",
    "organismo": "OpenStreetMap",
    "oficial": false,
@@ -483,6 +497,7 @@
   },
   "canales-miteco": {
    "id": "canales-miteco",
+   "alias_de": null,
    "titulo": "Red de canales principales",
    "organismo": "MITECO",
    "oficial": true,
@@ -513,6 +528,7 @@
   },
   "carburantes": {
    "id": "carburantes",
+   "alias_de": null,
    "titulo": "Carburantes",
    "organismo": "MITECO",
    "oficial": true,
@@ -543,6 +559,7 @@
   },
   "carreteras": {
    "id": "carreteras",
+   "alias_de": "carreteras",
    "titulo": "Carreteras",
    "organismo": "MITMA",
    "oficial": true,
@@ -573,6 +590,7 @@
   },
   "cimas-ign": {
    "id": "cimas-ign",
+   "alias_de": null,
    "titulo": "Cimas y puntos acotados (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -603,6 +621,7 @@
   },
   "ciudad-acuicultura": {
    "id": "ciudad-acuicultura",
+   "alias_de": null,
    "titulo": "Instalaciones de acuicultura (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -633,6 +652,7 @@
   },
   "ciudad-antenas": {
    "id": "ciudad-antenas",
+   "alias_de": null,
    "titulo": "Antenas de telecomunicaciones (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -663,6 +683,7 @@
   },
   "ciudad-aparcamientos": {
    "id": "ciudad-aparcamientos",
+   "alias_de": null,
    "titulo": "Aparcamientos (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -693,6 +714,7 @@
   },
   "ciudad-cementerios": {
    "id": "ciudad-cementerios",
+   "alias_de": null,
    "titulo": "Cementerios (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -723,6 +745,7 @@
   },
   "ciudad-ciencia": {
    "id": "ciudad-ciencia",
+   "alias_de": null,
    "titulo": "Parques científicos y tecnológicos (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -753,6 +776,7 @@
   },
   "ciudad-comercio": {
    "id": "ciudad-comercio",
+   "alias_de": null,
    "titulo": "Centros comerciales (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -783,6 +807,7 @@
   },
   "ciudad-deportivas": {
    "id": "ciudad-deportivas",
+   "alias_de": null,
    "titulo": "Instalaciones deportivas (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -813,6 +838,7 @@
   },
   "ciudad-docencia": {
    "id": "ciudad-docencia",
+   "alias_de": null,
    "titulo": "Docencia · universidades y centros (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -843,6 +869,7 @@
   },
   "ciudad-ferias": {
    "id": "ciudad-ferias",
+   "alias_de": null,
    "titulo": "Recintos de ferias y congresos (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -873,6 +900,7 @@
   },
   "ciudad-logistica": {
    "id": "ciudad-logistica",
+   "alias_de": null,
    "titulo": "Centros logísticos (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -903,6 +931,7 @@
   },
   "ciudad-mineria": {
    "id": "ciudad-mineria",
+   "alias_de": null,
    "titulo": "Explotaciones mineras (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -933,6 +962,7 @@
   },
   "ciudad-recreo": {
    "id": "ciudad-recreo",
+   "alias_de": null,
    "titulo": "Áreas recreativas y de descanso (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -963,6 +993,7 @@
   },
   "ciudad-singulares": {
    "id": "ciudad-singulares",
+   "alias_de": null,
    "titulo": "Centros penitenciarios y observatorios (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -993,6 +1024,7 @@
   },
   "ciudad-zonas-verdes": {
    "id": "ciudad-zonas-verdes",
+   "alias_de": null,
    "titulo": "Zonas verdes (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -1023,6 +1055,7 @@
   },
   "clima": {
    "id": "clima",
+   "alias_de": null,
    "titulo": "clima",
    "organismo": "Open-Meteo",
    "oficial": true,
@@ -1053,6 +1086,7 @@
   },
   "clima-provincias": {
    "id": "clima-provincias",
+   "alias_de": null,
    "titulo": "clima-provincias",
    "organismo": "Open-Meteo",
    "oficial": true,
@@ -1083,6 +1117,7 @@
   },
   "clima-temperatura": {
    "id": "clima-temperatura",
+   "alias_de": null,
    "titulo": "Temperatura ahora (provincia)",
    "organismo": "Open-Meteo",
    "oficial": true,
@@ -1113,6 +1148,7 @@
   },
   "clima-viento": {
    "id": "clima-viento",
+   "alias_de": null,
    "titulo": "Viento ahora (campo interpolado)",
    "organismo": "Open-Meteo",
    "oficial": true,
@@ -1143,6 +1179,7 @@
   },
   "conducciones-combustible": {
    "id": "conducciones-combustible",
+   "alias_de": null,
    "titulo": "Conducciones de combustible (gas y productos petrolíferos)",
    "organismo": "Enagás",
    "oficial": true,
@@ -1173,6 +1210,7 @@
   },
   "demarcaciones": {
    "id": "demarcaciones",
+   "alias_de": null,
    "titulo": "Demarcaciones",
    "organismo": "MITECO",
    "oficial": true,
@@ -1203,6 +1241,7 @@
   },
   "depositos-ign": {
    "id": "depositos-ign",
+   "alias_de": null,
    "titulo": "Depósitos de agua (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -1233,6 +1272,7 @@
   },
   "desaladoras": {
    "id": "desaladoras",
+   "alias_de": "desaladoras",
    "titulo": "Desaladoras",
    "organismo": "MITECO",
    "oficial": true,
@@ -1263,6 +1303,7 @@
   },
   "dgt-camaras": {
    "id": "dgt-camaras",
+   "alias_de": null,
    "titulo": "Cámaras de tráfico (DGT)",
    "organismo": "DGT",
    "oficial": true,
@@ -1293,6 +1334,7 @@
   },
   "dgt-electrolineras": {
    "id": "dgt-electrolineras",
+   "alias_de": null,
    "titulo": "Puntos de recarga eléctrica",
    "organismo": "DGT",
    "oficial": true,
@@ -1323,6 +1365,7 @@
   },
   "dgt-incidencias": {
    "id": "dgt-incidencias",
+   "alias_de": null,
    "titulo": "Incidencias en tiempo real",
    "organismo": "DGT",
    "oficial": true,
@@ -1353,6 +1396,7 @@
   },
   "dgt-paneles": {
    "id": "dgt-paneles",
+   "alias_de": null,
    "titulo": "Paneles de mensaje variable",
    "organismo": "DGT",
    "oficial": true,
@@ -1383,6 +1427,7 @@
   },
   "dpmt": {
    "id": "dpmt",
+   "alias_de": null,
    "titulo": "Dominio público marítimo-terrestre",
    "organismo": "MITECO",
    "oficial": true,
@@ -1413,36 +1458,7 @@
   },
   "edar": {
    "id": "edar",
-   "titulo": "EDAR · depuradoras unificadas",
-   "organismo": "IGN",
-   "oficial": true,
-   "jerarquia": 1,
-   "jerarquia_txt": "organismo productor",
-   "producto": "IGN + I-ReWater + OSM cruzados por proximidad de 150 m; una planta, una fila, con capacidad, caudal e impacto dentro",
-   "origen": "visor",
-   "origen_txt": "Otro mapa",
-   "origen_detalle": "Mapa SignA (IGN)",
-   "licencia": {
-    "estado": "si",
-    "nombre": "CC BY 4.0 · © scne.es",
-    "url_terminos": "https://www.ign.es/espmap/notas_leyenda.htm"
-   },
-   "endpoint": "https://signa.ign.es/",
-   "modo": "foto",
-   "frecuencia_fuente": "mensual o inferior",
-   "ttl_segundos": 2592000,
-   "ultima_verificacion": "2026-11-27",
-   "crs": "EPSG:4326",
-   "features": 4784,
-   "bytes": 1650198,
-   "kb": 1611.5,
-   "fecha_dato": "2026-11-24",
-   "fecha_descarga": "2026-11-24",
-   "edad_dias": 3,
-   "caducado": false
-  },
-  "edar-unificado": {
-   "id": "edar-unificado",
+   "alias_de": null,
    "titulo": "EDAR · depuradoras unificadas",
    "organismo": "IGN",
    "oficial": true,
@@ -1473,6 +1489,7 @@
   },
   "electricidad-interconexiones": {
    "id": "electricidad-interconexiones",
+   "alias_de": null,
    "titulo": "Interconexiones eléctricas",
    "organismo": "REE",
    "oficial": true,
@@ -1503,6 +1520,7 @@
   },
   "embalses": {
    "id": "embalses",
+   "alias_de": "agua-embalsada",
    "titulo": "Agua embalsada",
    "organismo": "MITECO",
    "oficial": true,
@@ -1533,6 +1551,7 @@
   },
   "eolicos": {
    "id": "eolicos",
+   "alias_de": "parques-eolicos",
    "titulo": "Parques eólicos",
    "organismo": "MITECO",
    "oficial": true,
@@ -1563,6 +1582,7 @@
   },
   "espacios-protegidos": {
    "id": "espacios-protegidos",
+   "alias_de": null,
    "titulo": "Espacios naturales protegidos (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -1593,6 +1613,7 @@
   },
   "estaciones-cercanias": {
    "id": "estaciones-cercanias",
+   "alias_de": null,
    "titulo": "Estaciones de Cercanías",
    "organismo": "MITMA",
    "oficial": true,
@@ -1623,6 +1644,7 @@
   },
   "estaciones-gas": {
    "id": "estaciones-gas",
+   "alias_de": "estaciones-gas",
    "titulo": "Estaciones de servicio con GNL",
    "organismo": "MITMA",
    "oficial": true,
@@ -1653,6 +1675,7 @@
   },
   "etap": {
    "id": "etap",
+   "alias_de": null,
    "titulo": "ETAP (potabilizadoras)",
    "organismo": "OpenStreetMap",
    "oficial": false,
@@ -1683,6 +1706,7 @@
   },
   "fallas-qafi": {
    "id": "fallas-qafi",
+   "alias_de": null,
    "titulo": "Fallas activas del Cuaternario (QAFI v4)",
    "organismo": "IGME · QAFI",
    "oficial": true,
@@ -1713,6 +1737,7 @@
   },
   "faros": {
    "id": "faros",
+   "alias_de": null,
    "titulo": "Faros y señales marítimas (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -1743,6 +1768,7 @@
   },
   "ferris-ign": {
    "id": "ferris-ign",
+   "alias_de": null,
    "titulo": "Líneas de ferri",
    "organismo": "IGN",
    "oficial": true,
@@ -1773,6 +1799,7 @@
   },
   "gas-almacenamiento": {
    "id": "gas-almacenamiento",
+   "alias_de": null,
    "titulo": "Almacenamiento subterráneo de gas",
    "organismo": "Enagás",
    "oficial": true,
@@ -1803,6 +1830,7 @@
   },
   "gas-interconexiones": {
    "id": "gas-interconexiones",
+   "alias_de": null,
    "titulo": "Interconexiones gasistas internacionales",
    "organismo": "Enagás",
    "oficial": true,
@@ -1833,6 +1861,7 @@
   },
   "gas-regasificacion": {
    "id": "gas-regasificacion",
+   "alias_de": null,
    "titulo": "Gas y regasificación",
    "organismo": "Enagás",
    "oficial": true,
@@ -1863,6 +1892,7 @@
   },
   "gasalm": {
    "id": "gasalm",
+   "alias_de": "gas-almacenamiento",
    "titulo": "Almacenamiento subterráneo de gas",
    "organismo": "Enagás",
    "oficial": true,
@@ -1893,6 +1923,7 @@
   },
   "gasgen": {
    "id": "gasgen",
+   "alias_de": null,
    "titulo": "Ciclos combinados",
    "organismo": "OpenStreetMap",
    "oficial": false,
@@ -1923,6 +1954,7 @@
   },
   "gasoductos": {
    "id": "gasoductos",
+   "alias_de": null,
    "titulo": "Gasoductos",
    "organismo": "OpenStreetMap",
    "oficial": false,
@@ -1953,6 +1985,7 @@
   },
   "generacion-electrica-provincia": {
    "id": "generacion-electrica-provincia",
+   "alias_de": null,
    "titulo": "Generación eléctrica por provincia",
    "organismo": "REE",
    "oficial": true,
@@ -1983,6 +2016,7 @@
   },
   "gtfsrt": {
    "id": "gtfsrt",
+   "alias_de": null,
    "titulo": "Vehículos en vivo (GTFS-RT)",
    "organismo": "Renfe",
    "oficial": true,
@@ -2013,6 +2047,7 @@
   },
   "h2": {
    "id": "h2",
+   "alias_de": "hidrogeno-produccion",
    "titulo": "Producción de hidrógeno (PCI)",
    "organismo": "MITECO",
    "oficial": true,
@@ -2043,6 +2078,7 @@
   },
   "h2red": {
    "id": "h2red",
+   "alias_de": "hidrogeno-red",
    "titulo": "Red de hidrógeno (PCI)",
    "organismo": "MITECO",
    "oficial": true,
@@ -2073,6 +2109,7 @@
   },
   "hidro": {
    "id": "hidro",
+   "alias_de": null,
    "titulo": "Centrales hidráulicas",
    "organismo": "OpenStreetMap",
    "oficial": false,
@@ -2103,6 +2140,7 @@
   },
   "hidrogeno-produccion": {
    "id": "hidrogeno-produccion",
+   "alias_de": null,
    "titulo": "Producción de hidrógeno (PCI)",
    "organismo": "MITECO",
    "oficial": true,
@@ -2133,6 +2171,7 @@
   },
   "hidrogeno-red": {
    "id": "hidrogeno-red",
+   "alias_de": null,
    "titulo": "Red de hidrógeno (PCI)",
    "organismo": "MITECO",
    "oficial": true,
@@ -2163,6 +2202,7 @@
   },
   "incendios-effis": {
    "id": "incendios-effis",
+   "alias_de": null,
    "titulo": "Incendios forestales · superficie quemada (EFFIS)",
    "organismo": "Copernicus EMS",
    "oficial": true,
@@ -2193,6 +2233,7 @@
   },
   "ine-ccaa": {
    "id": "ine-ccaa",
+   "alias_de": null,
    "titulo": "Población por comunidad",
    "organismo": "INE / Eurostat",
    "oficial": true,
@@ -2223,6 +2264,7 @@
   },
   "ine-densidad": {
    "id": "ine-densidad",
+   "alias_de": null,
    "titulo": "Densidad de población",
    "organismo": "INE / Eurostat",
    "oficial": true,
@@ -2253,6 +2295,7 @@
   },
   "ine-paro": {
    "id": "ine-paro",
+   "alias_de": null,
    "titulo": "Tasa de paro (EPA)",
    "organismo": "INE / Eurostat",
    "oficial": true,
@@ -2283,6 +2326,7 @@
   },
   "ine-provincias": {
    "id": "ine-provincias",
+   "alias_de": null,
    "titulo": "Población por provincia",
    "organismo": "INE / Eurostat",
    "oficial": true,
@@ -2313,6 +2357,7 @@
   },
   "interelec": {
    "id": "interelec",
+   "alias_de": "electricidad-interconexiones",
    "titulo": "Interconexiones eléctricas",
    "organismo": "REE",
    "oficial": true,
@@ -2343,6 +2388,7 @@
   },
   "intermodales": {
    "id": "intermodales",
+   "alias_de": "terminales-mercancias",
    "titulo": "Terminales intermodales de mercancías",
    "organismo": "MITMA",
    "oficial": true,
@@ -2373,6 +2419,7 @@
   },
   "irewater-edar": {
    "id": "irewater-edar",
+   "alias_de": null,
    "titulo": "EDAR · agua regenerable",
    "organismo": "I-ReWater HUB",
    "oficial": true,
@@ -2403,6 +2450,7 @@
   },
   "irewater-nuts2": {
    "id": "irewater-nuts2",
+   "alias_de": null,
    "titulo": "Población por comunidad + agua aprovechable (NUTS2)",
    "organismo": "I-ReWater HUB",
    "oficial": true,
@@ -2433,6 +2481,7 @@
   },
   "l220": {
    "id": "l220",
+   "alias_de": null,
    "titulo": "Líneas 220 kV",
    "organismo": "OpenStreetMap",
    "oficial": false,
@@ -2463,6 +2512,7 @@
   },
   "l400": {
    "id": "l400",
+   "alias_de": null,
    "titulo": "Líneas 400 kV",
    "organismo": "OpenStreetMap",
    "oficial": false,
@@ -2493,6 +2543,7 @@
   },
   "masas-subterraneas": {
    "id": "masas-subterraneas",
+   "alias_de": null,
    "titulo": "Masas de agua subterránea (estado)",
    "organismo": "MITECO",
    "oficial": true,
@@ -2523,6 +2574,7 @@
   },
   "municipios": {
    "id": "municipios",
+   "alias_de": null,
    "titulo": "Municipios (polígono y población)",
    "organismo": "INE / Eurostat",
    "oficial": true,
@@ -2553,6 +2605,7 @@
   },
   "nap-ave": {
    "id": "nap-ave",
+   "alias_de": null,
    "titulo": "Renfe AVE y largo recorrido (NAP)",
    "organismo": "MITMA",
    "oficial": true,
@@ -2583,6 +2636,7 @@
   },
   "nap-cercanias": {
    "id": "nap-cercanias",
+   "alias_de": null,
    "titulo": "Cercanías Renfe (NAP)",
    "organismo": "MITMA",
    "oficial": true,
@@ -2613,6 +2667,7 @@
   },
   "nap-lineas-cercanias": {
    "id": "nap-lineas-cercanias",
+   "alias_de": null,
    "titulo": "Líneas de Cercanías",
    "organismo": "MITMA",
    "oficial": true,
@@ -2643,6 +2698,7 @@
   },
   "nap-lineas-metro": {
    "id": "nap-lineas-metro",
+   "alias_de": null,
    "titulo": "Líneas de Metro Madrid",
    "organismo": "MITMA",
    "oficial": true,
@@ -2673,6 +2729,7 @@
   },
   "nap-metro": {
    "id": "nap-metro",
+   "alias_de": null,
    "titulo": "Metro de Madrid (NAP)",
    "organismo": "MITMA",
    "oficial": true,
@@ -2703,6 +2760,7 @@
   },
   "nuclear": {
    "id": "nuclear",
+   "alias_de": "nuclear",
    "titulo": "Nuclear",
    "organismo": "CSN",
    "oficial": true,
@@ -2733,6 +2791,7 @@
   },
   "nucleos": {
    "id": "nucleos",
+   "alias_de": null,
    "titulo": "Núcleos de población (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -2763,6 +2822,7 @@
   },
   "ocio-ign": {
    "id": "ocio-ign",
+   "alias_de": null,
    "titulo": "Ocio y nieve (parques temáticos, circuitos, estaciones invernales)",
    "organismo": "IGN",
    "oficial": true,
@@ -2793,6 +2853,7 @@
   },
   "parques-eolicos": {
    "id": "parques-eolicos",
+   "alias_de": null,
    "titulo": "Parques eólicos",
    "organismo": "MITECO",
    "oficial": true,
@@ -2823,6 +2884,7 @@
   },
   "patrimonio-ign": {
    "id": "patrimonio-ign",
+   "alias_de": null,
    "titulo": "Patrimonio cultural (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -2853,6 +2915,7 @@
   },
   "petrolifero": {
    "id": "petrolifero",
+   "alias_de": "almacenamiento-petrolifero",
    "titulo": "Almacenamiento de productos petrolíferos",
    "organismo": "CORES",
    "oficial": true,
@@ -2883,6 +2946,7 @@
   },
   "pistas-aeropuerto": {
    "id": "pistas-aeropuerto",
+   "alias_de": null,
    "titulo": "Pistas de aterrizaje",
    "organismo": "MITMA",
    "oficial": true,
@@ -2913,6 +2977,7 @@
   },
   "plantas": {
    "id": "plantas",
+   "alias_de": null,
    "titulo": "Todas las plantas (con potencia)",
    "organismo": "REE",
    "oficial": true,
@@ -2943,6 +3008,7 @@
   },
   "plantas-solares": {
    "id": "plantas-solares",
+   "alias_de": null,
    "titulo": "Plantas solares (fotovoltaica y termosolar)",
    "organismo": "MITECO",
    "oficial": true,
@@ -2973,6 +3039,7 @@
   },
   "presas": {
    "id": "presas",
+   "alias_de": null,
    "titulo": "Presas (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -3003,6 +3070,7 @@
   },
   "puentes-rce": {
    "id": "puentes-rce",
+   "alias_de": null,
    "titulo": "Puentes y viaductos de la RCE",
    "organismo": "OpenStreetMap",
    "oficial": false,
@@ -3033,6 +3101,7 @@
   },
   "puertos": {
    "id": "puertos",
+   "alias_de": "puertos-interes-general",
    "titulo": "Puertos de interés general",
    "organismo": "MITMA",
    "oficial": true,
@@ -3063,6 +3132,7 @@
   },
   "puertos-interes-general": {
    "id": "puertos-interes-general",
+   "alias_de": null,
    "titulo": "Puertos de interés general",
    "organismo": "MITMA",
    "oficial": true,
@@ -3093,6 +3163,7 @@
   },
   "red-electrica": {
    "id": "red-electrica",
+   "alias_de": null,
    "titulo": "Tendido de alta tensión (220 y 400 kV)",
    "organismo": "IGN",
    "oficial": true,
@@ -3123,6 +3194,7 @@
   },
   "red-natura": {
    "id": "red-natura",
+   "alias_de": null,
    "titulo": "Red Natura 2000 (LIC y ZEPA)",
    "organismo": "IGN",
    "oficial": true,
@@ -3153,6 +3225,7 @@
   },
   "refinerias": {
    "id": "refinerias",
+   "alias_de": "refinerias",
    "titulo": "Refinerías",
    "organismo": "CORES",
    "oficial": true,
@@ -3183,6 +3256,7 @@
   },
   "regas": {
    "id": "regas",
+   "alias_de": "gas-regasificacion",
    "titulo": "Gas y regasificación",
    "organismo": "Enagás",
    "oficial": true,
@@ -3213,6 +3287,7 @@
   },
   "residencias-ign": {
    "id": "residencias-ign",
+   "alias_de": null,
    "titulo": "Residencias de mayores (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -3243,6 +3318,7 @@
   },
   "residuos": {
    "id": "residuos",
+   "alias_de": "residuos-radiactivos",
    "titulo": "Residuos radiactivos y ciclo del combustible",
    "organismo": "ENRESA",
    "oficial": true,
@@ -3273,6 +3349,7 @@
   },
   "residuos-radiactivos": {
    "id": "residuos-radiactivos",
+   "alias_de": null,
    "titulo": "Residuos radiactivos y ciclo del combustible",
    "organismo": "ENRESA",
    "oficial": true,
@@ -3303,6 +3380,7 @@
   },
   "resto": {
    "id": "resto",
+   "alias_de": null,
    "titulo": "Resto del parque",
    "organismo": "OpenStreetMap",
    "oficial": false,
@@ -3333,6 +3411,7 @@
   },
   "rios": {
    "id": "rios",
+   "alias_de": null,
    "titulo": "Ríos (caudal en vivo)",
    "organismo": "OpenStreetMap",
    "oficial": false,
@@ -3363,6 +3442,7 @@
   },
   "rios-mtn": {
    "id": "rios-mtn",
+   "alias_de": null,
    "titulo": "Ríos del MTN (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -3393,6 +3473,7 @@
   },
   "sanidad-ign": {
    "id": "sanidad-ign",
+   "alias_de": null,
    "titulo": "Sanidad · hospitales y centros sanitarios (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -3423,6 +3504,7 @@
   },
   "sierras-ign": {
    "id": "sierras-ign",
+   "alias_de": null,
    "titulo": "Alineaciones montañosas (IGN)",
    "organismo": "IGN",
    "oficial": true,
@@ -3453,6 +3535,7 @@
   },
   "sismos": {
    "id": "sismos",
+   "alias_de": null,
    "titulo": "Sismos",
    "organismo": "EMSC-CSEM",
    "oficial": true,
@@ -3483,6 +3566,7 @@
   },
   "solares": {
    "id": "solares",
+   "alias_de": "plantas-solares",
    "titulo": "Plantas solares (fotovoltaica y termosolar)",
    "organismo": "MITECO",
    "oficial": true,
@@ -3513,6 +3597,7 @@
   },
   "subestaciones": {
    "id": "subestaciones",
+   "alias_de": "red-electrica",
    "titulo": "Tendido de alta tensión (220 y 400 kV)",
    "organismo": "IGN",
    "oficial": true,
@@ -3543,6 +3628,7 @@
   },
   "terminales-aero": {
    "id": "terminales-aero",
+   "alias_de": "terminales-aeropuerto",
    "titulo": "Terminales de pasajeros",
    "organismo": "MITMA",
    "oficial": true,
@@ -3573,6 +3659,7 @@
   },
   "terminales-aeropuerto": {
    "id": "terminales-aeropuerto",
+   "alias_de": null,
    "titulo": "Terminales de pasajeros",
    "organismo": "MITMA",
    "oficial": true,
@@ -3603,6 +3690,7 @@
   },
   "terminales-mercancias": {
    "id": "terminales-mercancias",
+   "alias_de": null,
    "titulo": "Terminales intermodales de mercancías",
    "organismo": "MITMA",
    "oficial": true,
@@ -3633,6 +3721,7 @@
   },
   "terminales-portuarias": {
    "id": "terminales-portuarias",
+   "alias_de": null,
    "titulo": "Terminales portuarias",
    "organismo": "MITMA",
    "oficial": true,
@@ -3663,6 +3752,7 @@
   },
   "terminales-puerto": {
    "id": "terminales-puerto",
+   "alias_de": "terminales-portuarias",
    "titulo": "Terminales portuarias",
    "organismo": "MITMA",
    "oficial": true,
@@ -3693,6 +3783,7 @@
   },
   "trafico-ccaa": {
    "id": "trafico-ccaa",
+   "alias_de": null,
    "titulo": "IMD de tráfico por comunidades · red estatal y autonómica",
    "organismo": "MITMA",
    "oficial": true,
@@ -3723,6 +3814,7 @@
   },
   "trafico-estaciones": {
    "id": "trafico-estaciones",
+   "alias_de": null,
    "titulo": "Aforos por estación · Tenerife 2025 · Cataluña 2022",
    "organismo": "Cabildo de Tenerife · Servicio Técnico de Carreteras y Movilidad (2025) y Generalitat de Catalunya · Servei Català de Trànsit (2022)",
    "oficial": false,
@@ -3753,6 +3845,7 @@
   },
   "trasvases": {
    "id": "trasvases",
+   "alias_de": null,
    "titulo": "Trasvases",
    "organismo": "OpenStreetMap",
    "oficial": false,
@@ -3783,6 +3876,7 @@
   },
   "tuneles-rce": {
    "id": "tuneles-rce",
+   "alias_de": null,
    "titulo": "Túneles de la Red de Carreteras del Estado",
    "organismo": "MITMA",
    "oficial": true,
@@ -3813,6 +3907,7 @@
   },
   "vias-verdes": {
    "id": "vias-verdes",
+   "alias_de": null,
    "titulo": "Vías verdes",
    "organismo": "IGN",
    "oficial": true,
