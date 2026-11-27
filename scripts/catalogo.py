@@ -305,6 +305,7 @@ def main():
         nivel = JERARQUIA.get(organismo, 3)
         catalogo[cid] = {
             "id": cid,
+            "alias_de": f.get("alias_de"),   # si la capa es otra vista del mismo dato
             "titulo": f.get("titulo") or cid,
             "organismo": organismo,
             "oficial": nivel <= 2,

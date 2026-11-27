@@ -315,6 +315,7 @@ def main():
         base = fuentes.get(origen)
         if base:
             f = dict(base); f["capa"] = capa
+            f["alias_de"] = origen     # una capa puede ser otra vista del mismo dato
             fuentes[capa] = f
 
     # capa de plantas: un solo fichero con todas, potencia y tecnologia
@@ -395,6 +396,7 @@ def main():
         if base:
             f = dict(base)
             f["capa"] = capa
+            f["alias_de"] = origen     # misma ficha, otro id de capa: el catálogo lo declara
             fuentes[capa] = f
         else:
             org, url, metodo = OFICIAL.get(origen, ("sin declarar", "", ""))
@@ -687,7 +689,10 @@ def main():
     # (`*_recibo.json`) para que la ficha no dependa de una lista escrita a mano.
     # `depuradoras_ign` es insumo de `edar_unificar.py`, no una capa: si se listara, el catálogo
     # contaría dos veces las mismas plantas.
-    INTERMEDIOS = {"depuradoras_ign", "edar", "irewater_hib_edar"}
+    INTERMEDIOS = {"depuradoras_ign", "edar", "irewater_hib_edar",
+                   # su ficha se declara aparte como `edar` (bloque de abajo): si se listara
+                   # además como `edar-unificado`, el catálogo tendría dos fichas del mismo dato
+                   "edar_unificado"}
     # El nombre del fichero no siempre da el id de la capa (`vias_verdes_ign` -> `vias-verdes`).
     # Se declara aquí y no se adivina: si no, la capa sale como «SIN DECLARAR» en Salud.
     ALIAS_FICHERO = {"vias_verdes_ign": "vias-verdes",

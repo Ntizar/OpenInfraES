@@ -63,3 +63,6 @@ datos/store.duckdb
 datos/store/*.geojson
 datos/store/*.parquet
 datos/store/*_recibo.json
+
+# informe del auditor de duplicados: se regenera con scripts/duplicados.py
+datos/duplicados.json
