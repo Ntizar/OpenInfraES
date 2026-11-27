@@ -468,6 +468,21 @@ def main():
           % (len(capas), len({c["grupo"] for c in capas}), len(sin_fich), len(sin_fuente),
              len(sin_ttl)))
 
+    # 8. ámbito: toda capa tiene que estar clasificada (España / comunidad / provincia).
+    #    Si entra una capa y nadie la mide, el panel la enseñaría en cualquier sitio y el
+    #    distintivo de cobertura dejaría de significar nada. Medido, no declarado: ambitos.py.
+    try:
+        amb = json.load(open(os.path.join(DATOS, "ambitos.json"), encoding="utf-8")).get("capas", {})
+    except Exception:
+        amb = {}
+    sin_amb = [i for i in ids if i not in amb]
+    if sin_amb:
+        error("%d capas sin ámbito medido (lanza scripts/ambitos.py): %s"
+              % (len(sin_amb), ", ".join(sin_amb[:8])))
+    regionales = [k for k, v in amb.items() if v.get("ambito") not in ("nacional", None)]
+    print("  Ámbito ............... %d medidos · %d sin medir · %d regionales"
+          % (len(amb), len(sin_amb), len(regionales)))
+
     print("=" * 58)
     print(" OPENINFRAES · VALIDADOR")
     print("=" * 58)

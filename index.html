@@ -351,6 +351,16 @@
   #buscar-capa input::placeholder { color:var(--tenue, #94a3b3); }
   #buscar-capa input:focus { outline:none; border-color:var(--cian, #22d3ee); }
   #buscar-capa #qc-n { font-family:var(--mono); font-size:9px; color:var(--tenue, #94a3b3); }
+  #buscar-capa .chip { border:1px solid var(--borde); background:transparent; color:var(--tenue, #94a3b3);
+    font:inherit; font-size:9.4px; letter-spacing:.05em; padding:3px 6px; border-radius:3px;
+    cursor:pointer; white-space:nowrap; }
+  #buscar-capa .chip:hover { color:var(--cian); border-color:var(--borde-fuerte); }
+  #buscar-capa .chip.on { background:var(--cian); border-color:var(--cian); color:var(--fondo); }
+  /* Distintivo de ámbito: la capa nacional no lo lleva, porque es lo normal. */
+  #capas .fila .amb { margin-left:auto; font-family:var(--mono); font-size:8.2px; letter-spacing:.03em;
+    color:var(--tenue, #94a3b3); border:1px solid var(--borde); border-radius:2px; padding:1px 3px;
+    white-space:nowrap; }
+  #capas .fila .amb + .n { margin-left:5px; }
   #capas .chev { display:inline-block; width:10px; font-size:9px; color:var(--tenue, #94a3b3);
     transition:transform .15s ease; }
   #capas .grupo.cerrado .chev { transform:rotate(-90deg); }
@@ -769,7 +779,7 @@
   <div id="resultados"></div>
   <div id="vista-aviso"></div>
   <div id="presets"></div>
-  <div id="buscar-capa"><input id="qc" type="search" placeholder="Filtrar capas…" autocomplete="off"><b id="qc-n"></b></div>
+  <div id="buscar-capa"><input id="qc" type="search" placeholder="Filtrar capas…" autocomplete="off"><b id="qc-n"></b><button id="qc-amb" class="chip on" type="button">◉ aquí</button></div>
   <div id="capas"></div>
   <div id="filtro-capa" hidden></div>
   <div id="opacidad"><label>Datos</label><input id="op" type="range" min="30" max="100" value="100"><b id="opv">100%</b></div>
@@ -2073,25 +2083,82 @@ Object.entries(grupos).forEach(([nombre, lista]) => {
 /* Filtro de capas: escribe y ves solo las que coinciden. Si buscas, los grupos se abren solos
    (si no, filtrarías dentro de grupos cerrados y parecería que no hay resultados). */
 const qc = $("#qc"), qcN = $("#qc-n");
-if (qc) {
-  qc.addEventListener("input", () => {
-    const t = qc.value.trim().toLowerCase();
-    let visibles = 0;
-    panel.querySelectorAll(".grupo").forEach(g => {
-      let dentro = 0;
-      g.querySelectorAll(".fila").forEach(f => {
-        const casa = !t || f.textContent.toLowerCase().includes(t);
-        f.style.display = casa ? "" : "none";
-        if (casa) dentro++;
-      });
-      g.style.display = dentro ? "" : "none";
-      if (t) g.classList.toggle("cerrado", !dentro);
-      else if (!dentro) g.classList.add("cerrado");
-      visibles += dentro;
+
+/* ---- ÁMBITO: qué cubre cada capa y si aplica a lo que estás mirando ---------------------
+   Con 104 capas, una lista plana mezcla España entera con una capa de Navarra. El ámbito NO
+   se declara a mano: lo mide scripts/ambitos.py sobre la geometría (municipio más cercano a
+   cada vértice -> provincia -> comunidad) y lo deja en datos/ambitos.json.
+   Por defecto el panel enseña lo nacional más lo que toca la vista: si estás en Madrid ves
+   los semáforos, si estás en Galicia no. El chip lo desactiva y vuelve la lista completa. */
+let AMBITOS = null;
+const SOLO_AQUI = () => localStorage.getItem("oi-solo-aqui") !== "0";
+const filasCapa = new Map();
+panel.querySelectorAll(".fila").forEach(f => filasCapa.set(f.dataset.fila, f));
+const btAmb = $("#qc-amb");
+
+function aplicaAmbito() {
+  const t = (qc && qc.value || "").trim().toLowerCase();
+  const solo = SOLO_AQUI();
+  const b = mapa.getBounds();
+  let ocultas = 0, visibles = 0;
+  panel.querySelectorAll(".grupo").forEach(g => {
+    let dentro = 0;
+    g.querySelectorAll(".fila").forEach(f => {
+      const id = f.dataset.fila;
+      const a = AMBITOS && AMBITOS[id];
+      const casaTexto = !t || f.textContent.toLowerCase().includes(t);
+      let casaSitio = true;
+      // mundo, nacional y sin dato: siempre. Regional: solo si su caja toca la vista y ya
+      // estás lo bastante cerca como para que la capa pinte algo (zoom 8).
+      if (solo && a && a.bbox && a.ambito !== "nacional" && a.ambito !== "mundo") {
+        const [w, s, e, n] = a.bbox;
+        casaSitio = mapa.getZoom() >= 8 && b.intersects(L.latLngBounds([[s, w], [n, e]]));
+      }
+      const ver = casaTexto && casaSitio;
+      f.style.display = ver ? "" : "none";
+      if (ver) dentro++; else if (casaTexto && !casaSitio) ocultas++;
     });
-    if (qcN) qcN.textContent = t ? visibles : "";
+    g.style.display = dentro ? "" : "none";
+    if (t) g.classList.toggle("cerrado", !dentro);
+    visibles += dentro;
+  });
+  if (qcN) qcN.textContent = t ? visibles : (solo && ocultas ? ocultas + " fuera" : "");
+  if (btAmb) btAmb.classList.toggle("on", solo);
+  if (btAmb) btAmb.title = solo
+    ? "Enseñando solo las capas que aplican a esta vista. Pulsa para ver todas."
+    : "Enseñando todas las capas. Pulsa para ocultar las que no aplican a esta vista.";
+}
+
+if (btAmb) {
+  btAmb.addEventListener("click", () => {
+    localStorage.setItem("oi-solo-aqui", SOLO_AQUI() ? "0" : "1");
+    aplicaAmbito();
   });
 }
+if (qc) qc.addEventListener("input", aplicaAmbito);
+
+fetch("datos/ambitos.json?cb=" + Date.now())
+  .then(r => r.json())
+  .then(d => {
+    AMBITOS = d.capas || {};
+    // distintivo en la fila: la nacional no lleva nada (es lo normal); lo demás, etiqueta
+    Object.entries(AMBITOS).forEach(([id, a]) => {
+      const f = filasCapa.get(id);
+      if (!f || !a || a.ambito === "nacional") return;
+      const n = f.querySelector(".n");
+      const sp = document.createElement("span");
+      sp.className = "amb";
+      sp.textContent = a.ambito === "mundo" ? "MUNDO" : a.etiqueta.slice(0, 14).toUpperCase();
+      sp.title = "Ámbito: " + a.etiqueta + (a.motivo ? " · " + a.motivo : "");
+      f.insertBefore(sp, n);
+    });
+    aplicaAmbito();
+  })
+  .catch(() => { /* sin ámbitos el panel funciona igual: todo visible */ });
+
+// al mover el mapa se recalcula qué capas aplican. Con retardo: moveend dispara en ráfaga.
+let tAmbito = 0;
+mapa.on("moveend", () => { clearTimeout(tAmbito); tAmbito = setTimeout(aplicaAmbito, 250); });
 
 /* ---------------- vistas de la parte superior ----------------
    Un botón por GRUPO de capas, generado del propio array. La lista estaba escrita a mano y se
