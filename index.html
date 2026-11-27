@@ -2148,7 +2148,9 @@ fetch("datos/ambitos.json?cb=" + Date.now())
       const n = f.querySelector(".n");
       const sp = document.createElement("span");
       sp.className = "amb";
-      sp.textContent = a.ambito === "mundo" ? "MUNDO" : a.etiqueta.slice(0, 14).toUpperCase();
+      sp.textContent = a.ambito === "mundo" ? "MUNDO"
+        : a.ambito === "parcial" ? (a.ccaa && a.ccaa.length ? a.ccaa.length + " CCAA" : "VARIAS")
+        : a.etiqueta.slice(0, 12).toUpperCase();
       sp.title = "Ámbito: " + a.etiqueta + (a.motivo ? " · " + a.motivo : "");
       f.insertBefore(sp, n);
     });
