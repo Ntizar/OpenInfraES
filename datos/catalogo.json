@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-27T12:50:57",
+ "generado": "2026-11-27T12:51:09",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 126,
@@ -3074,7 +3074,7 @@
    "origen_detalle": "Servicio web del organismo",
    "licencia": {
     "estado": "si",
-    "nombre": "CC BY 4.0 · atribuir a Puertos del Estado",
+    "nombre": "CC BY 4.0 · Puertos del Estado",
     "url_terminos": "https://www.idee.es/csw-codsi-idee/srv/api/records/spa_puertos_estado"
    },
    "endpoint": "https://geoserver.puertos.es/geoserver/puertos/wfs",

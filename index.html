@@ -3345,7 +3345,7 @@ function abrirPanelDato(p, c, latlng) {
   const viaTit = p.carretera
     ? p.carretera + ((p.km ?? p.kilometro ?? p.distancia) != null ? " · km " + (p.km ?? p.kilometro ?? p.distancia) : "")
     : null;
-  const titulo = p.nombre || p.name || p.nombre_oficial || p.nom_demar || viaTit || p.municipio ||
+  const titulo = p.nombre || p.name || p.nombre_oficial || p.nom_demar || viaTit || p.puerto || p.municipio ||
                  (p.mensaje ? p.mensaje + (p.carretera ? " — " + p.carretera : "") : null) ||
                  p.lugar || "Sin nombre";
 

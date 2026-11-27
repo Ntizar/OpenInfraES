@@ -82,7 +82,7 @@ LICENCIA = {
     "Open-Meteo": ("si", "CC BY 4.0 · atribuir a Open-Meteo y al modelo (ICON/GFS)",
                    "https://open-meteo.com/en/license"),
     "EMODnet": ("si", "CC BY 4.0", "https://emodnet.ec.europa.eu/en/legal-notice"),
-    "Puertos del Estado": ("si", "CC BY 4.0 · atribuir a Puertos del Estado",
+    "Puertos del Estado": ("si", "CC BY 4.0 · Puertos del Estado",
                            "https://www.idee.es/csw-codsi-idee/srv/api/records/spa_puertos_estado"),
     "Adif": ("si", "CC BY 4.0 según ficha de datos.gob.es",
              "https://datos.gob.es/es/catalogo/e0dat0002-wfs-de-la-red-de-transporte-ferroviario-de-adif"),
