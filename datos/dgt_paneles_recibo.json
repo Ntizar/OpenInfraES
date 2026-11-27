@@ -4,9 +4,9 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 681,
+ "features": 640,
  "paneles_localizados": 2539,
- "descargado": "2026-11-27T19:12:40",
+ "descargado": "2026-11-27T20:16:29",
  "mensajes_top": [
   {
    "texto": "@H @F",
@@ -14,19 +14,23 @@
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 85
+   "paneles": 86
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
-   "paneles": 35
+   "paneles": 34
+  },
+  {
+   "texto": "PRECAUCION BANCOS DE NIEBLA",
+   "paneles": 27
   },
   {
    "texto": "LA CARRETERA NO ES UN CIRCUITO",
-   "paneles": 25
+   "paneles": 26
   },
   {
    "texto": "EN MOTO CERO ALCOHOL CERO DROGAS",
-   "paneles": 23
+   "paneles": 25
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD",
@@ -34,10 +38,6 @@
   },
   {
    "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
-   "paneles": 8
-  },
-  {
-   "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
    "paneles": 8
   },
   {
