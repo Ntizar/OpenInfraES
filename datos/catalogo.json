@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-27T08:21:05",
+ "generado": "2026-11-27T09:19:06",
  "esquema": 1,
  "nota": "Contrato machine-readable del catálogo. La licencia va en tres estados: «pendiente» NO se expone en un MCP público hasta evaluarla.",
  "total": 126,
@@ -7,7 +7,7 @@
   "licencia_si": 122,
   "licencia_pendiente": 0,
   "licencia_vetada": 4,
-  "caducados": 31,
+  "caducados": 30,
   "oficiales": 111,
   "comunitarias": 15,
   "por_jerarquia": {
@@ -16,13 +16,12 @@
    "3": 15
   },
   "descargables_ligeros": 63,
-  "kb_total": 183955.5
+  "kb_total": 183943.0
  },
  "avisos": {
   "pendiente": [],
   "sin_organismo": [],
   "caducado": [
-   "aemet-zonas",
    "almacenamiento-petrolifero",
    "conducciones-combustible",
    "desaladoras",
@@ -115,12 +114,12 @@
    "ultima_verificacion": "2026-11-27",
    "crs": "EPSG:4326",
    "features": 3,
-   "bytes": 21633,
-   "kb": 21.1,
-   "fecha_dato": "20261126",
-   "fecha_descarga": "2026-11-27T08:20:58",
-   "edad_dias": 1,
-   "caducado": true
+   "bytes": 21185,
+   "kb": 20.7,
+   "fecha_dato": "20261127",
+   "fecha_descarga": "2026-11-27T09:17:27",
+   "edad_dias": 0,
+   "caducado": false
   },
   "aeropuertos": {
    "id": "aeropuertos",
@@ -1344,9 +1343,9 @@
    "ttl_segundos": 300,
    "ultima_verificacion": "2026-11-27",
    "crs": "EPSG:4326",
-   "features": 1425,
-   "bytes": 618616,
-   "kb": 604.1,
+   "features": 1406,
+   "bytes": 615019,
+   "kb": 600.6,
    "fecha_dato": "2026-11-27",
    "fecha_descarga": "2026-11-27",
    "edad_dias": 0,
@@ -1374,9 +1373,9 @@
    "ttl_segundos": 2592000,
    "ultima_verificacion": "2026-11-27",
    "crs": "EPSG:4326",
-   "features": 859,
-   "bytes": 184157,
-   "kb": 179.8,
+   "features": 820,
+   "bytes": 175354,
+   "kb": 171.2,
    "fecha_dato": "2026-11-27",
    "fecha_descarga": "2026-11-27",
    "edad_dias": 0,

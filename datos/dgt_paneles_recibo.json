@@ -4,9 +4,9 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 859,
+ "features": 820,
  "paneles_localizados": 2539,
- "descargado": "2026-11-27T08:21:00",
+ "descargado": "2026-11-27T09:17:31",
  "mensajes_top": [
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
@@ -14,39 +14,39 @@
   },
   {
    "texto": "@H @F",
-   "paneles": 68
-  },
-  {
-   "texto": "CON NIEBLA MODERE VELOCIDAD",
-   "paneles": 55
+   "paneles": 66
   },
   {
    "texto": "BANCOS DE NIEBLA",
-   "paneles": 47
+   "paneles": 53
   },
   {
-   "texto": "CONTROLES MOVILES DE VELOCIDAD",
-   "paneles": 37
+   "texto": "CON NIEBLA MODERE VELOCIDAD",
+   "paneles": 46
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD",
-   "paneles": 35
+   "paneles": 36
   },
   {
    "texto": "SOL BAJO MODERE VELOCIDAD",
-   "paneles": 33
-  },
-  {
-   "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
    "paneles": 30
   },
   {
-   "texto": "PRECAUCION BANCOS DE NIEBLA",
-   "paneles": 11
+   "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
+   "paneles": 27
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
    "paneles": 9
+  },
+  {
+   "texto": "PRECAUCION BANCOS DE NIEBLA · PRECAUCION BANCOS DE NEBOA",
+   "paneles": 8
+  },
+  {
+   "texto": "PRECAUCION BANCOS DE NIEBLA",
+   "paneles": 7
   }
  ]
 }
