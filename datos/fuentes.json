@@ -92,7 +92,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Registro de CORES (descarga)",
-   "bytes": 30890
+   "bytes": 29561
   },
   "almacenamiento-petrolifero": {
    "capa": "almacenamiento-petrolifero",
@@ -124,7 +124,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Registro del CSN (descarga)",
-   "bytes": 35258
+   "bytes": 34001
   },
   "residuos-radiactivos": {
    "capa": "residuos-radiactivos",
@@ -246,7 +246,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Instalaciones declaradas por MITECO/Acuamed",
-   "bytes": 115796
+   "bytes": 112214
   },
   "hidrogeno-red": {
    "capa": "hidrogeno-red",
@@ -353,7 +353,7 @@
    "origen": "visor",
    "origen_txt": "Otro mapa",
    "origen_detalle": "Mapa Visor Hermes (MITMA)",
-   "bytes": 5856548
+   "bytes": 5157759
   },
   "irewater-edar": {
    "capa": "irewater-edar",
@@ -415,7 +415,7 @@
    "origen": "osm",
    "origen_txt": "OSM",
    "origen_detalle": "OpenStreetMap (Overpass API)",
-   "bytes": 325061
+   "bytes": 293215
   },
   "agua-conducciones": {
    "capa": "agua-conducciones",
@@ -447,7 +447,7 @@
    "origen": "visor",
    "origen_txt": "Otro mapa",
    "origen_detalle": "Mapa Visor Hermes (MITMA)",
-   "bytes": 661945
+   "bytes": 602915
   },
   "puertos": {
    "capa": "puertos",
@@ -464,7 +464,7 @@
    "origen": "visor",
    "origen_txt": "Otro mapa",
    "origen_detalle": "Mapa Visor Hermes (MITMA)",
-   "bytes": 26092
+   "bytes": 23288
   },
   "terminales-puerto": {
    "capa": "terminales-puerto",
@@ -481,7 +481,7 @@
    "origen": "visor",
    "origen_txt": "Otro mapa",
    "origen_detalle": "Mapa Visor Hermes (MITMA)",
-   "bytes": 1551333
+   "bytes": 897402
   },
   "terminales-aero": {
    "capa": "terminales-aero",
@@ -498,7 +498,7 @@
    "origen": "visor",
    "origen_txt": "Otro mapa",
    "origen_detalle": "Mapa Visor Hermes (MITMA)",
-   "bytes": 697173
+   "bytes": 346939
   },
   "intermodales": {
    "capa": "intermodales",
@@ -515,7 +515,7 @@
    "origen": "visor",
    "origen_txt": "Otro mapa",
    "origen_detalle": "Mapa Visor Hermes (MITMA)",
-   "bytes": 516861
+   "bytes": 469036
   },
   "plantas": {
    "capa": "plantas",
@@ -531,7 +531,7 @@
    "origen": "elaborado",
    "origen_txt": "Elaborado",
    "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
-   "bytes": 4292460
+   "bytes": 3881762
   },
   "estaciones-cercanias": {
    "capa": "estaciones-cercanias",
@@ -547,7 +547,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "GTFS-ZIP del NAP (fichero)",
-   "bytes": 105034
+   "bytes": 97088
   },
   "ine-provincias": {
    "capa": "ine-provincias",
@@ -563,7 +563,7 @@
    "origen": "elaborado",
    "origen_txt": "Elaborado",
    "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
-   "bytes": 76866
+   "bytes": 45195
   },
   "ine-ccaa": {
    "capa": "ine-ccaa",
@@ -579,7 +579,7 @@
    "origen": "elaborado",
    "origen_txt": "Elaborado",
    "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
-   "bytes": 44725
+   "bytes": 25149
   },
   "ine-densidad": {
    "capa": "ine-densidad",
@@ -595,7 +595,7 @@
    "origen": "elaborado",
    "origen_txt": "Elaborado",
    "origen_detalle": "Elaborado desde tablas del INE",
-   "bytes": 76866
+   "bytes": 45195
   },
   "ine-paro": {
    "capa": "ine-paro",
@@ -611,7 +611,7 @@
    "origen": "elaborado",
    "origen_txt": "Elaborado",
    "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
-   "bytes": 44725
+   "bytes": 25149
   },
   "l400": {
    "capa": "l400",
@@ -627,7 +627,7 @@
    "origen": "osm",
    "origen_txt": "OSM",
    "origen_detalle": "OpenStreetMap (Overpass API)",
-   "bytes": 1585833
+   "bytes": 1375546
   },
   "l220": {
    "capa": "l220",
@@ -643,7 +643,7 @@
    "origen": "osm",
    "origen_txt": "OSM",
    "origen_detalle": "OpenStreetMap (Overpass API)",
-   "bytes": 1585833
+   "bytes": 1375546
   },
   "gasoductos": {
    "capa": "gasoductos",
@@ -659,7 +659,7 @@
    "origen": "osm",
    "origen_txt": "OSM",
    "origen_detalle": "OpenStreetMap (Overpass API)",
-   "bytes": 373135
+   "bytes": 305771
   },
   "hidro": {
    "capa": "hidro",
@@ -675,7 +675,7 @@
    "origen": "osm",
    "origen_txt": "OSM",
    "origen_detalle": "OpenStreetMap (Overpass API)",
-   "bytes": 4292460
+   "bytes": 3881762
   },
   "subestaciones": {
    "capa": "subestaciones",
@@ -692,7 +692,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "BTN del IGN · descarga directa",
-   "bytes": 1652165
+   "bytes": 1556474
   },
   "eolicos": {
    "capa": "eolicos",
@@ -709,7 +709,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Registro de instalaciones de producción (MITECO)",
-   "bytes": 3240796
+   "bytes": 3085330
   },
   "solares": {
    "capa": "solares",
@@ -726,7 +726,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Registro de instalaciones de producción (MITECO)",
-   "bytes": 2950393
+   "bytes": 2834019
   },
   "residuos": {
    "capa": "residuos",
@@ -743,7 +743,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Registro de ENRESA (descarga)",
-   "bytes": 72450
+   "bytes": 70212
   },
   "petrolifero": {
    "capa": "petrolifero",
@@ -760,7 +760,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Registro de CORES (descarga)",
-   "bytes": 627031
+   "bytes": 606981
   },
   "h2red": {
    "capa": "h2red",
@@ -777,7 +777,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Proyectos PCI del MITECO (fichero)",
-   "bytes": 61835
+   "bytes": 59229
   },
   "interelec": {
    "capa": "interelec",
@@ -794,7 +794,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Registro de REE (descarga)",
-   "bytes": 28004
+   "bytes": 27220
   },
   "regas": {
    "capa": "regas",
@@ -811,7 +811,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Instalaciones de Enagás (descarga)",
-   "bytes": 27570
+   "bytes": 26610
   },
   "gasalm": {
    "capa": "gasalm",
@@ -828,7 +828,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Instalaciones de Enagás (descarga)",
-   "bytes": 18038
+   "bytes": 17389
   },
   "embalses": {
    "capa": "embalses",
@@ -845,7 +845,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Boletín Hidrológico del MITECO (parte semanal)",
-   "bytes": 863570
+   "bytes": 829080
   },
   "h2": {
    "capa": "h2",
@@ -862,7 +862,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Proyectos PCI del MITECO (fichero)",
-   "bytes": 34425
+   "bytes": 33415
   },
   "gasgen": {
    "capa": "gasgen",
@@ -878,7 +878,7 @@
    "origen": "osm",
    "origen_txt": "OSM",
    "origen_detalle": "OpenStreetMap (Overpass API)",
-   "bytes": 4292460
+   "bytes": 3881762
   },
   "resto": {
    "capa": "resto",
@@ -894,7 +894,7 @@
    "origen": "osm",
    "origen_txt": "OSM",
    "origen_detalle": "OpenStreetMap (Overpass API)",
-   "bytes": 4292460
+   "bytes": 3881762
   },
   "trasvases": {
    "capa": "trasvases",
@@ -910,7 +910,7 @@
    "origen": "osm",
    "origen_txt": "OSM",
    "origen_detalle": "Trazado propio sobre OpenStreetMap",
-   "bytes": 7078
+   "bytes": 5673
   },
   "canales": {
    "capa": "canales",
@@ -926,7 +926,7 @@
    "origen": "osm",
    "origen_txt": "OSM",
    "origen_detalle": "OpenStreetMap (Overpass API)",
-   "bytes": 767835
+   "bytes": 677276
   },
   "rios": {
    "capa": "rios",
@@ -942,7 +942,7 @@
    "origen": "osm",
    "origen_txt": "OSM",
    "origen_detalle": "OpenStreetMap (Overpass API)",
-   "bytes": 1225334
+   "bytes": 952947
   },
   "carburantes": {
    "capa": "carburantes",
@@ -958,7 +958,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 4827465
+   "bytes": 4467453
   },
   "demarcaciones": {
    "capa": "demarcaciones",
@@ -974,7 +974,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 1805514
+   "bytes": 1624139
   },
   "sismos": {
    "capa": "sismos",
@@ -990,7 +990,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 27265
+   "bytes": 25213
   },
   "aeropuertos": {
    "capa": "aeropuertos",
@@ -1006,7 +1006,7 @@
    "origen": "comunidad",
    "origen_txt": "Base comunitaria",
    "origen_detalle": "OurAirports · base comunitaria, no oficial",
-   "bytes": 198778
+   "bytes": 181871
   },
   "alertas-gdacs": {
    "capa": "alertas-gdacs",
@@ -1038,7 +1038,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 677236
+   "bytes": 664056
   },
   "canales-miteco": {
    "capa": "canales-miteco",
@@ -1054,7 +1054,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 1474397
+   "bytes": 1166492
   },
   "calidad-aire-estaciones": {
    "capa": "calidad-aire-estaciones",
@@ -1070,7 +1070,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 156790
+   "bytes": 153486
   },
   "masas-subterraneas": {
    "capa": "masas-subterraneas",
@@ -1118,7 +1118,7 @@
    "origen": "visor",
    "origen_txt": "Otro mapa",
    "origen_detalle": "Mapa SignA (IGN)",
-   "bytes": 1399832
+   "bytes": 1383441
   },
   "red-natura": {
    "capa": "red-natura",
@@ -1182,7 +1182,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Fichero descargado del organismo",
-   "bytes": 178940
+   "bytes": 163188
   },
   "nap-cercanias": {
    "capa": "nap-cercanias",
@@ -1198,7 +1198,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Fichero descargado del organismo",
-   "bytes": 190923
+   "bytes": 169285
   },
   "nap-ave": {
    "capa": "nap-ave",
@@ -1214,7 +1214,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Fichero descargado del organismo",
-   "bytes": 163760
+   "bytes": 145933
   },
   "nap-lineas-metro": {
    "capa": "nap-lineas-metro",
@@ -1230,7 +1230,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Fichero descargado del organismo",
-   "bytes": 1257963
+   "bytes": 1142443
   },
   "nap-lineas-cercanias": {
    "capa": "nap-lineas-cercanias",
@@ -1246,7 +1246,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Fichero descargado del organismo",
-   "bytes": 2505905
+   "bytes": 2272958
   },
   "adif-tramos": {
    "capa": "adif-tramos",
@@ -1262,7 +1262,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 898085
+   "bytes": 829361
   },
   "dgt-camaras": {
    "capa": "dgt-camaras",
@@ -1278,7 +1278,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 620793
+   "bytes": 572257
   },
   "dgt-paneles": {
    "capa": "dgt-paneles",
@@ -1294,7 +1294,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 142240
+   "bytes": 134325
   },
   "dgt-incidencias": {
    "capa": "dgt-incidencias",
@@ -1310,7 +1310,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 499909
+   "bytes": 573780
   },
   "dgt-electrolineras": {
    "capa": "dgt-electrolineras",
@@ -1326,7 +1326,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 5944542
+   "bytes": 5562079
   },
   "gtfsrt": {
    "capa": "gtfsrt",
@@ -1342,7 +1342,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 130228
+   "bytes": 117903
   },
   "aemet-zonas": {
    "capa": "aemet-zonas",
@@ -1358,7 +1358,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "Fichero descargado del organismo",
-   "bytes": 28620
+   "bytes": 14716
   },
   "municipios": {
    "capa": "municipios",
@@ -1374,7 +1374,7 @@
    "origen": "elaborado",
    "origen_txt": "Elaborado",
    "origen_detalle": "Elaborado en OpenInfraES cruzando fuentes",
-   "bytes": 8790235
+   "bytes": 5699609
   },
   "clima-temperatura": {
    "capa": "clima-temperatura",
@@ -1390,7 +1390,7 @@
    "origen": "elaborado",
    "origen_txt": "Elaborado",
    "origen_detalle": "Interpolación IDW sobre Open-Meteo",
-   "bytes": 76098
+   "bytes": 48953
   },
   "clima-viento": {
    "capa": "clima-viento",
@@ -1795,7 +1795,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "QAFI v4 · servicio REST del IGME",
-   "bytes": 479506
+   "bytes": 253422
   },
   "faros": {
    "capa": "faros",
@@ -1846,7 +1846,7 @@
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 27566606
+   "bytes": 24818942
   },
   "madrid-semaforos": {
    "capa": "madrid-semaforos",
@@ -1948,7 +1948,7 @@
    "origen": "osm",
    "origen_txt": "OSM",
    "origen_detalle": "OpenStreetMap (Overpass API)",
-   "bytes": 2383804
+   "bytes": 2361924
   },
   "puertos-zonas": {
    "capa": "puertos-zonas",
@@ -2050,7 +2050,7 @@
    "origen": "fichero",
    "origen_txt": "Fichero",
    "origen_detalle": "CSV del Cabildo de Tenerife, cruzado por PK",
-   "bytes": 366535
+   "bytes": 361632
   },
   "tuneles-rce": {
    "capa": "tuneles-rce",

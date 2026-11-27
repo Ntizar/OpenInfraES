@@ -1,0 +1,369 @@
+{
+ "decimales": 5,
+ "ficheros": 659,
+ "tocados": 633,
+ "ahorro_mb": 14.02,
+ "detalle": [
+  {
+   "fichero": "incendios_effis.geojson",
+   "kb_antes": 26921,
+   "kb_despues": 24237,
+   "ahorro_pct": 10.0
+  },
+  {
+   "fichero": "hermes/estaciones-gas.geojson",
+   "kb_antes": 5719,
+   "kb_despues": 5037,
+   "ahorro_pct": 11.9
+  },
+  {
+   "fichero": "hermes/terminales-portuarias.geojson",
+   "kb_antes": 1515,
+   "kb_despues": 876,
+   "ahorro_pct": 42.2
+  },
+  {
+   "fichero": "municipios.geojson",
+   "kb_antes": 6080,
+   "kb_despues": 5566,
+   "ahorro_pct": 8.5
+  },
+  {
+   "fichero": "ciclismo_madrid.geojson",
+   "kb_antes": 3699,
+   "kb_despues": 3195,
+   "ahorro_pct": 13.6
+  },
+  {
+   "fichero": "plantas.geojson",
+   "kb_antes": 4192,
+   "kb_despues": 3791,
+   "ahorro_pct": 9.6
+  },
+  {
+   "fichero": "lineas_hv.geojson",
+   "kb_antes": 3166,
+   "kb_despues": 2776,
+   "ahorro_pct": 12.3
+  },
+  {
+   "fichero": "dgt_electrolineras.geojson",
+   "kb_antes": 5805,
+   "kb_despues": 5432,
+   "ahorro_pct": 6.4
+  },
+  {
+   "fichero": "carburantes.geojson",
+   "kb_antes": 4714,
+   "kb_despues": 4363,
+   "ahorro_pct": 7.5
+  },
+  {
+   "fichero": "hermes/terminales-aeropuerto.geojson",
+   "kb_antes": 681,
+   "kb_despues": 339,
+   "ahorro_pct": 50.2
+  },
+  {
+   "fichero": "canales-miteco.geojson",
+   "kb_antes": 1440,
+   "kb_despues": 1139,
+   "ahorro_pct": 20.9
+  },
+  {
+   "fichero": "simplificado/rios.geojson",
+   "kb_antes": 1197,
+   "kb_despues": 931,
+   "ahorro_pct": 22.2
+  },
+  {
+   "fichero": "irewater_hib_nuts2.geojson",
+   "kb_antes": 1559,
+   "kb_despues": 1296,
+   "ahorro_pct": 16.9
+  },
+  {
+   "fichero": "oficial/agua-embalsada.geojson",
+   "kb_antes": 1056,
+   "kb_despues": 811,
+   "ahorro_pct": 23.2
+  },
+  {
+   "fichero": "nap_lineas_cercanias-renfe.geojson",
+   "kb_antes": 2447,
+   "kb_despues": 2220,
+   "ahorro_pct": 9.3
+  },
+  {
+   "fichero": "gasoductos.geojson",
+   "kb_antes": 1046,
+   "kb_despues": 821,
+   "ahorro_pct": 21.5
+  },
+  {
+   "fichero": "fallas_qafi.geojson",
+   "kb_antes": 468,
+   "kb_despues": 247,
+   "ahorro_pct": 47.1
+  },
+  {
+   "fichero": "simplificado/lineas_hv.geojson",
+   "kb_antes": 1549,
+   "kb_despues": 1343,
+   "ahorro_pct": 13.3
+  },
+  {
+   "fichero": "agua-conducciones.geojson",
+   "kb_antes": 1242,
+   "kb_despues": 1039,
+   "ahorro_pct": 16.3
+  },
+  {
+   "fichero": "demarcaciones.geojson",
+   "kb_antes": 1763,
+   "kb_despues": 1586,
+   "ahorro_pct": 10.0
+  },
+  {
+   "fichero": "simplificado/parques-eolicos.geojson",
+   "kb_antes": 3165,
+   "kb_despues": 3013,
+   "ahorro_pct": 4.8
+  },
+  {
+   "fichero": "simplificado/generacion-electrica-provincia.geojson",
+   "kb_antes": 1583,
+   "kb_despues": 1453,
+   "ahorro_pct": 8.2
+  },
+  {
+   "fichero": "oficial/conducciones-combustible.geojson",
+   "kb_antes": 1248,
+   "kb_despues": 1133,
+   "ahorro_pct": 9.2
+  },
+  {
+   "fichero": "simplificado/plantas-solares.geojson",
+   "kb_antes": 2881,
+   "kb_despues": 2768,
+   "ahorro_pct": 3.9
+  },
+  {
+   "fichero": "nap_lineas_metro-madrid.geojson",
+   "kb_antes": 1228,
+   "kb_despues": 1116,
+   "ahorro_pct": 9.2
+  },
+  {
+   "fichero": "oficial/red-electrica.geojson",
+   "kb_antes": 1732,
+   "kb_despues": 1628,
+   "ahorro_pct": 6.0
+  },
+  {
+   "fichero": "municipios/09.geojson",
+   "kb_antes": 341,
+   "kb_despues": 242,
+   "ahorro_pct": 29.2
+  },
+  {
+   "fichero": "municipios/37.geojson",
+   "kb_antes": 323,
+   "kb_despues": 230,
+   "ahorro_pct": 28.5
+  },
+  {
+   "fichero": "simplificado/red-electrica.geojson",
+   "kb_antes": 1613,
+   "kb_despues": 1520,
+   "ahorro_pct": 5.8
+  },
+  {
+   "fichero": "simplificado/agua-conducciones.geojson",
+   "kb_antes": 750,
+   "kb_despues": 661,
+   "ahorro_pct": 11.8
+  },
+  {
+   "fichero": "municipios/10.geojson",
+   "kb_antes": 250,
+   "kb_despues": 168,
+   "ahorro_pct": 32.9
+  },
+  {
+   "fichero": "municipios/50.geojson",
+   "kb_antes": 269,
+   "kb_despues": 189,
+   "ahorro_pct": 29.8
+  },
+  {
+   "fichero": "municipios/22.geojson",
+   "kb_antes": 231,
+   "kb_despues": 153,
+   "ahorro_pct": 33.9
+  },
+  {
+   "fichero": "municipios/08.geojson",
+   "kb_antes": 268,
+   "kb_despues": 191,
+   "ahorro_pct": 28.9
+  },
+  {
+   "fichero": "municipios/24.geojson",
+   "kb_antes": 235,
+   "kb_despues": 158,
+   "ahorro_pct": 32.8
+  },
+  {
+   "fichero": "municipios/25.geojson",
+   "kb_antes": 238,
+   "kb_despues": 161,
+   "ahorro_pct": 32.5
+  },
+  {
+   "fichero": "irewater_hib_edar.geojson",
+   "kb_antes": 1159,
+   "kb_despues": 1083,
+   "ahorro_pct": 6.6
+  },
+  {
+   "fichero": "municipios/06.geojson",
+   "kb_antes": 214,
+   "kb_despues": 139,
+   "ahorro_pct": 35.0
+  },
+  {
+   "fichero": "municipios/19.geojson",
+   "kb_antes": 257,
+   "kb_despues": 183,
+   "ahorro_pct": 28.8
+  },
+  {
+   "fichero": "municipios/31.geojson",
+   "kb_antes": 249,
+   "kb_despues": 175,
+   "ahorro_pct": 29.9
+  },
+  {
+   "fichero": "municipios/16.geojson",
+   "kb_antes": 229,
+   "kb_despues": 161,
+   "ahorro_pct": 29.9
+  },
+  {
+   "fichero": "municipios/45.geojson",
+   "kb_antes": 213,
+   "kb_despues": 145,
+   "ahorro_pct": 31.9
+  },
+  {
+   "fichero": "adif_tramos.geojson",
+   "kb_antes": 877,
+   "kb_despues": 810,
+   "ahorro_pct": 7.7
+  },
+  {
+   "fichero": "municipios/44.geojson",
+   "kb_antes": 221,
+   "kb_despues": 154,
+   "ahorro_pct": 30.2
+  },
+  {
+   "fichero": "simplificado/gasoductos.geojson",
+   "kb_antes": 364,
+   "kb_despues": 299,
+   "ahorro_pct": 18.1
+  },
+  {
+   "fichero": "municipios/49.geojson",
+   "kb_antes": 218,
+   "kb_despues": 156,
+   "ahorro_pct": 28.2
+  },
+  {
+   "fichero": "edar.geojson",
+   "kb_antes": 629,
+   "kb_despues": 569,
+   "ahorro_pct": 9.6
+  },
+  {
+   "fichero": "municipios/05.geojson",
+   "kb_antes": 214,
+   "kb_despues": 154,
+   "ahorro_pct": 28.3
+  },
+  {
+   "fichero": "simplificado/edar.geojson",
+   "kb_antes": 629,
+   "kb_despues": 569,
+   "ahorro_pct": 9.6
+  },
+  {
+   "fichero": "hermes/carreteras.geojson",
+   "kb_antes": 646,
+   "kb_despues": 589,
+   "ahorro_pct": 8.9
+  },
+  {
+   "fichero": "municipios/18.geojson",
+   "kb_antes": 179,
+   "kb_despues": 122,
+   "ahorro_pct": 31.8
+  },
+  {
+   "fichero": "municipios/46.geojson",
+   "kb_antes": 213,
+   "kb_despues": 157,
+   "ahorro_pct": 26.7
+  },
+  {
+   "fichero": "municipios/34.geojson",
+   "kb_antes": 184,
+   "kb_despues": 129,
+   "ahorro_pct": 30.0
+  },
+  {
+   "fichero": "municipios/47.geojson",
+   "kb_antes": 196,
+   "kb_despues": 141,
+   "ahorro_pct": 28.1
+  },
+  {
+   "fichero": "municipios/17.geojson",
+   "kb_antes": 187,
+   "kb_despues": 133,
+   "ahorro_pct": 28.8
+  },
+  {
+   "fichero": "municipios/42.geojson",
+   "kb_antes": 177,
+   "kb_despues": 124,
+   "ahorro_pct": 30.1
+  },
+  {
+   "fichero": "municipios/40.geojson",
+   "kb_antes": 184,
+   "kb_despues": 132,
+   "ahorro_pct": 28.4
+  },
+  {
+   "fichero": "municipios/13.geojson",
+   "kb_antes": 142,
+   "kb_despues": 91,
+   "ahorro_pct": 35.8
+  },
+  {
+   "fichero": "dgt_incidencias.geojson",
+   "kb_antes": 610,
+   "kb_despues": 560,
+   "ahorro_pct": 8.2
+  },
+  {
+   "fichero": "municipios/15.geojson",
+   "kb_antes": 132,
+   "kb_despues": 83,
+   "ahorro_pct": 36.8
+  }
+ ],
+ "fallos": []
+}

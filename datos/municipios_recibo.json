@@ -97568,5 +97568,6 @@
    "area_geometria_km2": 14.26,
    "desvio_area_pct": 2.39
   }
- ]
+ ],
+ "redondeo": "coordenadas a 5 decimales (~1,1 m); antes venían con 14"
 }

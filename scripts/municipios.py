@@ -320,6 +320,15 @@ def main():
         return 1
 
     geo = os.path.join(DATOS, "municipios.geojson")
+    # 5 decimales = 1,1 m. El IGN no da más precisión que esa y el fichero venía con 14
+    # decimales de ruido de proyección: 8,8 MB de los que sobraba la mitad.
+    def _r5(x):
+        if isinstance(x, (list, tuple)):
+            return [_r5(v) for v in x]
+        return round(x, 5) if isinstance(x, float) else x
+
+    for f in salida:
+        f["geometry"]["coordinates"] = _r5(f["geometry"]["coordinates"])
     json.dump({"type": "FeatureCollection", "features": salida},
               open(geo, "w", encoding="utf-8"), ensure_ascii=False)
     json.dump(recibo, open(os.path.join(DATOS, "municipios_recibo.json"), "w", encoding="utf-8"),
