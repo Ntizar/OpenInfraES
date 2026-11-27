@@ -1,0 +1,27 @@
+{
+ "capa": "puertos-zonas",
+ "titulo": "Zonas de servicio portuarias (Puertos del Estado)",
+ "fuente": "Puertos del Estado",
+ "editor": "Puertos del Estado · modelo INSPIRE de redes de transporte (TN)",
+ "producto": "WFS 2.0: TN.WaterTransportNetwork.PortArea + FairwayArea (zona terrestre, Zona I y Zona II de aguas)",
+ "url": "https://geoserver.puertos.es/geoserver/puertos/wfs",
+ "url_catalogo": "https://www.idee.es/csw-codsi-idee/srv/api/records/spa_puertos_estado",
+ "licencia": "CC BY 4.0",
+ "url_terminos": "https://www.idee.es/csw-codsi-idee/srv/api/records/spa_puertos_estado",
+ "crs": "EPSG:4326 (servicio en ETRS89/4258; WGS84 al mismo orden de error del dato)",
+ "features": 148,
+ "por_tipo": {
+  "Zona I": 46,
+  "Zona II": 45,
+  "Zona de servicio terrestre": 57
+ },
+ "por_estado": {
+  "vigente (DEUP)": 108,
+  "desafectada": 40
+ },
+ "puertos": 51,
+ "descargado": "2026-11-27T12:47:01Z",
+ "metodo": "GeoJSON del WFS (outputFormat=application/json) en bruto 18 MB; redondeo a 5 decimales y Douglas-Peucker a ~11 m",
+ "nota": "No se filtra por estado: las zonas desafectadas se publican marcadas como tales. Los puntos `puertos` del visor salen del Visor Hermes (jerarquía 2); esto es el polígono oficial del mismo sitio.",
+ "fichero": "puertos_zonas.geojson"
+}

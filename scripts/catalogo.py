@@ -35,6 +35,7 @@ ORGANISMO = {
     "INE · Eurostat GISCO": "INE / Eurostat", "INE · Cifras Oficiales del Padrón": "INE",
     "Visor Hermes — MITMA": "MITMA",    "Renfe": "Renfe", "OMIE": "OMIE", "Adif": "Adif", "Adif · IDEADIF": "Adif",     "IGME · QAFI": "IGME · QAFI", "IGME": "IGME", "EMODnet": "EMODnet",
     "Copernicus EMS · EFFIS": "Copernicus EMS", "Copernicus EMS": "Copernicus EMS",
+    "Puertos del Estado": "Puertos del Estado",
     "EFFIS · Copernicus Emergency Management Service": "Copernicus EMS",
     "Ministerio de Transportes (ArcGIS REST)": "MITMA",
     # Open-Meteo no produce el dato: agrega los modelos ICON (DWD) y GFS (NOAA). Jerarquía 2.
@@ -81,6 +82,8 @@ LICENCIA = {
     "Open-Meteo": ("si", "CC BY 4.0 · atribuir a Open-Meteo y al modelo (ICON/GFS)",
                    "https://open-meteo.com/en/license"),
     "EMODnet": ("si", "CC BY 4.0", "https://emodnet.ec.europa.eu/en/legal-notice"),
+    "Puertos del Estado": ("si", "CC BY 4.0 · atribuir a Puertos del Estado",
+                           "https://www.idee.es/csw-codsi-idee/srv/api/records/spa_puertos_estado"),
     "Adif": ("si", "CC BY 4.0 según ficha de datos.gob.es",
              "https://datos.gob.es/es/catalogo/e0dat0002-wfs-de-la-red-de-transporte-ferroviario-de-adif"),
     # Verificado por la API CKAN de data.renfe.com: el conjunto 'ubicacion-vehiculos' declara
@@ -96,6 +99,7 @@ LICENCIA = {
 
 # --- frescura (P2): el TTL lo define la fuente, no la comodidad del servidor ---
 TTL = {
+    "puertos-zonas": (2592000, "mensual", "foto"),
     "embalses": (604800, "semanal", "foto"),
     "omie_precio": (3600, "cada subasta (≈13:00)", "vivo"),
     "ree_vivo": (300, "5 minutos", "vivo"),
@@ -188,6 +192,7 @@ JERARQUIA = {
     "I-ReWater HUB": 1, "OMIE": 1, "Renfe": 1, "EMSC-CSEM": 2,
     "Copernicus EMS": 1,
     "MITMA": 2, "EMODnet": 2, "IGME · QAFI": 1, "IGME": 1, "OpenStreetMap": 3, "Open-Meteo": 2,
+    "Puertos del Estado": 1,
 }
 ETIQUETA_JERARQUIA = {1: "organismo productor", 2: "organismo agregador", 3: "fuente comunitaria"}
 
@@ -305,7 +310,6 @@ def main():
         nivel = JERARQUIA.get(organismo, 3)
         catalogo[cid] = {
             "id": cid,
-            "alias_de": f.get("alias_de"),   # si la capa es otra vista del mismo dato
             "titulo": f.get("titulo") or cid,
             "organismo": organismo,
             "oficial": nivel <= 2,

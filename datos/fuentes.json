@@ -1916,6 +1916,23 @@
    "origen_detalle": "OpenStreetMap (Overpass API)",
    "bytes": 2383804
   },
+  "puertos-zonas": {
+   "capa": "puertos-zonas",
+   "titulo": "Zonas de servicio portuarias (Puertos del Estado)",
+   "fuente": "Puertos del Estado",
+   "editor": "Puertos del Estado · modelo INSPIRE de redes de transporte (TN)",
+   "licencia": "CC BY 4.0",
+   "actualizado": "2026-11-27T12:47:01Z",
+   "descargado": "2026-11-27T12:47:01Z",
+   "features": 148,
+   "fecha_dato": null,
+   "url": "https://geoserver.puertos.es/geoserver/puertos/wfs",
+   "metodo": "GeoJSON del WFS (outputFormat=application/json) en bruto 18 MB; redondeo a 5 decimales y Douglas-Peucker a ~11 m",
+   "origen": "api",
+   "origen_txt": "API",
+   "origen_detalle": "Servicio web del organismo",
+   "bytes": 608073
+  },
   "residencias-ign": {
    "capa": "residencias-ign",
    "titulo": "Residencias de mayores (IGN)",
@@ -2155,5 +2172,5 @@
    "kb": 7
   }
  },
- "total_capas": 125
+ "total_capas": 126
 }
