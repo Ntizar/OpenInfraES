@@ -4,13 +4,13 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 683,
+ "features": 679,
  "paneles_localizados": 2539,
- "descargado": "2026-11-27T02:21:22",
+ "descargado": "2026-11-27T03:18:40",
  "mensajes_top": [
   {
    "texto": "MAQUINAS EN TRATAMIENTO INVERNAL",
-   "paneles": 105
+   "paneles": 104
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
@@ -18,7 +18,7 @@
   },
   {
    "texto": "@H @F",
-   "paneles": 85
+   "paneles": 83
   },
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
@@ -26,11 +26,11 @@
   },
   {
    "texto": "MAQUINA EN TRATAMIENTO INVERNAL",
-   "paneles": 18
+   "paneles": 19
   },
   {
    "texto": "PRECAUCION TORMENTAS",
-   "paneles": 12
+   "paneles": 14
   },
   {
    "texto": "CONTROLES MOVILES DE VELOCIDAD",
@@ -41,11 +41,11 @@
    "paneles": 8
   },
   {
-   "texto": "MAQUINA MOVIL TRABAJANDO · MAQUINA MOBIL TREBALLANT",
-   "paneles": 7
+   "texto": "EN N-232 4 EJES O MAS",
+   "paneles": 6
   },
   {
-   "texto": "EN N-232 4 EJES O MAS",
+   "texto": "4 EJES O MAS",
    "paneles": 6
   }
  ]
