@@ -119,7 +119,7 @@ function aplicar() {
   map.setFilter("lines-bus", filtroLineas("bus"));
   map.setFilter("lines-rail", filtroLineas("rail"));
   map.setFilter("lines-ferry", filtroLineas("ferry"));
-  ["lines-air", "aeropuertos"].forEach(id => {
+  ["lines-air", "aeropuertos", "aeropuertos-txt"].forEach(id => {
     if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", modoOn.has("aereo") ? "visible" : "none");
   });
   map.setFilter("stops", opSel ? ["==", ["get", "op"], opSel] : null);
@@ -148,14 +148,18 @@ function dibujar() {
 // suelto no se pinta de forma fiable si el mapa aun esta cargando).
 map.addSource("aereo", { type: "vector", url: "pmtiles://https://ntizar.github.io/gtfs-espana/aereo.pmtiles", maxzoom: 7 });
 map.addLayer({ id: "lines-air", type: "line", source: "aereo", "source-layer": "aereo",
-  filter: ["==", ["get", "g"], "l"],
+  filter: ["==", ["geometry-type"], "LineString"],
   paint: { "line-color": "#ec4899", "line-width": 1.4, "line-opacity": 0.7,
            "line-dasharray": [3, 2] } });
-map.addLayer({ id: "aeropuertos", type: "symbol", source: "aereo", "source-layer": "aereo",
-  filter: ["==", ["get", "g"], "p"],
+map.addLayer({ id: "aeropuertos", type: "circle", source: "aereo", "source-layer": "aereo",
+  filter: ["==", ["geometry-type"], "Point"],
+  paint: { "circle-radius": 3.6, "circle-color": "#ec4899",
+           "circle-stroke-width": 1.2, "circle-stroke-color": "#0b1020" } });
+map.addLayer({ id: "aeropuertos-txt", type: "symbol", source: "aereo", "source-layer": "aereo",
+  filter: ["==", ["geometry-type"], "Point"],
   layout: { "text-field": ["get", "de"], "text-size": 10, "text-font": ["Noto Sans Regular"],
-               "text-allow-overlap": false },
-  paint: { "text-color": "#ec4899", "text-halo-color": "#0b1020", "text-halo-width": 1.4 } });
+            "text-offset": [0, 0.9], "text-anchor": "top" },
+  paint: { "text-color": "#ec4899", "text-halo-color": "#0b1020", "text-halo-width": 1.5 } });
   const capa = (id, color, ancho, opac) => ({
     id, type: "line", source: "lines", "source-layer": "lines",
     layout: { "line-cap": "round", "line-join": "round" },
