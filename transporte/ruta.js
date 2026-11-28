@@ -32,6 +32,12 @@
   #btn-ruta{width:100%;margin:8px 0 2px;padding:8px 10px;border-radius:8px;border:1px solid #2a3a5c;
     background:#131c30;color:#e6edf7;font:600 12.5px system-ui;cursor:pointer}
   #btn-ruta.on{background:#f59e0b;color:#0b1020;border-color:#f59e0b}
+  @media(max-width:720px){
+    /* El mapa ocupa toda la pantalla y el panel flota encima: por eso nunca puede pasar de la
+       mitad, o no queda sitio para tocar. Se recoge del todo mientras se eligen los puntos. */
+    #panel{max-height:48vh;overflow:auto;transition:max-height .2s}
+    #panel.rt-min{max-height:56px;overflow:hidden}
+  }
   #panel-ruta{display:none;margin:6px 0 10px;padding:9px;border-radius:9px;background:#0f1729;
     border:1px solid #2a3a5c}
   #panel-ruta .rt-cab{display:flex;justify-content:space-between;align-items:center;font:700 12px system-ui;
@@ -329,8 +335,16 @@
     $("#rt-cerrar").onclick = () => { activo = false; window.__modoRuta = false; p.style.display = "none";
       limpiarMarcas(); $("#btn-ruta").classList.remove("on"); };
     $("#rt-ir").onclick = calcular;
-    $("#rt-a").onclick = () => { A = null; pintarPanel(); };
-    $("#rt-b").onclick = () => { B = null; pintarPanel(); };
+    $("#rt-a").onclick = () => { A = null; pintarPanel(); recoge(true); };
+    $("#rt-b").onclick = () => { B = null; pintarPanel(); recoge(true); };
+  }
+
+  // En movil, recoger el panel mientras se elige punto en el mapa.
+  function recoge(cerrado) {
+    const p = document.getElementById("panel");
+    if (!p) return;
+    if (window.innerWidth <= 720) p.classList.toggle("rt-min", !!cerrado);
+    else p.classList.remove("rt-min");
   }
 
   function limpiarMarcas() {
@@ -415,7 +429,21 @@
     }, map.getLayer("stops") ? "stops" : undefined);
     const b = new maplibregl.LngLatBounds();
     v.geom.forEach((c) => b.extend(c));
-    map.fitBounds(b, { padding: { top: 90, bottom: 90, left: 330, right: 60 }, maxZoom: 15, duration: 700 });
+    encuadrar(b, 15);
+  }
+
+  // Encuadre de una ruta. El ancho del panel cambia con la pantalla: con un padding fijo la ruta
+  // se sale de la vista en movil, que es justo donde mas se usa.
+  function encuadrar(b, maxZoom) {
+    const panel = document.getElementById("panel");
+    const movil = window.innerWidth <= 720;
+    const ancho = panel ? panel.getBoundingClientRect().width : 0;
+    map.fitBounds(b, {
+      padding: movil
+        ? { top: 40, bottom: Math.round(window.innerHeight * 0.46), left: 16, right: 16 }
+        : { top: 80, bottom: 80, left: Math.min(ancho + 30, window.innerWidth * 0.55), right: 40 },
+      maxZoom: maxZoom, duration: 700
+    });
   }
 
   async function calcular() {
@@ -523,9 +551,13 @@
       paint: { "line-color": "#f59e0b", "line-width": 5, "line-opacity": 0.95 },
       layout: { "line-cap": "round", "line-join": "round" }
     }, map.getLayer("stops") ? "stops" : undefined);
+    // El encuadre incluye los extremos A y B: los tramos de transporte terminan en la estacion y
+    // el destino puede estar a 2 km (un aeropuerto), asi que sin ellos la ruta salia cortada.
     const b = new maplibregl.LngLatBounds();
     tramos.forEach((c) => b.extend(c));
-    map.fitBounds(b, { padding: { top: 90, bottom: 90, left: 330, right: 60 }, maxZoom: 14, duration: 700 });
+    if (A) b.extend([A.lon, A.lat]);
+    if (B) b.extend([B.lon, B.lat]);
+    encuadrar(b, 14);
   }
 
   function init() {
@@ -549,7 +581,7 @@
       limpiarMarcas();
       panelEl.style.display = activo ? "block" : "none";
       btn.classList.toggle("on", activo);
-      if (activo) pintarPanel(); else limpiarMarcas();
+      if (activo) { pintarPanel(); if (!A || !B) recoge(true); } else { limpiarMarcas(); recoge(false); }
     };
 
     map.on("click", (e) => {
@@ -564,11 +596,33 @@
       if (!A) A = punto;
       else if (!B) B = punto;
       else { A = punto; B = null; }
+      // Sigue recogido mientras falte un punto: hace falta el mapa entero para tocarlo.
+      recoge(!A || !B);
       pintarPanel();
       limpiarMarcas();
       pintarMarcas();
     });
   }
+
+  // Punto de entrada para el chat: fija origen o destino y calcula si ya estan los dos.
+  window.__rutaPunto = (lat, lon, nombre, rol) => {
+    if (!activo) {
+      activo = true;
+      window.__modoRuta = true;
+      const pel = document.getElementById("panel-ruta");
+      if (pel) pel.style.display = "block";
+      const b = document.getElementById("btn-ruta");
+      if (b) b.classList.add("on");
+    }
+    const p = { lat: lat, lon: lon, nombre: nombre || (lat.toFixed(5) + ", " + lon.toFixed(5)) };
+    if (rol === "B") B = p;
+    else if (rol === "A") A = p;
+    else if (!A) A = p; else B = p;
+    pintarPanel();
+    pintarMarcas();
+    if (A && B) calcular();
+    return { a: !!A, b: !!B };
+  };
 
   window.__dbg = {
     cerca: (lat, lon, r) => cercaDe(redActual, lat, lon, r || RADIO),
