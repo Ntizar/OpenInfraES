@@ -430,8 +430,18 @@ def accion_filtrar(texto):
 
 # Capas del GTFS que no están en `const CAPAS` porque se pintan con teselas (transporte-mapa.js).
 GTFS = {
-    "gtfs-paradas": ("parada", "paradas", "autobus", "bus", "marquesina", "andén", "anden"),
-    "gtfs-lineas": ("linea", "lineas", "ruta", "rutas", "recorrido", "red de transporte"),
+    "gtfs-paradas": ("parada", "paradas", "marquesina", "andén", "anden"),
+    "gtfs-bus": ("autobus", "autobuses", "bus", "guagua", "buses"),
+    "gtfs-rail": ("tren", "trenes", "cercanias", "ferrocarril", "metro", "ave", "tranvia"),
+    "gtfs-ferry": ("ferry", "ferris", "barco", "barcos", "maritimo", "isla"),
+    "gtfs-aereo": ("vuelo", "vuelos", "avion", "aviones", "aereo", "aeropuerto"),
+}
+ETIQUETA_GTFS = {
+    "gtfs-paradas": "las 207.943 paradas del NAP",
+    "gtfs-bus": "las líneas de autobús",
+    "gtfs-rail": "los trenes, metro y tranvías",
+    "gtfs-ferry": "los ferris",
+    "gtfs-aereo": "los vuelos (arcos AECFA entre aeropuertos)",
 }
 
 
@@ -464,11 +474,13 @@ def accion_encender(texto):
     # frase no pide explícitamente encender, esto no es una orden de capa.
     if not re.search(r"\b(enciende|activa|apaga|quita)\b", _norm(texto)) and lugar_exacto(texto):
         return None
-    if re.search(r"\b(parada|paradas|bus|autobus|autobuses|linea|lineas)\b", _norm(texto)):
+    if re.search(r"\b(parada|paradas|bus|autobus|autobuses|linea|lineas|tren|trenes|metro|"
+                 r"ferry|ferris|barco|barcos|avion|aviones|vuelo|vuelos|aereo|aeropuerto)\b",
+                 _norm(texto)):
         g = capa_gtfs(texto)
         if g:
-            etiqueta = "las 207.943 paradas del NAP" if g == "gtfs-paradas" else "las 31.970 líneas del NAP"
-            return {"verbo": "capa", "texto": f"Enciendo {etiqueta} (teselas, se dibuja solo lo que ves).",
+            return {"verbo": "capa",
+                    "texto": f"Enciendo {ETIQUETA_GTFS[g]} (teselas, se dibuja solo lo que ves).",
                     "acciones": [{"tipo": "capa", "id": g, "visible": True}]}
     cid = buscar_capa(texto)
     if not cid:
@@ -738,6 +750,9 @@ PRUEBAS = [
     ("foto del km 5 de la A-6", "foto"),
     ("llévame a la central de Aldeadávila", "volar"),
     ("qué tienes de transporte", "responder"),
+    ("enséñame los trenes", "capa"),
+    ("muéstrame los ferris", "capa"),
+    ("dónde hay vuelos", "capa"),
     ("ruta de Madrid a Santander en coche", "ruta"),
     ("cómo llego de Bilbao a Zaragoza", "ruta"),
     ("ir de Valencia a Alicante en bici", "ruta"),

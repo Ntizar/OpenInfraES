@@ -116,6 +116,13 @@ class Handler(BaseHTTPRequestHandler):
 
         if ruta == "/":
             ruta = "/index.html"
+        # Un solo mapa: el viejo visor de transporte redirige al principal con sus capas puestas.
+        if ruta == "/transporte.html":
+            self.send_response(302)
+            self.send_header("Location", "/index.html?transporte=paradas,rail,ferry,aereo")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
         destino = ruta_segura(ruta)
         if not destino or not os.path.isfile(destino):
             return self._json({"error": "no encontrado", "ruta": ruta}, 404)

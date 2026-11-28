@@ -269,6 +269,11 @@
   /* Volver: vive en el menú y se apaga cuando no hay historial */
   #acciones button:disabled { opacity:.4; cursor:default; }
 
+  /* iOS: con letra < 16px enfocar un campo hace zoom de página y no lo deshace. */
+  @media (max-width:820px) {
+    #buscar input, #buscar-capa input, #pie select { font-size:16px; }
+  }
+
   .vivo-fila { display:flex; gap:10px; margin:6px 0 2px; }
   .vivo-fila > span { flex:1; background:rgba(34,211,238,.07); border:1px solid rgba(34,211,238,.18);
     border-radius:8px; padding:7px 9px; }
@@ -769,7 +774,7 @@
   </div>
   <div id="acciones">
     <button id="btn-estado" title="Estado del sistema eléctrico: en vivo, del día y previsión"><b>⚡</b>Datos</button>
-    <button id="btn-transporte" title="Transporte público de España: paradas, líneas y horarios del GTFS del NAP" onclick="location.href='transporte.html'"><b>🚌</b>Transporte</button>
+    <button id="btn-transporte" title="Transporte público: paradas, líneas, trenes, ferris y vuelos del NAP"><b>🚌</b>Transporte</button>
 
     <button id="btn-volver" title="Volver a la vista anterior del mapa"><b>⟲</b>Volver</button>
     <button id="btn-fuentes" title="Fuentes y fecha de los datos"><b>ⓘ</b>Fuentes</button>
@@ -1323,6 +1328,16 @@ function pintaVolver() {
 
 mapa.on("moveend", apuntaVista);
 apuntaVista();
+
+/* El teclado del móvil cambia el alto visible: sin invalidateSize el mapa se queda con el
+   tamaño viejo (mitad en negro, esquinas muertas) hasta recargar. */
+if (window.visualViewport) {
+  let rz = 0;
+  visualViewport.addEventListener("resize", () => {
+    clearTimeout(rz);
+    rz = setTimeout(() => mapa.invalidateSize({ pan: false }), 220);
+  });
+}
 
 // Conservar el margen de selección de 17 px que ofrecía Canvas en trazos finos.
 mapa.on("click", e => {
@@ -4951,6 +4966,13 @@ const ASA_HUD = document.getElementById("asa-hud");
 if (ASA_HUD && CAJON_HUD) {
   ASA_HUD.addEventListener("click", () => CAJON_HUD.classList.toggle("alto"));
 }
+const BTN_TRANSPORTE = document.getElementById("btn-transporte");
+if (BTN_TRANSPORTE) BTN_TRANSPORTE.addEventListener("click", () => {
+  const t = window.OpenInfraES && window.OpenInfraES.transporte;
+  if (t) t.panel(true);
+  if (matchMedia("(max-width:820px)").matches) plegarHud(false);
+});
+
 const BTN_VOLVER_MENU = document.getElementById("btn-volver");
 if (BTN_VOLVER_MENU) BTN_VOLVER_MENU.addEventListener("click", () => {
   volverVista();
@@ -5794,9 +5816,9 @@ document.getElementById("salud-cuerpo").addEventListener("click", e => {
 setTimeout(estado, 200);
 
 </script>
-<script src="transporte/vendor/pmtiles.js?v=2026-11-28b"></script>
-<script src="vendor/protomaps-leaflet.js?v=2026-11-28b"></script>
-<script src="ia.js?v=2026-11-28b"></script>
-<script src="transporte-mapa.js?v=2026-11-28b"></script>
+<script src="transporte/vendor/pmtiles.js?v=2026-11-28c"></script>
+<script src="vendor/protomaps-leaflet.js?v=2026-11-28c"></script>
+<script src="ia.js?v=2026-11-28c"></script>
+<script src="transporte-mapa.js?v=2026-11-28c"></script>
 </body>
 </html>

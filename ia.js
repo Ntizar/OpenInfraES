@@ -42,6 +42,7 @@
     font-size:12px;cursor:pointer;padding:0}
   #ia-x:hover{border-color:#f59e0b;color:#f59e0b}
   body.hud-abierto #ia-btn,body.hud-abierto #ia-caja{display:none!important}
+  @media(max-width:720px){ #ia-q{font:16px inherit} }
   .ia-pin-ruta{display:flex;align-items:center;justify-content:center;border-radius:50%;
     background:#f59e0b;color:#0b1020;font:700 13px/1 inherit;border:2px solid #0b1020;
     box-shadow:0 2px 8px rgba(0,0,0,.5)}
@@ -175,11 +176,14 @@
   function encender(id) {
     // Las capas del GTFS (207k paradas, 32k líneas) no viven en CAPAS: las pinta
     // transporte-mapa.js con teselas. Se piden por su id propio.
-    if (id === "gtfs-paradas" || id === "gtfs-lineas") {
+    if (/^gtfs-/.test(id)) {
       const t = window.OpenInfraES && window.OpenInfraES.transporte;
       if (!t) return "sin motor de transporte";
-      const que = id === "gtfs-lineas" ? "lineas" : "paradas";
-      return t.poner(que, true) ? null : "no se pudo encender " + id;
+      const que = id.slice(5);                 // gtfs-paradas, gtfs-bus, gtfs-rail, gtfs-ferry, gtfs-aereo
+      const grupo = que === "lineas" ? ["bus", "rail", "ferry"] : [que];
+      let ok = true;
+      grupo.forEach((q) => { if (!t.poner(q, true)) ok = false; });
+      return ok ? null : "no se pudo encender " + id;
     }
     const v = V();
     if (v) return v.encender(id) === false ? "no se pudo encender " + id : null;
