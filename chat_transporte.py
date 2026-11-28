@@ -47,7 +47,12 @@ def _limpia_json(txt):
 
 def interpreta(pregunta, ctx=""):
     """Devuelve el dict de intención. Lanza RuntimeError si falta la clave."""
-    clave = os.environ.get("NAN_API_KEY") or os.environ.get("OPENAI_API_KEY")
+    # El panel de NaN CLOUD la llama `api_nan`; se aceptan los nombres habituales.
+    clave = None
+    for nombre in ("NAN_API_KEY", "api_nan", "API_NAN", "OPENAI_API_KEY", "nan_api_key"):
+        if os.environ.get(nombre):
+            clave = os.environ[nombre]
+            break
     if not clave:
         # alternativa al panel: un fichero en el volumen persistente, con permisos 600
         ruta = os.path.join(os.environ.get("DATOS", "/data"), "nan.key")
