@@ -272,6 +272,9 @@
     document.documentElement.dataset.iaAcciones = String(acciones.length);
     document.documentElement.dataset.iaTexto = (r.texto || "").slice(0, 300);
     document.documentElement.dataset.iaErrores = errores.join(" | ");
+    // En móvil, la ficha (foto de cámara) va al panel grande: se pliega el chat para no taparla.
+    // El historial se conserva y se reabre con el botón.
+    if (window.innerWidth <= 720 && acciones.some((a) => a.tipo === "ficha")) alterna(false);
     const v = V(), m = v ? v.mapa() : null;
     if (m) {
       // El vuelo es animado: el centro definitivo se publica al terminar (moveend), no al lanzarlo.
