@@ -495,6 +495,92 @@ def accion_encender(texto):
             "acciones": [{"tipo": "capa", "id": cid, "visible": True}]}
 
 
+# ---------------- transporte público ----------------
+# El RAPTOR vive en ~/Projects/gtfs-espana/planifica.py: índices por red + horarios por parada.
+# Cargarlo cuesta ~4 s y 390 MB; se hace una vez y se reutiliza. Un lock evita dos cargas a la vez.
+_GTFS_DIR = os.environ.get("GTFS_DIR", os.path.expanduser("~/Projects/gtfs-espana"))
+_TP = {"motor": None, "lock": None, "error": ""}
+COLOR_LINEA = ["#3b82f6", "#f59e0b", "#8b5cf6", "#22c55e", "#06b6d4", "#ec4899"]
+
+
+def planificador_tp():
+    """Motor RAPTOR perezoso. Devuelve None si no está disponible."""
+    if _TP["motor"] is not None or _TP["error"]:
+        return _TP["motor"]
+    import threading
+    if _TP["lock"] is None:
+        _TP["lock"] = threading.Lock()
+    with _TP["lock"]:
+        if _TP["motor"] is None and not _TP["error"]:
+            try:
+                if _GTFS_DIR not in sys.path:
+                    sys.path.insert(0, _GTFS_DIR)
+                import planifica
+                _TP["motor"] = planifica.Planificador()
+            except Exception as e:
+                _TP["error"] = f"{type(e).__name__}: {e}"
+    return _TP["motor"]
+
+
+def _hora_ahora():
+    import datetime
+    ahora = datetime.datetime.now()
+    return ahora.strftime("%H:%M"), ahora.weekday()
+
+
+def rutas_tp(o, d, hora=None, dia=None, tope=3):
+    """Opciones de transporte público entre dos sitios, con horarios del GTFS.
+
+    Devuelve [] si el motor no está o no hay combinación. Nunca inventa: si no hay,
+    se dice que no hay.
+    """
+    p = planificador_tp()
+    if not p:
+        return []
+    h, dd = _hora_ahora()
+    hora, dia = hora or h, (0 if dia is None else dia)
+    try:
+        res = p.plan((o["lat"], o["lon"]), (d["lat"], d["lon"]), hora, dia)
+    except Exception as e:
+        _TP["error"] = f"plan: {type(e).__name__}: {e}"
+        return []
+    # Menos transbordos manda: una opción con 4 líneas y 10 minutos menos no es mejor para
+    # nadie. Se queda con las que estén dentro del 25 % del mejor tiempo.
+    if res:
+        tope_min = res[0]["total"] * 1.25
+        res = sorted([r for r in res if r["total"] <= tope_min],
+                     key=lambda r: (len(r["cadena"]), r["total"]))[:max(tope, 3)]
+    out = []
+    for r in res[:tope]:
+        tramos = []
+        for k, t in enumerate(r["cadena"]):
+            sh, prev, cur, salida, llegada, modo, espera, geom = t
+            tramos.append({
+                "linea": sh, "de": (p.red(prev[0]).pm.get(prev[1]) or ["?"])[0],
+                "a": (p.red(cur[0]).pm.get(cur[1]) or ["?"])[0],
+                "salida": _hhmm(salida), "llega": _hhmm(llegada), "espera": round(espera),
+                "color": COLOR_LINEA[k % len(COLOR_LINEA)], "geom": geom or [],
+            })
+        linea_completa = []
+        for t in tramos:
+            for c in t["geom"]:
+                if not linea_completa or linea_completa[-1] != c:
+                    linea_completa.append(c)
+        out.append({
+            "lineas": [t["linea"] for t in tramos],
+            "tramos": tramos, "geom": linea_completa,
+            "salida": tramos[0]["salida"] if tramos else _hhmm(r["llega"] - r["total"]),
+            "llega": _hhmm(r["llega"]), "min": round(r["total"]),
+            "caminata": round(r["caminata"]),
+        })
+    return out
+
+
+def _hhmm(minutos):
+    m = int(round(minutos)) % 1440
+    return "%02d:%02d" % (m // 60, m % 60)
+
+
 SERV_RUTA = {
     "coche": "https://router.project-osrm.org/route/v1/driving/",
     "bici": "https://routing.openstreetmap.de/routed-bike/route/v1/driving/",
@@ -528,19 +614,25 @@ def _dur(minutos):
 
 
 def _pide_ruta(modo, o, d):
-    """Una ruta de OSRM con la geometría completa. None si no hay o falla."""
+    """La ruta MÁS RÁPIDA de OSRM con la geometría completa. None si no hay o falla.
+
+    Se piden alternativas y se ordena por duración: el usuario quiere la más rápida, no la
+    primera que devuelva el motor.
+    """
     url = (SERV_RUTA.get(modo, SERV_RUTA["coche"]) + "%.5f,%.5f;%.5f,%.5f"
-           % (o["lon"], o["lat"], d["lon"], d["lat"]) + "?overview=full&geometries=geojson")
+           % (o["lon"], o["lat"], d["lon"], d["lat"])
+           + "?overview=full&geometries=geojson&alternatives=true")
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0",
                                                    "Referer": "https://openinfraes-ntizar-ntizar.apps.nan.builders/"})
         with urllib.request.urlopen(req, timeout=22) as r:
             j = json.load(r)
-        rt = (j.get("routes") or [None])[0]
+        rutas = [r for r in (j.get("routes") or []) if r.get("geometry")]
     except Exception:
         return None
-    if not rt:
+    if not rutas:
         return None
+    rt = min(rutas, key=lambda r: r.get("duration") or 9e18)
     return {"modo": modo, "geom": rt["geometry"]["coordinates"],
             "km": round(rt["distance"] / 1000.0, 1), "min": round(rt["duration"] / 60.0)}
 
@@ -557,12 +649,8 @@ def accion_ruta(texto):
         if re.search(r"\b" + palabra + r"\b", modo_txt):
             modo = clave
             break
-    if re.search(r"\b(tren|trenes|ferrocarril|ave|cercanias|metro|autobus|bus)\b", t):
-        return {"verbo": "ruta",
-                "texto": "Para transporte público el visor todavía no calcula horarios: el planificador "
-                         "RAPTOR está en el visor de transporte. En este mapa puedo darte la ruta por "
-                         "carretera, la línea que conecta y las estaciones.",
-                "acciones": [], "dato": {"modo": "tp", "pendiente": True}}
+    pide_tp = bool(re.search(r"\b(tren|trenes|ferrocarril|ave|cercanias|metro|autobus|autobuses|"
+                            r"bus|transporte publico|trasporte publico|guagua)\b", t))
     o, d = _lugar(o_txt), _lugar(d_txt)
     if not o or not d:
         falta = "origen" if not o else "destino"
@@ -570,7 +658,9 @@ def accion_ruta(texto):
                 "acciones": []}
     # Sin modo en la frase se piden los tres: coche, bici y a pie. Es lo que se espera de
     # «cómo voy de Madrid a Toledo»: las opciones, no una elegida por mí.
-    pedir = [modo] if modo else ["coche", "bici", "pie"]
+    if pide_tp and not modo:
+        modo = "tp"
+    pedir = ["coche"] if modo == "tp" else ([modo] if modo else ["coche", "bici", "pie"])
     opciones = []
     for m in pedir:
         r = _pide_ruta(m, o, d)
@@ -590,11 +680,43 @@ def accion_ruta(texto):
         "titulo": f"{o['nombre']} → {d['nombre']} {ETIQ_RUTA[x['modo']]}",
         "km": x["km"], "min": x["min"],
     } for x in opciones]
+    # Transporte público con horarios reales del GTFS (RAPTOR). Se calcula siempre salvo que
+    # se haya pedido un modo concreto; en trayectos larguísimos solo si se pide.
+    tp = []
+    if modo == "tp" or not modo:
+        km_min = min(x["km"] for x in opciones) if opciones else 0
+        if km_min <= 800:
+            tp = rutas_tp(o, d, tope=3)
+            # Si el transporte público tarda más de 2h30 sobre el coche, no es una opción:
+            # se descarta en vez de enseñar un Madrid-Valencia de 7 horas.
+            mejor_coche = min([x["min"] for x in opciones if x["modo"] == "coche"], default=None)
+            if mejor_coche:
+                tp = [x for x in tp if x["min"] <= mejor_coche + 150]
+    for i, x in enumerate(tp):
+        acciones.append({
+            "tipo": "ruta_tp", "modo": "tp", "titulo": f"{o['nombre']} → {d['nombre']} en transporte público",
+            "lineas": x["lineas"], "tramos": x["tramos"], "geom": x["geom"],
+            "color": COLOR_LINEA[i % len(COLOR_LINEA)],
+            "origen": {**o, "letra": "A"}, "destino": {**d, "letra": "B"},
+            "salida": x["salida"], "llega": x["llega"], "min": x["min"], "km": 0,
+            "principal": i == 0,
+        })
+        partes.append(f"transporte público: {x['salida']} → {x['llega']} · "
+                      f"{x['min'] // 60}h{x['min'] % 60:02d} con {' + '.join(x['lineas'])}")
+    if not tp and not modo and opciones:
+        partes.append("transporte público: sin combinación razonable (tardaría más de 2h30 sobre el coche)")
+    dato = {"origen": o["nombre"], "destino": d["nombre"],
+            "opciones": [{"modo": x["modo"], "km": x["km"], "min": x["min"]} for x in opciones],
+            "tp": [{"lineas": x["lineas"], "salida": x["salida"], "llega": x["llega"],
+                    "min": x["min"]} for x in tp]}
+    if not opciones:
+        partes = []
+    if not opciones and not tp:
+        return {"verbo": "ruta", "texto": f"No encuentro cómo ir de {o['nombre']} a {d['nombre']}.",
+                "acciones": []}
     return {"verbo": "ruta",
             "texto": f"{o['nombre']} → {d['nombre']}. " + " · ".join(partes) + ".",
-            "acciones": acciones,
-            "dato": {"origen": o["nombre"], "destino": d["nombre"],
-                     "opciones": [{"modo": x["modo"], "km": x["km"], "min": x["min"]} for x in opciones]}}
+            "acciones": acciones, "dato": dato}
 
 
 def accion_cerca(lat, lon):

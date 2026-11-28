@@ -262,33 +262,73 @@
   function activaRuta(i) {
     const ops = window.__iaRutaOps;
     if (!ops || !ops[i]) return;
+    let bbox = null;
     ops.forEach((o, k) => {
-      o.linea.setStyle({ weight: k === i ? 6 : 3, opacity: k === i ? 0.95 : 0.32 });
-      if (k === i) o.linea.bringToFront();
+      o.lineas.forEach((l) => {
+        l.setStyle({ weight: k === i ? 6 : 3, opacity: k === i ? 0.95 : 0.28 });
+        if (k === i) l.bringToFront();
+      });
+      if (k === i) {
+        o.lineas.forEach((l) => { bbox = bbox ? bbox.extend(l.getBounds()) : l.getBounds(); });
+      }
     });
     window.__iaRutaActiva = i;
     const mapa = V() ? V().mapa() : null;
-    if (mapa) mapa.fitBounds(ops[i].linea.getBounds().pad(0.12), { animate: false });
+    if (mapa && bbox) mapa.fitBounds(bbox.pad(0.12), { animate: false });
     document.querySelectorAll("#ia-log .ia-op").forEach((b, k) => {
       b.classList.toggle("on", k === i);
     });
   }
 
+  // Cada opción se dibuja en su capa. Las de coche/bici/pie son una polilínea; las de
+  // transporte público, una por tramo con el color de su línea, y con el nombre al tocarlas.
+  function capaDeRuta(a) {
+    const g = L.layerGroup();
+    const lineas = [];
+    if (a.tipo === "ruta_tp") {
+      (a.tramos || []).forEach((t) => {
+        if (!t.geom || t.geom.length < 2) return;
+        const l = L.polyline(t.geom.map((c) => [c[1], c[0]]), {
+          color: t.color || a.color || "#3b82f6", weight: 5, opacity: 0.95,
+        }).addTo(g);
+        l.bindTooltip(`${t.linea}: ${t.de} → ${t.a} · ${t.salida}–${t.llega}`, { sticky: true });
+        lineas.push(l);
+      });
+      if (!lineas.length && a.geom && a.geom.length > 1) {
+        lineas.push(L.polyline(a.geom.map((c) => [c[1], c[0]]), {
+          color: a.color || "#3b82f6", weight: 5, opacity: 0.95,
+        }).addTo(g));
+      }
+    } else if (a.geom && a.geom.length > 1) {
+      lineas.push(L.polyline(a.geom.map((c) => [c[1], c[0]]), {
+        color: a.color || "#3b82f6", weight: 5, opacity: 0.95,
+      }).addTo(g));
+    }
+    return { g, lineas };
+  }
+
+  function etiquetaRuta(a) {
+    if (a.tipo === "ruta_tp") {
+      return `<b>${a.salida} → ${a.llega}</b><span>${durTxt(a.min)} · ${(a.lineas || []).join(" + ")}</span>`;
+    }
+    const nombre = { coche: "en coche", bici: "en bici", pie: "andando" };
+    return `<b>${nombre[a.modo] || a.modo}</b><span>${String(a.km).replace(".", ",")} km · ${durTxt(a.min)}</span>`;
+  }
+
   function pintaRutas() {
-    const ops = (coleta || []).slice();
+    const ops = (coleta || []).slice(0, 6);
     coleta = null;
     const v = V();
     const mapa = v ? v.mapa() : null;
-    const L = window.L;
     if (!mapa || !L || !ops.length) return "sin mapa";
     if (window.__iaRuta) { try { window.__iaRuta.remove(); } catch (e) {} }
     const g = L.layerGroup();
-    window.__iaRutaOps = ops.map((a, i) => {
-      const linea = L.polyline(a.geom.map((c) => [c[1], c[0]]), {
-        color: a.color || "#3b82f6", weight: i === 0 ? 6 : 3, opacity: i === 0 ? 0.95 : 0.32,
-      }).addTo(g);
-      return { linea, a };
-    });
+    window.__iaRutaOps = ops.map((a) => {
+      const { g: capa, lineas } = capaDeRuta(a);
+      g.addLayer(capa);
+      return { capa, lineas, a };
+    }).filter((o) => o.lineas.length);
+    if (!window.__iaRutaOps.length) return "sin geometría";
     [[ops[0].origen, "A"], [ops[0].destino, "B"]].forEach(([p, letra]) => {
       if (!p || p.lat == null) return;
       L.marker([p.lat, p.lon], {
@@ -299,23 +339,19 @@
     g.addTo(mapa);
     window.__iaRuta = g;
     window.__iaRutaActiva = 0;
-    mapa.fitBounds(window.__iaRutaOps[0].linea.getBounds().pad(0.12), { animate: false });
 
-    // El selector va en el propio chat, que es donde está mirando: la ficha lateral del mapa
-    // no admite botones y quedaba lejos del hilo.
-    const nombre = { coche: "en coche", bici: "en bici", pie: "andando" };
-    const filas = ops.map((a, i) =>
-      `<button class="ia-op${i === 0 ? " on" : ""}" data-op="${i}">
-         <b>${nombre[a.modo] || a.modo}</b>
-         <span>${String(a.km).replace(".", ",")} km · ${durTxt(a.min)}</span></button>`).join("");
     const b = burbuja(ops[0].origen.nombre + " → " + ops[0].destino.nombre, "el");
     const sel = document.createElement("div");
     sel.className = "ia-ops";
-    sel.innerHTML = filas + `<div class="ia-nota">OSRM, sin tráfico. Toca una para verla.</div>`;
+    sel.innerHTML = window.__iaRutaOps.map((o, i) =>
+      `<button class="ia-op${i === 0 ? " on" : ""}" data-op="${i}">${etiquetaRuta(o.a)}</button>`).join("")
+      + `<div class="ia-nota">Coche y bici: OSRM, sin tráfico. Transporte público: horarios del GTFS del NAP.</div>`;
     b.appendChild(sel);
     sel.querySelectorAll(".ia-op").forEach((btn) => {
       btn.onclick = () => activaRuta(Number(btn.dataset.op));
     });
+
+    activaRuta(0);
     const log = $("#ia-log");
     if (log) log.scrollTop = log.scrollHeight;
     return null;
@@ -363,7 +399,7 @@
       if (a.tipo === "volar") e = volar(a);
       else if (a.tipo === "capa") e = encender(a.id);
       else if (a.tipo === "filtrar") e = filtrar(a);
-      else if (a.tipo === "ruta") e = ruta(a);
+      else if (a.tipo === "ruta" || a.tipo === "ruta_tp") e = ruta(a);
       else if (a.tipo === "ficha") e = ficha(a);
       else if (a.tipo === "marcar") { /* solo para el motor de teselas */ }
       if (e) errores.push(a.tipo + ": " + e);
