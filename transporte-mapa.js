@@ -134,6 +134,7 @@
   #tm-caja small{color:#7d8ca8;font-size:10.5px;line-height:1.4}
   .tm-est{color:#7d8ca8;font-size:11px;margin-top:2px}
   .tm-est.on{color:#22c55e}
+  body.hud-abierto #tm-btn, body.hud-abierto #tm-caja{display:none!important}
   @media(max-width:720px){
     #tm-btn{left:12px;bottom:150px;height:38px;font-size:11.5px}
     #tm-caja{left:8px;right:8px;width:auto;bottom:196px}

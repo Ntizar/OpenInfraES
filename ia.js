@@ -41,6 +41,7 @@
     border:1px solid var(--borde,#22304d);background:transparent;color:var(--suave,#7d8ca8);
     font-size:12px;cursor:pointer;padding:0}
   #ia-x:hover{border-color:#f59e0b;color:#f59e0b}
+  body.hud-abierto #ia-btn,body.hud-abierto #ia-caja{display:none!important}
   .ia-pin-ruta{display:flex;align-items:center;justify-content:center;border-radius:50%;
     background:#f59e0b;color:#0b1020;font:700 13px/1 inherit;border:2px solid #0b1020;
     box-shadow:0 2px 8px rgba(0,0,0,.5)}

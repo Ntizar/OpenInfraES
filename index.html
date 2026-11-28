@@ -266,13 +266,8 @@
     border-bottom-color:var(--borde) !important; width:29px !important; height:29px !important;
     line-height:29px !important; }
   .leaflet-bar a:hover { color:var(--cian) !important; }
-  /* Botón de volver atrás (historial de vistas del mapa) */
-  .btn-volver button { width:30px; height:30px; display:block; padding:0; cursor:pointer;
-    background:var(--panel-solido); color:var(--tinta); border:0; font:16px/1 inherit;
-    border-radius:2px; }
-  .btn-volver button:hover:not(:disabled) { color:var(--cian); }
-  .btn-volver.sin { opacity:.45; }
-  .btn-volver.sin button { cursor:default; }
+  /* Volver: vive en el menú y se apaga cuando no hay historial */
+  #acciones button:disabled { opacity:.4; cursor:default; }
 
   .vivo-fila { display:flex; gap:10px; margin:6px 0 2px; }
   .vivo-fila > span { flex:1; background:rgba(34,211,238,.07); border:1px solid rgba(34,211,238,.18);
@@ -776,6 +771,7 @@
     <button id="btn-estado" title="Estado del sistema eléctrico: en vivo, del día y previsión"><b>⚡</b>Datos</button>
     <button id="btn-transporte" title="Transporte público de España: paradas, líneas y horarios del GTFS del NAP" onclick="location.href='transporte.html'"><b>🚌</b>Transporte</button>
 
+    <button id="btn-volver" title="Volver a la vista anterior del mapa"><b>⟲</b>Volver</button>
     <button id="btn-fuentes" title="Fuentes y fecha de los datos"><b>ⓘ</b>Fuentes</button>
     <button id="btn-enlace" title="Copiar enlace a esta vista"><b>⧉</b>Enlace</button>
     <button id="btn-salud" title="Diagnóstico: capas vacías, fuentes sin declarar y errores"><b>⚕</b>Salud</button>
@@ -1317,23 +1313,12 @@ function volverVista() {
   return "ok";
 }
 
-const BTN_VOLVER = L.control({ position: "topleft" });
-BTN_VOLVER.onAdd = () => {
-  const d = L.DomUtil.create("div", "btn-volver leaflet-bar");
-  d.innerHTML = "<button type=\"button\" title=\"Volver a la vista anterior\" " +
-    "aria-label=\"Volver a la vista anterior\">⟲</button>";
-  L.DomEvent.disableClickPropagation(d);
-  d.querySelector("button").addEventListener("click", () => volverVista());
-  return d;
-};
-BTN_VOLVER.addTo(mapa);
-
+// El botón vive en el menú (☰ → Volver), no flotando sobre el mapa: allí tapaba y no pegaba.
 function pintaVolver() {
-  const b = document.querySelector(".btn-volver button");
+  const b = document.getElementById("btn-volver");
   if (!b) return;
-  const hay = HIST_VISTAS.length >= 2;
-  b.disabled = !hay;
-  b.parentElement.classList.toggle("sin", !hay);
+  b.disabled = HIST_VISTAS.length < 2;
+  b.classList.toggle("sin", HIST_VISTAS.length < 2);
 }
 
 mapa.on("moveend", apuntaVista);
@@ -4950,6 +4935,8 @@ const CAJON_HUD = document.getElementById("hud");
 function plegarHud(abierto) {
   if (!CAJON_HUD) return;
   CAJON_HUD.classList.toggle("abierto", abierto);
+  // Con el cajón abierto, fuera los botones flotantes: tapaban la lista de capas.
+  document.body.classList.toggle("hud-abierto", abierto);
   if (BTN_HUD) {
     BTN_HUD.classList.toggle("abierto", abierto);
     BTN_HUD.textContent = abierto ? "✕" : "☰";
@@ -4964,6 +4951,14 @@ const ASA_HUD = document.getElementById("asa-hud");
 if (ASA_HUD && CAJON_HUD) {
   ASA_HUD.addEventListener("click", () => CAJON_HUD.classList.toggle("alto"));
 }
+const BTN_VOLVER_MENU = document.getElementById("btn-volver");
+if (BTN_VOLVER_MENU) BTN_VOLVER_MENU.addEventListener("click", () => {
+  volverVista();
+  // En móvil el menú tapa el mapa: se cierra al volver para que se vea el resultado.
+  if (matchMedia("(max-width:820px)").matches) plegarHud(false);
+  pintaVolver();
+});
+
 if (BTN_HUD) BTN_HUD.addEventListener("click", () => {
   plegarHud(!(CAJON_HUD && CAJON_HUD.classList.contains("abierto")));
 });
@@ -5799,9 +5794,9 @@ document.getElementById("salud-cuerpo").addEventListener("click", e => {
 setTimeout(estado, 200);
 
 </script>
-<script src="transporte/vendor/pmtiles.js"></script>
-<script src="vendor/protomaps-leaflet.js"></script>
-<script src="ia.js"></script>
-<script src="transporte-mapa.js"></script>
+<script src="transporte/vendor/pmtiles.js?v=2026-11-28b"></script>
+<script src="vendor/protomaps-leaflet.js?v=2026-11-28b"></script>
+<script src="ia.js?v=2026-11-28b"></script>
+<script src="transporte-mapa.js?v=2026-11-28b"></script>
 </body>
 </html>
