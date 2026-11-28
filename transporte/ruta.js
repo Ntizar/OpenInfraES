@@ -49,6 +49,14 @@
     border:1px solid #2a3a5c;background:#131c30;color:#e6edf7;font:12px system-ui}
   #panel-ruta #rt-ir{flex:0 0 auto;padding:5px 10px;border-radius:6px;border:0;background:#f59e0b;
     color:#0b1020;font:700 12px system-ui;cursor:pointer}
+  .rt-modos{display:flex;gap:4px;flex-wrap:wrap;margin:6px 0}
+  .rt-modo{flex:1 1 0;min-width:0;padding:6px 4px;border-radius:7px;background:#131c30;
+    border:1px solid #22304d;color:#c9d5ea;font:600 11.5px system-ui;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.15}
+  .rt-modo small{font:400 9.5px system-ui;color:#7d8ca8}
+  .rt-modo:hover{border-color:var(--c)}
+  .rt-modo.on{background:var(--c);color:#0b1020;border-color:var(--c)}
+  .rt-modo.on small{color:#0b1020;opacity:.75}
   .rt-meta{font:10.5px system-ui;color:#7d8ca8;margin:6px 0 4px}
   .rt-it{padding:7px 8px;margin:5px 0;border-radius:7px;background:#131c30;border:1px solid #22304d;
     cursor:pointer}
@@ -346,6 +354,70 @@
     if (B) marca(B.lat, B.lon, "B", "#ef4444");
   }
 
+  // --- otros modos: motores de rutas por la red viaria (OSRM publico, sin clave ni coste) ---
+  const SERV = {
+    coche: "https://router.project-osrm.org/route/v1/driving/",
+    bici: "https://routing.openstreetmap.de/routed-bike/route/v1/driving/",
+    pie: "https://routing.openstreetmap.de/routed-foot/route/v1/driving/"
+  };
+  const ICONO = { coche: "🚗", bici: "🚲", pie: "🚶", tp: "🚌" };
+  const COLOR = { coche: "#3b82f6", bici: "#22c55e", pie: "#a855f7", tp: "#f59e0b" };
+  const NOMBRE = { coche: "coche", bici: "bici", pie: "andando", tp: "transporte" };
+  let viales = {}, tpMejor = null;
+
+  const durCorto = (m) => m >= 60
+    ? Math.floor(m / 60) + "h" + String(Math.round(m % 60)).padStart(2, "0")
+    : Math.round(m) + " min";
+
+  async function rutasViales(o, d) {
+    const par = o[1] + "," + o[0] + ";" + d[1] + "," + d[0];
+    const out = {};
+    await Promise.all(Object.keys(SERV).map(async (m) => {
+      try {
+        const r = await fetch(SERV[m] + par + "?overview=full&geometries=geojson");
+        if (!r.ok) return;
+        const j = await r.json();
+        const rt = j.routes && j.routes[0];
+        if (rt) out[m] = { min: rt.duration / 60, km: rt.distance / 1000,
+                           geom: rt.geometry.coordinates };
+      } catch (e) { /* ese modo no responde, se omite */ }
+    }));
+    return out;
+  }
+
+  function chips() {
+    const modos = Object.keys(viales).sort((a, b) => viales[a].min - viales[b].min);
+    if (tpMejor) modos.push("tp");
+    const ordenados = modos.sort((a, b) => {
+      const va = a === "tp" ? tpMejor.total : viales[a].min;
+      const vb = b === "tp" ? tpMejor.total : viales[b].min;
+      return va - vb;
+    });
+    return '<div class="rt-modos">' + ordenados.map((m) => {
+      const min = m === "tp" ? tpMejor.total : viales[m].min;
+      const km = m === "tp" ? "" : " · " + viales[m].km.toFixed(1) + " km";
+      return '<button class="rt-modo" data-m="' + m + '" style="--c:' + COLOR[m] + '">' +
+        ICONO[m] + " " + durCorto(min) + "<small>" + km + "</small></button>";
+    }).join("") + "</div>";
+  }
+
+  function dibujarVial(m) {
+    limpiarMarcas();
+    pintarMarcas();
+    const v = viales[m];
+    if (!v) return;
+    map.addSource("ruta-sel", { type: "geojson",
+      data: { type: "Feature", geometry: { type: "LineString", coordinates: v.geom } } });
+    map.addLayer({
+      id: "ruta-sel", type: "line", source: "ruta-sel",
+      paint: { "line-color": COLOR[m], "line-width": 5, "line-opacity": 0.9 },
+      layout: { "line-cap": "round", "line-join": "round" }
+    }, map.getLayer("stops") ? "stops" : undefined);
+    const b = new maplibregl.LngLatBounds();
+    v.geom.forEach((c) => b.extend(c));
+    map.fitBounds(b, { padding: { top: 90, bottom: 90, left: 330, right: 60 }, maxZoom: 15, duration: 700 });
+  }
+
   async function calcular() {
     const res = $("#rt-res");
     if (!A || !B) { res.innerHTML = '<div class="rt-err">Marca el origen y el destino.</div>'; return; }
@@ -353,36 +425,63 @@
     const t0 = hmm($("#rt-hora").value || "08:00");
     const dia = Number($("#rt-dia").value);
 
+    // los tres modos por carretera van en paralelo con el calculo de transporte
+    const promVial = rutasViales([A.lat, A.lon], [B.lat, B.lon]);
+    let ms = 0, nredes = 0;
+    tpMejor = null;
+    resultados = [];
+
     const cids = cidsEnPantalla();
-    if (!cids.length) {
-      res.innerHTML = '<div class="rt-err">Acércate a una ciudad: solo hay redes cargadas a escala de calle.</div>';
+    if (cids.length) {
+      res.innerHTML = '<div class="rt-cargando">Cargando ' + cids.length + ' redes…</div>';
+      redActual = await indices(cids);
+      nredes = redActual.cids.length;
+      const t1 = performance.now();
+      const r = planificar(redActual, [A.lat, A.lon], [B.lat, B.lon], t0, dia);
+      ms = Math.round(performance.now() - t1);
+      const vistas = new Map();
+      for (const x of r) {
+        const firma = x.cadena.map((c) => c.sh).join(">") || "pie";
+        if (!vistas.has(firma) || x.total < vistas.get(firma).total) vistas.set(firma, x);
+      }
+      resultados = [...vistas.values()].sort((a, b) => a.total - b.total).slice(0, 5);
+      resultados.forEach((x) => { x.hora = fmt(x.llega); });
+      if (resultados.length) tpMejor = resultados[0];
+    }
+
+    viales = await promVial;
+    if (!Object.keys(viales).length && !tpMejor) {
+      res.innerHTML = '<div class="rt-err">No he podido calcular ninguna ruta. Prueba otra vez.</div>';
       return;
     }
-    res.innerHTML = '<div class="rt-cargando">Cargando ' + cids.length + ' redes…</div>';
-    redActual = await indices(cids);
-    const t1 = performance.now();
-    const r = planificar(redActual, [A.lat, A.lon], [B.lat, B.lon], t0, dia);
-    const ms = Math.round(performance.now() - t1);
 
-    const vistas = new Map();
-    for (const x of r) {
-      const firma = x.cadena.map((c) => c.sh).join(">") || "pie";
-      if (!vistas.has(firma) || x.total < vistas.get(firma).total) vistas.set(firma, x);
-    }
-    resultados = [...vistas.values()].sort((a, b) => a.total - b.total).slice(0, 5);
-    resultados.forEach((x) => { x.hora = fmt(x.llega); });
+    const meta = (tpMejor ? '<div class="rt-meta">' + nredes + ' redes · ' + ms + ' ms</div>' : "");
+    const lista = tpMejor
+      ? resultados.map((x, i) => tarjeta(x, i)).join("")
+      : '<div class="rt-err">Sin transporte público aquí: el mapa está por encima de la escala de calle.</div>';
+    res.innerHTML = chips() + meta + lista;
 
-    if (!resultados.length) {
-      res.innerHTML = '<div class="rt-err">Sin ruta con las ' + redActual.cids.length +
-        ' redes cargadas. Prueba a acercar o alejar un poco el mapa.</div>';
-      return;
-    }
-    res.innerHTML = '<div class="rt-meta">' + redActual.cids.length + ' redes · ' + ms + ' ms</div>' +
-      resultados.map((x, i) => tarjeta(x, i)).join("");
+    res.querySelectorAll(".rt-modo").forEach((el) => {
+      el.onclick = () => {
+        res.querySelectorAll(".rt-modo").forEach((b) => b.classList.remove("on"));
+        el.classList.add("on");
+        if (el.dataset.m === "tp") dibujar(resultados[0]); else dibujarVial(el.dataset.m);
+      };
+    });
     res.querySelectorAll(".rt-it").forEach((el) => {
       el.onclick = () => dibujar(resultados[Number(el.dataset.i)]);
     });
-    dibujar(resultados[0]);
+
+    if (tpMejor) {
+      const bt = res.querySelector('.rt-modo[data-m="tp"]');
+      if (bt) bt.classList.add("on");
+      dibujar(resultados[0]);
+    } else {
+      const m = Object.keys(viales).sort((a, b) => viales[a].min - viales[b].min)[0];
+      dibujarVial(m);
+      const b = res.querySelector('.rt-modo[data-m="' + m + '"]');
+      if (b) b.classList.add("on");
+    }
   }
 
   function tarjeta(x, i) {
