@@ -133,6 +133,8 @@ function dibujar() {
   map.addSource("stops", { type: "vector", url: "pmtiles://https://ntizar.github.io/gtfs-espana/stops.pmtiles", maxzoom: 14 });
   map.addLayer({
     id: "stops", type: "circle", source: "stops", "source-layer": "stops",
+    // A escala nacional las paradas tapan la red: entran a zoom de ciudad.
+    minzoom: 8.5,
     paint: {
       "circle-radius": ["interpolate", ["linear"], ["get", "n"], 1, 3, 5, 5, 20, 9],
       "circle-color": ["match", ["get", "tipo"], "Autobús", "#f59e0b", "Ferroviario", "#3b82f6",
@@ -146,6 +148,23 @@ function dibujar() {
 // Vuelos del NAP (AECFA). El GTFS aereo no trae geometria: los arcos entre aeropuertos se
 // generan con tiler3.js -> aereo.pmtiles, y se sirven como una capa vectorial mas (un GeoJSON
 // suelto no se pinta de forma fiable si el mapa aun esta cargando).
+// Red de tren, metro y tranvia para zoom nacional: `lines.pmtiles` empieza en z6.
+// Las propiedades se pierden al empaquetar, asi que cada modo va en su propia capa MVT
+// (redbaja_tren, redbaja_metro, redbaja_tram) y el color es fijo por capa.
+map.addSource("redbaja", { type: "vector", url: "pmtiles://https://ntizar.github.io/gtfs-espana/red-baja.pmtiles", maxzoom: 6 });
+[["tren", "#3b82f6", 2.0], ["metro", "#8b5cf6", 1.7], ["tram", "#22c55e", 1.5]].forEach(([m, c, w]) => {
+  map.addLayer({
+    id: "lines-" + m, type: "line", source: "redbaja", "source-layer": "redbaja_" + m,
+    minzoom: 3, maxzoom: 7.6,
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": c,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 3, w * 0.55, 5, w, 7.6, w * 1.6],
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 6.2, 0.95, 7.6, 0.0]
+    }
+  }, map.getLayer("lines") ? "lines" : undefined);
+});
+
 map.addSource("aereo", { type: "vector", url: "pmtiles://https://ntizar.github.io/gtfs-espana/aereo.pmtiles", maxzoom: 7 });
 map.addLayer({ id: "lines-air", type: "line", source: "aereo", "source-layer": "aereo",
   filter: ["==", ["geometry-type"], "LineString"],
@@ -387,6 +406,6 @@ qi.addEventListener("input", () => {
   }
 });
 </script>
-<script src="transporte/ruta.js?v=11"></script>
+<script src="transporte/ruta.js?v=12"></script>
 </body>
 </html>
