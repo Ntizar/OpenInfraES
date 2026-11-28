@@ -439,8 +439,12 @@
     const movil = window.innerWidth <= 720;
     const ancho = panel ? panel.getBoundingClientRect().width : 0;
     map.fitBounds(b, {
+      // En movil el panel flota ENCIMA del mapa: el hueco libre empieza en su borde inferior.
+      // Con un top fijo la ruta se encuadraba debajo del panel y no se veia.
       padding: movil
-        ? { top: 40, bottom: Math.round(window.innerHeight * 0.46), left: 16, right: 16 }
+        ? { top: Math.round((panel && panel.getBoundingClientRect().height > 60
+              ? panel.getBoundingClientRect().bottom : 60)) + 14,
+            bottom: 34, left: 16, right: 16 }
         : { top: 100, bottom: 100, left: Math.min(ancho + 40, window.innerWidth * 0.55), right: 70 },
       maxZoom: maxZoom, duration: 700
     });
