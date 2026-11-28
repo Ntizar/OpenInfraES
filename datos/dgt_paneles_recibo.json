@@ -4,49 +4,49 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 891,
+ "features": 792,
  "paneles_localizados": 2539,
- "descargado": "2026-11-28T12:20:28",
+ "descargado": "2026-11-28T13:14:31",
  "mensajes_top": [
   {
    "texto": "PRECAUCION BANCOS DE NIEBLA",
-   "paneles": 126
+   "paneles": 105
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 84
+   "paneles": 89
   },
   {
    "texto": "@H @F",
-   "paneles": 77
-  },
-  {
-   "texto": "CONTROL MOVIL DE VELOCIDAD",
-   "paneles": 52
+   "paneles": 80
   },
   {
    "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
-   "paneles": 44
+   "paneles": 43
   },
   {
-   "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
-   "paneles": 22
-  },
-  {
-   "texto": "CONTROLES MOVILES DE VELOCIDAD",
-   "paneles": 17
-  },
-  {
-   "texto": "EN MOTO CERO ALCOHOL CERO DROGAS",
-   "paneles": 15
+   "texto": "CONTROL MOVIL DE VELOCIDAD",
+   "paneles": 36
   },
   {
    "texto": "LA CARRETERA NO ES UN CIRCUITO",
-   "paneles": 15
+   "paneles": 20
   },
   {
-   "texto": "A-3 13 A 14 H · CONTROL DE PASO VIGILADO",
-   "paneles": 10
+   "texto": "A-3 KM 275->352 14 A 22 H · CONTROL DE PASO VIGILADO",
+   "paneles": 18
+  },
+  {
+   "texto": "EN MOTO CERO ALCOHOL CERO DROGAS",
+   "paneles": 16
+  },
+  {
+   "texto": "KM 275->352 14 A 22 H · CONTROL DE PASO VIGILADO",
+   "paneles": 9
+  },
+  {
+   "texto": "ENTRADA PROHIBIDA · CARRIL CERRADO",
+   "paneles": 8
   }
  ]
 }
