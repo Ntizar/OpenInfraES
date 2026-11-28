@@ -189,14 +189,45 @@ class Handler(BaseHTTPRequestHandler):
         if not pregunta:
             return self._json({"error": "falta la pregunta"}, 400)
 
+        lat = cuerpo.get("lat")
+        lon = cuerpo.get("lon")
+        lat = float(lat) if lat is not None else None
+        lon = float(lon) if lon is not None else None
+
+        ctx = ""
+        if lat is not None and lon is not None:
+            ctx = "El usuario está en %.5f, %.5f." % (lat, lon)
+
+        # 1) Asistente del visor completo: catálogo de 104 capas, 8.128 municipios, 1.977 cámaras y
+        #    5.797 plantas. Devuelve ACCIONES ejecutables; el modelo solo entra si las reglas
+        #    deterministas no reconocen la frase.
+        try:
+            import chat_openinfra as CI
+        except Exception:
+            CI = None
+        if CI is not None:
+            try:
+                intencion = CI.resolver(pregunta, lat, lon)
+            except Exception as e:
+                return self._json({"error": "el asistente falló: %s" % e}, 500)
+            intencion["pregunta"] = pregunta
+            # Compatibilidad: transporte/chat.js sigue leyendo {accion, lugar, lugares}. El visor
+            # nuevo lee {verbo, texto, acciones}. Se mandan los dos, no se rompe ninguno.
+            mapa_accion = {"volar": "ir", "cerca": "cerca", "capa": "capas", "filtrar": "capas",
+                           "mezclar": "capas", "foto": "ficha"}
+            intencion.setdefault("accion", mapa_accion.get(intencion.get("verbo"), "responder"))
+            if intencion.get("verbo") == "volar":
+                for a in intencion.get("acciones") or []:
+                    if a.get("tipo") == "volar":
+                        intencion.setdefault("lugar", a.get("etiqueta") or "")
+            intencion.setdefault("lugares", [])
+            return self._json(intencion)
+
+        # 2) Respaldo: el chat del visor de transporte (5 verbos sobre el índice de paradas).
         try:
             import chat_transporte as CT
         except Exception as e:
             return self._json({"error": "módulo de chat no disponible: %s" % e}, 503)
-
-        ctx = ""
-        if cuerpo.get("lat") is not None and cuerpo.get("lon") is not None:
-            ctx = "El usuario está en %.5f, %.5f." % (float(cuerpo["lat"]), float(cuerpo["lon"]))
 
         try:
             intencion = CT.interpreta(pregunta, ctx)

@@ -472,3 +472,27 @@ hay que atribuir a OpenStreetMap y compartir igual. El **código** (visor, scrip
 - Base para Prometeo (`Ntizar/Prometeo`): la red de transporte como eje del análisis energético.
 - Punto de partida de mapas propios sin depender de servicios externos.
 - Datos listos para cruzar con generación renovable, nudos de evacuación y planes de desarrollo.
+
+## Asistente (hablar con el visor)
+
+El visor entiende frases en castellano y las convierte en acciones de mapa. La pieza que evita
+alucinaciones es el reparto: **el modelo elige verbo y entidad; el código resuelve y calcula**.
+
+| Pieza | Qué hace |
+|---|---|
+| `scripts/catalogo_ia.py` | Genera `datos/capas.json`: 104 capas con etiqueta, grupo, campos y clave territorial. |
+| `chat_openinfra.py` | Frase → `{verbo, texto, acciones}`. Reglas deterministas primero; modelo solo si no reconoce. |
+| `ia.js` | Cliente del visor: botón 🗣, dictado, ejecuta `volar/capa/filtrar/mezclar/ficha`. |
+| `/api/chat` | Manda los dos formatos: `{verbo,acciones}` (visor) y `{accion,lugar}` (transporte). |
+
+Ejemplos que funcionan sin gastar tokens:
+
+```
+llévame a Bilbao
+km 10 de la A-2, foto              # cámara DGT más cercana + imagen en vivo
+mezcla renta con centrales hidráulicas
+qué hay cerca                      # usa tu posición
+cuánta potencia hidráulica hay     # suma real de plantas.geojson
+```
+
+Enlace directo para probar o compartir: `/?ia=km 10 de la A-2, foto`.

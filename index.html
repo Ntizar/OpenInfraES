@@ -5606,6 +5606,25 @@ window.OpenInfraES = {
       mapa.panBy([600, 0], { animate: true, duration: ms / 1000 });
       requestAnimationFrame(contar);
     });
+  },
+  /* Puente para el asistente (ia.js). `mapa`, `CAPAS`, `datos` y `ponerCapa` son binding de
+     script, no propiedades de window: sin esto, el chat no puede tocar el mapa. */
+  ia: {
+    mapa: () => mapa,
+    capas: () => CAPAS,
+    def: (id) => CAPAS.find(x => x.id === id) || null,
+    encender: (id) => ponerCapa(id, true),
+    apagar: (id) => ponerCapa(id, false),
+    ficha: (html, titulo) => {
+      const caja = document.getElementById("panel-dato-cuerpo");
+      const panel = document.getElementById("panel-dato");
+      if (!caja || !panel) return false;
+      caja.innerHTML = html;
+      panel.hidden = false;
+      const x = document.getElementById("panel-dato-x");
+      if (x) x.title = titulo || "Cerrar";
+      return true;
+    },
   }
 };
 
@@ -5713,5 +5732,6 @@ document.getElementById("salud-cuerpo").addEventListener("click", e => {
 setTimeout(estado, 200);
 
 </script>
+<script src="ia.js"></script>
 </body>
 </html>
