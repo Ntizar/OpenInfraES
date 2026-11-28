@@ -505,8 +505,14 @@ COLOR_LINEA = ["#3b82f6", "#f59e0b", "#8b5cf6", "#22c55e", "#06b6d4", "#ec4899"]
 
 def planificador_tp():
     """Motor RAPTOR perezoso. Devuelve None si no está disponible."""
-    if _TP["motor"] is not None or _TP["error"]:
+    if _TP["motor"] is not None:
         return _TP["motor"]
+    if _TP["error"]:
+        # un fallo puntual (timeout, OOM) no puede dejar el transporte público muerto hasta
+        # reiniciar: se reintenta pasados 60 s.
+        import time as _t
+        if _t.time() - _TP.get("ts", 0) < 60:
+            return None
     import threading
     if _TP["lock"] is None:
         _TP["lock"] = threading.Lock()
@@ -518,13 +524,23 @@ def planificador_tp():
                 import planifica
                 _TP["motor"] = planifica.Planificador()
             except Exception as e:
+                import time as _t
                 _TP["error"] = f"{type(e).__name__}: {e}"
+                _TP["ts"] = _t.time()
+            else:
+                _TP["error"] = ""
     return _TP["motor"]
 
 
 def _hora_ahora():
+    """Hora de Madrid. El proceso puede ir en UTC y el GTFS va en hora local: sin esto los
+    horarios salían una hora antes y no cuadraban con el reloj de nadie."""
     import datetime
-    ahora = datetime.datetime.now()
+    try:
+        from zoneinfo import ZoneInfo
+        ahora = datetime.datetime.now(ZoneInfo("Europe/Madrid"))
+    except Exception:
+        ahora = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
     return ahora.strftime("%H:%M"), ahora.weekday()
 
 
@@ -543,6 +559,7 @@ def rutas_tp(o, d, hora=None, dia=None, tope=3):
         res = p.plan((o["lat"], o["lon"]), (d["lat"], d["lon"]), hora, dia)
     except Exception as e:
         _TP["error"] = f"plan: {type(e).__name__}: {e}"
+        _TP["ts"] = __import__("time").time()
         return []
     # Menos transbordos manda: una opción con 4 líneas y 10 minutos menos no es mejor para
     # nadie. Se queda con las que estén dentro del 25 % del mejor tiempo.
@@ -682,11 +699,12 @@ def accion_ruta(texto):
     } for x in opciones]
     # Transporte público con horarios reales del GTFS (RAPTOR). Se calcula siempre salvo que
     # se haya pedido un modo concreto; en trayectos larguísimos solo si se pide.
-    tp = []
+    tp, tp_bruto = [], []
     if modo == "tp" or not modo:
         km_min = min(x["km"] for x in opciones) if opciones else 0
         if km_min <= 800:
-            tp = rutas_tp(o, d, tope=3)
+            tp_bruto = rutas_tp(o, d, tope=3)
+            tp = list(tp_bruto)
             # Si el transporte público tarda más de 2h30 sobre el coche, no es una opción:
             # se descarta en vez de enseñar un Madrid-Valencia de 7 horas.
             mejor_coche = min([x["min"] for x in opciones if x["modo"] == "coche"], default=None)
@@ -703,8 +721,11 @@ def accion_ruta(texto):
         })
         partes.append(f"transporte público: {x['salida']} → {x['llega']} · "
                       f"{x['min'] // 60}h{x['min'] % 60:02d} con {' + '.join(x['lineas'])}")
-    if not tp and not modo and opciones:
-        partes.append("transporte público: sin combinación razonable (tardaría más de 2h30 sobre el coche)")
+    if not tp:
+        if tp_bruto:
+            partes.append("transporte público: la mejor combinación tarda más de 2h30 sobre el coche")
+        elif modo == "tp" or not modo:
+            partes.append("transporte público: sin servicio a esta hora")
     dato = {"origen": o["nombre"], "destino": d["nombre"],
             "opciones": [{"modo": x["modo"], "km": x["km"], "min": x["min"]} for x in opciones],
             "tp": [{"lineas": x["lineas"], "salida": x["salida"], "llega": x["llega"],
