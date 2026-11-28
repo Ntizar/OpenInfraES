@@ -498,7 +498,12 @@ def accion_encender(texto):
 # ---------------- transporte público ----------------
 # El RAPTOR vive en ~/Projects/gtfs-espana/planifica.py: índices por red + horarios por parada.
 # Cargarlo cuesta ~4 s y 390 MB; se hace una vez y se reutiliza. Un lock evita dos cargas a la vez.
-_GTFS_DIR = os.environ.get("GTFS_DIR", os.path.expanduser("~/Projects/gtfs-espana"))
+# El motor viaja en el repo (tp/planifica.py + tp/indices.tar.gz, 9 MB): producción no tiene
+# el checkout de gtfs-espana. GTFS_DIR permite apuntar a otro sitio si hace falta.
+_AQUI = os.path.dirname(os.path.abspath(__file__))
+_GTFS_DIR = os.environ.get("GTFS_DIR", os.path.join(_AQUI, "tp"))
+if not os.path.isdir(_GTFS_DIR):
+    _GTFS_DIR = os.path.expanduser("~/Projects/gtfs-espana")
 _TP = {"motor": None, "lock": None, "error": ""}
 COLOR_LINEA = ["#3b82f6", "#f59e0b", "#8b5cf6", "#22c55e", "#06b6d4", "#ec4899"]
 
