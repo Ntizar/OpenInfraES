@@ -71,7 +71,10 @@
 <script src="transporte/vendor/maplibre-gl.js"></script>
 <script src="transporte/vendor/pmtiles.js"></script>
 <script>
-window.__errs=[];window.addEventListener("error",e=>window.__errs.push(e.message));window.addEventListener("unhandledrejection",e=>window.__errs.push(String(e.reason)));
+window.__errs=[];
+// `const map` no existe en window (window.map es el div): se expone con nombre propio
+// para que el chat y otros scripts puedan moverlo.
+window.__map = null;;window.addEventListener("error",e=>window.__errs.push(e.message));window.addEventListener("unhandledrejection",e=>window.__errs.push(String(e.reason)));
 const GRUPOS = [
   { id: "bus",   n: "Autobús",   c: "#f59e0b", cods: ["3", "200", "704", "715"] },
   { id: "tren",  n: "Tren",      c: "#3b82f6", cods: ["2"] },
@@ -94,6 +97,7 @@ const map = new maplibregl.Map({
   bounds: [[-9.9, 35.2], [4.7, 44.0]],
   minZoom: 4, maxZoom: 16, maxTileCacheSize: 512, fadeDuration: 0, attributionControl: true
 });
+window.__map = map;
 
 const bench = { t0: performance.now(), frames: 0 };
 (function tick(){ bench.frames++; requestAnimationFrame(tick); })();
@@ -405,7 +409,13 @@ qi.addEventListener("input", () => {
     res.appendChild(d);
   }
 });
+
+// Expuesto para el chat: `const`/`let` de nivel superior no estan en window.
+window.GRUPOS = GRUPOS;
+window.modoOn = modoOn;
+window.aplicar = aplicar;
 </script>
-<script src="transporte/ruta.js?v=12"></script>
+<script src="transporte/ruta.js?v=20"></script>
+<script src="transporte/chat.js?v=6"></script>
 </body>
 </html>

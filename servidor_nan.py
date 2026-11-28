@@ -104,8 +104,9 @@ class Handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         self.send_response(204)
         self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Max-Age", "86400")
         self.end_headers()
 
     def do_GET(self):
@@ -171,6 +172,47 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_HEAD(self):
         self.do_GET()
+
+    def do_POST(self):
+        ruta = self.path.split("?")[0]
+        if ruta != "/api/chat":
+            return self._json({"error": "endpoint desconocido", "ruta": ruta}, 404)
+        try:
+            largo = int(self.headers.get("Content-Length") or 0)
+            if largo > 8192:
+                return self._json({"error": "petición demasiado grande"}, 413)
+            cuerpo = json.loads(self.rfile.read(largo) or b"{}")
+        except Exception as e:
+            return self._json({"error": "json inválido: %s" % e}, 400)
+
+        pregunta = (cuerpo.get("q") or "").strip()[:600]
+        if not pregunta:
+            return self._json({"error": "falta la pregunta"}, 400)
+
+        try:
+            import chat_transporte as CT
+        except Exception as e:
+            return self._json({"error": "módulo de chat no disponible: %s" % e}, 503)
+
+        ctx = ""
+        if cuerpo.get("lat") is not None and cuerpo.get("lon") is not None:
+            ctx = "El usuario está en %.5f, %.5f." % (float(cuerpo["lat"]), float(cuerpo["lon"]))
+
+        try:
+            intencion = CT.interpreta(pregunta, ctx)
+        except RuntimeError as e:
+            return self._json({"error": str(e)}, 503)
+        except Exception as e:
+            return self._json({"error": "el modelo no respondió: %s" % e}, 502)
+
+        lugar = (intencion.get("lugar") or "").strip()
+        if intencion.get("accion") in ("ir", "ruta") and lugar:
+            indice = carga_json("busqueda.json")
+            if indice:
+                intencion["lugares"] = CT.busca_lugar(indice, lugar, 5)
+
+        intencion["pregunta"] = pregunta
+        return self._json(intencion)
 
     # --- API ---
     def api(self, ruta):
