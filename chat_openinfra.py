@@ -729,7 +729,9 @@ def accion_ruta(texto):
     dato = {"origen": o["nombre"], "destino": d["nombre"],
             "opciones": [{"modo": x["modo"], "km": x["km"], "min": x["min"]} for x in opciones],
             "tp": [{"lineas": x["lineas"], "salida": x["salida"], "llega": x["llega"],
-                    "min": x["min"]} for x in tp]}
+                    "min": x["min"]} for x in tp],
+            "tp_motor": _TP["error"][:140] if _TP["error"] else ("ok" if _TP["motor"] else "sin cargar"),
+            "tp_dir": _GTFS_DIR}
     if not opciones:
         partes = []
     if not opciones and not tp:
