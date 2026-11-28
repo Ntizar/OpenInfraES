@@ -50,3 +50,18 @@ curl -s -o /dev/null -D - -H "Range: bytes=0-2047" \
 ```
 
 El build tarda 1-3 minutos; durante ese rato la URL devuelve `no available server` o `503`.
+
+## Variables de entorno (chat)
+
+El chat necesita la clave del modelo. Se pone en NaN CLOUD, en las variables de entorno de la app:
+
+| Variable | Valor |
+|---|---|
+| `NAN_API_KEY` | clave de `api.nan.builders` (la misma que usa Hermes) |
+| `NAN_MODELO` | opcional, por defecto `qwen3.6` |
+| `NAN_API_URL` | opcional, por defecto `https://api.nan.builders/v1/chat/completions` |
+
+Alternativa sin panel: dejar la clave en `/data/nan.key` (volumen persistente, permisos 600).
+
+**La clave nunca va al repo ni al navegador.** El frontend llama a `/api/chat`; es el servidor el
+que habla con el modelo.
