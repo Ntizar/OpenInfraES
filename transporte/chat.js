@@ -143,6 +143,17 @@
     }
   }
 
+  // Al ejecutar algo sobre el mapa, el chat se recoge: si se queda abierto tapa justo la ruta que
+  // acaba de calcular. El historial sigue ahí para volver a abrirlo.
+  function recoger() {
+    if (window.innerWidth > 720) return;   // en escritorio convive bien
+    setTimeout(() => {
+      const c = document.getElementById("oi-chat");
+      if (c) c.classList.remove("on");
+      abierto = false;
+    }, 900);
+  }
+
   function ejecutar(j) {
     const primeros = j.lugares || [];
     if (j.accion === "ir" || j.accion === "ruta") {
@@ -153,6 +164,7 @@
       const L = primeros[0];
       if (j.accion === "ir") {
         ir(L.lat, L.lon, L.tipo === "Aéreo" ? 12 : 15, L.nombre);
+        recoger();
         add(j.texto ? j.texto + "\n" + L.nombre : "Te llevo a " + L.nombre + ".", "el");
         if (primeros.length > 1) {
           const otros = primeros.slice(1, 4).map((x) => x.nombre).join(" · ");
@@ -172,6 +184,7 @@
         }
         add("Ruta hasta " + L.nombre + (posicion ? " desde tu ubicación." : "."), "el");
         ir(L.lat, L.lon, 12);
+        recoger();
         if (!posicion) aviso("pulsa 📍 para usar tu ubicación como origen");
       } else {
         ir(L.lat, L.lon, 13, L.nombre);

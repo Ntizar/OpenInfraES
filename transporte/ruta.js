@@ -441,7 +441,7 @@
     map.fitBounds(b, {
       padding: movil
         ? { top: 40, bottom: Math.round(window.innerHeight * 0.46), left: 16, right: 16 }
-        : { top: 80, bottom: 80, left: Math.min(ancho + 30, window.innerWidth * 0.55), right: 40 },
+        : { top: 100, bottom: 100, left: Math.min(ancho + 40, window.innerWidth * 0.55), right: 70 },
       maxZoom: maxZoom, duration: 700
     });
   }
