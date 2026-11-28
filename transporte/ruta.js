@@ -87,7 +87,7 @@
   // (el C1 que ademas va al T4) estan en variantes/<cid>.json. Si no existe, se sigue con una.
   async function variantesDe(cid) {
     try {
-      const r = await fetch("variantes/" + cid + ".json");
+      const r = await fetch("https://ntizar.github.io/gtfs-espana/variantes/" + cid + ".json");
       if (!r.ok) return null;
       return await r.json();
     } catch (e) { return null; }
