@@ -519,6 +519,32 @@ def _lugar(texto):
     return None
 
 
+def _dur(minutos):
+    minutos = float(minutos)
+    if minutos >= 60:
+        h, m = int(minutos // 60), int(round(minutos % 60))
+        return f"{h}h{m:02d}"
+    return f"{int(round(minutos))} min"
+
+
+def _pide_ruta(modo, o, d):
+    """Una ruta de OSRM con la geometría completa. None si no hay o falla."""
+    url = (SERV_RUTA.get(modo, SERV_RUTA["coche"]) + "%.5f,%.5f;%.5f,%.5f"
+           % (o["lon"], o["lat"], d["lon"], d["lat"]) + "?overview=full&geometries=geojson")
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0",
+                                                   "Referer": "https://openinfraes-ntizar-ntizar.apps.nan.builders/"})
+        with urllib.request.urlopen(req, timeout=22) as r:
+            j = json.load(r)
+        rt = (j.get("routes") or [None])[0]
+    except Exception:
+        return None
+    if not rt:
+        return None
+    return {"modo": modo, "geom": rt["geometry"]["coordinates"],
+            "km": round(rt["distance"] / 1000.0, 1), "min": round(rt["duration"] / 60.0)}
+
+
 def accion_ruta(texto):
     """«ruta de Madrid a Santander en coche» -> geometría real por carretera."""
     t = _norm(texto)
@@ -542,34 +568,33 @@ def accion_ruta(texto):
         falta = "origen" if not o else "destino"
         return {"verbo": "ruta", "texto": f"No encuentro el {falta} «{(o_txt if not o else d_txt)}».",
                 "acciones": []}
-    modo = modo or "coche"
-    url = (SERV_RUTA[modo] + "%.5f,%.5f;%.5f,%.5f" % (o["lon"], o["lat"], d["lon"], d["lat"])
-           + "?overview=full&geometries=geojson")
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0",
-                                                   "Referer": "https://openinfraes-ntizar-ntizar.apps.nan.builders/"})
-        with urllib.request.urlopen(req, timeout=25) as r:
-            j = json.load(r)
-        rt = (j.get("routes") or [None])[0]
-    except Exception as e:
-        return {"verbo": "ruta", "texto": f"El motor de rutas no responde ahora mismo ({type(e).__name__}).",
-                "acciones": []}
-    if not rt:
-        return {"verbo": "ruta", "texto": "No hay ruta por carretera entre esos dos puntos.", "acciones": []}
-    km, minutos = rt["distance"] / 1000.0, rt["duration"] / 60.0
-    dur = (f"{int(minutos // 60)}h{int(round(minutos % 60)):02d}" if minutos >= 60
-           else f"{int(round(minutos))} min")
-    color = {"coche": "#3b82f6", "bici": "#22c55e", "pie": "#a855f7"}[modo]
-    etiqueta = {"coche": "en coche", "bici": "en bici", "pie": "andando"}[modo]
+    # Sin modo en la frase se piden los tres: coche, bici y a pie. Es lo que se espera de
+    # «cómo voy de Madrid a Toledo»: las opciones, no una elegida por mí.
+    pedir = [modo] if modo else ["coche", "bici", "pie"]
+    opciones = []
+    for m in pedir:
+        r = _pide_ruta(m, o, d)
+        if r:
+            opciones.append(r)
+    if not opciones:
+        return {"verbo": "ruta", "texto": "El motor de rutas no responde ahora mismo.", "acciones": []}
+
+    COLOR_RUTA = {"coche": "#3b82f6", "bici": "#22c55e", "pie": "#a855f7"}
+    ETIQ_RUTA = {"coche": "en coche", "bici": "en bici", "pie": "andando"}
+    opciones.sort(key=lambda x: (x["min"], x["km"]))
+    partes = [f"{ETIQ_RUTA[x['modo']]}: {x['km']:,.0f} km · {_dur(x['min'])}".replace(",", ".")
+              for x in opciones]
+    acciones = [{
+        "tipo": "ruta", "modo": x["modo"], "geom": x["geom"], "color": COLOR_RUTA[x["modo"]],
+        "origen": {**o, "letra": "A"}, "destino": {**d, "letra": "B"},
+        "titulo": f"{o['nombre']} → {d['nombre']} {ETIQ_RUTA[x['modo']]}",
+        "km": x["km"], "min": x["min"],
+    } for x in opciones]
     return {"verbo": "ruta",
-            "texto": f"{o['nombre']} → {d['nombre']} {etiqueta}: {km:,.0f} km · {dur}.".replace(",", "."),
-            "acciones": [
-                {"tipo": "ruta", "geom": rt["geometry"]["coordinates"], "color": color,
-                 "origen": {**o, "letra": "A"}, "destino": {**d, "letra": "B"},
-                 "titulo": f"{o['nombre']} → {d['nombre']}", "km": round(km, 1), "min": round(minutos)},
-            ],
-            "dato": {"modo": modo, "km": round(km, 1), "min": round(minutos),
-                     "origen": o["nombre"], "destino": d["nombre"]}}
+            "texto": f"{o['nombre']} → {d['nombre']}. " + " · ".join(partes) + ".",
+            "acciones": acciones,
+            "dato": {"origen": o["nombre"], "destino": d["nombre"],
+                     "opciones": [{"modo": x["modo"], "km": x["km"], "min": x["min"]} for x in opciones]}}
 
 
 def accion_cerca(lat, lon):
