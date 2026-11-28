@@ -50,7 +50,7 @@
   #ia-log .ia-op.on b{color:#7dd3fc}
   #ia-log .ia-nota{font-size:10.5px;color:#5f6d86;margin-top:7px;line-height:1.35}
   body.hud-abierto #ia-btn,body.hud-abierto #ia-caja{display:none!important}
-  @media(max-width:720px){ #ia-q{font:16px inherit} }
+  @media(max-width:720px){ #ia-q{font-size:16px !important} }
   .ia-pin-ruta{display:flex;align-items:center;justify-content:center;border-radius:50%;
     background:#f59e0b;color:#0b1020;font:700 13px/1 inherit;border:2px solid #0b1020;
     box-shadow:0 2px 8px rgba(0,0,0,.5)}
