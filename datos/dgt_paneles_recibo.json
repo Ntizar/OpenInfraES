@@ -4,9 +4,9 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 633,
+ "features": 582,
  "paneles_localizados": 2539,
- "descargado": "2026-11-28T02:20:35",
+ "descargado": "2026-11-28T03:18:15",
  "mensajes_top": [
   {
    "texto": "@H @F",
@@ -14,7 +14,7 @@
   },
   {
    "texto": "PRECAUCION BANCOS DE NIEBLA",
-   "paneles": 85
+   "paneles": 86
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
@@ -22,15 +22,7 @@
   },
   {
    "texto": "MAQUINAS EN TRATAMIENTO INVERNAL",
-   "paneles": 45
-  },
-  {
-   "texto": "LA CARRETERA NO ES UN CIRCUITO",
-   "paneles": 23
-  },
-  {
-   "texto": "EN MOTO CERO ALCOHOL CERO DROGAS",
-   "paneles": 21
+   "paneles": 35
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
@@ -46,6 +38,14 @@
   },
   {
    "texto": "EN N-232 4 EJES O MAS",
+   "paneles": 6
+  },
+  {
+   "texto": "4 EJES O MAS",
+   "paneles": 6
+  },
+  {
+   "texto": "MAQUINAS EN TRATAMIENTO INVERNAL · PRECAUCION BANCOS DE NIEBLA",
    "paneles": 6
   }
  ]
