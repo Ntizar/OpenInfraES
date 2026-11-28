@@ -1,0 +1,13 @@
+.git
+.gitignore
+.github
+__pycache__
+*.py[cod]
+*.log
+*.tmp
+.venv
+venv
+env
+docs/.cache
+datos/_*.png
+datos/_*.svg
