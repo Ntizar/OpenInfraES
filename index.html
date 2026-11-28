@@ -266,6 +266,13 @@
     border-bottom-color:var(--borde) !important; width:29px !important; height:29px !important;
     line-height:29px !important; }
   .leaflet-bar a:hover { color:var(--cian) !important; }
+  /* Botón de volver atrás (historial de vistas del mapa) */
+  .btn-volver button { width:30px; height:30px; display:block; padding:0; cursor:pointer;
+    background:var(--panel-solido); color:var(--tinta); border:0; font:16px/1 inherit;
+    border-radius:2px; }
+  .btn-volver button:hover:not(:disabled) { color:var(--cian); }
+  .btn-volver.sin { opacity:.45; }
+  .btn-volver.sin button { cursor:default; }
 
   .vivo-fila { display:flex; gap:10px; margin:6px 0 2px; }
   .vivo-fila > span { flex:1; background:rgba(34,211,238,.07); border:1px solid rgba(34,211,238,.18);
@@ -1273,6 +1280,64 @@ function activarZoomRueda(map) {
 }
 const movimientoReducido = matchMedia("(prefers-reduced-motion: reduce)");
 activarZoomRueda(mapa);
+
+/* ---------- Volver atrás ----------
+   Tocar el mapa con el dedo hacía zoom (el doble toque de Leaflet se dispara con dos toques
+   seguidos en iOS) y no había forma de deshacerlo: el zoom por JS no toca la URL, así que el
+   botón «atrás» del navegador no vuelve. Se apaga el doble toque en táctil y se guarda un
+   historial de vistas (20 pasos) con su botón. */
+if (L.Browser.touch) mapa.doubleClickZoom.disable();
+
+const HIST_VISTAS = [];
+let histPausa = 0;
+
+function vistaActual() {
+  const c = mapa.getCenter();
+  return { lat: +c.lat.toFixed(5), lng: +c.lng.toFixed(5), z: +mapa.getZoom().toFixed(2) };
+}
+
+function apuntaVista() {
+  if (histPausa) return;
+  const v = vistaActual();
+  const u = HIST_VISTAS[HIST_VISTAS.length - 1];
+  if (u && u.lat === v.lat && u.lng === v.lng && u.z === v.z) return;
+  HIST_VISTAS.push(v);
+  if (HIST_VISTAS.length > 20) HIST_VISTAS.shift();
+  pintaVolver();
+}
+
+function volverVista() {
+  if (HIST_VISTAS.length < 2) return "sin historial";
+  HIST_VISTAS.pop();
+  const v = HIST_VISTAS[HIST_VISTAS.length - 1];
+  histPausa++;
+  mapa.setView([v.lat, v.lng], v.z, { animate: false });
+  setTimeout(() => { histPausa--; }, 60);
+  pintaVolver();
+  return "ok";
+}
+
+const BTN_VOLVER = L.control({ position: "topleft" });
+BTN_VOLVER.onAdd = () => {
+  const d = L.DomUtil.create("div", "btn-volver leaflet-bar");
+  d.innerHTML = "<button type=\"button\" title=\"Volver a la vista anterior\" " +
+    "aria-label=\"Volver a la vista anterior\">⟲</button>";
+  L.DomEvent.disableClickPropagation(d);
+  d.querySelector("button").addEventListener("click", () => volverVista());
+  return d;
+};
+BTN_VOLVER.addTo(mapa);
+
+function pintaVolver() {
+  const b = document.querySelector(".btn-volver button");
+  if (!b) return;
+  const hay = HIST_VISTAS.length >= 2;
+  b.disabled = !hay;
+  b.parentElement.classList.toggle("sin", !hay);
+}
+
+mapa.on("moveend", apuntaVista);
+apuntaVista();
 
 // Conservar el margen de selección de 17 px que ofrecía Canvas en trazos finos.
 mapa.on("click", e => {
@@ -5549,6 +5614,8 @@ window.OpenInfraES = {
     lentas: CAPAS.filter(c => c.__ms > 40).sort((a, b) => b.__ms - a.__ms)
       .slice(0, 6).map(c => c.id + " " + Math.round(c.__ms) + "ms")
   }),
+  volver: () => volverVista(),
+  historial: () => HIST_VISTAS.slice(),
   abrir(capaId, i = 0, zoom = 11) {
     if (!capas[capaId]) return "sin capa";
     const chk = document.querySelector('[data-capa="' + capaId + '"]');
