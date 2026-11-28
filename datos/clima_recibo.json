@@ -3,19 +3,19 @@
  "editor": "Open-Meteo (modelos ICON del DWD y GFS de la NOAA)",
  "url": "https://open-meteo.com/",
  "licencia": "CC BY 4.0",
- "descargado": "2026-11-28T13:14:34Z",
- "actualizado": "2026-11-28T14:00",
+ "descargado": "2026-11-28T13:40:32Z",
+ "actualizado": "2026-11-28T14:30",
  "features": 52,
  "barbas": 242,
  "provincias": 52,
- "temperatura_media": 13.4,
+ "temperatura_media": 13.6,
  "mas_caliente": {
   "provincia": "Las Palmas",
-  "temperatura": 20.5
+  "temperatura": 20.2
  },
  "mas_frio": {
   "provincia": "Santa Cruz de Tenerife",
-  "temperatura": 7.5
+  "temperatura": 7.6
  },
  "nota": "Modelo interpolado, no estación oficial. Los avisos oficiales son la capa aemet-zonas.",
  "metodo": "una llamada por lotes a /v1/forecast (current) y rejilla IDW vectorial propia"
