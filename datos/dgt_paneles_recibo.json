@@ -4,49 +4,49 @@
  "url": "https://nap.dgt.es/datex2/v3/dgt/VmsPublication/datex2_v37.xml",
  "url_localizaciones": "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/vms_datex2_v37.xml",
  "licencia": "reutilización con atribución",
- "features": 746,
+ "features": 856,
  "paneles_localizados": 2539,
- "descargado": "2026-11-28T06:23:09",
+ "descargado": "2026-11-28T07:16:03",
  "mensajes_top": [
   {
    "texto": "PRECAUCION BANCOS DE NIEBLA",
-   "paneles": 185
+   "paneles": 217
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR",
-   "paneles": 85
+   "paneles": 86
   },
   {
    "texto": "@H @F",
-   "paneles": 85
+   "paneles": 73
   },
   {
    "texto": "CONTROL MOVIL DE VELOCIDAD",
-   "paneles": 47
+   "paneles": 63
+  },
+  {
+   "texto": "CONTROL MOVIL DE VELOCIDAD · CONTROL MOBIL DE VELOCIDADE",
+   "paneles": 28
+  },
+  {
+   "texto": "CON LLUVIA MODERE LA VELOCIDAD · CON CHOIVA MODERE A VELOCIDADE",
+   "paneles": 23
   },
   {
    "texto": "EN MOTO CERO ALCOHOL CERO DROGAS",
-   "paneles": 19
-  },
-  {
-   "texto": "A-3 KM 352->319 07->14 H · CONTROL DE PASO VIGILADO",
    "paneles": 18
   },
   {
    "texto": "LA CARRETERA NO ES UN CIRCUITO",
-   "paneles": 17
+   "paneles": 15
+  },
+  {
+   "texto": "A-3 KM 352->319 07->14 H · CONTROL DE PASO VIGILADO",
+   "paneles": 15
   },
   {
    "texto": "VELOCIDAD CONTROLADA POR RADAR · VELOCITAT CONTROLADA PER RADAR",
-   "paneles": 11
-  },
-  {
-   "texto": "CONTROL DE VELOCIDAD POR RADAR · CONTROL DE VELOCIDADE POR RADAR",
-   "paneles": 8
-  },
-  {
-   "texto": "MAQUINAS EN TRATAMIENTO INVERNAL",
-   "paneles": 6
+   "paneles": 9
   }
  ]
 }
