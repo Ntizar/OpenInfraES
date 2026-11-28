@@ -37,6 +37,10 @@
   #ia-cab .est{margin-left:auto;font:400 10.5px inherit;color:var(--suave,#7d8ca8)}
   #ia-cab .est.ok{color:#22c55e}
   #ia-cab .est.mal{color:#ef4444}
+  #ia-x{margin-left:6px;flex:0 0 auto;width:22px;height:22px;line-height:1;border-radius:6px;
+    border:1px solid var(--borde,#22304d);background:transparent;color:var(--suave,#7d8ca8);
+    font-size:12px;cursor:pointer;padding:0}
+  #ia-x:hover{border-color:#f59e0b;color:#f59e0b}
   #ia-log{flex:1;overflow:auto;padding:10px 12px;display:flex;flex-direction:column;gap:7px}
   #ia-log .m{max-width:90%;padding:7px 10px;border-radius:11px;font:12.5px/1.45 inherit;
     white-space:pre-wrap;word-break:break-word}
@@ -56,10 +60,6 @@
     color:var(--tinta,#c9d5ea);font-size:15px;width:38px;cursor:pointer;flex:0 0 auto}
   #ia-pie button:hover{border-color:#f59e0b;color:#f59e0b}
   #ia-pie button.on{background:#f59e0b;color:#0b1020}
-  #ia-sug{display:flex;flex-wrap:wrap;gap:5px;padding:0 10px 8px}
-  #ia-sug a{font:11px inherit;padding:4px 8px;border:1px solid var(--borde,#22304d);border-radius:999px;
-    color:var(--suave,#93a3c4);cursor:pointer;text-decoration:none}
-  #ia-sug a:hover{border-color:#f59e0b;color:#f59e0b}
   @media(max-width:720px){
     #ia-caja{right:8px;left:8px;width:auto;bottom:150px;max-height:62vh}
     #ia-btn{right:12px;bottom:150px;width:48px;height:48px}
@@ -85,14 +85,11 @@
     const caja = document.createElement("div");
     caja.id = "ia-caja";
     caja.innerHTML = `
-      <div id="ia-cab">Asistente · OpenInfraES <span class="est" id="ia-est">comprobando…</span></div>
-      <div id="ia-log"></div>
-      <div id="ia-sug">
-        <a data-q="llévame a Bilbao">llévame a Bilbao</a>
-        <a data-q="km 10 de la A-2, foto">km 10 de la A-2</a>
-        <a data-q="mezcla renta con centrales hidráulicas">renta × hidráulica</a>
-        <a data-q="qué capas tienes">qué capas tienes</a>
+      <div id="ia-cab">Asistente · OpenInfraES
+        <span class="est" id="ia-est">comprobando…</span>
+        <button id="ia-x" type="button" title="Minimizar" aria-label="Minimizar">✕</button>
       </div>
+      <div id="ia-log"></div>
       <div id="ia-pie">
         <input id="ia-q" type="text" placeholder="Pregunta o pide algo…" autocomplete="off">
         <button id="ia-mic" type="button" title="Hablar">🎙</button>
@@ -104,10 +101,8 @@
     $("#ia-q").addEventListener("keydown", (e) => {
       if (e.key === "Enter") { e.preventDefault(); envia(e.target.value); }
     });
-    caja.querySelectorAll("#ia-sug a").forEach((a) => {
-      a.onclick = () => envia(a.dataset.q);
-    });
     $("#ia-mic").onclick = alternaVoz;
+    $("#ia-x").onclick = () => alterna(false);
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
