@@ -1288,13 +1288,13 @@
    "licencia": "reutilización con atribución",
    "actualizado": null,
    "descargado": "2026-11-28",
-   "features": 630,
+   "features": 628,
    "url": "https://nap.dgt.es",
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Paneles DGT DATEX2 v3.7",
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 135226
+   "bytes": 135110
   },
   "dgt-incidencias": {
    "capa": "dgt-incidencias",
@@ -1304,13 +1304,13 @@
    "licencia": "reutilización con atribución",
    "actualizado": null,
    "descargado": "2026-11-28",
-   "features": 678,
+   "features": 657,
    "url": "https://nap.dgt.es",
    "metodo": "DATEX II v3 (XML) del NAP de Tráfico · Incidencias DGT DATEX2 v3.7",
    "origen": "api",
    "origen_txt": "API",
    "origen_detalle": "Servicio web del organismo",
-   "bytes": 296343
+   "bytes": 288498
   },
   "dgt-electrolineras": {
    "capa": "dgt-electrolineras",
@@ -1351,7 +1351,7 @@
    "editor": "AEMET · Meteoalerta",
    "licencia": "© AEMET, citar como autora",
    "actualizado": "20261127",
-   "descargado": "2026-11-28T00:34:36",
+   "descargado": "2026-11-28T01:17:16",
    "features": 6,
    "url": "https://www.aemet.es/es/eltiempo/prediccion/avisos",
    "metodo": "tar.gz de GeoJSON de la pagina de avisos (sin clave)",
