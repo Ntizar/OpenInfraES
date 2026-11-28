@@ -148,11 +148,11 @@ function dibujar() {
 // suelto no se pinta de forma fiable si el mapa aun esta cargando).
 map.addSource("aereo", { type: "vector", url: "pmtiles://https://ntizar.github.io/gtfs-espana/aereo.pmtiles", maxzoom: 7 });
 map.addLayer({ id: "lines-air", type: "line", source: "aereo", "source-layer": "aereo",
-  filter: ["==", ["geometry-type"], "LineString"],
+  filter: ["==", ["get", "g"], "l"],
   paint: { "line-color": "#ec4899", "line-width": 1.4, "line-opacity": 0.7,
            "line-dasharray": [3, 2] } });
 map.addLayer({ id: "aeropuertos", type: "symbol", source: "aereo", "source-layer": "aereo",
-  filter: ["==", ["geometry-type"], "Point"],
+  filter: ["==", ["get", "g"], "p"],
   layout: { "text-field": ["get", "de"], "text-size": 10, "text-font": ["Noto Sans Regular"],
                "text-allow-overlap": false },
   paint: { "text-color": "#ec4899", "text-halo-color": "#0b1020", "text-halo-width": 1.4 } });
