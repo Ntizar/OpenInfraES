@@ -41,6 +41,9 @@
     border:1px solid var(--borde,#22304d);background:transparent;color:var(--suave,#7d8ca8);
     font-size:12px;cursor:pointer;padding:0}
   #ia-x:hover{border-color:#f59e0b;color:#f59e0b}
+  .ia-pin-ruta{display:flex;align-items:center;justify-content:center;border-radius:50%;
+    background:#f59e0b;color:#0b1020;font:700 13px/1 inherit;border:2px solid #0b1020;
+    box-shadow:0 2px 8px rgba(0,0,0,.5)}
   #ia-log{flex:1;overflow:auto;padding:10px 12px;display:flex;flex-direction:column;gap:7px}
   #ia-log .m{max-width:90%;padding:7px 10px;border-radius:11px;font:12.5px/1.45 inherit;
     white-space:pre-wrap;word-break:break-word}
@@ -169,6 +172,14 @@
   }
 
   function encender(id) {
+    // Las capas del GTFS (207k paradas, 32k líneas) no viven en CAPAS: las pinta
+    // transporte-mapa.js con teselas. Se piden por su id propio.
+    if (id === "gtfs-paradas" || id === "gtfs-lineas") {
+      const t = window.OpenInfraES && window.OpenInfraES.transporte;
+      if (!t) return "sin motor de transporte";
+      const que = id === "gtfs-lineas" ? "lineas" : "paradas";
+      return t.poner(que, true) ? null : "no se pudo encender " + id;
+    }
     const v = V();
     if (v) return v.encender(id) === false ? "no se pudo encender " + id : null;
     return "sin puente al mapa";
@@ -215,6 +226,36 @@
     return null;
   }
 
+  function ruta(a) {
+    const v = V();
+    const mapa = v ? v.mapa() : null;
+    const L = window.L;
+    if (!mapa || !L || !a.geom) return "sin mapa o sin geometría";
+    if (window.__iaRuta) { try { window.__iaRuta.remove(); } catch (e) {} }
+    const g = L.layerGroup();
+    const linea = L.polyline(a.geom.map((c) => [c[1], c[0]]), {
+      color: a.color || "#3b82f6", weight: 5, opacity: 0.92,
+    });
+    g.addLayer(linea);
+    [[a.origen, "A"], [a.destino, "B"]].forEach(([p, letra]) => {
+      if (!p || p.lat == null) return;
+      L.marker([p.lat, p.lon], {
+        icon: L.divIcon({ className: "ia-pin-ruta", html: letra, iconSize: [26, 26], iconAnchor: [13, 13] }),
+        zIndexOffset: 900,
+      }).bindTooltip(p.nombre, { direction: "top" }).addTo(g);
+    });
+    g.addTo(mapa);
+    window.__iaRuta = g;
+    mapa.fitBounds(linea.getBounds().pad(0.12), { animate: false });
+    if (v) {
+      const h = a.min >= 60 ? (a.min / 60).toFixed(1) + " h" : Math.round(a.min) + " min";
+      v.ficha(`<b>${a.titulo}</b><br><span style="color:#93a3c4">${a.km} km · ${h}</span>
+        <div style="font-size:11px;color:#7d8ca8;margin-top:6px">
+        ${a.origen ? a.origen.nombre : ""} → ${a.destino ? a.destino.nombre : ""}</div>`, a.titulo);
+    }
+    return null;
+  }
+
   function ficha(a) {
     const v = V();
     if (!v) return "sin puente al mapa";
@@ -257,6 +298,7 @@
       if (a.tipo === "volar") e = volar(a);
       else if (a.tipo === "capa") e = encender(a.id);
       else if (a.tipo === "filtrar") e = filtrar(a);
+      else if (a.tipo === "ruta") e = ruta(a);
       else if (a.tipo === "ficha") e = ficha(a);
       else if (a.tipo === "marcar") { /* solo para el motor de teselas */ }
       if (e) errores.push(a.tipo + ": " + e);

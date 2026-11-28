@@ -32,6 +32,7 @@ import math
 import os
 import re
 import sys
+import unicodedata
 import urllib.request
 
 RAIZ = os.path.dirname(os.path.abspath(__file__))
@@ -69,6 +70,16 @@ TECNOLOGIAS = {
     "hidro": ("hydro", "pumped_hydro"), "bombeo": ("pumped_hydro",),
     "gas": ("ccgt", "fuel_gas"), "ciclo": ("ccgt",), "carbon": ("coal",),
     "cogeneracion": ("cogeneration",), "biomasa": ("cogeneration",),
+}
+
+# Topónimos bilingües: el municipio se llama en una lengua y el usuario lo escribe en la otra.
+# Sin esta tabla, «castellón» lleva a «Castellonet de la Conquesta» (1.000 habitantes).
+ALIAS = {
+    "castellon": "castello de la plana", "castello": "castello de la plana",
+    "la coruna": "coruna a", "a coruna": "coruna a", "coruna": "coruna a",
+    "orense": "ourense", "gerona": "girona", "lerida": "lleida",
+    "san sebastian": "donostia", "donosti": "donostia",
+    "palma de mallorca": "palma", "elche": "elx", "santander": "santander",
 }
 
 _CACHE: dict[str, object] = {}
@@ -179,9 +190,11 @@ def renta() -> dict[str, dict]:
 
 # ------------------------------------------------------------------ utilidades
 def _norm(s) -> str:
-    s = (s or "").lower()
-    for a, b in (("á", "a"), ("é", "e"), ("í", "i"), ("ó", "o"), ("ú", "u"), ("ü", "u"), ("ñ", "n")):
-        s = s.replace(a, b)
+    """Sin acentos de ningún alfabeto: «València» y «Valencia» son el mismo municipio.
+    Con la tabla manual se colaba la à catalana y el asistente no encontraba Valencia ni Málaga."""
+    s = unicodedata.normalize("NFD", (s or "").lower())
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    s = s.replace("ñ", "n").replace("ç", "c")
     return re.sub(r"[^a-z0-9 ]", " ", s).strip()
 
 
@@ -223,6 +236,7 @@ def _dist_km(lat1, lon1, lat2, lon2):
 
 def buscar_municipio(texto, limite=3):
     obj = _consulta(texto)
+    obj = ALIAS.get(obj, obj)
     if not obj:
         return []
     palabras = [p for p in obj.split() if len(p) > 2] or obj.split()
@@ -233,8 +247,12 @@ def buscar_municipio(texto, limite=3):
             continue
         if n == obj:
             puntos = 1000
+        elif obj in n.split():
+            # «Valencia» es palabra completa en «Valencia/València»; «Valencia de Alcántara» solo
+            # empieza por ella. Sin esto, el asistente rutaba a un pueblo de 5.000 habitantes.
+            puntos = 700
         elif n.startswith(obj):
-            puntos = 300
+            puntos = 400
         elif all(p in n for p in palabras):
             puntos = 100 + 20 * len(palabras)
         else:
@@ -410,7 +428,48 @@ def accion_filtrar(texto):
                      "mw": round(sum(p["mw"] for p in planta_tech), 1)}}
 
 
+# Capas del GTFS que no están en `const CAPAS` porque se pintan con teselas (transporte-mapa.js).
+GTFS = {
+    "gtfs-paradas": ("parada", "paradas", "autobus", "bus", "marquesina", "andén", "anden"),
+    "gtfs-lineas": ("linea", "lineas", "ruta", "rutas", "recorrido", "red de transporte"),
+}
+
+
+def capa_gtfs(texto):
+    t = _norm(texto)
+    mejor, puntos = None, 0
+    for cid, palabras in GTFS.items():
+        p = sum(2 if w in t.split() else (1 if w in t else 0) for w in palabras)
+        if p > puntos:
+            mejor, puntos = cid, p
+    return mejor if puntos >= 1 else None
+
+
+def lugar_exacto(texto):
+    """Coincidencia de palabra completa. «camaras» no es Camarasa; «madrid» sí es Madrid."""
+    obj = _consulta(texto)
+    if not obj:
+        return None
+    for m in municipios():
+        if obj == m["norm"] or obj in m["norm"].split():
+            return m
+    for e in estaciones():
+        if obj == e["norm"] or obj in e["norm"].split():
+            return e
+    return None
+
+
 def accion_encender(texto):
+    # «llévame a Madrid» no enciende la capa «Madrid»: si el texto es un lugar de verdad y la
+    # frase no pide explícitamente encender, esto no es una orden de capa.
+    if not re.search(r"\b(enciende|activa|apaga|quita)\b", _norm(texto)) and lugar_exacto(texto):
+        return None
+    if re.search(r"\b(parada|paradas|bus|autobus|autobuses|linea|lineas)\b", _norm(texto)):
+        g = capa_gtfs(texto)
+        if g:
+            etiqueta = "las 207.943 paradas del NAP" if g == "gtfs-paradas" else "las 31.970 líneas del NAP"
+            return {"verbo": "capa", "texto": f"Enciendo {etiqueta} (teselas, se dibuja solo lo que ves).",
+                    "acciones": [{"tipo": "capa", "id": g, "visible": True}]}
     cid = buscar_capa(texto)
     if not cid:
         return None
@@ -422,6 +481,83 @@ def accion_encender(texto):
                 "acciones": [{"tipo": "capa", "id": cid, "visible": True}]}
     return {"verbo": "capa", "texto": f"Enciendo «{c['etiqueta']}» ({c.get('organismo') or 'sin organismo'}).",
             "acciones": [{"tipo": "capa", "id": cid, "visible": True}]}
+
+
+SERV_RUTA = {
+    "coche": "https://router.project-osrm.org/route/v1/driving/",
+    "bici": "https://routing.openstreetmap.de/routed-bike/route/v1/driving/",
+    "pie": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
+}
+MODO_RUTA = {
+    "coche": "coche", "cochera": "coche", "conducir": "coche", "carretera": "coche", "vial": "coche",
+    "bici": "bici", "bicicleta": "bici", "pie": "pie", "andando": "pie", "caminando": "pie",
+}
+
+
+def _lugar(texto):
+    """Municipio o estación: lo que el asistente sabe situar en el mapa."""
+    mun = buscar_municipio(texto, 1)
+    if mun:
+        m = mun[0]
+        return {"nombre": m["nombre"], "lat": m["lat"], "lon": m["lon"], "tipo": "municipio"}
+    est = buscar_estacion(texto, 1)
+    if est:
+        e = est[0]
+        return {"nombre": e["nombre"], "lat": e["lat"], "lon": e["lon"], "tipo": "estación"}
+    return None
+
+
+def accion_ruta(texto):
+    """«ruta de Madrid a Santander en coche» -> geometría real por carretera."""
+    t = _norm(texto)
+    m = re.search(r"(?:de|desde)\s+(.+?)\s+(?:a|hasta|hacia)\s+(.+?)(?:\s+(?:en|con)\s+([a-z ]+))?$", t)
+    if not m:
+        return None
+    o_txt, d_txt, modo_txt = m.group(1), m.group(2), (m.group(3) or "")
+    modo = None
+    for palabra, clave in MODO_RUTA.items():
+        if re.search(r"\b" + palabra + r"\b", modo_txt):
+            modo = clave
+            break
+    if re.search(r"\b(tren|trenes|ferrocarril|ave|cercanias|metro|autobus|bus)\b", t):
+        return {"verbo": "ruta",
+                "texto": "Para transporte público el visor todavía no calcula horarios: el planificador "
+                         "RAPTOR está en el visor de transporte. En este mapa puedo darte la ruta por "
+                         "carretera, la línea que conecta y las estaciones.",
+                "acciones": [], "dato": {"modo": "tp", "pendiente": True}}
+    o, d = _lugar(o_txt), _lugar(d_txt)
+    if not o or not d:
+        falta = "origen" if not o else "destino"
+        return {"verbo": "ruta", "texto": f"No encuentro el {falta} «{(o_txt if not o else d_txt)}».",
+                "acciones": []}
+    modo = modo or "coche"
+    url = (SERV_RUTA[modo] + "%.5f,%.5f;%.5f,%.5f" % (o["lon"], o["lat"], d["lon"], d["lat"])
+           + "?overview=full&geometries=geojson")
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0",
+                                                   "Referer": "https://openinfraes-ntizar-ntizar.apps.nan.builders/"})
+        with urllib.request.urlopen(req, timeout=25) as r:
+            j = json.load(r)
+        rt = (j.get("routes") or [None])[0]
+    except Exception as e:
+        return {"verbo": "ruta", "texto": f"El motor de rutas no responde ahora mismo ({type(e).__name__}).",
+                "acciones": []}
+    if not rt:
+        return {"verbo": "ruta", "texto": "No hay ruta por carretera entre esos dos puntos.", "acciones": []}
+    km, minutos = rt["distance"] / 1000.0, rt["duration"] / 60.0
+    dur = (f"{int(minutos // 60)}h{int(round(minutos % 60)):02d}" if minutos >= 60
+           else f"{int(round(minutos))} min")
+    color = {"coche": "#3b82f6", "bici": "#22c55e", "pie": "#a855f7"}[modo]
+    etiqueta = {"coche": "en coche", "bici": "en bici", "pie": "andando"}[modo]
+    return {"verbo": "ruta",
+            "texto": f"{o['nombre']} → {d['nombre']} {etiqueta}: {km:,.0f} km · {dur}.".replace(",", "."),
+            "acciones": [
+                {"tipo": "ruta", "geom": rt["geometry"]["coordinates"], "color": color,
+                 "origen": {**o, "letra": "A"}, "destino": {**d, "letra": "B"},
+                 "titulo": f"{o['nombre']} → {d['nombre']}", "km": round(km, 1), "min": round(minutos)},
+            ],
+            "dato": {"modo": modo, "km": round(km, 1), "min": round(minutos),
+                     "origen": o["nombre"], "destino": d["nombre"]}}
 
 
 def accion_cerca(lat, lon):
@@ -486,6 +622,12 @@ def intencion_local(frase, lat=None, lon=None):
 
     if re.search(r"\bmix\b|mezcla|cruza|combina|correlacion", t):
         r = accion_mezclar(f)
+        if r:
+            return r
+
+    if re.search(r"\bruta\b|\bc[oó]mo (llego|voy)\b|\bir (?:de|desde)\b|\bcamino\b", t) or \
+            re.search(r"\b(?:de|desde) .+ (?:a|hasta|hacia) .+", t):
+        r = accion_ruta(f)
         if r:
             return r
 
@@ -580,6 +722,7 @@ def resolver(frase, lat=None, lon=None):
 # ------------------------------------------------------------------ prueba
 PRUEBAS = [
     ("llévame a Bilbao", "volar"),
+    ("llévame a Madrid", "volar"),
     ("enséñame las cámaras", "capa"),
     ("km 10 de la A-2 enséñame la foto en tiempo real", "foto"),
     ("hazme un mix de renta con centrales hidráulicas", "mezclar"),
@@ -595,6 +738,10 @@ PRUEBAS = [
     ("foto del km 5 de la A-6", "foto"),
     ("llévame a la central de Aldeadávila", "volar"),
     ("qué tienes de transporte", "responder"),
+    ("ruta de Madrid a Santander en coche", "ruta"),
+    ("cómo llego de Bilbao a Zaragoza", "ruta"),
+    ("ir de Valencia a Alicante en bici", "ruta"),
+    ("ruta de Madrid a Santander en tren", "ruta"),
 ]
 
 
@@ -602,7 +749,8 @@ def probar():
     fallos = 0
     for frase, esperado in PRUEBAS:
         r = resolver(frase)
-        ok = r["verbo"] == esperado and (r["acciones"] or r["verbo"] in ("responder", "cerca"))
+        ok = r["verbo"] == esperado and (r["acciones"] or r["verbo"] in ("responder", "cerca")
+                                         or (r.get("dato") or {}).get("pendiente"))
         if not ok:
             fallos += 1
         print(f"{'OK ' if ok else 'FALLA'} {frase[:44]:44s} -> {r['verbo']:9s} "
