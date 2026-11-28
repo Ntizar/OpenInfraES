@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<title>Transporte público de España — OpenInfraES</title>
+<link href="transporte/vendor/maplibre-gl.css" rel="stylesheet" />
+<style>
+  :root{--bg:#0b1020;--panel:rgba(13,19,36,.94);--line:rgba(255,255,255,.10);--txt:#e8eefc;--dim:#93a3c4;--acc:#f59e0b}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden}
+  #map{position:absolute;inset:0}
+  #panel{position:absolute;top:12px;left:12px;width:300px;max-height:calc(100% - 24px);overflow:auto;background:var(--panel);
+    backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:14px;padding:14px;z-index:5}
+  h1{font-size:15px;margin:0 0 2px;letter-spacing:.2px}
+  .sub{font-size:11px;color:var(--dim);margin-bottom:10px}
+  .big{font-size:22px;font-weight:650;letter-spacing:-.5px}
+  .big span{font-size:11px;color:var(--dim);font-weight:400;display:block;letter-spacing:0}
+  h2{font-size:10px;text-transform:uppercase;letter-spacing:.9px;color:var(--dim);margin:14px 0 6px;font-weight:600}
+  .row{display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;user-select:none;font-size:13px}
+  input[type=checkbox]{accent-color:var(--acc);width:15px;height:15px;flex:0 0 auto}
+  .bar{width:3px;height:14px;border-radius:2px;flex:0 0 auto}
+  .nm{flex:1}
+  .n{font-variant-numeric:tabular-nums;color:var(--dim);font-size:11px}
+  select,#q{width:100%;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:#0e1730;color:var(--txt);font-size:13px;margin-top:2px}
+  #q{margin:10px 0 4px}
+  #res{max-height:150px;overflow:auto;font-size:12px}
+  #res div{padding:6px 8px;border-radius:7px;cursor:pointer}
+  #res div:hover{background:rgba(255,255,255,.07)}
+  #hud{position:absolute;bottom:12px;left:12px;z-index:5;background:var(--panel);border:1px solid var(--line);border-radius:11px;
+    padding:8px 11px;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim);backdrop-filter:blur(10px)}
+  #hud b{color:var(--txt);font-weight:600}
+  #home{position:absolute;top:12px;right:12px;z-index:5;background:var(--panel);border:1px solid var(--line);color:var(--txt);
+    border-radius:11px;padding:9px 13px;font-size:13px;cursor:pointer;backdrop-filter:blur(10px)}
+  #home:hover{border-color:var(--acc)}
+  #plegar{display:none;position:absolute;top:12px;right:96px;z-index:6;background:var(--panel);border:1px solid var(--line);
+    color:var(--txt);border-radius:11px;padding:9px 12px;font-size:14px;cursor:pointer;backdrop-filter:blur(10px)}
+  #panel.oculto{display:none}
+  .maplibregl-popup{z-index:9}
+  .maplibregl-popup-content{background:#0d1324;color:var(--txt);border:1px solid var(--line);border-radius:10px;font:12px/1.5 system-ui;padding:9px 12px;max-width:260px}
+  .maplibregl-popup-tip{border-top-color:#0d1324!important;border-bottom-color:#0d1324!important}
+  .maplibregl-ctrl-attrib{background:rgba(11,16,32,.75)!important;color:#8fa0c0!important;font-size:10px}
+  .maplibregl-ctrl-attrib a{color:#b9c7e2!important}
+  @media(max-width:640px){
+    #panel{width:calc(100% - 24px);max-height:46%}
+    #hud{display:none}
+    #plegar{display:block}
+    #home{right:12px;padding:9px 11px}
+    .maplibregl-popup-content{max-width:calc(100vw - 60px)!important}
+  }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="panel">
+  <h1>Transporte público de España</h1>
+  <div style="font-size:10.5px;color:#93a3c4;margin:-6px 0 10px"><a href="./" style="color:#f59e0b;text-decoration:none">← OpenInfraES</a> · GTFS del NAP (MITRAMS)</div>
+  <div class="sub">Red de transporte público · datos abiertos MITRAMS</div>
+  <div class="big" id="tot">—<span>marcas en pantalla</span></div>
+  <input id="q" placeholder="Buscar parada o ciudad…" autocomplete="off" />
+  <div id="res"></div>
+  <h2>Modo de transporte</h2>
+  <div id="modos"></div>
+  <h2>Empresa</h2>
+  <select id="op"><option value="">Todas</option></select>
+</div>
+<button id="home">España</button>
+<button id="plegar" aria-label="Panel">☰</button>
+<div id="hud">zoom <b id="hz">—</b> · tiles <b id="ht">0</b> · <b id="hk">0</b> KB · <b id="hf">—</b> fps · heap <b id="hm">—</b> MB</div>
+
+<script src="transporte/vendor/maplibre-gl.js"></script>
+<script src="transporte/vendor/pmtiles.js"></script>
+<script>
+window.__errs=[];window.addEventListener("error",e=>window.__errs.push(e.message));window.addEventListener("unhandledrejection",e=>window.__errs.push(String(e.reason)));
+const GRUPOS = [
+  { id: "bus",   n: "Autobús",   c: "#f59e0b", cods: ["3", "200", "704", "715"] },
+  { id: "tren",  n: "Tren",      c: "#3b82f6", cods: ["2"] },
+  { id: "metro", n: "Metro",     c: "#8b5cf6", cods: ["1"] },
+  { id: "tran",  n: "Tranvía",   c: "#22c55e", cods: ["0", "900"] },
+  { id: "fun",   n: "Funicular", c: "#a3e635", cods: ["7"] },
+  { id: "ferry", n: "Ferry",     c: "#06b6d4", cods: ["4"] }
+];
+const MODOS = {};
+GRUPOS.forEach(g => g.cods.forEach(c => MODOS[c] = { n: g.n, c: g.c, g: g.id }));
+const CAPAS = { bus: ["bus"], rail: ["tren", "metro", "tran", "fun"], ferry: ["ferry"] };
+
+const protocol = new pmtiles.Protocol();
+maplibregl.addProtocol("pmtiles", protocol.tile);
+
+const map = new maplibregl.Map({
+  container: "map",
+  style: "https://ntizar.github.io/gtfs-espana/estilo.json",
+  bounds: [[-9.9, 35.2], [4.7, 44.0]],
+  minZoom: 4, maxZoom: 16, maxTileCacheSize: 512, fadeDuration: 0, attributionControl: true
+});
+
+const bench = { t0: performance.now(), frames: 0 };
+(function tick(){ bench.frames++; requestAnimationFrame(tick); })();
+
+let modoOn = new Set(GRUPOS.map(g => g.id));
+let opSel = "";
+let conteo = {};
+
+function filtroLineas(capa) {
+  const cods = [];
+  CAPAS[capa].forEach(id => {
+    if (!modoOn.has(id)) return;
+    const g = GRUPOS.find(x => x.id === id);
+    if (g) cods.push(...g.cods);
+  });
+  if (!cods.length) return ["==", ["get", "tipo"], "__nada__"];
+  const f = ["in", ["get", "tipo"], ["literal", cods]];
+  if (opSel) return ["all", f, ["==", ["get", "op"], opSel]];
+  return f;
+}
+
+function aplicar() {
+  map.setFilter("lines-bus", filtroLineas("bus"));
+  map.setFilter("lines-rail", filtroLineas("rail"));
+  map.setFilter("lines-ferry", filtroLineas("ferry"));
+  map.setFilter("stops", opSel ? ["==", ["get", "op"], opSel] : null);
+  actualizarHud();
+}
+
+function dibujar() {
+  if (map.getLayer("stops")) return;
+  if (!map.getStyle() || !map.getStyle().layers.length) { setTimeout(dibujar, 700); return; }
+  try {
+  map.addSource("stops", { type: "vector", url: "pmtiles://https://ntizar.github.io/gtfs-espana/stops.pmtiles", maxzoom: 14 });
+  map.addLayer({
+    id: "stops", type: "circle", source: "stops", "source-layer": "stops",
+    paint: {
+      "circle-radius": ["interpolate", ["linear"], ["get", "n"], 1, 3, 5, 5, 20, 9],
+      "circle-color": ["match", ["get", "tipo"], "Autobús", "#f59e0b", "Ferroviario", "#3b82f6",
+        "Metro", "#8b5cf6", "Marítimo", "#06b6d4", "Tranvía", "#22c55e", "#94a3b8"],
+      "circle-opacity": 0.82,
+      "circle-stroke-color": "#0b1020", "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 11, 0, 12, 0.8]
+    }
+  });
+
+  map.addSource("lines", { type: "vector", url: "pmtiles://https://ntizar.github.io/gtfs-espana/lines.pmtiles", maxzoom: 14 });
+  const capa = (id, color, ancho, opac) => ({
+    id, type: "line", source: "lines", "source-layer": "lines",
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": ["case", ["==", ["length", ["get", "color"]], 6], ["concat", "#", ["get", "color"]], color],
+      "line-width": ["interpolate", ["linear"], ["zoom"], 4, ancho * 0.5, 8, ancho, 12, ancho * 1.5, 16, ancho * 2.2],
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 4, opac * 0.6, 10, opac, 14, opac]
+    }
+  });
+  // bus abajo; ferrocarril y ferry encima para que no se pierdan bajo 11.000 líneas de autobús
+  map.addLayer(capa("lines-bus", "#f59e0b", 1.0, 0.5), "stops");
+  map.addLayer(capa("lines-ferry", "#06b6d4", 1.6, 0.85), "stops");
+  map.addLayer(capa("lines-rail", "#3b82f6", 2.2, 0.95), "stops");
+
+  ["lines-bus", "lines-rail", "lines-ferry"].forEach(id => {
+    map.on("mouseenter", id, () => map.getCanvas().style.cursor = "pointer");
+    map.on("mouseleave", id, () => map.getCanvas().style.cursor = "");
+  });
+
+  async function popupParada(e) {
+    const p = e.features[0].properties;
+    const cab = p.nombre ? `<b>${p.nombre}</b><br><span style="color:#93a3c4">${p.tipo}${p.op ? " · " + p.op : ""}</span>`
+                         : `<b>${p.n}</b> paradas (${p.tipo})`;
+    const pop = new maplibregl.Popup({ closeButton: false, offset: 8, maxWidth: "360px" })
+      .setLngLat(e.lngLat).setHTML(cab + '<div style="color:#93a3c4;font-size:11px;margin-top:4px">cargando horarios…</div>').addTo(map);
+    if (!p.cid || !p.id) {
+      const el0 = document.createElement("div");
+      el0.onclick = ev => ev.stopPropagation();
+      el0.innerHTML = cab + `<div style="color:#93a3c4;font-size:11.5px;margin-top:6px">
+        ${p.n ? p.n + " paradas agrupadas en esta zona." : "Parada agrupada."} Acerca el zoom para ver líneas y horarios.</div>
+        <button style="margin-top:8px;padding:6px 10px;border-radius:7px;border:1px solid #f59e0b;background:#f59e0b;color:#101020;font-size:11.5px;font-weight:600;cursor:pointer">Acercar aquí</button>`;
+      el0.querySelector("button").onclick = ev => {
+        ev.stopPropagation();
+        map.flyTo({ center: e.lngLat, zoom: Math.max(15, map.getZoom() + 3) });
+        pop.remove();
+      };
+      pop.setDOMContent(el0);
+      return;
+    }
+    let lineas = [];
+    try {
+      lineas = await Promise.race([
+        horariosDe(p.cid).then(h => h[p.id] || []),
+        new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 9000))
+      ]);
+    } catch (err) { lineas = null; }
+    if (lineas === null) {
+      pop.setHTML(cab + '<div style="color:#e08a8a;font-size:11px;margin-top:4px">no se pudieron cargar los horarios (red)</div>');
+      return;
+    }
+    if (!lineas.length) { pop.setHTML(cab + '<div style="color:#93a3c4;font-size:11px;margin-top:4px">sin horario publicado</div>'); return; }
+
+    const DIAS = ["Laborable", "Sábado", "Domingo y festivos"];
+    const pinta = (d) => {
+      const filas = lineas.map(([sh, modo, per]) => {
+        const v = per[d];
+        const m = MODOS[String(modo)] || { n: "Otros", c: "#94a3b8" };
+        if (!v) return `<tr><td style="padding:2px 8px 2px 0"><span style="color:${m.c}">■</span> <b>${sh || "—"}</b></td>
+          <td colspan="2" style="color:#5d6b88;font-size:11px">no circula</td></tr>`;
+        const [n, ini, fin, iv] = v;
+        const frec = n >= 4 ? (iv > 0 ? (iv < 60 ? `cada ${iv} min` : `cada ${Math.round(iv / 60)} h`) : "muy frecuente") : `${n} servicio${n > 1 ? "s" : ""}`;
+        return `<tr><td style="padding:2px 8px 2px 0"><span style="color:${m.c}">■</span> <b>${sh || "—"}</b></td>
+          <td style="padding:2px 8px 2px 0;color:#c8d5ee">${frec}</td>
+          <td style="color:#93a3c4;font-variant-numeric:tabular-nums">${ini}–${fin}</td></tr>`;
+      }).join("");
+      return `<table style="margin-top:4px;font-size:11.5px;border-collapse:collapse">${filas}</table>`;
+    };
+    const el = document.createElement("div");
+    el.onclick = ev => ev.stopPropagation();
+    el.innerHTML = cab + '<div style="display:flex;gap:5px;margin-top:7px">' +
+      DIAS.map((t, k) => `<button data-d="${k}" style="flex:1;padding:4px 6px;border-radius:6px;border:1px solid rgba(255,255,255,.14);background:${k === 0 ? "#f59e0b" : "transparent"};color:${k === 0 ? "#101020" : "#c8d5ee"};font-size:10.5px;cursor:pointer">${t}</button>`).join("") +
+      `</div><div class="hor"></div>
+       <div style="color:#6f7f9f;font-size:10px;margin-top:5px">${lineas.length} línea${lineas.length > 1 ? "s" : ""} · día laborable por defecto</div>`;
+    el.querySelector(".hor").innerHTML = pinta(0);
+    el.querySelectorAll("button").forEach(b => b.onclick = (ev) => {
+      ev.stopPropagation(); ev.preventDefault();
+      el.querySelectorAll("button").forEach(x => { x.style.background = "transparent"; x.style.color = "#c8d5ee"; });
+      b.style.background = "#f59e0b"; b.style.color = "#101020";
+      el.querySelector(".hor").innerHTML = pinta(+b.dataset.d);
+    });
+    pop.setDOMContent(el);
+  }
+  map.on("mouseenter", "stops", () => map.getCanvas().style.cursor = "pointer");
+  map.on("mouseleave", "stops", () => map.getCanvas().style.cursor = "");
+
+  // un solo click: la parada gana a la linea que pasa por debajo
+  map.on("click", e => {
+    const ver = id => map.getLayer(id);
+    const st = ver("stops") ? map.queryRenderedFeatures(e.point, { layers: ["stops"] }) : [];
+    if (st.length) return popupParada({ lngLat: e.lngLat, point: e.point, features: [st[0]] });
+    const capas = ["lines-rail", "lines-ferry", "lines-bus"].filter(ver);
+    const ln = capas.length ? map.queryRenderedFeatures(e.point, { layers: capas }) : [];
+    if (ln.length) popupLinea({ lngLat: e.lngLat, point: e.point, features: [ln[0]] });
+  });
+
+  pintarModos();
+  pintarOperadores();
+  aplicar();
+  } catch(e){ window.__errs.push("LOAD: "+e.message); }
+}
+map.on("load", dibujar);
+setTimeout(dibujar, 6000);
+map.on("idle", dibujar);
+
+const cacheHor = {};
+async function horariosDe(cid) {
+  if (!cacheHor[cid]) cacheHor[cid] = (await fetch(`https://ntizar.github.io/gtfs-espana/horarios/${cid}.json`)).json();
+  return cacheHor[cid];
+}
+const cacheLin = {}, cachePar = {};
+async function lineasDe(cid) {
+  if (!cacheLin[cid]) cacheLin[cid] = (await fetch(`https://ntizar.github.io/gtfs-espana/lineas/${cid}.json`)).json();
+  return cacheLin[cid];
+}
+async function paradasDe(cid) {
+  if (!cachePar[cid]) cachePar[cid] = (await fetch(`https://ntizar.github.io/gtfs-espana/paradas/${cid}.json`)).json();
+  return cachePar[cid];
+}
+
+async function popupLinea(e) {
+  const pr = e.features[0].properties;
+  const m = MODOS[String(pr.tipo)] || { n: "Otros", c: "#94a3b8" };
+  const cab = `<b>${pr.short ? "Línea " + pr.short : "Servicio"}</b><br>
+    <span style="color:${m.c}">${m.n}</span>${pr.op ? "<br>" + pr.op : ""}`;
+  const pop = new maplibregl.Popup({ closeButton: false, offset: 6, maxWidth: "320px" })
+    .setLngLat(e.lngLat).setHTML(cab).addTo(map);
+  if (!pr.cid || !pr.rid) return;
+  try {
+    const info = (await lineasDe(pr.cid))[pr.rid];
+    if (!info) return;
+    const [sh, , paradas] = info;
+    const nom = await paradasDe(pr.cid);
+    const lista = paradas.slice(0, 10).map(id =>
+      `<div style="padding:1px 0;color:#c8d5ee">${(nom[id] || [id])[0]}</div>`).join("");
+    pop.setHTML(cab + `<div style="margin-top:6px;font-size:11px;color:#93a3c4">${paradas.length} paradas en el recorrido</div>
+      <div style="margin-top:3px;font-size:11px;max-height:140px;overflow:auto">${lista}
+      ${paradas.length > 10 ? `<div style="color:#6f7f9f">… y ${paradas.length - 10} más</div>` : ""}</div>`);
+  } catch (err) { /* sin índice para esa red */ }
+}
+
+function pintarModos() {
+  const cont = document.getElementById("modos");
+  cont.innerHTML = "";
+  GRUPOS.forEach(g => {
+    const n = g.cods.reduce((a, c) => a + (conteo[c] || 0), 0);
+    const el = document.createElement("label");
+    el.className = "row";
+    el.innerHTML = `<input type="checkbox" ${modoOn.has(g.id) ? "checked" : ""} data-g="${g.id}">
+      <span class="bar" style="background:${g.c}"></span>
+      <span class="nm">${g.n}</span><span class="n">${n.toLocaleString("es-ES")}</span>`;
+    el.querySelector("input").onchange = ev => {
+      ev.target.checked ? modoOn.add(g.id) : modoOn.delete(g.id);
+      aplicar();
+    };
+    cont.appendChild(el);
+  });
+}
+
+function pintarOperadores() {
+  const sel = document.getElementById("op");
+  const ops = window.__ops || {};
+  const lista = Object.entries(ops).sort((a, b) => b[1] - a[1]);
+  sel.innerHTML = `<option value="">Todas (${lista.length})</option>` +
+    lista.map(([o, n]) => `<option value="${o.replace(/"/g, "&quot;")}">${o} (${n})</option>`).join("");
+  sel.onchange = () => { opSel = sel.value; aplicar(); };
+}
+
+let t = null;
+map.on("moveend", () => { clearTimeout(t); t = setTimeout(actualizarHud, 120); });
+
+function actualizarHud() {
+  const feats = map.queryRenderedFeatures({ layers: ["stops"] }).length;
+  const res = performance.getEntriesByType("resource").filter(r => r.name.includes(".pmtiles"));
+  const kb = res.reduce((a, r) => a + (r.transferSize || 0), 0) / 1024;
+  const fps = (bench.frames / ((performance.now() - bench.t0) / 1000)).toFixed(0);
+  document.getElementById("hz").textContent = map.getZoom().toFixed(1);
+  document.getElementById("ht").textContent = res.length;
+  document.getElementById("hk").textContent = kb.toFixed(0);
+  document.getElementById("hf").textContent = fps;
+  document.getElementById("hm").textContent = performance.memory ? (performance.memory.usedJSHeapSize / 1048576).toFixed(0) : "—";
+  document.getElementById("tot").innerHTML = feats.toLocaleString("es-ES") + "<span>marcas en pantalla</span>";
+}
+setInterval(actualizarHud, 1000);
+document.getElementById("plegar").onclick = () => document.getElementById("panel").classList.toggle("oculto");
+document.getElementById("home").onclick = () => map.fitBounds([[-9.9, 35.2], [4.7, 44.0]], { duration: 700 });
+
+Promise.all([
+  fetch("https://ntizar.github.io/gtfs-espana/modos.json").then(r => r.json()).catch(() => ({})),
+  fetch("https://ntizar.github.io/gtfs-espana/operadores.json").then(r => r.json()).catch(() => ({}))
+]).then(([m, o]) => {
+  conteo = m; window.__ops = o;
+  if (document.getElementById("modos").children.length) pintarModos();
+  pintarOperadores();
+});
+
+let idx = null;
+const qi = document.getElementById("q"), res = document.getElementById("res");
+qi.addEventListener("focus", async () => {
+  if (idx) return;
+  qi.placeholder = "cargando índice…";
+  try {
+    idx = await (await fetch("https://ntizar.github.io/gtfs-espana/busqueda.json")).json();
+    qi.placeholder = "Buscar parada o ciudad…";
+    if (qi.value.trim().length >= 2) qi.dispatchEvent(new Event("input"));
+  } catch { qi.placeholder = "índice no disponible"; }
+});
+qi.addEventListener("input", () => {
+  const q = qi.value.trim().toLowerCase();
+  res.innerHTML = "";
+  if (!idx || q.length < 2) return;
+  const out = [];
+  for (const [nom, lat, lon, tipo] of idx) {
+    if (nom.toLowerCase().includes(q)) { out.push([nom, lat, lon, tipo]); if (out.length >= 16) break; }
+  }
+  for (const [nom, lat, lon, tipo] of out) {
+    const d = document.createElement("div");
+    d.innerHTML = `${nom} <span style="color:#93a3c4;font-size:11px">· ${tipo}</span>`;
+    d.onclick = () => { map.flyTo({ center: [lon, lat], zoom: 15.5 }); res.innerHTML = ""; qi.value = nom; };
+    res.appendChild(d);
+  }
+});
+</script>
+</body>
+</html>
