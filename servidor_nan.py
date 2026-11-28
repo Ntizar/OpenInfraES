@@ -175,10 +175,27 @@ class Handler(BaseHTTPRequestHandler):
     # --- API ---
     def api(self, ruta):
         if ruta == "/api/salud":
+            ram, disco = {}, {}
+            try:
+                with open("/proc/meminfo") as f:
+                    for linea in f:
+                        k = linea.split(":")[0]
+                        if k in ("MemTotal", "MemAvailable"):
+                            ram[k] = int(linea.split()[1]) // 1024
+            except Exception:
+                pass
+            try:
+                st = os.statvfs(DATOS)
+                disco = {"libre_mb": st.f_bavail * st.f_frsize // (1 << 20),
+                         "total_mb": st.f_blocks * st.f_frsize // (1 << 20)}
+            except Exception:
+                pass
             return self._json({
                 "estado": "ok",
                 "sitio": "OpenInfraES",
                 "datos": os.path.isdir(DATOS),
+                "ram_mb": ram,
+                "disco": disco,
                 "indices": sorted(os.listdir(DATOS)) if os.path.isdir(DATOS) else [],
             })
         if ruta == "/api/horarios":
