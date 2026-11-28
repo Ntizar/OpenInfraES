@@ -49,7 +49,17 @@ def interpreta(pregunta, ctx=""):
     """Devuelve el dict de intención. Lanza RuntimeError si falta la clave."""
     clave = os.environ.get("NAN_API_KEY") or os.environ.get("OPENAI_API_KEY")
     if not clave:
-        raise RuntimeError("falta NAN_API_KEY en el entorno del contenedor")
+        # alternativa al panel: un fichero en el volumen persistente, con permisos 600
+        ruta = os.path.join(os.environ.get("DATOS", "/data"), "nan.key")
+        if os.path.exists(ruta):
+            try:
+                with open(ruta) as f:
+                    clave = f.read().strip()
+            except Exception:
+                clave = None
+    if not clave:
+        raise RuntimeError("falta NAN_API_KEY en el entorno del contenedor "
+                           "(o el fichero /data/nan.key)")
     cuerpo = {
         "model": MODELO,
         "reasoning_effort": "minimal",
