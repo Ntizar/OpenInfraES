@@ -72,18 +72,37 @@
         if (f.properties.cid) cids.add(String(f.properties.cid));
       });
     } catch (e) { /* sin mapa */ }
-    return [...cids];
+    // A zoom de barrio o de ciudad las paradas aun no existen: se pregunta a las lineas.
+    if (!cids.size) {
+      try {
+        map.querySourceFeatures("lines", { sourceLayer: "lines" }).forEach((f) => {
+          if (f.properties.cid) cids.add(String(f.properties.cid));
+        });
+      } catch (e) { /* sin source */ }
+    }
+    return [...cids].slice(0, 24);
+  }
+
+  // Variantes: lineas/<cid>.json guarda un solo recorrido por linea. Las ramificaciones reales
+  // (el C1 que ademas va al T4) estan en variantes/<cid>.json. Si no existe, se sigue con una.
+  async function variantesDe(cid) {
+    try {
+      const r = await fetch("variantes/" + cid + ".json");
+      if (!r.ok) return null;
+      return await r.json();
+    } catch (e) { return null; }
   }
 
   async function indices(cids) {
-    const par = {}, hor = {}, lin = {};
+    const par = {}, hor = {}, lin = {}, var_ = {};
     await Promise.all(cids.map(async (cid) => {
       try {
-        const [p, h, l] = await Promise.all([paradasDe(cid), horariosDe(cid), lineasDe(cid)]);
-        par[cid] = p; hor[cid] = h; lin[cid] = l;
+        const [p, h, l, v] = await Promise.all([
+          paradasDe(cid), horariosDe(cid), lineasDe(cid), variantesDe(cid)]);
+        par[cid] = p; hor[cid] = h; lin[cid] = l; if (v) var_[cid] = v;
       } catch (e) { /* red sin datos */ }
     }));
-    return construirGrid({ par, hor, lin, cids: Object.keys(par) });
+    return construirGrid({ par, hor, lin, var: var_, cids: Object.keys(par) });
   }
 
   function serviciosDe(red, cid, sid, dia) {
@@ -107,7 +126,15 @@
     for (const cid of red.cids) {
       red.rec[cid] = {};
       const L = red.lin[cid] || {};
-      for (const rid in L) red.rec[cid][L[rid][0]] = L[rid][2];
+      for (const rid in L) red.rec[cid][L[rid][0]] = [L[rid][2]];
+      // las variantes (si las hay) sustituyen al recorrido unico
+      const V = red.var[cid] || {};
+      for (const rid in V) {
+        const sh = L[rid] && L[rid][0];
+        if (!sh) continue;
+        const lista = V[rid].filter((r) => r && r.length >= 2);
+        if (lista.length) red.rec[cid][sh] = lista;
+      }
     }
     for (const cid of red.cids) {
       const p = red.par[cid] || {};
@@ -143,8 +170,10 @@
     return out;
   }
 
-  function recorridoDe(red, cid, sh) {
-    return (red.rec && red.rec[cid] && red.rec[cid][sh]) || null;
+  function recorridosDe(red, cid, sh) {
+    const r = red.rec && red.rec[cid] && red.rec[cid][sh];
+    if (!r) return [];
+    return Array.isArray(r[0]) ? r : [r];
   }
 
   function tramoMin(red, cid, rec, i, j, modo) {
@@ -158,10 +187,37 @@
     return (dist / 1000) / (VEL[modo] || 15) * 60 + (b - a) * PARADA_S / 60;
   }
 
+  // En el centro de una ciudad 1,1 km sobra, pero en un aeropuerto la estacion esta a 2-3 km del
+  // punto que tocas. Si no hay nada cerca, se abre el radio antes de rendirse.
+  function puntosCerca(red, lat, lon) {
+    let c = cercaDe(red, lat, lon, RADIO);
+    if (c.length < 3) c = cercaDe(red, lat, lon, 2600);
+    return c;
+  }
+
+  // Candidatos de origen/destino: las mas cercanas y ademas toda estacion de tren o metro del
+  // radio. Sin esto, en un aeropuerto las 120 primeras son paradas de bus y la estacion de
+  // Cercanias -que es la que sirve- se queda fuera del corte.
+  function candidatos(red, lat, lon) {
+    const cerca = puntosCerca(red, lat, lon);
+    const out = [], vistos = new Set();
+    const add = (x) => {
+      const k = x.cid + "|" + x.sid;
+      if (!vistos.has(k)) { vistos.add(k); out.push(x); }
+    };
+    cerca.slice(0, 40).forEach(add);
+    for (const x of cerca) {
+      if (out.length > 300) break;
+      const hs = red.hor[x.cid] && red.hor[x.cid][x.sid];
+      if (hs && hs.some((L) => L[1] === 1 || L[1] === 2)) add(x);
+    }
+    return out;
+  }
+
   // --- RAPTOR sobre frecuencias ---
   function planificar(red, origen, destino, t0, dia) {
-    const O = cercaDe(red, origen[0], origen[1], RADIO).slice(0, 60);
-    const D = cercaDe(red, destino[0], destino[1], RADIO).slice(0, 120);
+    const O = candidatos(red, origen[0], origen[1]).slice(0, 120);
+    const D = candidatos(red, destino[0], destino[1]).slice(0, 300);
     if (!O.length || !D.length) return [];
 
     const mejor = {}, padre = {};
@@ -178,13 +234,15 @@
         const [cid, sid] = k.split("|");
         const ls = serviciosDe(red, cid, sid, dia);
         for (const sh in ls) {
-          const rec = recorridoDe(red, cid, sh);
-          if (!rec) continue;
-          const i = rec.indexOf(sid);
-          if (i < 0) continue;
-          const kk = cid + "|" + sh;
-          const cur = porLinea.get(kk);
-          if (!cur || t < cur.t) porLinea.set(kk, { t, i0: i, k, cid, sh, ls: ls[sh], rec });
+          const recs = recorridosDe(red, cid, sh);
+          for (let vi = 0; vi < recs.length; vi++) {
+            const rec = recs[vi];
+            const i = rec.indexOf(sid);
+            if (i < 0) continue;
+            const kk = cid + "|" + sh + "|" + vi;
+            const cur = porLinea.get(kk);
+            if (!cur || t < cur.t) porLinea.set(kk, { t, i0: i, k, cid, sh, vi, ls: ls[sh], rec });
+          }
         }
       }
       const sig = new Map();
@@ -198,8 +256,8 @@
           const llegada = salida + tramoMin(red, c.cid, c.rec, c.i0, j, c.ls.modo);
           if (llegada < (mejor[q] ?? Infinity) - 0.01) {
             mejor[q] = llegada;
-            padre[q] = { tipo: "linea", sh: c.sh, cid: c.cid, desde: c.k,
-                         salida, espera, modo: c.ls.modo, iv: c.ls.iv, n: c.ls.n };
+            padre[q] = { tipo: "linea", sh: c.sh, cid: c.cid, desde: c.k, vi: c.vi,
+                         salida, espera, modo: c.ls.modo, iv: c.ls.iv, n: c.ls.n, rec: c.rec };
             sig.set(q, llegada);
           }
         }
@@ -236,7 +294,7 @@
         if (p.tipo === "linea") {
           cadena.push({ sh: p.sh, cid: p.cid, salida: p.salida, llega: mejor[cur],
                         espera: p.espera, modo: p.modo, iv: p.iv, n: p.n,
-                        desde: p.desde, hasta: cur });
+                        desde: p.desde, hasta: cur, rec: p.rec });
           cur = p.desde;
         } else cur = p.desde;
       }
@@ -344,9 +402,7 @@
     if (!redActual) return;
     const tramos = [];
     for (const p of x.cadena) {
-      const L = redActual.lin[p.cid] || {};
-      let rec = null;
-      for (const rid in L) if (L[rid][0] === p.sh) rec = L[rid][2];
+      const rec = p.rec;
       if (!rec) continue;
       const i = rec.indexOf(p.desde.split("|")[1]);
       const j = rec.indexOf(p.hasta.split("|")[1]);
@@ -414,6 +470,12 @@
       pintarMarcas();
     });
   }
+
+  window.__dbg = {
+    cerca: (lat, lon, r) => cercaDe(redActual, lat, lon, r || RADIO),
+    red: () => redActual,
+    recs: (cid, sh) => recorridosDe(redActual, cid, sh).map((r) => r.length)
+  };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
