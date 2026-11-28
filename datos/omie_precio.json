@@ -1,611 +1,611 @@
 {
  "fuente": "OMIE",
  "mercado": "diario (MARGINALPDBC)",
- "url": "https://www.omie.es/es/file-download?parents%5B0%5D=marginalpdbc&filename=marginalpdbc_20261127.1",
- "fecha": "2026-11-27",
+ "url": "https://www.omie.es/es/file-download?parents%5B0%5D=marginalpdbc&filename=marginalpdbc_20261128.1",
+ "fecha": "2026-11-28",
  "unidad": "€/MWh",
  "horas": [
   {
    "cuarto": 1,
    "hora": 1,
    "minuto": 0,
-   "es": 235.43,
-   "pt": 235.43
+   "es": 243.66,
+   "pt": 243.66
   },
   {
    "cuarto": 2,
    "hora": 1,
    "minuto": 15,
-   "es": 230.59,
-   "pt": 230.59
+   "es": 237.75,
+   "pt": 237.75
   },
   {
    "cuarto": 3,
    "hora": 1,
    "minuto": 30,
-   "es": 226.36,
-   "pt": 226.36
+   "es": 223.82,
+   "pt": 223.82
   },
   {
    "cuarto": 4,
    "hora": 1,
    "minuto": 45,
-   "es": 224.0,
-   "pt": 224.0
+   "es": 216.55,
+   "pt": 216.55
   },
   {
    "cuarto": 5,
    "hora": 2,
    "minuto": 0,
-   "es": 217.4,
-   "pt": 217.4
+   "es": 228.92,
+   "pt": 228.92
   },
   {
    "cuarto": 6,
    "hora": 2,
    "minuto": 15,
-   "es": 214.83,
-   "pt": 214.83
+   "es": 218.57,
+   "pt": 218.57
   },
   {
    "cuarto": 7,
    "hora": 2,
    "minuto": 30,
-   "es": 212.79,
-   "pt": 212.79
+   "es": 216.34,
+   "pt": 216.34
   },
   {
    "cuarto": 8,
    "hora": 2,
    "minuto": 45,
-   "es": 211.29,
-   "pt": 211.29
+   "es": 213.17,
+   "pt": 213.17
   },
   {
    "cuarto": 9,
    "hora": 3,
    "minuto": 0,
-   "es": 214.0,
-   "pt": 214.0
+   "es": 211.6,
+   "pt": 211.6
   },
   {
    "cuarto": 10,
    "hora": 3,
    "minuto": 15,
-   "es": 211.6,
-   "pt": 211.6
+   "es": 209.04,
+   "pt": 209.04
   },
   {
    "cuarto": 11,
    "hora": 3,
    "minuto": 30,
-   "es": 211.29,
-   "pt": 211.29
+   "es": 200.1,
+   "pt": 200.1
   },
   {
    "cuarto": 12,
    "hora": 3,
    "minuto": 45,
-   "es": 211.29,
-   "pt": 211.29
+   "es": 199.72,
+   "pt": 199.72
   },
   {
    "cuarto": 13,
    "hora": 4,
    "minuto": 0,
-   "es": 211.29,
-   "pt": 211.29
+   "es": 197.75,
+   "pt": 197.75
   },
   {
    "cuarto": 14,
    "hora": 4,
    "minuto": 15,
-   "es": 210.03,
-   "pt": 210.03
+   "es": 196.41,
+   "pt": 196.41
   },
   {
    "cuarto": 15,
    "hora": 4,
    "minuto": 30,
-   "es": 210.0,
-   "pt": 210.0
+   "es": 197.19,
+   "pt": 197.19
   },
   {
    "cuarto": 16,
    "hora": 4,
    "minuto": 45,
-   "es": 209.61,
-   "pt": 209.61
+   "es": 197.19,
+   "pt": 197.19
   },
   {
    "cuarto": 17,
    "hora": 5,
    "minuto": 0,
-   "es": 205.0,
-   "pt": 205.0
+   "es": 196.4,
+   "pt": 196.4
   },
   {
    "cuarto": 18,
    "hora": 5,
    "minuto": 15,
-   "es": 205.05,
-   "pt": 205.05
+   "es": 195.5,
+   "pt": 195.5
   },
   {
    "cuarto": 19,
    "hora": 5,
    "minuto": 30,
-   "es": 205.09,
-   "pt": 205.09
+   "es": 195.6,
+   "pt": 195.6
   },
   {
    "cuarto": 20,
    "hora": 5,
    "minuto": 45,
-   "es": 210.0,
-   "pt": 210.0
+   "es": 195.5,
+   "pt": 195.5
   },
   {
    "cuarto": 21,
    "hora": 6,
    "minuto": 0,
-   "es": 202.4,
-   "pt": 202.4
+   "es": 195.01,
+   "pt": 195.01
   },
   {
    "cuarto": 22,
    "hora": 6,
    "minuto": 15,
-   "es": 205.0,
-   "pt": 205.0
+   "es": 195.0,
+   "pt": 195.0
   },
   {
    "cuarto": 23,
    "hora": 6,
    "minuto": 30,
-   "es": 211.0,
-   "pt": 211.0
+   "es": 195.0,
+   "pt": 195.0
   },
   {
    "cuarto": 24,
    "hora": 6,
    "minuto": 45,
-   "es": 212.89,
-   "pt": 212.89
+   "es": 195.11,
+   "pt": 195.11
   },
   {
    "cuarto": 25,
    "hora": 7,
    "minuto": 0,
-   "es": 217.0,
-   "pt": 217.0
+   "es": 195.01,
+   "pt": 195.01
   },
   {
    "cuarto": 26,
    "hora": 7,
    "minuto": 15,
-   "es": 226.31,
-   "pt": 226.31
+   "es": 195.11,
+   "pt": 195.11
   },
   {
    "cuarto": 27,
    "hora": 7,
    "minuto": 30,
-   "es": 230.0,
-   "pt": 230.0
+   "es": 195.37,
+   "pt": 195.37
   },
   {
    "cuarto": 28,
    "hora": 7,
    "minuto": 45,
-   "es": 235.3,
-   "pt": 235.3
+   "es": 195.24,
+   "pt": 195.24
   },
   {
    "cuarto": 29,
    "hora": 8,
    "minuto": 0,
-   "es": 238.12,
-   "pt": 238.12
+   "es": 195.37,
+   "pt": 195.37
   },
   {
    "cuarto": 30,
    "hora": 8,
    "minuto": 15,
-   "es": 248.89,
-   "pt": 248.89
+   "es": 198.94,
+   "pt": 198.94
   },
   {
    "cuarto": 31,
    "hora": 8,
    "minuto": 30,
-   "es": 250.59,
-   "pt": 250.59
+   "es": 200.09,
+   "pt": 200.09
   },
   {
    "cuarto": 32,
    "hora": 8,
    "minuto": 45,
-   "es": 259.07,
-   "pt": 259.07
+   "es": 202.4,
+   "pt": 202.4
   },
   {
    "cuarto": 33,
    "hora": 9,
    "minuto": 0,
-   "es": 246.33,
-   "pt": 246.33
+   "es": 215.33,
+   "pt": 215.33
   },
   {
    "cuarto": 34,
    "hora": 9,
    "minuto": 15,
-   "es": 250.0,
-   "pt": 250.0
+   "es": 214.62,
+   "pt": 214.62
   },
   {
    "cuarto": 35,
    "hora": 9,
    "minuto": 30,
-   "es": 241.67,
-   "pt": 241.67
+   "es": 214.04,
+   "pt": 214.04
   },
   {
    "cuarto": 36,
    "hora": 9,
    "minuto": 45,
-   "es": 228.83,
-   "pt": 228.83
+   "es": 202.49,
+   "pt": 202.49
   },
   {
    "cuarto": 37,
    "hora": 10,
    "minuto": 0,
-   "es": 239.06,
-   "pt": 239.06
+   "es": 216.95,
+   "pt": 216.95
   },
   {
    "cuarto": 38,
    "hora": 10,
    "minuto": 15,
-   "es": 230.0,
-   "pt": 230.0
+   "es": 210.0,
+   "pt": 210.0
   },
   {
    "cuarto": 39,
    "hora": 10,
    "minuto": 30,
-   "es": 220.0,
-   "pt": 220.0
+   "es": 199.2,
+   "pt": 199.2
   },
   {
    "cuarto": 40,
    "hora": 10,
    "minuto": 45,
-   "es": 202.4,
-   "pt": 202.4
+   "es": 192.02,
+   "pt": 192.02
   },
   {
    "cuarto": 41,
    "hora": 11,
    "minuto": 0,
-   "es": 223.11,
-   "pt": 223.11
+   "es": 200.0,
+   "pt": 200.0
   },
   {
    "cuarto": 42,
    "hora": 11,
    "minuto": 15,
-   "es": 214.83,
-   "pt": 214.83
+   "es": 195.24,
+   "pt": 195.24
   },
   {
    "cuarto": 43,
    "hora": 11,
    "minuto": 30,
-   "es": 210.0,
-   "pt": 210.0
+   "es": 186.95,
+   "pt": 186.95
   },
   {
    "cuarto": 44,
    "hora": 11,
    "minuto": 45,
-   "es": 200.0,
-   "pt": 200.0
+   "es": 176.22,
+   "pt": 176.22
   },
   {
    "cuarto": 45,
    "hora": 12,
    "minuto": 0,
-   "es": 194.07,
-   "pt": 187.17
+   "es": 181.35,
+   "pt": 181.35
   },
   {
    "cuarto": 46,
    "hora": 12,
    "minuto": 15,
-   "es": 194.07,
-   "pt": 187.17
+   "es": 176.24,
+   "pt": 176.24
   },
   {
    "cuarto": 47,
    "hora": 12,
    "minuto": 30,
-   "es": 194.07,
-   "pt": 185.42
+   "es": 175.0,
+   "pt": 175.0
   },
   {
    "cuarto": 48,
    "hora": 12,
    "minuto": 45,
-   "es": 194.07,
-   "pt": 185.42
+   "es": 173.31,
+   "pt": 173.31
   },
   {
    "cuarto": 49,
    "hora": 13,
    "minuto": 0,
-   "es": 194.07,
-   "pt": 183.67
+   "es": 175.06,
+   "pt": 175.06
   },
   {
    "cuarto": 50,
    "hora": 13,
    "minuto": 15,
-   "es": 194.07,
-   "pt": 183.67
+   "es": 173.31,
+   "pt": 173.31
   },
   {
    "cuarto": 51,
    "hora": 13,
    "minuto": 30,
-   "es": 194.07,
-   "pt": 183.34
+   "es": 171.6,
+   "pt": 171.6
   },
   {
    "cuarto": 52,
    "hora": 13,
    "minuto": 45,
-   "es": 194.07,
-   "pt": 181.92
+   "es": 172.29,
+   "pt": 172.29
   },
   {
    "cuarto": 53,
    "hora": 14,
    "minuto": 0,
-   "es": 194.07,
-   "pt": 181.92
+   "es": 174.0,
+   "pt": 174.0
   },
   {
    "cuarto": 54,
    "hora": 14,
    "minuto": 15,
-   "es": 194.07,
-   "pt": 181.92
+   "es": 173.31,
+   "pt": 173.31
   },
   {
    "cuarto": 55,
    "hora": 14,
    "minuto": 30,
-   "es": 188.56,
-   "pt": 181.92
+   "es": 174.05,
+   "pt": 174.05
   },
   {
    "cuarto": 56,
    "hora": 14,
    "minuto": 45,
-   "es": 187.32,
-   "pt": 181.92
+   "es": 176.75,
+   "pt": 176.75
   },
   {
    "cuarto": 57,
    "hora": 15,
    "minuto": 0,
-   "es": 187.33,
-   "pt": 173.5
+   "es": 177.21,
+   "pt": 177.21
   },
   {
    "cuarto": 58,
    "hora": 15,
    "minuto": 15,
-   "es": 187.37,
-   "pt": 175.92
+   "es": 180.47,
+   "pt": 180.47
   },
   {
    "cuarto": 59,
    "hora": 15,
    "minuto": 30,
-   "es": 188.56,
-   "pt": 175.92
+   "es": 187.01,
+   "pt": 187.01
   },
   {
    "cuarto": 60,
    "hora": 15,
    "minuto": 45,
-   "es": 194.07,
-   "pt": 177.88
+   "es": 192.79,
+   "pt": 192.79
   },
   {
    "cuarto": 61,
    "hora": 16,
    "minuto": 0,
-   "es": 180.0,
-   "pt": 180.0
+   "es": 191.81,
+   "pt": 191.81
   },
   {
    "cuarto": 62,
    "hora": 16,
    "minuto": 15,
-   "es": 181.92,
-   "pt": 181.92
+   "es": 195.37,
+   "pt": 195.37
   },
   {
    "cuarto": 63,
    "hora": 16,
    "minuto": 30,
-   "es": 185.42,
-   "pt": 185.42
+   "es": 202.59,
+   "pt": 202.59
   },
   {
    "cuarto": 64,
    "hora": 16,
    "minuto": 45,
-   "es": 194.07,
-   "pt": 194.07
+   "es": 211.47,
+   "pt": 211.47
   },
   {
    "cuarto": 65,
    "hora": 17,
    "minuto": 0,
-   "es": 194.07,
-   "pt": 194.07
+   "es": 207.31,
+   "pt": 207.31
   },
   {
    "cuarto": 66,
    "hora": 17,
    "minuto": 15,
-   "es": 211.6,
-   "pt": 211.6
+   "es": 215.25,
+   "pt": 215.25
   },
   {
    "cuarto": 67,
    "hora": 17,
    "minuto": 30,
-   "es": 226.45,
-   "pt": 226.45
+   "es": 215.25,
+   "pt": 215.25
   },
   {
    "cuarto": 68,
    "hora": 17,
    "minuto": 45,
-   "es": 226.45,
-   "pt": 226.45
+   "es": 219.39,
+   "pt": 219.39
   },
   {
    "cuarto": 69,
    "hora": 18,
    "minuto": 0,
-   "es": 226.42,
-   "pt": 226.42
+   "es": 221.06,
+   "pt": 221.06
   },
   {
    "cuarto": 70,
    "hora": 18,
    "minuto": 15,
-   "es": 239.06,
-   "pt": 239.06
+   "es": 229.56,
+   "pt": 229.56
   },
   {
    "cuarto": 71,
    "hora": 18,
    "minuto": 30,
-   "es": 260.87,
-   "pt": 260.87
+   "es": 240.0,
+   "pt": 240.0
   },
   {
    "cuarto": 72,
    "hora": 18,
    "minuto": 45,
-   "es": 282.67,
-   "pt": 282.67
+   "es": 251.3,
+   "pt": 251.3
   },
   {
    "cuarto": 73,
    "hora": 19,
    "minuto": 0,
-   "es": 265.0,
-   "pt": 265.0
+   "es": 245.38,
+   "pt": 245.38
   },
   {
    "cuarto": 74,
    "hora": 19,
    "minuto": 15,
-   "es": 281.67,
-   "pt": 281.67
+   "es": 254.04,
+   "pt": 254.04
   },
   {
    "cuarto": 75,
    "hora": 19,
    "minuto": 30,
-   "es": 283.67,
-   "pt": 283.67
+   "es": 256.0,
+   "pt": 256.0
   },
   {
    "cuarto": 76,
    "hora": 19,
    "minuto": 45,
-   "es": 281.67,
-   "pt": 281.67
+   "es": 261.92,
+   "pt": 261.92
   },
   {
    "cuarto": 77,
    "hora": 20,
    "minuto": 0,
-   "es": 265.0,
-   "pt": 265.0
+   "es": 253.18,
+   "pt": 253.18
   },
   {
    "cuarto": 78,
    "hora": 20,
    "minuto": 15,
-   "es": 266.5,
-   "pt": 266.5
+   "es": 253.18,
+   "pt": 253.18
   },
   {
    "cuarto": 79,
    "hora": 20,
    "minuto": 30,
-   "es": 267.02,
-   "pt": 267.02
+   "es": 254.04,
+   "pt": 254.04
   },
   {
    "cuarto": 80,
    "hora": 20,
    "minuto": 45,
-   "es": 268.42,
-   "pt": 268.42
+   "es": 254.12,
+   "pt": 254.12
   },
   {
    "cuarto": 81,
    "hora": 21,
    "minuto": 0,
-   "es": 266.02,
-   "pt": 266.02
+   "es": 251.3,
+   "pt": 251.3
   },
   {
    "cuarto": 82,
    "hora": 21,
    "minuto": 15,
-   "es": 267.06,
-   "pt": 267.06
+   "es": 252.24,
+   "pt": 252.24
   },
   {
    "cuarto": 83,
    "hora": 21,
    "minuto": 30,
-   "es": 267.06,
-   "pt": 267.06
+   "es": 252.24,
+   "pt": 252.24
   },
   {
    "cuarto": 84,
    "hora": 21,
    "minuto": 45,
-   "es": 265.0,
-   "pt": 265.0
+   "es": 252.24,
+   "pt": 252.24
   },
   {
    "cuarto": 85,
    "hora": 22,
    "minuto": 0,
-   "es": 265.0,
-   "pt": 265.0
+   "es": 255.0,
+   "pt": 255.0
   },
   {
    "cuarto": 86,
    "hora": 22,
    "minuto": 15,
-   "es": 260.87,
-   "pt": 260.87
+   "es": 254.12,
+   "pt": 254.12
   },
   {
    "cuarto": 87,
@@ -618,93 +618,76 @@
    "cuarto": 88,
    "hora": 22,
    "minuto": 45,
-   "es": 237.0,
-   "pt": 237.0
+   "es": 243.66,
+   "pt": 243.66
   },
   {
    "cuarto": 89,
    "hora": 23,
    "minuto": 0,
-   "es": 245.0,
-   "pt": 245.0
+   "es": 248.27,
+   "pt": 248.27
   },
   {
    "cuarto": 90,
    "hora": 23,
    "minuto": 15,
-   "es": 239.75,
-   "pt": 239.75
+   "es": 243.66,
+   "pt": 243.66
   },
   {
    "cuarto": 91,
    "hora": 23,
    "minuto": 30,
-   "es": 234.47,
-   "pt": 234.47
+   "es": 236.15,
+   "pt": 236.15
   },
   {
    "cuarto": 92,
    "hora": 23,
    "minuto": 45,
-   "es": 223.4,
-   "pt": 223.4
+   "es": 228.89,
+   "pt": 228.89
   },
   {
    "cuarto": 93,
    "hora": 24,
    "minuto": 0,
-   "es": 226.17,
-   "pt": 226.17
+   "es": 228.89,
+   "pt": 228.89
   },
   {
    "cuarto": 94,
    "hora": 24,
    "minuto": 15,
-   "es": 215.14,
-   "pt": 215.14
+   "es": 223.12,
+   "pt": 223.12
   },
   {
    "cuarto": 95,
    "hora": 24,
    "minuto": 30,
-   "es": 211.4,
-   "pt": 211.4
+   "es": 220.0,
+   "pt": 220.0
   },
   {
    "cuarto": 96,
    "hora": 24,
    "minuto": 45,
-   "es": 203.35,
-   "pt": 203.35
+   "es": 215.25,
+   "pt": 215.25
   }
  ],
  "cuartos": 96,
  "resolucion": "PT15M (cuartos de hora)",
- "min": 180.0,
- "hora_min": "16:00",
- "max": 283.67,
- "hora_max": "19:30",
- "media": 223.64,
- "horas_separadas_es_pt": [
-  12,
-  12,
-  12,
-  12,
-  13,
-  13,
-  13,
-  13,
-  14,
-  14,
-  14,
-  14,
-  15,
-  15,
-  15,
-  15
- ],
+ "min": 171.6,
+ "hora_min": "13:30",
+ "max": 261.92,
+ "hora_max": "19:45",
+ "media": 211.39,
+ "horas_separadas_es_pt": [],
  "filas_en_fichero": 96,
  "nota_resolucion": "Las 96 filas NO son cuatro bloques de 24 horas: son 96 CUARTOS DE HORA de un solo día (resolución PT15M, la que aplica al mercado diario desde 2025). Contraste con ENTSO-E A44: las 78 posiciones que ENTSO-E publica coinciden al céntimo con estas.",
- "descargado": "2026-11-27T23:14:08",
+ "descargado": "2026-11-28T00:34:24",
  "nota": "Precio del mercado mayorista, no el precio final del consumidor: faltan peajes, cargos e impuestos. Portugal comparte precio salvo en las horas de separación."
 }
